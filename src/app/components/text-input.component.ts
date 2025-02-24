@@ -4,13 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-text-input',
   standalone: true,
   imports: [],
-  template: `
-    <p>
-      text-input works!
-    </p>
-  `,
-  styles: ``
+  template: ``,
+  styles: ``,
 })
-export class TextInputComponent {
-
-}
+export class TextInputComponent {}
