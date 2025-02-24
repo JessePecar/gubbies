@@ -5,7 +5,7 @@
   "identifier": "com.gubbies.jpecar",
   "build": {
     "beforeDevCommand": "npm run start",
-    "devUrl": "http://localhost:1420",
+    "devUrl": "http://localhost:4200",
     "beforeBuildCommand": "npm run build",
     "frontendDist": "../dist/gubbies/browser"
   },
