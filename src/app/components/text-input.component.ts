@@ -1,30 +1,60 @@
-import { Component, input } from '@angular/core';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldAppearance, MatFormFieldModule } from '@angular/material/form-field';
+import { Component, input, output, signal } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-text-input',
   standalone: true,
-  imports: [MatInputModule, MatFormFieldModule],
+  imports: [],
   template: `
-  <div>
-    <mat-form-field [appearance]="appearance()">
-      <mat-label>{{label() ?? placeholder()}}</mat-label>
-        <input matInput [placeholder]="placeholder()" [value]="value()" (blur)="onUnfocus()" [required]="required()">
-    </mat-form-field>
+  <div class="text-white flex flex-col">
+    <label>{{label()}}</label>
+    <input
+      class="rounded-t-lg shadow-lg p-2 border-b-1 border-gray-600 focus:border-gray-200 bg-black outline-none"
+      [type]="inputProps()?.type ?? 'text'"
+      [value]="value()"
+      [placeholder]="inputProps()?.placeholder ?? ''"
+      (change)="handleChange($event)"
+      >
   </div>
   `,
-  styles: ``,
+  providers: [{provide: NG_VALUE_ACCESSOR, multi: true, useExisting: TextInputComponent}]
 })
   
-export class TextInputComponent {
-  placeholder = input.required<string>();
-  value = input<string>('');
-  appearance = input<MatFormFieldAppearance>('fill');
-  label = input<string | undefined>(undefined);
-  required = input<boolean>(false);
+export class TextInputComponent implements ControlValueAccessor {
+  
+  //
+  // Implementing ControlValueAccessor
+  //
+  writeValue(value: string | number | null): void {
+    this.value.set(value);
+  }
 
-  onUnfocus() {
-    // Do some work
+  registerOnChange(onChange: (value: string | number | null) => void): void {
+    this.onChange = onChange;
+  }
+
+  registerOnTouched(fn: any): void {
+    // This will be implemented precisely when I intend to
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
+  }
+
+  isDisabled = signal<boolean>(false);
+  value = signal<string | number | null>(null);
+  onChange = (value: string | number | null) => {};
+
+
+  inputProps = input<Partial<HTMLInputElement>>();
+  formControlName = input<string | number | null>(null);
+  label = input<string | undefined>(undefined);
+  
+  onUnfocus = output<string>();
+
+  handleChange(event: Event) {
+    const inputElement = event.currentTarget as HTMLInputElement;
+    const inputValue = inputElement.value;
+    this.onChange(inputValue);
   }
 }
