@@ -1,4 +1,4 @@
-import { AbstractControl } from "@angular/forms";
+import { AbstractControl } from '@angular/forms';
 
 export interface LoginForm {
   email: AbstractControl<string | null, string>;

@@ -10,11 +10,15 @@
     "frontendDist": "../dist/gubbies/browser"
   },
   "app": {
+    "withGlobalTauri": true,
     "windows": [
       {
-        "title": "gubbies",
+        "title": "Gubbies",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "maxHeight": 800,
+        "maxWidth": 1000,
+        "devtools": true
       }
     ],
     "security": {

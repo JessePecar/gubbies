@@ -6,22 +6,25 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   standalone: true,
   imports: [],
   template: `
-  <div class="text-white flex flex-col">
-    <label>{{label()}}</label>
-    <input
-      class="rounded-t-lg shadow-lg p-2 border-b-1 border-gray-600 focus:border-gray-200 bg-black outline-none"
-      [type]="inputProps()?.type ?? 'text'"
-      [value]="value()"
-      [placeholder]="inputProps()?.placeholder ?? ''"
-      (change)="handleChange($event)"
-      >
-  </div>
+    <div class="text-white flex flex-col">
+      <p>{{ label() }}</p>
+      <input
+        class="rounded-t-lg shadow-lg p-2 border-b-1 border-gray-600 focus:border-gray-200 bg-black outline-none"
+        [type]="inputProps()?.type ?? 'text'"
+        [value]="value()"
+        [placeholder]="inputProps()?.placeholder ?? ''"
+        (change)="handleChange($event)" />
+    </div>
   `,
-  providers: [{provide: NG_VALUE_ACCESSOR, multi: true, useExisting: TextInputComponent}]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: TextInputComponent,
+    },
+  ],
 })
-  
 export class TextInputComponent implements ControlValueAccessor {
-  
   //
   // Implementing ControlValueAccessor
   //
@@ -33,7 +36,7 @@ export class TextInputComponent implements ControlValueAccessor {
     this.onChange = onChange;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(): void {
     // This will be implemented precisely when I intend to
   }
 
@@ -43,14 +46,15 @@ export class TextInputComponent implements ControlValueAccessor {
 
   isDisabled = signal<boolean>(false);
   value = signal<string | number | null>(null);
-  onChange = (value: string | number | null) => {};
-
+  onChange = (_value: string | number | null) => {
+    // On Change
+  };
 
   inputProps = input<Partial<HTMLInputElement>>();
   formControlName = input<string | number | null>(null);
   label = input<string | undefined>(undefined);
-  
-  onUnfocus = output<string>();
+
+  handleUnfocus = output<string>();
 
   handleChange(event: Event) {
     const inputElement = event.currentTarget as HTMLInputElement;

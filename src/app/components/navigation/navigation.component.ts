@@ -1,29 +1,27 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { UserInfoService } from '../../services';
 import { RouterOutlet } from '@angular/router';
-import { UserInfo } from '../../interfaces/user';
 
 @Component({
   selector: 'app-navigation',
   imports: [RouterOutlet],
   template: `
-    <p>{{userService.userInfo()}}</p>
-    @if(userService.userInfo() === undefined) {
-      <!-- Don't show the navigation menu -->
-      <router-outlet />
-    } @else {
-      <!-- Show the navigation menu -->
-       <div class="text-white">
-         <router-outlet />
+    <div class="text-white h-full">
+      <div class="w-full h-20 bg-stone-900">
+        <div class="flex h-full px-2 py-1 items-end">
+          <img alt="Gubbies" class="h-16" src="../../assets/Gubbies.PNG" />
         </div>
-    }
+      </div>
+      <div class="h-3/4">
+        <router-outlet />
+      </div>
+    </div>
   `,
-  styles: ``
+  styles: ``,
 })
 export class NavigationComponent {
   userService: UserInfoService;
   constructor() {
     this.userService = inject(UserInfoService);
   }
-
 }
