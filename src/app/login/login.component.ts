@@ -4,6 +4,8 @@ import { MatCardModule } from '@angular/material/card'
 import {MatRippleModule} from '@angular/material/core';
 import { TextInputComponent } from '../components/text-input.component';
 import { SampleLogins } from '../sampleData/sampleLogins';
+import { UserInfoService } from '../services/UserInfoService';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-login',
@@ -12,10 +14,11 @@ import { SampleLogins } from '../sampleData/sampleLogins';
       <div class="flex flex-col justify-center items-center h-full px-20">
           <mat-card class="w-full" appearance="raised">
             <div class="flex flex-col items-center justify-center">
-              <h1 class="logo text-[6rem] italic text-gray-100 font-bold">Gubbies</h1>
+              <!-- <h1 class="logo text-[6rem] italic text-gray-100 font-bold">Gubbies</h1>
               <p class="logo text-[1rem] italic text-gray-100 font-bold mt-[-2rem] mb-4">
                 Inventory Management System
-              </p>
+              </p> -->
+              <img src="../../assets/Gubbies IMS.PNG" />
             </div>
             <mat-card-content>
               <div class="w-full flex flex-col justify-between items-center p-4">
@@ -60,6 +63,9 @@ import { SampleLogins } from '../sampleData/sampleLogins';
 })
   
 export class LoginComponent {
+  userInfoService: UserInfoService;
+  router: Router; 
+
   form: FormGroup = inject(FormBuilder).group({
     username: ["", [Validators.required, Validators.maxLength(12), Validators.minLength(3)]],
     password: ["", [Validators.required, Validators.maxLength(12), Validators.minLength(3)]]
@@ -68,6 +74,9 @@ export class LoginComponent {
   showErrorMessage: boolean = false;
   
   constructor() {
+    this.userInfoService = inject(UserInfoService);
+    this.router = inject(Router);
+    
     // Subscribe to the form to reset show error message whenever the change is made
     this.form.valueChanges.subscribe(_ => {
       if (this.showErrorMessage) {
@@ -83,7 +92,15 @@ export class LoginComponent {
     // Grab the first login from the sample logins that match in the list of sample users
     var login = SampleLogins.find(sl => sl.username === username && sl.password === password)
   
-    // Show the error message if the login was not found (the login information does not exist)
-    this.showErrorMessage = login === undefined;
+    
+    if (login === undefined) {      
+      // Show the error message if the login was not found (the login information does not exist)
+      this.showErrorMessage = true;
+    } else {
+      this.userInfoService.setUser(login);
+      this.router.navigate(['']);
+
+      console.log("Successful login!");
+    }
   }
 }
