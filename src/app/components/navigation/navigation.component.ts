@@ -1,16 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { UserInfoService } from '../../services';
 import { RouterOutlet } from '@angular/router';
+import { NavigationBarComponent } from "./navigation-bar.component";
 
 @Component({
   selector: 'app-navigation',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, NavigationBarComponent],
   template: `
     <div class="text-white h-full">
       <div class="w-full h-20 bg-stone-900">
-        <div class="flex h-full px-2 py-1 items-end">
-          <img alt="Gubbies" class="h-16" src="../../assets/Gubbies.PNG" />
-        </div>
+        <app-navigation-bar />
       </div>
       <div class="h-3/4">
         <router-outlet />

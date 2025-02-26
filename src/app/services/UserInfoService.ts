@@ -1,11 +1,14 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { UserInfo } from '../interfaces/user';
 import { load, Store } from '@tauri-apps/plugin-store';
+import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'platform',
+  providedIn: 'root',
 })
 export class UserInfoService {
+  private router: Router;
+  
   public userInfo = signal<UserInfo | undefined>(undefined);
   userInfoStorage?: Store = undefined;
 
@@ -31,11 +34,18 @@ export class UserInfoService {
       console.log('Store info: ' + JSON.stringify(userInfo));
       if (userInfo) {
         this.userInfo.set(userInfo);
+        var currentRoute = this.router.url;
+
+        // Navigate back to home if already logged in
+        if (currentRoute.includes("login")) {
+          this.router.navigate([""]);
+        }
       }
     }
   }
 
-  constructor() {
+  constructor(r: Router) {
+    this.router = r;
     this.setupStore();
   }
 }
