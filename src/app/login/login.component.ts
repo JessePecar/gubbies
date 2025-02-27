@@ -11,6 +11,7 @@ import { TextInputComponent } from '../components/text-input.component';
 import { SampleLogins } from '../sampleData/sampleLogins';
 import { UserInfoService } from '../services/UserInfoService';
 import { Router } from '@angular/router';
+import { UserDataService } from '../services';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,7 @@ import { Router } from '@angular/router';
   ],
   template: `
     <div class="flex flex-col justify-center items-center h-full px-20">
-      <mat-card class="w-full" appearance="raised">
+      <mat-card class="w-full min-w-84 max-w-96" appearance="raised">
         <div class="flex flex-col items-center justify-center">
           <!-- <h1 class="logo text-[6rem] italic text-gray-100 font-bold">Gubbies</h1>
               <p class="logo text-[1rem] italic text-gray-100 font-bold mt-[-2rem] mb-4">
@@ -52,12 +53,12 @@ import { Router } from '@angular/router';
           </div>
         </mat-card-content>
         <mat-card-footer>
-          <div class="flex justify-end p-4">
+          <div class="flex justify-center w-full p-4 max-w-96 min-w-84">
             <button
               matRipple
               [matRippleDisabled]="!form.valid"
               matRippleColor="#44444444"
-              class="text-gray-600 disabled:text-gray-400 disabled:bg-gray-300 disabled:cursor-default cursor-pointer font-bold bg-gray-200 rounded-full px-4 py-1"
+              class="text-gray-600 disabled:text-gray-400 disabled:bg-gray-300 disabled:cursor-default cursor-pointer font-bold bg-gray-200 rounded-full px-4 py-1 w-1/2"
               [disabled]="!form.valid"
               type="button"
               (click)="onSubmit()">
@@ -75,6 +76,7 @@ import { Router } from '@angular/router';
   `,
 })
 export class LoginComponent {
+  userDataService: UserDataService;
   userInfoService: UserInfoService;
   router: Router;
 
@@ -92,6 +94,7 @@ export class LoginComponent {
   showErrorMessage = false;
 
   constructor() {
+    this.userDataService = inject(UserDataService);
     this.userInfoService = inject(UserInfoService);
     this.router = inject(Router);
 
@@ -103,20 +106,17 @@ export class LoginComponent {
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     // Grab the value of the form for compare
     const { username, password } = this.form.value;
 
-    // Grab the first login from the sample logins that match in the list of sample users
-    const login = SampleLogins.find(
-      sl => sl.username === username && sl.password === password
-    );
+    const authedUser = await this.userDataService.authUser(username, password);
 
-    if (login === undefined) {
+    if (authedUser === undefined) {
       // Show the error message if the login was not found (the login information does not exist)
       this.showErrorMessage = true;
     } else {
-      this.userInfoService.setUser(login);
+      this.userInfoService.setUser(authedUser);
       this.router.navigate(['']);
 
       console.log('Successful login!');

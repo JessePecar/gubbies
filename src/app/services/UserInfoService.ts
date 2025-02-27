@@ -1,22 +1,30 @@
-import { inject, Injectable, signal } from '@angular/core';
-import { UserInfo } from '../interfaces/user';
+import { Injectable, signal } from '@angular/core';
 import { load, Store } from '@tauri-apps/plugin-store';
 import { Router } from '@angular/router';
+import { User } from '../entities/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserInfoService {
   private router: Router;
-  
-  public userInfo = signal<UserInfo | undefined>(undefined);
+
+  public userInfo = signal<User | undefined>(undefined);
   userInfoStorage?: Store = undefined;
 
-  async setUser(newUserInfo?: UserInfo) {
-    this.userInfo.set(newUserInfo);
+  async setUser(newUserInfo?: User) {
+    if (newUserInfo === undefined) {
+      this.userInfo = signal<User | undefined>(undefined);
+    } else {
+      this.userInfo.set(newUserInfo);
+    }
 
     if (this.userInfoStorage) {
-      await this.userInfoStorage.set('userInfo', newUserInfo);
+      if (newUserInfo) {
+        await this.userInfoStorage.set('userInfo', newUserInfo);
+      } else {
+        await this.userInfoStorage.delete('userInfo');
+      }
 
       await this.userInfoStorage.save();
     }
@@ -26,19 +34,18 @@ export class UserInfoService {
     if (typeof window !== 'undefined') {
       console.log('Setting up the store');
       this.userInfoStorage = await load('localStorage.json');
-
-      const userInfo = await this.userInfoStorage.get<UserInfo | undefined>(
+      const userInfo = await this.userInfoStorage.get<User[] | undefined>(
         'userInfo'
       );
 
-      console.log('Store info: ' + JSON.stringify(userInfo));
+      console.log('Store info: ' + JSON.stringify(userInfo && userInfo[0]));
       if (userInfo) {
-        this.userInfo.set(userInfo);
+        this.userInfo.set(userInfo[0]);
         var currentRoute = this.router.url;
 
         // Navigate back to home if already logged in
-        if (currentRoute.includes("login")) {
-          this.router.navigate([""]);
+        if (currentRoute.includes('login')) {
+          this.router.navigate(['']);
         }
       }
     }

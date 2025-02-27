@@ -9,6 +9,11 @@
     "beforeBuildCommand": "npm run build",
     "frontendDist": "../dist/gubbies/browser"
   },
+  "plugins": {
+    "sql": {
+      "preload": ["sqlite:gubbies.db"]
+    }
+  },
   "app": {
     "withGlobalTauri": true,
     "windows": [

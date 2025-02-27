@@ -1,7 +1,7 @@
 
-added 1 package, and audited 1168 packages in 3s
+added 1 package, and audited 1364 packages in 3s
 
-219 packages are looking for funding
+271 packages are looking for funding
   run `npm fund` for details
 
 20 vulnerabilities (3 low, 6 moderate, 10 high, 1 critical)
