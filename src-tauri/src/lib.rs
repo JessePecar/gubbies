@@ -46,7 +46,7 @@ fn create_user_tables_migration() -> Migration {
             SELECT r.id, p.id FROM permissions p FULL OUTER JOIN roles r on 1 = 1 AND r.name = 'admin';
 
             INSERT INTO users (firstName, lastName, roleId, userName, passwordHash)
-            VALUES ('admin', 'user', 0, 'admin', 'password'); --Because this is for fun, I am not hashing or encrpyting any passwords, they will just live like animals
+            VALUES ('admin', 'user', 1, 'admin', 'password'); --Because this is for fun, I am not hashing or encrpyting any passwords, they will just live like animals
         ",
         kind: MigrationKind::Up,
     };

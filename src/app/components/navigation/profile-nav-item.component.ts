@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-profile-nav-item',
   imports: [MatIconModule],
   template: `
-    <div class="flex" menuItem>
+    <div class="pl-1 flex space-x-2" menuItem>
       <mat-icon fontIcon="account_circle" />
       <p>
         {{ userInfoService.userInfo()?.firstName }}

@@ -1,3 +1,5 @@
+import { Permission } from '../role';
+
 export class User implements IUser {
   id!: number;
   firstName!: string;
@@ -5,6 +7,8 @@ export class User implements IUser {
   roleId!: number;
   userName!: string;
   passwordHash!: string;
+
+  permissions!: Permission[];
 
   constructor(user: IUser) {
     this.id = user.id;

@@ -1,23 +1,15 @@
 import { Component } from '@angular/core';
-import { NavigationDropdownComponent } from './navigation-dropdown.component';
-import { RouterLink } from '@angular/router';
+import { NavigationDropdownComponentV2 } from './navigation-dropdown.componentV2';
 
 @Component({
   selector: 'app-inventory-nav-item',
-  imports: [NavigationDropdownComponent, RouterLink],
+  imports: [NavigationDropdownComponentV2],
   template: `
-    <app-navigation-dropdown dropdownName="inventory">
+    <app-navigation-dropdownv2
+      dropdownName="inventory"
+      [dropdownOptions]="dropdownOptions">
       <p menuItem class="hover:underline">Inventory</p>
-      <div options class="w-full grid grid-cols-3 gap-4">
-        @for (opt of dropdownOptions; track $index) {
-          <a
-            [routerLink]="opt.route"
-            class="w-full hover:bg-stone-800 rounded-sm p-1 cursor-pointer"
-            >{{ opt.linkTitle }}</a
-          >
-        }
-      </div>
-    </app-navigation-dropdown>
+    </app-navigation-dropdownv2>
   `,
   styles: ``,
 })
@@ -25,19 +17,19 @@ export class InventoryNavItemComponent {
   dropdownOptions = [
     {
       linkTitle: 'Adjustments',
-      route: '',
+      route: 'inventory/adjustments',
     },
     {
       linkTitle: 'Counts',
-      route: '',
+      route: 'inventory/counts',
     },
     {
       linkTitle: 'Inventory List',
-      route: '',
+      route: 'inventory/list',
     },
     {
       linkTitle: 'New Item',
-      route: '',
+      route: 'inventory/adjustments',
     },
   ];
 }

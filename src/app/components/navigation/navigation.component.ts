@@ -8,10 +8,8 @@ import { NavigationBarComponent } from './navigation-bar.component';
   imports: [RouterOutlet, NavigationBarComponent],
   template: `
     <div class="text-white h-full">
-      <div class="w-full bg-stone-900">
-        <app-navigation-bar />
-      </div>
-      <div class="h-3/4">
+      <app-navigation-bar />
+      <div class="h-full w-full pl-10">
         <router-outlet />
       </div>
     </div>
