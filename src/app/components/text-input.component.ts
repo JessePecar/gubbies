@@ -1,4 +1,11 @@
-import { Component, input, output, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  input,
+  output,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -6,14 +13,21 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   standalone: true,
   imports: [],
   template: `
-    <div class="text-white flex flex-col">
-      <p>{{ label() }}</p>
+    <div class="text-gray-200 flex flex-col">
       <input
-        class="rounded-t-lg shadow-lg p-2 border-b-1 border-gray-600 focus:border-gray-200 bg-black outline-none"
+        [id]="label() + '_input'"
+        class="rounded-lg shadow-lg p-2 border-1 border-stone-600 focus:border-gray-200 bg-stone-900 outline-none input-field"
         [type]="inputProps()?.type ?? 'text'"
         [value]="value()"
-        [placeholder]="inputProps()?.placeholder ?? ''"
+        [required]="true"
         (change)="handleChange($event)" />
+      <div
+        class="input-label pl-4 transition-all duration-150 ease-in order-[-1] flex">
+        <label [for]="label() + '_input'">{{ label() }} </label>
+        @if (inputProps()?.required) {
+          <p class="opacity-50  text-red-700 font-bold pl-1">*</p>
+        }
+      </div>
     </div>
   `,
   providers: [
@@ -23,6 +37,17 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       useExisting: TextInputComponent,
     },
   ],
+  styles: `
+    .input-label {
+      transform: translateY(2.1rem);
+      pointer-events: none;
+    }
+
+    .input-field:focus + .input-label,
+    .input-field:valid ~ .input-label {
+      transform: translateY(-2px) translateX(-1rem);
+    }
+  `,
 })
 export class TextInputComponent implements ControlValueAccessor {
   //
@@ -43,6 +68,9 @@ export class TextInputComponent implements ControlValueAccessor {
   setDisabledState?(isDisabled: boolean): void {
     this.isDisabled.set(isDisabled);
   }
+
+  @ViewChild('input')
+  input!: ElementRef<HTMLInputElement>;
 
   isDisabled = signal<boolean>(false);
   value = signal<string | number | null>(null);

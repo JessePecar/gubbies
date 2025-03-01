@@ -25,8 +25,8 @@ import { ButtonComponent } from '../button.component';
       <div
         #nav_menu
         id="navMenu"
-        class="h-full w-10 fixed top-0 left-0 bg-stone-900 transition-all duration-100 p-1">
-        <div class="flex justify-between pr-4">
+        class="h-full w-12 fixed top-0 left-0 bg-stone-900 transition-all duration-100 p-1">
+        <div class="flex justify-between pr-4 pb-1 border-b border-stone-800">
           <button
             (click)="toggleMenu()"
             type="button"
@@ -66,11 +66,13 @@ import { ButtonComponent } from '../button.component';
 
               <app-profile-nav-item />
             </div>
-            <div class="w-full pb-10 flex justify-end">
-              <app-button
-                buttonType="outline"
-                text="Logout"
-                (click)="logout()" />
+            <div class="absolute right-0 bottom-0 w-full py-1 px-2">
+              <div class="w-full flex justify-end">
+                <app-button
+                  buttonType="outline"
+                  text="Logout"
+                  (click)="logout()" />
+              </div>
             </div>
           </div>
         }

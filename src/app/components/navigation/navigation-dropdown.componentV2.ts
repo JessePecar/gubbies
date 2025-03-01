@@ -3,7 +3,6 @@ import {
   ElementRef,
   inject,
   input,
-  OnInit,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -50,7 +49,7 @@ import { RouterLink } from '@angular/router';
   `,
   styles: ``,
 })
-export class NavigationDropdownComponentV2 implements OnInit {
+export class NavigationDropdownComponentV2 {
   @ViewChild('menu')
   menu!: ElementRef<HTMLDivElement>;
 
@@ -58,10 +57,6 @@ export class NavigationDropdownComponentV2 implements OnInit {
 
   constructor() {
     this.navbarService = inject(NavbarService);
-  }
-
-  ngOnInit(): void {
-    this.subscribeToEvent();
   }
 
   dropdownOptions = input.required<{ linkTitle: string; route: string }[]>();
@@ -82,14 +77,5 @@ export class NavigationDropdownComponentV2 implements OnInit {
     if (this.showMenu()) {
       this.navbarService?.tiggerEvent(name);
     }
-  }
-
-  subscribeToEvent() {
-    this.navbarService?.drodownEvent.subscribe(triggerName => {
-      if (triggerName !== this.dropdownName()) {
-        this.showMenu.set(false);
-        this.menu.nativeElement.style.display = 'none';
-      }
-    });
   }
 }

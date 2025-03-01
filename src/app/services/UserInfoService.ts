@@ -1,6 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { HostListener, Injectable, signal } from '@angular/core';
 import { load, Store } from '@tauri-apps/plugin-store';
 import { User } from '../entities/user';
+import { from } from 'rxjs';
 
 @Injectable({
   providedIn: 'platform',
@@ -27,21 +28,30 @@ export class UserInfoService {
     }
   }
 
-  async setupStore() {
-    if (typeof window !== 'undefined') {
-      this.userInfoStorage = await load('localStorage.json');
-      const userInfo = await this.userInfoStorage.get<User[] | undefined>(
-        'userInfo'
-      );
+  setupStore() {
+    from(load('localStorage')).subscribe(uis => {
+      this.userInfoStorage = uis;
+      from(this.userInfoStorage?.get<User[] | undefined>('userInfo')).subscribe(
+        res => {
+          console.log('Store info: ' + JSON.stringify(res && res[0]));
 
-      console.log('Store info: ' + JSON.stringify(userInfo && userInfo[0]));
-      if (userInfo) {
-        this.userInfo.set(userInfo[0]);
-      }
+          if (res) {
+            this.userInfo.set(res[0]);
+          }
+        }
+      );
+    });
+  }
+
+  waitForWindowLoad() {
+    while (window === undefined) {
+      setTimeout(() => {
+        this.waitForWindowLoad();
+      }, 150);
     }
   }
 
   constructor() {
-    this.setupStore();
+    this.waitForWindowLoad();
   }
 }
