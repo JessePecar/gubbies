@@ -7,7 +7,7 @@ import { Permission } from '../../entities/role';
   selector: 'app-inventory-nav-item',
   imports: [NavigationDropdownComponentV2],
   template: `
-    @if (userInfo?.permissions?.includes(inventoryPermission)) {
+    @if (userInfo?.role?.permissions?.includes(inventoryPermission)) {
       <app-navigation-dropdownv2
         dropdownName="inventory"
         [dropdownOptions]="dropdownOptions">

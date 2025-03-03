@@ -5,7 +5,10 @@ import { inject } from '@angular/core';
 
 export const reportsGuardGuard: CanActivateFn = (route, state) => {
   var { userInfo } = inject(UserInfoService);
-  if (userInfo() && userInfo()?.permissions.includes(Permission.REPORTS)) {
+  if (
+    userInfo() &&
+    userInfo()?.role?.permissions.includes(Permission.REPORTS)
+  ) {
     return true;
   }
   return false;

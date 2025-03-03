@@ -16,7 +16,11 @@ import { MatRippleModule } from '@angular/material/core';
           [disabled]="disabled()"
           type="button"
           (click)="handleClick.emit()">
-          {{ text() }}
+          @if (text()) {
+            {{ text() }}
+          } @else {
+            <ng-content />
+          }
         </button>
       }
       @case ('raised') {
@@ -24,19 +28,28 @@ import { MatRippleModule } from '@angular/material/core';
           mat-raised-button
           [disabled]="disabled"
           (click)="handleClick.emit()">
-          {{ text() }}
+          @if (text()) {
+            {{ text() }}
+          } @else {
+            <ng-content />
+          }
         </button>
       }
       @default {
+        <!-- Flat button / Text button -->
         <button
           matRipple
           [matRippleDisabled]="disabled()"
           matRippleColor="#44444444"
-          class="text-gray-600 disabled:text-gray-400 disabled:bg-gray-300 disabled:cursor-default cursor-pointer font-bold hover:bg-gray-300 bg-gray-200 rounded-full px-4 py-1"
+          class="w-full flex hover:bg-stone-800 p-2 rounded cursor-pointer hover:underline"
           [disabled]="disabled()"
           type="button"
           (click)="handleClick.emit()">
-          {{ text() }}
+          @if (text()) {
+            {{ text() }}
+          } @else {
+            <ng-content />
+          }
         </button>
       }
     }

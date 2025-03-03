@@ -5,7 +5,10 @@ import { Permission } from '../../entities/role';
 
 export const promotionsGuardGuard: CanActivateFn = (route, state) => {
   var { userInfo } = inject(UserInfoService);
-  if (userInfo() && userInfo()?.permissions.includes(Permission.PROMOTIONS)) {
+  if (
+    userInfo() &&
+    userInfo()?.role?.permissions.includes(Permission.PROMOTIONS)
+  ) {
     return true;
   }
 

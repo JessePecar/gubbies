@@ -5,7 +5,10 @@ import { Permission } from '../../entities/role';
 
 export const inventoryGuard: CanActivateChildFn = (route, state) => {
   var { userInfo } = inject(UserInfoService);
-  if (userInfo() && userInfo()?.permissions.includes(Permission.INVENTORY)) {
+  if (
+    userInfo() &&
+    userInfo()?.role?.permissions.includes(Permission.INVENTORY)
+  ) {
     return true;
   }
 

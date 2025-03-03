@@ -63,15 +63,17 @@ import { ButtonComponent } from '../button.component';
                 routerLink=""
                 >Settings</a
               >
-
-              <app-profile-nav-item />
             </div>
             <div class="absolute right-0 bottom-0 w-full py-1 px-2">
-              <div class="w-full flex justify-end">
-                <app-button
-                  buttonType="outline"
-                  text="Logout"
-                  (click)="logout()" />
+              <div class="w-full">
+                <app-profile-nav-item />
+
+                <app-button (click)="logout()">
+                  <span class="flex w-full space-x-4">
+                    <mat-icon fontIcon="logout" />
+                    <p>Logout</p>
+                  </span>
+                </app-button>
               </div>
             </div>
           </div>
