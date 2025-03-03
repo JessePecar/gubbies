@@ -9,17 +9,7 @@ import { from } from 'rxjs';
   imports: [RouterOutlet, MatIconModule],
   template: `
     <main class="bg-stone-800 h-full">
-      @if (isLoading()) {
-        <div
-          class="flex h-full w-full justify-center items-center text-gray-200">
-          <mat-icon
-            class="animate-spin text-gray-200"
-            color="#CCCCCC"
-            fontIcon="progress_activity" />
-        </div>
-      } @else {
-        <router-outlet />
-      }
+      <router-outlet />
     </main>
   `,
 })
@@ -28,11 +18,7 @@ export class AppComponent implements OnInit {
   isLoading = signal<boolean>(true);
   title = 'Gubbies';
 
-  ngOnInit(): void {
-    from(this.userInfoService.setupStore()).subscribe(() => {
-      this.isLoading.set(true);
-    });
-  }
+  ngOnInit(): void {}
 
   constructor() {
     this.userInfoService = inject(UserInfoService);
