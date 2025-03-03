@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { User } from '../entities/user';
-import { Permission } from '../entities/role';
 
 @Injectable({
   providedIn: 'any',

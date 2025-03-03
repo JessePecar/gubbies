@@ -27,9 +27,7 @@ import { UserDataService } from '../services';
         <img alt="Gubbies" src="../../assets/Gubbies.PNG" />
       </div>
       <div class="flex flex-col justify-center items-center h-3/4 px-20">
-        <mat-card
-          class="w-full min-w-84 w-3/4 text-gray-200"
-          appearance="raised">
+        <mat-card class="min-w-84 w-1/4 text-gray-200" appearance="raised">
           <mat-card-content>
             <div class="mb-2 pl-4">
               <p class="text-[3rem]">Sign In</p>

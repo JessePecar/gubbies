@@ -1,0 +1,11 @@
+{
+  "development": {
+    "dialect": "sqlite",
+    "storage": "C:\\Database\\gubbies.db",
+    "storage_test": "gubbies.db"
+  },
+  "test": {
+    "dialect": "sqlite",
+    "storaget": "gubbies.db"
+  }
+}
