@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { NavbarService } from '../../services/NavbarService';
+import { NavbarService } from '../../services/navbar.service';
 
 @Component({
   selector: 'app-navigation-dropdown',
