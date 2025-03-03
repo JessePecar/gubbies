@@ -6,6 +6,6 @@
   },
   "test": {
     "dialect": "sqlite",
-    "storaget": "gubbies.db"
+    "storage": "gubbies.db"
   }
 }

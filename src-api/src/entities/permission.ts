@@ -1,8 +1,16 @@
-import { Column, Entity, ManyToMany, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 import { PermissionType } from './permissionType';
 import { Role } from './role';
+import { RolePermission } from './rolePermissions';
 
-@Entity()
+@Entity('Permissions')
 export class Permission {
   @PrimaryColumn()
   id: PermissionType;
@@ -10,6 +18,9 @@ export class Permission {
   @Column()
   name: string;
 
-  @ManyToMany((type) => Role, (role) => role.permissions)
-  roles: Role[];
+  @OneToMany((type) => RolePermission, (perm) => perm.permission, {
+    nullable: true,
+  })
+  @JoinTable()
+  permissions: Permission[];
 }

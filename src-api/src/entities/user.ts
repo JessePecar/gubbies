@@ -1,7 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinTable,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
 import { Role } from './role';
 
-@Entity()
+@Entity('Users')
 export class User {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -21,8 +29,7 @@ export class User {
   @Column()
   password!: string;
 
-  @OneToOne((type) => Role, (role) => role.user, {
-    createForeignKeyConstraints: true,
-  })
+  @ManyToOne((type) => Role)
+  @JoinTable()
   role: Role;
 }

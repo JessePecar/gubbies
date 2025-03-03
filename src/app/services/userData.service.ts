@@ -1,17 +1,24 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { User } from '../entities/user';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class UserDataService {
-  constructor() {}
+  private readonly httpClient = inject(HttpClient);
+  private readonly baseUrl = 'http://localhost:3000';
+  private readonly clientUrl = 'http://localhost:4200/';
 
-  async authUser(
-    username: string,
-    password: string
-  ): Promise<User | undefined> {
-    // TODO: Transition this to hit a local express.js backend service that will run in tandem
-    return undefined;
+  private readonly httpHeaders = new HttpHeaders({
+    accepts: 'application/json',
+  });
+
+  authUser(username: string, password: string): Observable<User | undefined> {
+    const requestUrl = `${this.baseUrl}/users/authUser?username=${username}&password=${password}`;
+    return this.httpClient.get<User | undefined>(requestUrl, {
+      headers: this.httpHeaders,
+    });
   }
 }

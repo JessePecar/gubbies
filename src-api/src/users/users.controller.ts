@@ -11,6 +11,12 @@ export class UsersController {
     @Query('username') username: string,
     @Query('password') password: string,
   ) {
-    return await this.userService.authUser(username, password);
+    try {
+      const user = await this.userService.authUser(username, password);
+      console.log(user);
+      return user;
+    } catch (err) {
+      console.error(err);
+    }
   }
 }

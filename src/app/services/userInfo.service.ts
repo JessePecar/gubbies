@@ -5,9 +5,26 @@ import { User } from '../entities/user';
   providedIn: 'platform',
 })
 export class UserInfoService {
+  private readonly localStorageKey = 'userInfo';
   public userInfo = signal<User | undefined>(undefined);
 
-  async setUser(newUserInfo?: User) {}
+  async setUser(newUserInfo?: User) {
+    this.userInfo.set(newUserInfo);
 
-  async setupStore() {}
+    if (newUserInfo) {
+      localStorage.setItem(this.localStorageKey, JSON.stringify(newUserInfo));
+    }
+  }
+
+  async setupStore() {
+    const storedData = localStorage.getItem(this.localStorageKey);
+    if (storedData) {
+      const userInfoStore = JSON.parse(storedData);
+      if (userInfoStore) {
+        this.userInfo.set(userInfoStore);
+      } else {
+        localStorage.removeItem(this.localStorageKey);
+      }
+    }
+  }
 }

@@ -5,6 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('Roles', [
       {
+        id: 1,
         name: 'Administrator',
       },
     ]);
@@ -24,17 +25,17 @@ module.exports = {
     ]);
 
     await queryInterface.bulkInsert('RolePermissions', [
-      { roleId: 0, permissionId: 1 },
-      { roleId: 0, permissionId: 2 },
-      { roleId: 0, permissionId: 3 },
-      { roleId: 0, permissionId: 4 },
-      { roleId: 0, permissionId: 5 },
-      { roleId: 0, permissionId: 6 },
-      { roleId: 0, permissionId: 7 },
-      { roleId: 0, permissionId: 8 },
-      { roleId: 0, permissionId: 9 },
-      { roleId: 0, permissionId: 10 },
-      { roleId: 0, permissionId: 11 },
+      { roleId: 1, permissionId: 1 },
+      { roleId: 1, permissionId: 2 },
+      { roleId: 1, permissionId: 3 },
+      { roleId: 1, permissionId: 4 },
+      { roleId: 1, permissionId: 5 },
+      { roleId: 1, permissionId: 6 },
+      { roleId: 1, permissionId: 7 },
+      { roleId: 1, permissionId: 8 },
+      { roleId: 1, permissionId: 9 },
+      { roleId: 1, permissionId: 10 },
+      { roleId: 1, permissionId: 11 },
     ]);
 
     await queryInterface.bulkInsert('Users', [

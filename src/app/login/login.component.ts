@@ -12,6 +12,7 @@ import { SampleLogins } from '../sampleData/sampleLogins';
 import { UserInfoService } from '../services/userInfo.service';
 import { Router } from '@angular/router';
 import { UserDataService } from '../services';
+import { subscribe } from 'diagnostics_channel';
 
 @Component({
   selector: 'app-login',
@@ -119,16 +120,15 @@ export class LoginComponent {
     // Grab the value of the form for compare
     const { username, password } = this.form.value;
 
-    const authedUser = await this.userDataService.authUser(username, password);
-
-    if (authedUser === undefined) {
-      // Show the error message if the login was not found (the login information does not exist)
-      this.showErrorMessage = true;
-    } else {
-      this.userInfoService.setUser(authedUser);
-      this.router.navigate(['']);
-
-      console.log('Successful login!');
-    }
+    this.userDataService.authUser(username, password).subscribe(authedUser => {
+      console.log(authedUser);
+      if (authedUser === undefined) {
+        // Show the error message if the login was not found (the login information does not exist)
+        this.showErrorMessage = true;
+      } else {
+        this.userInfoService.setUser(authedUser);
+        this.router.navigate(['']);
+      }
+    });
   }
 }

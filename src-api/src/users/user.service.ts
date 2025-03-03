@@ -11,9 +11,18 @@ export class UserService {
   ) {}
 
   async authUser(username: string, password: string) {
-    var userEntity = await this.usersRepository.findOneBy({
-      userName: username,
-      password: password,
+    var userEntity = await this.usersRepository.findOne({
+      where: {
+        userName: username,
+        password: password,
+      },
+      relations: {
+        role: {
+          permissions: {
+            permission: {},
+          },
+        },
+      },
     });
 
     return userEntity;
