@@ -13,6 +13,8 @@ export class UserInfoService {
 
     if (newUserInfo) {
       localStorage.setItem(this.localStorageKey, JSON.stringify(newUserInfo));
+    } else {
+      localStorage.removeItem(this.localStorageKey);
     }
   }
 

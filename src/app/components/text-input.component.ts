@@ -16,7 +16,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     <div class="text-gray-200 flex flex-col">
       <input
         [id]="label() + '_input'"
-        class="rounded-lg shadow-lg p-2 border-1 border-stone-600 focus:border-gray-200 bg-stone-900 outline-none input-field"
+        class="rounded-lg shadow-xl p-2 border-1 border-stone-600 focus:border-gray-200 bg-stone-900 outline-none input-field"
         [type]="inputProps()?.type ?? 'text'"
         [value]="value()"
         [required]="true"

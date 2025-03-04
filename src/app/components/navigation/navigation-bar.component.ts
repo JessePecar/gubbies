@@ -1,4 +1,10 @@
-import { Component, ElementRef, signal, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { InventoryNavItemComponent } from './inventory-nav-item.component';
 import { ReportsNavItemComponent } from './reports-nav-item.component';
@@ -82,7 +88,7 @@ import { ButtonComponent } from '../button.component';
     </nav>
   `,
 })
-export class NavigationBarComponent {
+export class NavigationBarComponent implements OnInit {
   userInfoService: UserInfoService;
   router: Router;
 
@@ -94,6 +100,10 @@ export class NavigationBarComponent {
   constructor(userInfoService: UserInfoService, router: Router) {
     this.userInfoService = userInfoService;
     this.router = router;
+  }
+
+  ngOnInit(): void {
+    this.menuExpanded.set(false);
   }
 
   toggleMenu() {
