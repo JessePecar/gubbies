@@ -9,7 +9,7 @@ import { NavigationBarComponent } from './navigation-bar.component';
   template: `
     <div class="text-white h-full">
       <app-navigation-bar />
-      <div class="h-full w-full pl-10">
+      <div class="h-full w-full pl-20">
         <router-outlet />
       </div>
     </div>

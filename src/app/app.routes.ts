@@ -5,7 +5,7 @@ import { authenticatedGuard, loginGuard } from './guards';
 import { NavigationComponent } from './components/navigation';
 import { InventoryListComponent } from './pages/inventory/inventory-list.component';
 import { inventoryGuard } from './guards/inventory/inventory.guard';
-import { AdjustmentsComponent } from './pages/inventory/adjustments.component';
+import { AdjustmentsComponent } from './inventory/adjustments/adjustments.component';
 import { CountsComponent } from './pages/inventory/counts.component';
 
 export const routes: Routes = [
