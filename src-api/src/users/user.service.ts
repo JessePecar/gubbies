@@ -1,32 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { PermissionType, User } from 'src/entities';
-import { Repository } from 'typeorm';
+import { PermissionType } from 'src/entities';
+import { RepositoryService } from 'src/repository/repository.service';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
-  ) {}
+  constructor(private repository: RepositoryService) {}
 
   async authUser(username: string, password: string) {
-    var userEntity = await this.usersRepository.findOne({
+    var userEntity = await this.repository.users.findFirst({
       where: {
         userName: username,
         password: password,
       },
-      relations: {
+      include: {
         role: {
-          permissions: {
-            permission: {},
+          include: {
+            rolePermissions: {},
           },
         },
       },
     });
 
     if (userEntity && userEntity.role) {
-      const permissionTypes = userEntity.role.permissions?.map(
+      const permissionTypes = userEntity.role.rolePermissions?.map(
         (p) => p.permissionId as PermissionType,
       );
 

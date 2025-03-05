@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdjustmentItems {
+  adjustmentId Int
+  itemId       Int
+
+  @@id([adjustmentId, itemId])
+}
+
+model Adjustments {
+  id           Int                    @id @default(autoincrement())
+  createDate   DateTime?
+  status       Unsupported("number")?
+  completeDate DateTime?
+}
+
+model Categories {
+  code String  @id
+  name String?
+}
+
+model Items {
+  id                    Int     @id @default(autoincrement())
+  name                  String
+  categoryCode          String
+  quantityOnHand        String
+  basePrice             Decimal
+  currentPrice          String?
+  isActive              Boolean
+  retirementStatus      Int
+  reorderQuantity       Decimal
+  unitOfMeasurementType Int
+}
+
+model Permissions {
+  id              Int               @id @default(autoincrement())
+  name            String?
+  rolePermissions RolePermissions[]
+}
+
+model Roles {
+  id              Int               @id @default(autoincrement())
+  name            String
+  rolePermissions RolePermissions[]
+  users           Users[]
+}
+
+model RolePermissions {
+  roleId       Int
+  role         Roles       @relation(fields: [roleId], references: [id])
+  permissionId Int
+  permission   Permissions @relation(fields: [permissionId], references: [id])
+
+  @@id([roleId, permissionId])
+}
+
+model SequelizeMeta {
+  name String @id
+
+  @@ignore
+}
+
+model Users {
+  id        Int     @id @default(autoincrement())
+  firstName String?
+  lastName  String?
+  roleId    Int
+  role      Roles   @relation(fields: [roleId], references: [id])
+  userName  String?
+  password  String?
+}
