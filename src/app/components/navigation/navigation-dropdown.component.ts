@@ -16,7 +16,7 @@ import { NavbarService } from '../../services/navbar.service';
   template: `
     <div>
       <a
-        class="cursor-pointer p-2 font-medium text-gray-200 focus:outline-none flex justify-between items-center hover:bg-stone-800 rounded"
+        class=" p-2 font-medium text-gray-200 focus:outline-none flex justify-between items-center hover:bg-stone-800 rounded"
         (click)="toggleMenu()">
         <ng-content select="[menuItem]" />
         @if (showArrow()) {

@@ -27,7 +27,7 @@ import { ButtonComponent } from '../button.component';
     ButtonComponent,
   ],
   template: `
-    <nav class="w-full mx-auto px-4 md:px-6 lg:px-8">
+    <nav class="w-full mx-auto px-4 md:px-6 lg:px-8 z-50">
       <div
         #nav_menu
         id="navMenu"
@@ -36,7 +36,7 @@ import { ButtonComponent } from '../button.component';
           <button
             (click)="toggleMenu()"
             type="button"
-            class="text-grey-200 hover:bg-stone-800 rounded-lg p-1 flex items-center justify-center cursor-pointer">
+            class="text-grey-200 hover:bg-stone-800 rounded-lg p-1 flex items-center justify-center ">
             <mat-icon menuItem fontIcon="menu" />
           </button>
           @if (menuExpanded()) {

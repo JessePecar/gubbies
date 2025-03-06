@@ -5,8 +5,13 @@ import { authenticatedGuard, loginGuard } from './guards';
 import { NavigationComponent } from './components/navigation';
 import { InventoryListComponent } from './pages/inventory/inventory-list.component';
 import { inventoryGuard } from './guards/inventory/inventory.guard';
-import { AdjustmentsComponent } from './inventory/adjustments/adjustments.component';
 import { CountsComponent } from './pages/inventory/counts.component';
+import {
+  AdjustmentsComponent,
+  AdjustmentFormComponent,
+  adjustmentsGuard,
+  AdjustmentsListComponent,
+} from './inventory/adjustments';
 
 export const routes: Routes = [
   {
@@ -32,7 +37,17 @@ export const routes: Routes = [
           {
             path: 'adjustments',
             component: AdjustmentsComponent,
-            canActivate: [],
+            canActivate: [adjustmentsGuard],
+            children: [
+              {
+                path: '',
+                component: AdjustmentsListComponent,
+              },
+              {
+                path: 'create',
+                component: AdjustmentFormComponent,
+              },
+            ],
           },
           {
             path: 'counts',
@@ -44,5 +59,4 @@ export const routes: Routes = [
     ],
   },
   { path: 'login', canActivate: [loginGuard], component: LoginComponent },
-  // future components
 ];

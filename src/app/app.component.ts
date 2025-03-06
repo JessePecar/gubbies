@@ -2,7 +2,6 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { UserInfoService } from './services';
 import { MatIconModule } from '@angular/material/icon';
-import { from } from 'rxjs';
 
 @Component({
   selector: 'app-root',

@@ -40,7 +40,7 @@ import { ButtonComponent } from '../button.component';
           @for (opt of dropdownOptions(); track $index) {
             <a
               [routerLink]="opt.route"
-              class="w-full hover:bg-stone-800 rounded-sm p-1 cursor-pointer"
+              class="w-full hover:bg-stone-800 rounded-sm p-1 "
               >{{ opt.linkTitle }}</a
             >
           }

@@ -12,7 +12,7 @@ import { MatRippleModule } from '@angular/material/core';
           matRipple
           [matRippleDisabled]="disabled()"
           matRippleColor="#FFFFFF22"
-          class="text-gray-200 disabled:opacity-50 disabled:cursor-default hover:bg-stone-900 cursor-pointer bg-transparent outline-1 outline-gray-200 rounded-full px-4 py-1"
+          class="text-gray-200 disabled:opacity-50 disabled:cursor-default hover:bg-stone-900  bg-transparent outline-1 outline-gray-200 rounded-full px-4 py-1"
           [disabled]="disabled()"
           type="button"
           (click)="handleClick.emit()">
@@ -25,8 +25,11 @@ import { MatRippleModule } from '@angular/material/core';
       }
       @case ('raised') {
         <button
-          mat-raised-button
-          [disabled]="disabled"
+          matRipple
+          [matRippleDisabled]="disabled()"
+          matRippleColor="#FFFFFF22"
+          class=" text-stone-900 disabled:opacity-50 disabled:cursor-default hover:bg-gray-300 outline-1 bg-gray-200 rounded-full px-4 py-1"
+          [disabled]="disabled()"
           (click)="handleClick.emit()">
           @if (text()) {
             {{ text() }}
@@ -41,7 +44,7 @@ import { MatRippleModule } from '@angular/material/core';
           matRipple
           [matRippleDisabled]="disabled()"
           matRippleColor="#44444444"
-          class="w-full flex hover:bg-stone-800 p-2 rounded cursor-pointer hover:underline"
+          class="w-full flex hover:bg-stone-800 p-2 rounded  hover:underline"
           [disabled]="disabled()"
           type="button"
           (click)="handleClick.emit()">

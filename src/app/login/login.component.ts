@@ -72,7 +72,7 @@ import {
                   matRipple
                   [matRippleDisabled]="!form.valid"
                   matRippleColor="#44444444"
-                  class="text-stone-600 disabled:text-stone-400 disabled:bg-stone-300 disabled:cursor-default cursor-pointer font-bold bg-stone-200 rounded-lg px-4 py-1 w-full"
+                  class="text-stone-600 disabled:text-stone-400 disabled:bg-stone-300 disabled:cursor-default  font-bold bg-stone-200 rounded-lg px-4 py-1 w-full"
                   [disabled]="!form.valid"
                   type="button"
                   (click)="onSubmit()">

@@ -9,7 +9,6 @@ import { Observable } from 'rxjs';
 export class UserDataService {
   private readonly httpClient = inject(HttpClient);
   private readonly baseUrl = 'http://localhost:3000';
-  private readonly clientUrl = 'http://localhost:4200/';
 
   private readonly httpHeaders = new HttpHeaders({
     accepts: 'application/json',

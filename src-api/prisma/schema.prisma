@@ -11,19 +11,25 @@ model AdjustmentItems {
   adjustmentId Int
   itemId       Int
 
+  adjustment Adjustments @relation(fields: [adjustmentId], references: [id])
+  item       Items       @relation(fields: [itemId], references: [id])
+
   @@id([adjustmentId, itemId])
 }
 
 model Adjustments {
-  id           Int                    @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   createDate   DateTime?
-  status       Unsupported("number")?
+  status       Int
   completeDate DateTime?
+
+  adjustmentItems AdjustmentItems[]
 }
 
 model Categories {
-  code String  @id
-  name String?
+  code  String  @id
+  name  String?
+  Items Items[]
 }
 
 model Items {
@@ -37,6 +43,9 @@ model Items {
   retirementStatus      Int
   reorderQuantity       Decimal
   unitOfMeasurementType Int
+
+  adjustmentItems AdjustmentItems[]
+  category        Categories        @relation(fields: [categoryCode], references: [code])
 }
 
 model Permissions {

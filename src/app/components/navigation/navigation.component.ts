@@ -8,10 +8,10 @@ import { NavigationBarComponent } from './navigation-bar.component';
   imports: [RouterOutlet, NavigationBarComponent],
   template: `
     <div class="text-white h-full">
-      <app-navigation-bar />
       <div class="h-full w-full pl-20">
         <router-outlet />
       </div>
+      <app-navigation-bar />
     </div>
   `,
   styles: ``,
