@@ -23,7 +23,7 @@ import { Item } from '../../models/items';
           (handleClick)="onSubmit()"
           text="Submit" />
       </div>
-      <div class="mt-10 p-4 bg-stone-900 roudned-lg shadow-lg">
+      <div class="mt-10 p-4 bg-stone-900 rounded-lg shadow-lg">
         <div>
           <!-- Input for the Adjustment Type -->
           <div class="w-1/4 min-w-36">

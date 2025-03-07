@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   imports: [ButtonComponent],
   template: `@if (isLoading) {
     } @else {
-      <div class="p-4">
+      <div class="h-full w-full p-4">
         <app-button
           (handleClick)="onCreate()"
           buttonType="raised"

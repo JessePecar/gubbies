@@ -12,15 +12,14 @@ import { MatRippleModule } from '@angular/material/core';
           matRipple
           [matRippleDisabled]="disabled()"
           matRippleColor="#FFFFFF22"
-          class="text-gray-200 disabled:opacity-50 disabled:cursor-default hover:bg-stone-900  bg-transparent outline-1 outline-gray-200 rounded-full px-4 py-1"
+          class="text-gray-200 disabled:opacity-50 disabled:cursor-default hover:bg-stone-900  bg-transparent outline-1 outline-gray-200 rounded-lg"
           [disabled]="disabled()"
           type="button"
           (click)="handleClick.emit()">
-          @if (text()) {
+          <div class="px-4 py-1">
             {{ text() }}
-          } @else {
-            <ng-content />
-          }
+          </div>
+          <ng-content />
         </button>
       }
       @case ('raised') {
@@ -28,14 +27,13 @@ import { MatRippleModule } from '@angular/material/core';
           matRipple
           [matRippleDisabled]="disabled()"
           matRippleColor="#FFFFFF22"
-          class=" text-stone-900 disabled:opacity-50 disabled:cursor-default hover:bg-gray-300 outline-1 bg-gray-200 rounded-full px-4 py-1"
+          class=" text-stone-900 disabled:opacity-50 disabled:cursor-default hover:bg-gray-300 outline-1 bg-gray-200 rounded-lg"
           [disabled]="disabled()"
           (click)="handleClick.emit()">
-          @if (text()) {
+          <div class="px-4 py-1">
             {{ text() }}
-          } @else {
-            <ng-content />
-          }
+          </div>
+          <ng-content />
         </button>
       }
       @default {
@@ -44,15 +42,16 @@ import { MatRippleModule } from '@angular/material/core';
           matRipple
           [matRippleDisabled]="disabled()"
           matRippleColor="#44444444"
-          class="w-full flex hover:bg-stone-800 p-2 rounded  hover:underline"
+          class="w-full flex hover:bg-stone-700 rounded hover:underline"
           [disabled]="disabled()"
           type="button"
           (click)="handleClick.emit()">
           @if (text()) {
-            {{ text() }}
-          } @else {
-            <ng-content />
+            <div class="px-4 py-1">
+              {{ text() }}
+            </div>
           }
+          <ng-content />
         </button>
       }
     }
