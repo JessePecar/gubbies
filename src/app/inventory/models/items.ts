@@ -1,5 +1,6 @@
 import { AdjustmentItems } from '../adjustments/models/adjustmentItems';
 import { Category } from './category';
+import { UnitOfMeasurementType } from './unitOfMeasurementType';
 
 export class Item {
   id!: number;
@@ -11,7 +12,7 @@ export class Item {
   isActive!: boolean;
   retirementStatus!: number; // Enum
   reorderQuantity!: number;
-  unitOfMeasurementType!: number; // Enum
+  unitOfMeasurementType!: UnitOfMeasurementType; // Enum
   adjustmentItems!: AdjustmentItems[];
   category!: Category;
 }

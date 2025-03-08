@@ -42,7 +42,7 @@ import { MatRippleModule } from '@angular/material/core';
           matRipple
           [matRippleDisabled]="disabled()"
           matRippleColor="#44444444"
-          class="w-full flex hover:bg-stone-700 rounded hover:underline"
+          class="button w-full flex rounded hover:underline"
           [disabled]="disabled()"
           type="button"
           (click)="handleClick.emit()">
@@ -56,7 +56,14 @@ import { MatRippleModule } from '@angular/material/core';
       }
     }
   `,
-  styles: ``,
+  styles: `
+    .button {
+    }
+
+    .button:hover {
+      background-image: linear-gradient(rgb(0 0 0/20%) 0 0);
+    }
+  `,
 })
 export class ButtonComponent {
   disabled = input<boolean>(false);
