@@ -17,7 +17,7 @@ import { ButtonComponent } from '../button.component';
   template: `
     <div>
       <app-button (click)="toggleMenu()">
-        <div class="w-full flex justify-between">
+        <div class="w-full flex justify-between pl-4 py-1">
           <ng-content select="[menuItem]" />
           @if (showArrow()) {
             <mat-icon
@@ -34,7 +34,7 @@ import { ButtonComponent } from '../button.component';
         #menu
         (blur)="toggleMenu()"
         style="max-height: 0px;"
-        class="w-full transition-all duration-200 overflow-hidden pl-1">
+        class="w-full transition-all duration-200 overflow-hidden pl-4">
         <div
           class="flex flex-col border-t border-stone-800 pt-1 divide-y divide-stone-800 w-full">
           @for (opt of dropdownOptions(); track $index) {
