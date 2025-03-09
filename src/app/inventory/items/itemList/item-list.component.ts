@@ -13,15 +13,19 @@ import { UnitOfMeasurementType } from '../../models/unitOfMeasurementType';
       <div
         class="h-3/4 h-3/4 border border-stone-900 rounded-lg shadow-lg overflow-hidden">
         <!-- Toolbar will go here -->
-        <div class="bg-violet-500 p-1 flex justify-between shadow-lg mb-2">
-          <p>Toolbar is here</p>
-          <app-button text="Add Item" />
+        <div class="bg-violet-500 p-1 flex justify-end shadow-lg mb-2">
+          <app-button>
+            <span class="flex p-2">
+              <mat-icon fontIcon="add" />
+              <p>Add Item</p>
+            </span>
+          </app-button>
         </div>
-        <div class="w-full overflow-y-auto h-full p-1 px-2">
+        <div class="w-full overflow-y-auto h-full p-1">
           <div class="h-full">
             @for (item of items(); track $index) {
               <div
-                class="even:bg-stone-900 odd:border odd:border-stone-900 bg-stone-800 rounded shadow-lg border-stone-800 mb-1">
+                class="even:bg-stone-900 odd:border odd:border-stone-900 bg-stone-800 border-stone-800 mb-1">
                 <div class="grid grid-cols-8">
                   <div class="col-span-3">
                     <p class="p-2">{{ item.name }}</p>
