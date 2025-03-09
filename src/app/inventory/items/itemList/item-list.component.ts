@@ -21,67 +21,38 @@ import { UnitOfMeasurementType } from '../../models/unitOfMeasurementType';
           <div class="h-full">
             @for (item of items(); track $index) {
               <div
-                class="even:bg-stone-900 odd:border odd:border-stone-900 bg-stone-800 transition-all duration-50 rounded shadow-lg border-stone-800 hover:scale-101 mb-1">
-                <div class="grid grid-cols-4">
-                  <div>
+                class="even:bg-stone-900 odd:border odd:border-stone-900 bg-stone-800 rounded shadow-lg border-stone-800 mb-1">
+                <div class="grid grid-cols-8">
+                  <div class="col-span-3">
                     <p class="p-2">{{ item.name }}</p>
                     <p class="text-sm p-2">{{ item.category.name }}</p>
                   </div>
-                  <div></div>
-                  <div class="flex">
+                  <div class="flex col-span-2">
                     <p class="py-2 pr-1">{{ item.quantityOnHand }}</p>
                     <p class="py-2 ">{{ getUnitOfMeasurementType(item) }}</p>
                   </div>
-                  <div>
+                  <div class="col-span-2">
                     <p class="p-2">
                       Regular Price: {{ getItemPrice(item.basePrice) }}
                     </p>
                     <!-- Will have a green price if on sale, red price if the price is higher than normal  -->
-                    <p
-                      [class]="
-                        'p-2 ' +
-                        (item.currentPrice < item.basePrice
-                          ? 'text-green-300'
-                          : item.currentPrice > item.basePrice
-                            ? 'text-red-300'
-                            : '')
-                      ">
-                      Current Price: {{ getItemPrice(item.currentPrice) }}
-                    </p>
+                    <span class="flex p-2 space-x-1">
+                      <p>Current Price:</p>
+                      <p
+                        [class]="
+                          '' +
+                          (item.currentPrice < item.basePrice
+                            ? 'text-green-300'
+                            : item.currentPrice > item.basePrice
+                              ? 'text-red-300'
+                              : '')
+                        ">
+                        {{ getItemPrice(item.currentPrice) }}
+                      </p>
+                    </span>
                   </div>
-                </div>
-              </div>
-            }
-
-            @for (item of items(); track $index) {
-              <div
-                class="even:bg-stone-900 odd:border odd:border-stone-900 bg-stone-800 transition-all duration-50 rounded shadow-lg border-stone-800 hover:scale-101 mb-1">
-                <div class="grid grid-cols-4">
-                  <div>
-                    <p class="p-2">{{ item.name }}</p>
-                    <p class="text-sm p-2">{{ item.category.name }}</p>
-                  </div>
-                  <div></div>
-                  <div class="flex">
-                    <p class="py-2 pr-1">{{ item.quantityOnHand }}</p>
-                    <p class="py-2 ">{{ getUnitOfMeasurementType(item) }}</p>
-                  </div>
-                  <div>
-                    <p class="p-2">
-                      Regular Price: {{ getItemPrice(item.basePrice) }}
-                    </p>
-                    <!-- Will have a green price if on sale, red price if the price is higher than normal  -->
-                    <p
-                      [class]="
-                        'p-2 ' +
-                        (item.currentPrice < item.basePrice
-                          ? 'text-green-300'
-                          : item.currentPrice > item.basePrice
-                            ? 'text-red-300'
-                            : '')
-                      ">
-                      Current Price: {{ getItemPrice(item.currentPrice) }}
-                    </p>
+                  <div class="p-2 flex justify-end">
+                    <app-button><mat-icon fontIcon="more_vert" /></app-button>
                   </div>
                 </div>
               </div>
