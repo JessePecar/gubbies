@@ -1,0 +1,48 @@
+type Query {
+  items: [Item]
+  item(id: ID!): Item
+}
+
+type Mutation {
+  createItem(createItemInput: CreateItemInput): Item
+}
+
+type Subscription {
+  itemCreated: Item
+}
+
+type Item {
+  id: Int!
+  name: String!
+  categoryCode: String!
+  quantityOnHand: String
+  basePrice: Decimal!
+  currentPrice: Decimal
+  isActive: Boolean
+  retirementStatus: Int
+  reorderQuantity: Decimal
+  unitOfMeasurementType: Int
+  adjustmentItems: [AdjustmentItems]
+  category: Category
+}
+
+type AdjustmentItems {
+  adjustmentId: Int!
+  itemId: Int!
+  adjustment: Adjustment
+  item: Item     
+}
+
+type Category {
+  code: String!
+  name: String
+  items: [Item]
+}
+
+type Adjustment {
+  id: Int 
+  createDate: DateTime?
+  status: Int
+  completeDate: DateTime?
+  adjustmentItems: [AdjustmentItems]
+}

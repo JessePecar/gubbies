@@ -29,7 +29,7 @@ model Adjustments {
 model Categories {
   code  String  @id
   name  String?
-  Items Items[]
+  items Items[]
 }
 
 model Items {
@@ -38,7 +38,7 @@ model Items {
   categoryCode          String
   quantityOnHand        String
   basePrice             Decimal
-  currentPrice          String?
+  currentPrice          Decimal
   isActive              Boolean
   retirementStatus      Int
   reorderQuantity       Decimal

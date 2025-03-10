@@ -8,9 +8,20 @@ import {
 import { RepositoryService } from './repository/repository.service';
 import { RepositoryModule } from './repository/repository.module';
 import { ItemsController, ItemsService, ItemsModule } from './items';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
-  imports: [RepositoryModule, UsersModule, AdjustmentsModule, ItemsModule],
+  imports: [
+    RepositoryModule,
+    UsersModule,
+    AdjustmentsModule,
+    ItemsModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      typePaths: ['./**/*.graphql'],
+    }),
+  ],
   controllers: [UsersController, AdjustmentsController, ItemsController],
   providers: [UserService, RepositoryService, AdjustmentsService, ItemsService],
 })
