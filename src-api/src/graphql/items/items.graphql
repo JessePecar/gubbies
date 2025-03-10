@@ -11,17 +11,46 @@ type Subscription {
   itemCreated: Item
 }
 
-type Item {
+interface BaseItem {
   id: Int!
   name: String!
   categoryCode: String!
   quantityOnHand: String
-  basePrice: Decimal!
-  currentPrice: Decimal
-  isActive: Boolean
-  retirementStatus: Int
-  reorderQuantity: Decimal
-  unitOfMeasurementType: Int
+  basePrice: Float!
+  currentPrice: Float
+  isActive: Boolean!
+  retirementStatus: Int!
+  reorderQuantity: Float
+  unitOfMeasurementType: Int!
+}
+
+input CreateItemInput {
+  id: Int!
+  name: String!
+  categoryCode: String!
+  quantityOnHand: String
+  basePrice: Float!
+  currentPrice: Float
+  isActive: Boolean!
+  retirementStatus: Int!
+  reorderQuantity: Float
+  unitOfMeasurementType: Int!
+}
+
+type Item implements BaseItem {
+  # Implemented properties for a base item, shared with create
+  id: Int!
+  name: String!
+  categoryCode: String!
+  quantityOnHand: String
+  basePrice: Float!
+  currentPrice: Float
+  isActive: Boolean!
+  retirementStatus: Int!
+  reorderQuantity: Float
+  unitOfMeasurementType: Int!
+
+  # Navigation properties
   adjustmentItems: [AdjustmentItems]
   category: Category
 }
@@ -40,9 +69,9 @@ type Category {
 }
 
 type Adjustment {
-  id: Int 
-  createDate: DateTime?
-  status: Int
-  completeDate: DateTime?
+  id: Int! 
+  createDate: String
+  status: Int!
+  completeDate: String
   adjustmentItems: [AdjustmentItems]
 }

@@ -1,9 +1,10 @@
 import { ItemsService } from './items.service';
 import { ItemsResolver } from './items.resolver';
 import { Module } from '@nestjs/common';
+import { RepositoryService, RepositoryModule } from 'src/repository';
 
 @Module({
-  imports: [],
-  providers: [ItemsService, ItemsResolver],
+  imports: [RepositoryModule],
+  providers: [ItemsService, ItemsResolver, RepositoryService],
 })
 export class ItemsModule {}
