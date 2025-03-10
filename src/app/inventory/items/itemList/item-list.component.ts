@@ -1,17 +1,19 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ButtonComponent } from '../../../components/button.component';
 import { ItemListService } from './item-list.service';
 import { Item } from '../../models/items';
 import { MatIconModule } from '@angular/material/icon';
 import { UnitOfMeasurementType } from '../../models/unitOfMeasurementType';
+import { ContextButtonComponent } from '../../../components/context-button.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-item-list',
-  imports: [ButtonComponent, MatIconModule],
+  imports: [ButtonComponent, MatIconModule, ContextButtonComponent],
   template: `<div class="flex justify-center items-center w-full h-full">
-    <div class="h-3/4 w-3/4">
+    <div class="h-3/4 w-full lg:w-3/4">
       <div
-        class="h-3/4 h-3/4 border border-stone-900 rounded-lg shadow-lg overflow-hidden">
+        class="h-3/4 border border-stone-900 rounded-lg shadow-lg overflow-hidden">
         <!-- Toolbar will go here -->
         <div class="bg-violet-500 p-1 flex justify-end shadow-lg mb-2">
           <app-button>
@@ -40,23 +42,28 @@ import { UnitOfMeasurementType } from '../../models/unitOfMeasurementType';
                       Regular Price: {{ getItemPrice(item.basePrice) }}
                     </p>
                     <!-- Will have a green price if on sale, red price if the price is higher than normal  -->
-                    <span class="flex p-2 space-x-1">
-                      <p>Current Price:</p>
-                      <p
-                        [class]="
-                          '' +
-                          (item.currentPrice < item.basePrice
-                            ? 'text-green-300'
-                            : item.currentPrice > item.basePrice
-                              ? 'text-red-300'
-                              : '')
-                        ">
-                        {{ getItemPrice(item.currentPrice) }}
-                      </p>
-                    </span>
+                    @if (item.basePrice !== item.currentPrice) {
+                      <div class="w-1/2 flex justify-center">
+                        <span
+                          [class]="
+                            'font-bold flex p-2 py-1 space-x-1 rounded-full text-black ' +
+                            (item.currentPrice < item.basePrice
+                              ? 'bg-green-300'
+                              : 'bg-red-300')
+                          ">
+                          <p>Sale Price:</p>
+                          <p>
+                            {{ getItemPrice(item.currentPrice) }}
+                          </p>
+                        </span>
+                      </div>
+                    }
                   </div>
                   <div class="p-2 flex justify-end">
-                    <app-button><mat-icon fontIcon="more_vert" /></app-button>
+                    <context-button
+                      [clickParams]="item.id"
+                      [options]="itemContextMenu" />
+                    <!-- <app-button><mat-icon fontIcon="more_vert" /></app-button> -->
                   </div>
                 </div>
               </div>
@@ -69,12 +76,30 @@ import { UnitOfMeasurementType } from '../../models/unitOfMeasurementType';
 })
 export class ItemListComponent {
   items = signal<Item[] | undefined>(undefined);
+  router = inject(Router);
 
   constructor(service: ItemListService) {
     service.getItems().subscribe(res => {
       this.items.set(res);
     });
   }
+
+  itemContextMenu = [
+    {
+      name: 'Edit',
+      iconName: 'edit',
+      onClickEvent: async (itemId: number) => {
+        console.log('Navigating to item page: ' + itemId);
+        await this.router.navigate(['inventory/details'], {
+          queryParams: {
+            itemId: itemId,
+          },
+        });
+      },
+    },
+    { name: 'Delete', iconName: 'delete_forever', onClickEvent: () => {} },
+    { name: 'Retire', iconName: 'auto_delete', onClickEvent: () => {} },
+  ];
 
   getUnitOfMeasurementType(item: Item) {
     try {

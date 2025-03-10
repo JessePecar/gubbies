@@ -16,7 +16,12 @@ export class ItemsService {
         },
       },
       where: {
-        isActive: true,
+        isActive: {
+          equals: true,
+        },
+        retirementStatus: {
+          equals: 0,
+        },
       },
     });
   }

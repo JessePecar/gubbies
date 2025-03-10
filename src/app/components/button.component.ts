@@ -36,8 +36,25 @@ import { MatRippleModule } from '@angular/material/core';
           <ng-content />
         </button>
       }
+      @case ('text') {
+        <button
+          matRipple
+          [matRippleDisabled]="disabled()"
+          matRippleColor="#44444444"
+          class="button w-full flex hover:underline"
+          [disabled]="disabled()"
+          type="button"
+          (click)="handleClick.emit()">
+          @if (text()) {
+            <div class="px-4 py-1">
+              {{ text() }}
+            </div>
+          }
+          <ng-content />
+        </button>
+      }
       @default {
-        <!-- Flat button / Text button -->
+        <!-- Flat button / Rounded Text Button -->
         <button
           matRipple
           [matRippleDisabled]="disabled()"
@@ -68,7 +85,7 @@ import { MatRippleModule } from '@angular/material/core';
 export class ButtonComponent {
   disabled = input<boolean>(false);
   text = input<string>('');
-  buttonType = input<'outline' | 'raised' | undefined>(undefined);
+  buttonType = input<'outline' | 'raised' | 'text' | undefined>(undefined);
 
   handleClick = output<void>();
 }

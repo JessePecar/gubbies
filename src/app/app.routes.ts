@@ -11,7 +11,7 @@ import {
   adjustmentsGuard,
   AdjustmentsListComponent,
 } from './inventory/adjustments';
-import { ItemListComponent } from './inventory/items';
+import { ItemDetailsComponent, ItemListComponent } from './inventory/items';
 import { InventoryComponent } from './inventory/inventory.component';
 
 export const routes: Routes = [
@@ -33,6 +33,11 @@ export const routes: Routes = [
           {
             path: 'list',
             component: ItemListComponent,
+            canActivate: [],
+          },
+          {
+            path: 'details',
+            component: ItemDetailsComponent,
             canActivate: [],
           },
           {
