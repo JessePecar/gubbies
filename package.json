@@ -28,15 +28,19 @@
     "@tauri-apps/plugin-opener": "^2",
     "@tauri-apps/plugin-sql": "^2.2.0",
     "@tauri-apps/plugin-store": "^2.2.0",
+    "apollo-angular": "^10.0.3",
     "express": "^4.18.2",
     "lodash-es": "^4.17.21",
     "rxjs": "~7.8.0",
     "tailwind": "^4.0.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.15.0"
+    "zone.js": "~0.15.0",
+    "@apollo/client": "^3.0.0",
+    "graphql": "^16"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.1.8",
+    "@angular-devkit/core": "^19.2.1",
     "@angular/cli": "^19.1.8",
     "@angular/compiler-cli": "^19.1.7",
     "@tauri-apps/cli": "^2",

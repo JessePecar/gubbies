@@ -10,9 +10,6 @@ export class UsersService {
     return await this.repository.users.findMany({
       include: {
         role: {
-          select: {
-            name: true,
-          },
           include: {
             rolePermissions: {
               include: {

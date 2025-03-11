@@ -1,6 +1,7 @@
 type Query {
   users: [User]
-  item(id: ID!): User
+  user(id: ID!): User
+  auth(username: String, password: String): User
 }
 
 type Mutation {
@@ -16,7 +17,11 @@ type Subscription {
 input CreateRoleInput {
   name: String!
 
-  rolePermissions: [RolePermission]
+  rolePermissions: [CreateRolePermission]
+}
+
+input CreateRolePermission {
+  permissionId: Int!
 }
 
 input CreateUserInput {
