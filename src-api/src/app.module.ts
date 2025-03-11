@@ -11,6 +11,7 @@ import { ItemsController, ItemsService, ItemsModule } from './items';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ItemsModule as GQItemsModule } from './graphql/items';
+import { UsersModule as GQUsersModule } from './graphql/users';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ItemsModule as GQItemsModule } from './graphql/items';
     AdjustmentsModule,
     ItemsModule,
     GQItemsModule,
+    GQUsersModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],

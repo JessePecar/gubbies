@@ -14,6 +14,7 @@ import { ProfileNavItemComponent } from './profile-nav-item.component';
 import { Router } from '@angular/router';
 import { UserInfoService } from '../../services';
 import { ButtonComponent } from '../button.component';
+import { SettingsNavItemComponent } from './settings-nav-item.component';
 
 @Component({
   selector: 'app-navigation-bar',
@@ -25,6 +26,7 @@ import { ButtonComponent } from '../button.component';
     PromotionNavItemComponent,
     ProfileNavItemComponent,
     ButtonComponent,
+    SettingsNavItemComponent,
   ],
   template: `
     <nav class="w-full mx-auto px-4 md:px-6 lg:px-8 z-50">
@@ -63,12 +65,7 @@ import { ButtonComponent } from '../button.component';
 
               <app-promotion-nav-item />
 
-              <!-- TODO: Determine if this is needed -->
-              <a
-                class="hover:underline hover:bg-stone-800 p-2 rounded"
-                routerLink=""
-                >Settings</a
-              >
+              <app-settings-nav-item />
             </div>
             <div class="absolute right-0 bottom-0 w-full py-1 px-2">
               <div class="w-full">

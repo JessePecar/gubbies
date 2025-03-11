@@ -16,8 +16,6 @@ export class ItemsResolver {
 
   @Query('item')
   async getItemById(@Args('id', ParseIntPipe) id: number) {
-    var items = await this.itemsService.getItemById(id);
-    console.log(items);
-    return items;
+    return await this.itemsService.getItemById(id);
   }
 }

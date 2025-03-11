@@ -1,0 +1,77 @@
+type Query {
+  users: [User]
+  item(id: ID!): User
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput): User
+  createRole(createRoleInput: CreateRoleInput): Role
+} 
+
+type Subscription {
+  itemCreated: Item
+  roleCreated: Role
+}
+
+input CreateRoleInput {
+  name: String!
+
+  rolePermissions: [RolePermission]
+}
+
+input CreateUserInput {
+  firstName: String
+  lastName: String
+  roleId: Int!
+  userName: String
+  password: String
+}
+
+type User {
+  id: Int!
+  firstName: String
+  lastName: String
+  roleId: Int!
+  userName: String
+  password: String
+
+  role: Role!
+}
+
+type Role {
+  id: Int!
+  name: String!
+
+  rolePermissions: [RolePermission]
+  users: [User]
+}
+
+type RolePermission {
+  roleId: Int!
+  permissionId: Int!
+
+  permission: Permission!
+  role: Role!
+}
+
+type Permission {
+  id: Int!
+  name: PermissionName!
+
+  rolePermissions: [RolePermission]
+}
+
+# Using an enum for standard permission names (this will be static data that won't change)
+enum PermissionName {
+  APPLICATION_LOGIN
+  INVENTORY
+  INVENTORY_ADJUSTMENTS
+  INVENTORY_COUNTS
+  PRICING
+  PROMOTIONS
+  REPORTS
+  REPORTS_INVENTORY
+  REPORTS_PRICING
+  REPORTS_PROMOTIONS
+  SETTINGS
+}

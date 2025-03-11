@@ -13,6 +13,13 @@ import {
 } from './inventory/adjustments';
 import { ItemDetailsComponent, ItemListComponent } from './inventory/items';
 import { InventoryComponent } from './inventory/inventory.component';
+import {
+  UserComponent,
+  UserDetailsComponent,
+  UsersListComponent,
+  usersGuard,
+} from './settings/users';
+import { SettingsComponent, settingsGuard } from './settings';
 
 export const routes: Routes = [
   {
@@ -59,6 +66,28 @@ export const routes: Routes = [
             path: 'counts',
             component: CountsComponent,
             canActivate: [],
+          },
+        ],
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent, // Will default to navigating to user's page
+        canActivateChild: [settingsGuard],
+        children: [
+          {
+            path: 'users',
+            component: UserComponent,
+            canActivateChild: [usersGuard],
+            children: [
+              {
+                path: 'list',
+                component: UsersListComponent,
+              },
+              {
+                path: 'details',
+                component: UserDetailsComponent,
+              },
+            ],
           },
         ],
       },
