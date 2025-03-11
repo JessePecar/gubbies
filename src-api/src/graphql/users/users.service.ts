@@ -31,9 +31,6 @@ export class UsersService {
     return await this.repository.users.findFirst({
       include: {
         role: {
-          select: {
-            name: true,
-          },
           include: {
             rolePermissions: {
               include: {

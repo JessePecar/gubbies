@@ -1,3 +1,4 @@
+import { Address, Phone } from '.';
 import { Role } from '../roles';
 
 export interface User {
@@ -9,4 +10,6 @@ export interface User {
   password: string;
 
   role: Role;
+  primaryPhone?: Phone;
+  address?: Address;
 }

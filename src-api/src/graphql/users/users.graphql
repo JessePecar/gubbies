@@ -37,10 +37,16 @@ type User {
   firstName: String
   lastName: String
   roleId: Int!
+  primaryPhoneId: Int
+  addressId: Int
   userName: String
   password: String
+  isActive: Boolean
+  emailAddress: String
 
   role: Role!
+  primaryPhone: Phone
+  address: Address
 }
 
 type Role {
@@ -79,4 +85,23 @@ enum PermissionName {
   REPORTS_PRICING
   REPORTS_PROMOTIONS
   SETTINGS
+}
+
+type Phone {
+  id: Int!
+  rawDigits: String
+  nationalDigits: String
+
+  users: [User]
+}
+
+type Address {
+  id: Int!
+  address1: String!
+  address2: String
+  state: String!
+  city: String!
+  countryCode: String!
+
+  user: User
 }

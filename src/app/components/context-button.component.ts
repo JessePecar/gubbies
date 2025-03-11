@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIconModule, IconOptions } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
 
 @Component({
@@ -21,11 +21,13 @@ import { MatRippleModule } from '@angular/material/core';
             matRipple
             matRippleColor="#44444444"
             class="dropdown-item"
-            (click)="option.onClickEvent(clickParams())">
+            (click)="option.onClickEvent()">
             <span class="flex space-x-8 items-center">
               @if (option.iconName) {
-                <span class="mr-2 pt-1">
-                  <mat-icon [fontIcon]="option.iconName" />
+                <span class="mr-2 h-full flex items-center">
+                  <mat-icon
+                    style="font-size: 1.25rem;"
+                    [fontIcon]="option.iconName" />
                 </span>
               }
               {{ option.name }}
@@ -59,7 +61,7 @@ import { MatRippleModule } from '@angular/material/core';
       transition: 0.15s ease-out;
     }
     .dropdown-content .dropdown-item {
-      padding: 12px 16px;
+      padding: 0.25rem 16px;
       display: block;
       text-decoration: none;
       transition: 0.15s ease-out;
@@ -104,9 +106,11 @@ import { MatRippleModule } from '@angular/material/core';
   `,
 })
 export class ContextButtonComponent {
-  clickParams = input<any | undefined>();
-  options =
-    input.required<
-      { name: string; iconName?: string; onClickEvent: (params: any) => void }[]
-    >();
+  options = input.required<
+    {
+      name: string;
+      iconName?: string;
+      onClickEvent: () => void | Promise<void>;
+    }[]
+  >();
 }

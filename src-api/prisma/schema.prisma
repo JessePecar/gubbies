@@ -77,11 +77,37 @@ model SequelizeMeta {
 }
 
 model Users {
-  id        Int     @id @default(autoincrement())
-  firstName String?
-  lastName  String?
-  roleId    Int
-  role      Roles   @relation(fields: [roleId], references: [id])
-  userName  String?
-  password  String?
+  id             Int     @id @default(autoincrement())
+  firstName      String?
+  lastName       String?
+  roleId         Int
+  primaryPhoneId Int?
+  addressId      Int?    @unique
+  userName       String?
+  password       String?
+  isActive       Boolean @default(true)
+  emailAddress   String?
+
+  role         Roles    @relation(fields: [roleId], references: [id])
+  primaryPhone Phone?   @relation(fields: [primaryPhoneId], references: [id])
+  address      Address? @relation(fields: [addressId], references: [id])
+}
+
+model Phone {
+  id             Int    @id @default(autoincrement())
+  rawDigits      String
+  nationalDigits String
+
+  Users Users[]
+}
+
+model Address {
+  id          Int     @id @unique @default(autoincrement())
+  address1    String
+  address2    String?
+  state       String
+  city        String
+  countryCode String
+
+  User Users?
 }

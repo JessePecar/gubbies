@@ -1,38 +1,20 @@
 import { Component, inject, signal } from '@angular/core';
-import { TableComponent } from '../../../components/tables/table.component';
+import { TableComponent } from '@components/tables/table.component';
 import { UsersListService } from './users-list.service';
 import { User } from '@interfaces/settings/users';
 import { MatIconModule } from '@angular/material/icon';
-import { ContextButtonComponent } from '../../../components/context-button.component';
+import { UserItemComponent } from './user-item.component';
+import { UserInfoService } from '@/services';
+import { Permission } from '@/entities/role';
 
 @Component({
   selector: 'app-users-list',
-  imports: [TableComponent, MatIconModule, ContextButtonComponent],
+  imports: [TableComponent, MatIconModule, UserItemComponent],
   template: `
-    <app-table [toolbarItems]="toobarItems">
+    <app-table [toolbarItems]="toolbarItems">
       @if (users().length > 0) {
         @for (user of users(); track $index) {
-          <div
-            class="even:bg-stone-900 odd:border odd:border-stone-900 bg-stone-800 border-stone-800 mb-1">
-            <div class="grid grid-cols-3 p-2">
-              <div class="flex space-x-2 text-xl items-center">
-                <mat-icon fontIcon="account_circle" />
-                <p>{{ user.firstName }}</p>
-                <p>{{ user.lastName }}</p>
-              </div>
-              <div>
-                <p>Contact Information</p>
-              </div>
-              <div class="flex justify-between">
-                <div></div>
-                <div class="flex justify-center items-center w-10">
-                  <context-button
-                    [clickParams]="user.id"
-                    [options]="userContextMenu" />
-                </div>
-              </div>
-            </div>
-          </div>
+          <user-item [user]="user" />
         }
       } @else {
         <div class="flex w-full justify-center items-cetner">
@@ -45,31 +27,37 @@ import { ContextButtonComponent } from '../../../components/context-button.compo
 })
 export class UsersListComponent {
   userListService = inject(UsersListService);
+  userInfoService = inject(UserInfoService);
 
-  //TODO: Check permissions to determine if user has access to options
-  userContextMenu = [
-    { name: 'Edit', iconName: 'edit', onClickEvent: () => {} },
-    { name: 'Deactivate', iconName: 'auto_delete', onClickEvent: () => {} },
-  ];
+  loading: boolean = true;
 
-  //TODO: Check if user has access to add another user
-  toobarItems = [
-    {
-      icon: 'add',
-      text: 'Add User',
-      onClick: () => {},
-    },
-  ];
+  toolbarItems: {
+    icon: string;
+    text: string;
+    onClick: () => void | Promise<void>;
+  }[] = [];
 
   users = signal<User[]>([]);
 
   getUsers() {
-    this.userListService.getUsers().subscribe(res => {
-      this.users.set(res.data.users);
+    this.userListService.getUsers().subscribe(({ data, loading }) => {
+      this.users.set(data.users);
+      this.loading = loading;
     });
   }
 
   constructor() {
     this.getUsers();
+
+    var { role } = this.userInfoService.userInfo() ?? { role: undefined };
+
+    //TODO: Create permission for USER_ADD
+    if (role?.permissions.includes(Permission.SETTINGS)) {
+      this.toolbarItems.push({
+        icon: 'add',
+        onClick: () => {},
+        text: 'Add User',
+      });
+    }
   }
 }
