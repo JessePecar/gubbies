@@ -24,9 +24,9 @@ import {
           [formGroup]="form"
           (ngSubmit)="onSubmit()">
           <div class="grid grid-cols-4 gap-2">
-            <app-text-input label="First Name" />
-            <app-text-input label="Last Name" />
-            <app-text-input label="User Name" />
+            <app-text-input formControlName="firstName" label="First Name" />
+            <app-text-input formControlName="lastName" label="Last Name" />
+            <app-text-input formControlName="userName" label="User Name" />
           </div>
         </form>
       }
@@ -50,17 +50,16 @@ export class UserDetailsComponent implements OnInit {
         .getUser(this.userId() as number)
         .subscribe(({ data: { user } }) => {
           this.currentUser.set(user);
+          this.buildForm();
         });
+    } else {
+      this.buildForm();
     }
-
-    this.buildForm();
   }
 
   buildForm() {
-    console.log('Building Form');
-    console.log(this.currentUser());
     this.form = this.formBuilder.group({
-      username: [
+      userName: [
         this.currentUser()?.userName,
         [
           Validators.required,
