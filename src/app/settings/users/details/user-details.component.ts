@@ -16,17 +16,57 @@ import {
   template: `
     <div class="flex flex-col w-full h-full justify-center items-center">
       <div class="flex w-1/2">
-        <p class="text-lg py-2">Add / Edit User</p>
+        <p style="font-size: 2rem" class="py-2">Add / Edit User</p>
       </div>
       @if (form !== undefined) {
         <form
           class="w-1/2 min-h-96 bg-stone-900 rounded shadow p-4"
           [formGroup]="form"
           (ngSubmit)="onSubmit()">
-          <div class="grid grid-cols-4 gap-2">
-            <app-text-input formControlName="firstName" label="First Name" />
-            <app-text-input formControlName="lastName" label="Last Name" />
-            <app-text-input formControlName="userName" label="User Name" />
+          <div class="mb-4">
+            <p class="text-lg mb-1">User Information</p>
+            <div class="grid grid-cols-4 gap-2">
+              <app-text-input
+                [inputProps]="{ required: true }"
+                formControlName="firstName"
+                label="First Name" />
+              <app-text-input
+                [inputProps]="{ required: true }"
+                formControlName="lastName"
+                label="Last Name" />
+              <app-text-input
+                [inputProps]="{ required: true }"
+                formControlName="userName"
+                label="User Name" />
+            </div>
+          </div>
+          <div class="mb-4">
+            <p class="text-lg mb-1">User Address</p>
+            <div class="grid grid-cols-4 gap-2">
+              <app-text-input
+                [inputProps]="{ required: true }"
+                formControlName="address1"
+                label="Address Line 1" />
+              <app-text-input
+                formControlName="address2"
+                label="Address Line 2" />
+              <app-text-input
+                [inputProps]="{ required: true }"
+                formControlName="city"
+                label="City" />
+              <app-text-input
+                [inputProps]="{ required: true }"
+                formControlName="state"
+                label="State" />
+              <app-text-input
+                [inputProps]="{ required: true }"
+                formControlName="countryCode"
+                label="Country Code" />
+              <app-text-input
+                [inputProps]="{ required: true }"
+                formControlName="postalCode"
+                label="Postal Code" />
+            </div>
           </div>
         </form>
       }
@@ -82,6 +122,42 @@ export class UserDetailsComponent implements OnInit {
           Validators.maxLength(32),
           Validators.minLength(2),
         ],
+      ],
+      address1: [
+        this.currentUser()?.address?.address1,
+        [
+          Validators.required,
+          Validators.maxLength(32),
+          Validators.minLength(2),
+        ],
+      ],
+      address2: [
+        this.currentUser()?.address?.address2,
+        [Validators.maxLength(32), Validators.minLength(2)],
+      ],
+      city: [
+        this.currentUser()?.address?.city,
+        [
+          Validators.required,
+          Validators.maxLength(32),
+          Validators.minLength(2),
+        ],
+      ],
+      state: [
+        this.currentUser()?.address?.state,
+        [
+          Validators.required,
+          Validators.maxLength(14),
+          Validators.minLength(4),
+        ],
+      ],
+      countryCode: [
+        this.currentUser()?.address?.countryCode,
+        [Validators.required, Validators.maxLength(2), Validators.minLength(2)],
+      ],
+      postalCode: [
+        this.currentUser()?.address?.postalCode,
+        [Validators.required, Validators.maxLength(5), Validators.minLength(5)],
       ],
     });
   }

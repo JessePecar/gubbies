@@ -6,12 +6,13 @@ type Query {
 
 type Mutation {
   createUser(createUserInput: CreateUserInput): User
+  updateUser(updateUserInput: UpdateUserInput): User
   createRole(createRoleInput: CreateRoleInput): Role
 } 
 
 type Subscription {
-  itemCreated: Item
-  roleCreated: Role
+  roleCreated: Role # TODO: Determine if this is needed
+  usersChanged: User
 }
 
 input CreateRoleInput {
@@ -32,6 +33,40 @@ input CreateUserInput {
   password: String
 }
 
+input UpdateUserInput {
+  id: Int!
+  firstName: String
+  lastName: String
+  roleId: Int!
+  userName: String!
+  password: String!
+  isActive: Boolean
+  emailAddress: String
+
+  primaryPhoneId: Int
+  primaryPhone: UpdatePhoneInput
+
+  addressId: Int
+  address: UpdateAddressInput
+}
+
+input UpdatePhoneInput {
+  id: Int!
+
+  rawDigits: String!
+  nationalDigits: String!
+}
+
+input UpdateAddressInput {
+  id: Int!
+
+  address1: String!
+  address2: String
+  state: String!
+  city: String!
+  countryCode: String!
+}
+
 type User {
   id: Int!
   firstName: String
@@ -39,8 +74,8 @@ type User {
   roleId: Int!
   primaryPhoneId: Int
   addressId: Int
-  userName: String
-  password: String
+  userName: String!
+  password: String!
   isActive: Boolean
   emailAddress: String
 

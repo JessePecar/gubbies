@@ -12,7 +12,7 @@ import { MatIcon } from '@angular/material/icon';
           class="h-3/4 border border-stone-900 rounded-lg shadow-lg overflow-hidden">
           <!-- Toolbar will go here -->
           <div
-            class="bg-violet-500 min-h-10 p-1 flex justify-end shadow-lg mb-2">
+            class="bg-purple-600 min-h-10 p-1 flex justify-end shadow-lg mb-2">
             @for (toolbarItem of toolbarItems(); track $index) {
               <app-button (handleClick)="toolbarItem.onClick()">
                 <span class="flex p-2">

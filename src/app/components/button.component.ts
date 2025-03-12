@@ -78,7 +78,7 @@ import { MatRippleModule } from '@angular/material/core';
     }
 
     .button:hover {
-      background-image: linear-gradient(rgb(0 0 0/20%) 0 0);
+      background-image: linear-gradient(rgb(194 122 255/20%) 0 0);
     }
   `,
 })
