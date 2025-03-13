@@ -1,5 +1,5 @@
-import { User } from '@/interfaces/settings/users';
-import { inject, Injectable } from '@angular/core';
+import { Address, Phone, UpdateUser, User } from '@/interfaces/settings/users';
+import { inject, Injectable, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Apollo, gql } from 'apollo-angular';
 
@@ -10,7 +10,10 @@ export class UserDetailsService {
   private readonly graphQLClient = inject(Apollo);
   private readonly formBuilder = inject(FormBuilder);
 
-  form: FormGroup = this.formBuilder.group({});
+  form = this.formBuilder.group({});
+  currentUser = signal<UpdateUser | undefined>(undefined);
+
+  isLoading = true;
 
   getUser(id: number) {
     return this.graphQLClient.query<{ user: User }>({
@@ -24,6 +27,7 @@ export class UserDetailsService {
             isActive
             emailAddress
             primaryPhone {
+              id
               rawDigits
               nationalDigits
             }
@@ -32,11 +36,13 @@ export class UserDetailsService {
               id
             }
             address {
+              id
               address1
               address2
               city
               state
               countryCode
+              postalCode
             }
           }
         }
@@ -52,76 +58,125 @@ export class UserDetailsService {
 
   updateUser(
     {
-      id,
       firstName,
       lastName,
       userName,
       emailAddress,
-      address1,
-      address2,
-      city,
-      state,
-      countryCode,
-      postalCode,
+      address,
       isActive,
-      rawDigits,
+      primaryPhone,
     }: any,
+    id: number,
     roleId: number, // TODO: Add dropdown to pass this from the form
     password: string // TODO: This will probably not change for a user, just leaving it in for now
   ) {
-    return this.graphQLClient.mutate({
-      mutation: gql`mutation UpdateUser(updateUserInput: UpdateUserInput) {
-        updateUser(updateUserInput: $inputObject) {
-          id
-        }
-      }`,
-      variables: {
-        inputObject: {
-          id,
-          firstName,
-          lastName,
-          userName,
-          password,
-          isActive,
-          emailAddress,
-          roleId,
-          primaryPhone: {
-            rawDigits: rawDigits,
-          },
-          address: {
-            address1,
-            address2,
-            city,
-            state,
-            countryCode,
-            postalCode,
-          },
+    this.currentUser.set({
+      id: this.currentUser()?.id ?? 0,
+      roleId:
+        (this.currentUser()?.roleId ?? -1) > 0
+          ? (this.currentUser()?.roleId ?? 1)
+          : 1,
+      password: this.currentUser()?.password ?? 'password',
+      firstName,
+      lastName,
+      userName,
+      address: {
+        id: this.currentUser()?.address?.id ?? 0, // This should bring over the id
+        ...address, // This should fill out everything that was included in the form
+        postalCode: Number(address.postalCode),
+      } as Address,
+      emailAddress,
+      isActive,
+      primaryPhone: {
+        id: this.currentUser()?.primaryPhone?.id ?? 0,
+        ...primaryPhone, // This should fill out everything that was included in the form
+        nationalDigits: '+1' + primaryPhone.rawDigits,
+      } as Phone,
+    });
+
+    return this.graphQLClient
+      .mutate({
+        mutation: gql`
+          mutation UpdateUser($updatedUser: UpdateUserInput) {
+            updateUser(updateUserInput: $updatedUser) {
+              id
+              firstName
+              lastName
+              userName
+              isActive
+              emailAddress
+              primaryPhone {
+                rawDigits
+                nationalDigits
+              }
+              role {
+                name
+                id
+              }
+              address {
+                address1
+                address2
+                city
+                state
+                countryCode
+                postalCode
+              }
+            }
+          }
+        `,
+        context: {
+          uri: 'http://localhost:3000/graphql',
         },
-      },
-    });
+        variables: {
+          updatedUser: this.currentUser() as UpdateUser,
+        },
+      })
+      .subscribe(res => {
+        if (res.errors && res.errors.length > 0) {
+          // Show Errors
+        } else {
+        }
+      });
   }
 
-  populateForm(id: number) {
-    this.form = this.sharedForm();
-    this.getUser(id).subscribe(({ data: { user } }) => {
-      this.form.get('firstName')?.setValue(user.firstName);
-      this.form.get('lastName')?.setValue(user.lastName);
-      this.form.get('userName')?.setValue(user.userName);
-      this.form.get('emailAddress')?.setValue(user.emailAddress);
-      this.form.get('isActive')?.setValue(user.isActive);
-      this.form.get('address1')?.setValue(user.address?.address1);
-      this.form.get('address2')?.setValue(user.address?.address2);
-      this.form.get('city')?.setValue(user.address?.city);
-      this.form.get('state')?.setValue(user.address?.state);
-      this.form.get('countryCode')?.setValue(user.address?.countryCode);
-      this.form.get('primaryPhone')?.setValue(user.primaryPhone?.rawDigits);
-    });
+  populateForm(id?: number) {
+    // If id is not undefined, the user id was given for an edit function
+    if (id) {
+      this.getUser(id).subscribe(({ data: { user } }) => {
+        this.form = this.sharedForm(user);
+        this.currentUser.set(user);
+        this.isLoading = false;
+      });
+    }
+    // Else, we are creating a new user, so we will populate the form with a blank user
+    else {
+      var newUser: User = {
+        id: 0,
+        firstName: '',
+        lastName: '',
+        roleId: 0,
+        userName: '',
+        password: '',
+        emailAddress: '',
+        isActive: false,
+        role: {
+          id: 0,
+          name: '',
+          rolePermissions: [],
+          users: [],
+        },
+      };
+
+      this.form = this.sharedForm(newUser);
+      this.currentUser.set(newUser);
+      this.isLoading = false;
+    }
   }
 
-  sharedForm(): FormGroup {
+  sharedForm(user: User): FormGroup {
     return this.formBuilder.group({
       userName: [
-        '',
+        user.userName,
         [
           Validators.required,
           Validators.maxLength(12),
@@ -129,7 +184,7 @@ export class UserDetailsService {
         ],
       ],
       firstName: [
-        '',
+        user.firstName,
         [
           Validators.required,
           Validators.maxLength(32),
@@ -137,24 +192,36 @@ export class UserDetailsService {
         ],
       ],
       lastName: [
-        '',
+        user.lastName,
         [
           Validators.required,
           Validators.maxLength(32),
           Validators.minLength(2),
         ],
       ],
+      emailAddress: [
+        user.emailAddress,
+        [Validators.required, Validators.email],
+      ],
+      isActive: [user.isActive],
+      address: this.getAddressGroup(user.address),
+      primaryPhone: this.getPhoneGroup(user.primaryPhone),
+    });
+  }
+
+  getAddressGroup(address?: Address) {
+    return this.formBuilder.group({
       address1: [
-        '',
+        address?.address1,
         [
           Validators.required,
           Validators.maxLength(64),
           Validators.minLength(2),
         ],
       ],
-      address2: ['', [Validators.nullValidator]],
+      address2: [address?.address2, [Validators.nullValidator]],
       city: [
-        '',
+        address?.city,
         [
           Validators.required,
           Validators.maxLength(32),
@@ -162,7 +229,7 @@ export class UserDetailsService {
         ],
       ],
       state: [
-        '',
+        address?.state,
         [
           Validators.required,
           Validators.maxLength(14),
@@ -170,22 +237,26 @@ export class UserDetailsService {
         ],
       ],
       countryCode: [
-        '',
+        address?.countryCode,
         [Validators.required, Validators.maxLength(2), Validators.minLength(2)],
       ],
       postalCode: [
-        '',
+        address?.postalCode,
         [Validators.required, Validators.maxLength(5), Validators.minLength(5)],
       ],
-      primaryPhone: [
-        '',
-        [Validators.required, Validators.maxLength(5), Validators.minLength(5)],
+    });
+  }
+
+  getPhoneGroup(phone?: Phone) {
+    return this.formBuilder.group({
+      rawDigits: [
+        phone?.rawDigits,
+        [
+          Validators.required,
+          Validators.maxLength(10),
+          Validators.minLength(10),
+        ],
       ],
-      emailAddress: [
-        '',
-        [Validators.required, Validators.maxLength(5), Validators.minLength(5)],
-      ],
-      isActive: [false],
     });
   }
 

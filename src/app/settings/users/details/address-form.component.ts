@@ -1,15 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { TextInputComponent } from '@components/text-input.component';
+import { UserDetailsService } from './user-details.service';
 
 @Component({
-  selector: 'app-address-form',
-  imports: [],
-  template: `
-    <p>
-      address-form works!
-    </p>
-  `,
-  styles: ``
+  selector: 'address-form',
+  imports: [TextInputComponent, ReactiveFormsModule],
+  template: `<div [formGroup]="userDataService.form">
+    <form formGroupName="address" class="mb-4">
+      <p class="text-lg mb-1">User Address</p>
+      <div class="grid grid-cols-4 gap-2">
+        <div class="col-span-2">
+          <app-text-input
+            [inputProps]="{ required: true }"
+            formControlName="address1"
+            label="Address Line 1" />
+        </div>
+        <div class="col-span-2">
+          <app-text-input formControlName="address2" label="Address Line 2" />
+        </div>
+        <app-text-input
+          [inputProps]="{ required: true }"
+          formControlName="city"
+          label="City" />
+        <app-text-input
+          [inputProps]="{ required: true }"
+          formControlName="state"
+          label="State" />
+        <app-text-input
+          [inputProps]="{ required: true }"
+          formControlName="countryCode"
+          label="Country Code" />
+        <app-text-input
+          [inputProps]="{ required: true }"
+          formControlName="postalCode"
+          label="Postal Code" />
+      </div>
+    </form>
+  </div>`,
 })
 export class AddressFormComponent {
-
+  userDataService = inject(UserDetailsService);
 }

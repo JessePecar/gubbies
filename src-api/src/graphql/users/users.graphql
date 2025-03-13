@@ -65,6 +65,7 @@ input UpdateAddressInput {
   state: String!
   city: String!
   countryCode: String!
+  postalCode: Int!
 }
 
 type User {
@@ -137,6 +138,7 @@ type Address {
   state: String!
   city: String!
   countryCode: String!
+  postalCode: Int!
 
   user: User
 }

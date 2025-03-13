@@ -23,6 +23,24 @@ export class UsersService {
             },
           },
         },
+        address: {
+          select: {
+            address1: true,
+            address2: true,
+            city: true,
+            countryCode: true,
+            id: true,
+            postalCode: true,
+            state: true,
+          },
+        },
+        primaryPhone: {
+          select: {
+            id: true,
+            nationalDigits: true,
+            rawDigits: true,
+          },
+        },
       },
     });
   }
@@ -42,6 +60,24 @@ export class UsersService {
                 },
               },
             },
+          },
+        },
+        address: {
+          select: {
+            address1: true,
+            address2: true,
+            city: true,
+            countryCode: true,
+            id: true,
+            postalCode: true,
+            state: true,
+          },
+        },
+        primaryPhone: {
+          select: {
+            id: true,
+            nationalDigits: true,
+            rawDigits: true,
           },
         },
       },
@@ -85,6 +121,7 @@ export class UsersService {
           countryCode: address.countryCode,
           state: address.state,
           address2: address.address2,
+          postalCode: address.postalCode,
         },
         update: {
           address1: address.address1,
@@ -92,6 +129,7 @@ export class UsersService {
           countryCode: address.countryCode,
           state: address.state,
           address2: address.address2,
+          postalCode: address.postalCode,
         },
       });
     } else {
@@ -102,6 +140,7 @@ export class UsersService {
           countryCode: 'US',
           state: '',
           address2: undefined,
+          postalCode: 0,
         },
       });
     }
@@ -140,21 +179,35 @@ export class UsersService {
       this.updatePrimaryPhone(user),
     ]);
 
-    user.addressId = address.id;
-    user.primaryPhoneId = primaryPhone.id;
+    console.log(address);
+    console.log(primaryPhone);
+    console.log(user);
 
     // Update the user information
-    return await this.repository.users.update({
+    return await this.repository.users.upsert({
       where: {
         id: user.id,
       },
-      data: {
+      update: {
         emailAddress: user.emailAddress,
         firstName: user.firstName,
         lastName: user.lastName,
         userName: user.userName,
         password: user.password,
         isActive: user.isActive ?? true,
+        addressId: address.id,
+        primaryPhoneId: primaryPhone.id,
+        roleId: user.roleId, // Change if the role Id is different
+      },
+      create: {
+        emailAddress: user.emailAddress,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        userName: user.userName,
+        password: user.password,
+        isActive: user.isActive ?? true,
+        addressId: address.id,
+        primaryPhoneId: primaryPhone.id,
         roleId: user.roleId, // Change if the role Id is different
       },
     });

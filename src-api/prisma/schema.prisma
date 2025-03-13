@@ -108,6 +108,7 @@ model Address {
   state       String
   city        String
   countryCode String
+  postalCode  Int
 
   User Users?
 }

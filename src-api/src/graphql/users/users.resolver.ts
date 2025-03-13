@@ -35,6 +35,7 @@ export class UsersResolver {
   // Update the user, will add phone and address if they do not exist already
   @Mutation('updateUser')
   async updateUser(@Args('updateUserInput') updatedUser: UpdateUserInput) {
+    console.log('We are doing something with the user');
     await this.usersService.updateUser(updatedUser);
     pubSub.publish('usersChanged', updatedUser);
   }

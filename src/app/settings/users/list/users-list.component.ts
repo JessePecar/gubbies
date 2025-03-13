@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { TableComponent } from '@components/tables/table.component';
 import { UsersListService } from './users-list.service';
 import { User } from '@interfaces/settings/users';
@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { UserItemComponent } from './user-item.component';
 import { UserInfoService } from '@/services';
 import { Permission } from '@/entities/role';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users-list',
@@ -25,9 +26,10 @@ import { Permission } from '@/entities/role';
   `,
   styles: ``,
 })
-export class UsersListComponent {
+export class UsersListComponent implements OnInit {
   userListService = inject(UsersListService);
   userInfoService = inject(UserInfoService);
+  router = inject(Router);
 
   loading: boolean = true;
 
@@ -46,7 +48,13 @@ export class UsersListComponent {
     });
   }
 
-  constructor() {
+  onCreateUser = async () => {
+    await this.router.navigate(['settings/users/details']);
+  };
+
+  constructor() {}
+
+  ngOnInit(): void {
     this.getUsers();
 
     var { role } = this.userInfoService.userInfo() ?? { role: undefined };
@@ -55,7 +63,7 @@ export class UsersListComponent {
     if (role?.permissions.includes(Permission.SETTINGS)) {
       this.toolbarItems.push({
         icon: 'add',
-        onClick: () => {},
+        onClick: this.onCreateUser,
         text: 'Add User',
       });
     }

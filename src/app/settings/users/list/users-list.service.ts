@@ -17,6 +17,11 @@ export class UsersListService {
             firstName
             lastName
             userName
+            emailAddress
+            isActive
+            role {
+              name
+            }
             primaryPhone {
               rawDigits
               nationalDigits

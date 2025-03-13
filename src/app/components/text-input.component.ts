@@ -6,30 +6,59 @@ import {
   signal,
   ViewChild,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  AbstractControl,
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-text-input',
   standalone: true,
   imports: [],
   template: `
-    <div class="text-gray-200 flex flex-col">
-      <input
-        [id]="label() + '_input'"
-        class="rounded-lg shadow-xl p-2 border-1 border-stone-600 focus:border-purple-400 bg-stone-900 outline-none input-field"
-        [type]="inputProps()?.type ?? 'type'"
-        [value]="value()"
-        [required]="inputProps()?.required"
-        (change)="handleChange($event)"
-        placeholder=" " />
-      <div
-        class="input-label pl-4 transition-all duration-100 ease-in order-[-1] flex">
-        <label [for]="label() + '_input'">{{ label() }} </label>
-        @if (inputProps()?.required) {
-          <p class="opacity-50  text-red-700 font-bold pl-1">*</p>
-        }
+    <span>
+      <div class="text-gray-200 flex flex-col">
+        <input
+          [id]="label() + '_input'"
+          class="rounded-lg shadow-xl p-2 border-1 border-stone-600 focus:border-purple-400 bg-stone-900 outline-none input-field"
+          [type]="inputProps()?.type ?? 'type'"
+          [value]="value()"
+          [required]="inputProps()?.required"
+          (change)="handleChange($event)"
+          placeholder=" " />
+        <div
+          class="input-label pl-4 transition-all duration-100 ease-in order-[-1] flex">
+          <label [for]="label() + '_input'">{{ label() }} </label>
+          @if (inputProps()?.required) {
+            <p class="opacity-50  text-red-700 font-bold pl-1">*</p>
+          }
+        </div>
       </div>
-    </div>
+      <span class="absolute pt-1">
+        @if (formItem()?.hasError && formItem()?.touched) {
+          @if (getErrorKeys().length > 1) {
+            <!-- If more than one key, we will show "Field value is invalid" -->
+            <p class="text-sm text-red-400">{{ label() }} is invalid.</p>
+          } @else {
+            @switch (getErrorKeys()[0]) {
+              @case ('minLength') {
+                <p class="text-sm text-red-400">{{ label() }} is too short.</p>
+              }
+              @case ('maxLength') {
+                <p class="text-sm text-red-400">{{ label() }} is too long.</p>
+              }
+              @case ('required') {
+                <p class="text-sm text-red-400">{{ label() }} is required.</p>
+              }
+              @case ('email') {
+                <p class="text-sm text-red-400">Must be an email.</p>
+              }
+            }
+          }
+        }
+      </span>
+    </span>
   `,
   providers: [
     {
@@ -70,6 +99,17 @@ export class TextInputComponent implements ControlValueAccessor {
     this.isDisabled.set(isDisabled);
   }
 
+  getErrorKeys() {
+    // Deconstruct, but default to undefined
+    var { errors } = this.formItem() ?? { errors: undefined };
+
+    // Grab the keys that are in the errors to be added to the list of errors displayed
+    if (errors !== null && errors !== undefined) {
+      return Object.keys(errors);
+    }
+
+    return [] as string[];
+  }
   @ViewChild('input')
   input!: ElementRef<HTMLInputElement>;
 
@@ -80,8 +120,9 @@ export class TextInputComponent implements ControlValueAccessor {
   };
 
   inputProps = input<Partial<HTMLInputElement>>();
-  formControlName = input<string | number | null>(null);
   label = input<string | undefined>(undefined);
+
+  formItem = input<AbstractControl<never, never> | null>();
 
   handleUnfocus = output<string>();
 

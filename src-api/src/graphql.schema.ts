@@ -80,6 +80,7 @@ export class UpdateAddressInput {
     state: string;
     city: string;
     countryCode: string;
+    postalCode: number;
 }
 
 export interface BaseItem {
