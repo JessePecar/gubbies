@@ -4,15 +4,23 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from '@/interfaces/settings/users';
 import { TextInputComponent } from '../../../components/text-input.component';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ButtonComponent } from '@/components/button.component';
+import { ToggleComponent } from '@/components/toggle.component';
 
 @Component({
   selector: 'app-user-details',
-  imports: [TextInputComponent, ReactiveFormsModule],
+  imports: [
+    TextInputComponent,
+    ReactiveFormsModule,
+    ButtonComponent,
+    ToggleComponent,
+  ],
   template: `
     <div class="flex flex-col w-full h-full justify-center items-center">
       <div class="flex w-1/2">
@@ -23,8 +31,16 @@ import {
           class="w-1/2 min-h-96 bg-stone-900 rounded shadow p-4"
           [formGroup]="form"
           (ngSubmit)="onSubmit()">
+          <div class="py-4 flex justify-end space-x-8">
+            <div class="flex justify-center items-center space-x-4">
+              <app-toggle formControlName="isActive" />
+              <label for="is-active-checkbox">Is Active</label>
+            </div>
+            <!-- [disabled]="!form.valid" -->
+            <app-button buttonType="raised" text="Submit"> </app-button>
+          </div>
           <div class="mb-4">
-            <p class="text-lg mb-1">User Information</p>
+            <p class="text-lg mb-1">Information</p>
             <div class="grid grid-cols-4 gap-2">
               <app-text-input
                 [inputProps]="{ required: true }"
@@ -38,18 +54,26 @@ import {
                 [inputProps]="{ required: true }"
                 formControlName="userName"
                 label="User Name" />
+              <app-text-input
+                [inputProps]="{ required: true, type: 'email' }"
+                formControlName="emailAddress"
+                label="Email Address" />
             </div>
           </div>
           <div class="mb-4">
             <p class="text-lg mb-1">User Address</p>
             <div class="grid grid-cols-4 gap-2">
-              <app-text-input
-                [inputProps]="{ required: true }"
-                formControlName="address1"
-                label="Address Line 1" />
-              <app-text-input
-                formControlName="address2"
-                label="Address Line 2" />
+              <div class="col-span-2">
+                <app-text-input
+                  [inputProps]="{ required: true }"
+                  formControlName="address1"
+                  label="Address Line 1" />
+              </div>
+              <div class="col-span-2">
+                <app-text-input
+                  formControlName="address2"
+                  label="Address Line 2" />
+              </div>
               <app-text-input
                 [inputProps]="{ required: true }"
                 formControlName="city"
@@ -66,6 +90,15 @@ import {
                 [inputProps]="{ required: true }"
                 formControlName="postalCode"
                 label="Postal Code" />
+            </div>
+          </div>
+          <div class="mb-4">
+            <p class="text-lg mb-1">Contact Information</p>
+            <div class="grid grid-cols-4 gap-2">
+              <app-text-input
+                [inputProps]="{ required: true }"
+                formControlName="primaryPhone"
+                label="Primary Phone" />
             </div>
           </div>
         </form>
@@ -127,13 +160,13 @@ export class UserDetailsComponent implements OnInit {
         this.currentUser()?.address?.address1,
         [
           Validators.required,
-          Validators.maxLength(32),
+          Validators.maxLength(64),
           Validators.minLength(2),
         ],
       ],
       address2: [
-        this.currentUser()?.address?.address2,
-        [Validators.maxLength(32), Validators.minLength(2)],
+        this.currentUser()?.address?.address2 ?? '',
+        [Validators.nullValidator],
       ],
       city: [
         this.currentUser()?.address?.city,
@@ -159,8 +192,26 @@ export class UserDetailsComponent implements OnInit {
         this.currentUser()?.address?.postalCode,
         [Validators.required, Validators.maxLength(5), Validators.minLength(5)],
       ],
+      primaryPhone: [
+        this.currentUser()?.primaryPhone?.rawDigits,
+        [Validators.required, Validators.maxLength(5), Validators.minLength(5)],
+      ],
+      emailAddress: [
+        this.currentUser()?.emailAddress,
+        [Validators.required, Validators.maxLength(5), Validators.minLength(5)],
+      ],
+      isActive: [this.currentUser()?.isActive ?? true],
     });
   }
 
-  onSubmit() {}
+  onSubmit() {
+    console.log(this.form);
+    if (this.form !== undefined && this.form.valid) {
+      this.userDetailService.updateUser(
+        this.form?.value,
+        this.currentUser()?.roleId ?? 1,
+        this.currentUser()?.password ?? 'password'
+      );
+    }
+  }
 }

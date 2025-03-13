@@ -17,10 +17,11 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       <input
         [id]="label() + '_input'"
         class="rounded-lg shadow-xl p-2 border-1 border-stone-600 focus:border-purple-400 bg-stone-900 outline-none input-field"
-        [type]="inputProps()?.type ?? 'text'"
+        [type]="inputProps()?.type ?? 'type'"
         [value]="value()"
-        [required]="true"
-        (change)="handleChange($event)" />
+        [required]="inputProps()?.required"
+        (change)="handleChange($event)"
+        placeholder=" " />
       <div
         class="input-label pl-4 transition-all duration-100 ease-in order-[-1] flex">
         <label [for]="label() + '_input'">{{ label() }} </label>
@@ -44,7 +45,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     }
 
     .input-field:focus + .input-label,
-    .input-field:valid ~ .input-label {
+    .input-field:not(:placeholder-shown) ~ .input-label {
       transform: translateY(-2px) translateX(-1rem);
     }
   `,

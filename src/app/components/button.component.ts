@@ -27,7 +27,7 @@ import { MatRippleModule } from '@angular/material/core';
           matRipple
           [matRippleDisabled]="disabled()"
           matRippleColor="#FFFFFF22"
-          class=" text-stone-900 disabled:opacity-50 disabled:cursor-default hover:bg-gray-300 outline-1 bg-gray-200 rounded-lg"
+          class="button text-stone-900 disabled:opacity-50 disabled:cursor-default outline-1 bg-purple-400 rounded-lg"
           [disabled]="disabled()"
           (click)="handleClick.emit()">
           <div class="px-4 py-1">

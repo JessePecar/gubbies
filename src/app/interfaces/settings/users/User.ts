@@ -8,6 +8,8 @@ export interface User {
   roleId: number;
   userName: string;
   password: string;
+  emailAddress: string;
+  isActive: boolean;
 
   role: Role;
   primaryPhone?: Phone;
