@@ -1,6 +1,6 @@
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { UserDetailsService } from './user-details.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { User } from '@/interfaces/settings/users';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -10,6 +10,7 @@ import {
 } from '@/components';
 import { AddressFormComponent } from './address-form.component';
 import { ContactFormComponent } from './contact-form.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-user-details',
@@ -20,6 +21,8 @@ import { ContactFormComponent } from './contact-form.component';
     ToggleComponent,
     AddressFormComponent,
     ContactFormComponent,
+    MatIconModule,
+    RouterLink,
   ],
   template: `
     <div class="flex flex-col w-full h-full justify-center items-center">
@@ -36,8 +39,6 @@ import { ContactFormComponent } from './contact-form.component';
               <app-toggle formControlName="isActive" />
               <label for="is-active-checkbox">Is Active</label>
             </div>
-            <!-- [disabled]="!form.valid" -->
-            <app-button buttonType="raised" text="Submit"> </app-button>
           </div>
           <div class="mb-4">
             <p class="text-lg mb-1">Information</p>
@@ -66,6 +67,14 @@ import { ContactFormComponent } from './contact-form.component';
           </div>
           <address-form />
           <contact-form formGroupName="primaryPhone" />
+          <div class="flex justify-end space-x-4">
+            <app-button
+              (handleClick)="onCancel()"
+              buttonType="outline"
+              text="Cancel" />
+
+            <app-button buttonType="raised" text="Submit"> </app-button>
+          </div>
         </form>
       }
     </div>
@@ -82,22 +91,18 @@ export class UserDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.userDetailService.populateForm(this.userId());
-
-    console.log(this.userDetailService.form);
   }
 
   onSubmit() {
-    console.log(this.userDetailService.form);
     if (
       this.userDetailService.form !== undefined &&
       this.userDetailService.form.valid
     ) {
-      this.userDetailService.updateUser(
-        this.userDetailService.form?.value,
-        this.currentUser()?.id ?? 0,
-        this.currentUser()?.roleId ?? 1,
-        this.currentUser()?.password ?? 'password'
-      );
+      this.userDetailService.updateUser(this.userDetailService.form?.value);
     }
+  }
+
+  onCancel() {
+    this.userDetailService.router.navigate(['settings/users/list']);
   }
 }

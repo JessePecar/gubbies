@@ -1,3 +1,4 @@
+import { GlobalAlertService } from '@/components/alert/global-alert.service';
 import { ContextButtonComponent } from '@/components/context-button.component';
 import { Component, inject, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -47,6 +48,7 @@ import { User } from '@interfaces/settings/users';
 export class UserItemComponent {
   user = input.required<User>();
   router = inject(Router);
+  globalAlertService = inject(GlobalAlertService);
 
   onEditUser = async () => {
     await this.router.navigate(['settings/users/details'], {

@@ -1,6 +1,8 @@
+import { GlobalAlertService } from '@/components/alert/global-alert.service';
 import { Address, Phone, UpdateUser, User } from '@/interfaces/settings/users';
 import { inject, Injectable, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Apollo, gql } from 'apollo-angular';
 
 @Injectable({
@@ -9,6 +11,8 @@ import { Apollo, gql } from 'apollo-angular';
 export class UserDetailsService {
   private readonly graphQLClient = inject(Apollo);
   private readonly formBuilder = inject(FormBuilder);
+  private readonly alertService = inject(GlobalAlertService);
+  readonly router = inject(Router);
 
   form = this.formBuilder.group({});
   currentUser = signal<UpdateUser | undefined>(undefined);
@@ -56,20 +60,15 @@ export class UserDetailsService {
     });
   }
 
-  updateUser(
-    {
-      firstName,
-      lastName,
-      userName,
-      emailAddress,
-      address,
-      isActive,
-      primaryPhone,
-    }: any,
-    id: number,
-    roleId: number, // TODO: Add dropdown to pass this from the form
-    password: string // TODO: This will probably not change for a user, just leaving it in for now
-  ) {
+  updateUser({
+    firstName,
+    lastName,
+    userName,
+    emailAddress,
+    address,
+    isActive,
+    primaryPhone,
+  }: any) {
     this.currentUser.set({
       id: this.currentUser()?.id ?? 0,
       roleId:
@@ -134,7 +133,18 @@ export class UserDetailsService {
       .subscribe(res => {
         if (res.errors && res.errors.length > 0) {
           // Show Errors
+          this.alertService.addAlert(
+            'error',
+            'Error adding or updating user',
+            2000
+          );
         } else {
+          this.alertService.addAlert(
+            'success',
+            'Successfully added or updated user',
+            2000
+          );
+          this.router.navigate(['settings/users/list']);
         }
       });
   }
