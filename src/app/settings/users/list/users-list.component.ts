@@ -56,16 +56,5 @@ export class UsersListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUsers();
-
-    var { role } = this.userInfoService.userInfo() ?? { role: undefined };
-
-    //TODO: Create permission for USER_ADD
-    if (role?.permissions.includes(Permission.SETTINGS)) {
-      this.toolbarItems.push({
-        icon: 'add',
-        onClick: this.onCreateUser,
-        text: 'Add User',
-      });
-    }
   }
 }
