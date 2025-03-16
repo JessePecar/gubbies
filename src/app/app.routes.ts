@@ -20,6 +20,12 @@ import {
   usersGuard,
 } from './settings/users';
 import { SettingsComponent, settingsGuard } from './settings';
+import {
+  RoleComponent,
+  roleGuard,
+  RoleDetailsComponent,
+  RoleListComponent,
+} from './settings/roles';
 
 export const routes: Routes = [
   {
@@ -86,6 +92,21 @@ export const routes: Routes = [
               {
                 path: 'details',
                 component: UserDetailsComponent,
+              },
+            ],
+          },
+          {
+            path: 'roles',
+            component: RoleComponent,
+            canActivateChild: [roleGuard],
+            children: [
+              {
+                path: 'list',
+                component: RoleListComponent,
+              },
+              {
+                path: 'details',
+                component: RoleDetailsComponent,
               },
             ],
           },

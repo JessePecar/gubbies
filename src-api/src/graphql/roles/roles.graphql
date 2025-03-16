@@ -4,8 +4,7 @@ type Query {
 }
 
 type Mutation {
-  createRole(createRoleInput: UpsertRoleInput): Role
-  updateRole(id: Int!, updateRoleInput: UpsertRoleInput): Role
+  upsertRole(updateRoleInput: UpsertRoleInput): Role
 } 
 
 type Subscription {
@@ -13,6 +12,7 @@ type Subscription {
 }
 
 input UpsertRoleInput {
+  id: Int
   name: String!
   hierarchyTier: Int!
 
