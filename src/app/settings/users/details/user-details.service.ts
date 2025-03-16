@@ -171,6 +171,7 @@ export class UserDetailsService {
         isActive: false,
         role: {
           id: 0,
+          hierarchyTier: 99,
           name: '',
           rolePermissions: [],
           users: [],
