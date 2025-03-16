@@ -1,0 +1,47 @@
+type Query {
+  roles: [Role]
+  role(id: Int!): Role
+}
+
+type Mutation {
+  createRole(createRoleInput: UpsertRoleInput): Role
+  updateRole(id: Int!, updateRoleInput: UpsertRoleInput): Role
+} 
+
+type Subscription {
+  roleUpdated: Role
+}
+
+input UpsertRoleInput {
+  name: String!
+  hierarchyTier: Int!
+
+  rolePermissions: [RolePermissionInput]
+}
+
+input RolePermissionInput {
+  permissionId: Int!
+}
+
+type Role {
+  id: Int!
+  name: String!
+  hierarchyTier: Int!
+
+  rolePermissions: [RolePermission]
+}
+
+type RolePermission {
+  roleId: Int!
+  permissionId: Int!
+
+  permission: Permission!
+  role: Role!
+}
+
+type Permission {
+  id: Int!
+  name: PermissionName!
+
+  rolePermissions: [RolePermission]
+}

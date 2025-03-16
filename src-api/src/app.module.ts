@@ -10,8 +10,11 @@ import { RepositoryModule } from './repository/repository.module';
 import { ItemsController, ItemsService, ItemsModule } from './items';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { ItemsModule as GQItemsModule } from './graphql/items';
-import { UsersModule as GQUsersModule } from './graphql/users';
+import {
+  RolesModule,
+  UsersModule as GQUsersModule,
+  ItemsModule as GQItemsModule,
+} from './graphql';
 
 @Module({
   imports: [
@@ -21,6 +24,7 @@ import { UsersModule as GQUsersModule } from './graphql/users';
     ItemsModule,
     GQItemsModule,
     GQUsersModule,
+    RolesModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
