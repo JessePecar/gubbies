@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { NavigationDropdownComponentV2 } from './navigation-dropdown.componentV2';
-import { UserInfoService } from '../../services';
+import { UserInfoService } from '@/services';
 import { Permission } from '../../entities/role';
 
 @Component({
   selector: 'app-inventory-nav-item',
   imports: [NavigationDropdownComponentV2],
   template: `
-    @if (userInfo?.role?.permissions?.includes(inventoryPermission)) {
+    @if (canViewDropdown) {
       <app-navigation-dropdownv2
         dropdownName="inventory"
         [dropdownOptions]="dropdownOptions">
@@ -20,7 +20,13 @@ import { Permission } from '../../entities/role';
 export class InventoryNavItemComponent {
   inventoryPermission = Permission.INVENTORY;
 
-  userInfo = inject(UserInfoService).userInfo();
+  userInfoService = inject(UserInfoService);
+
+  canViewDropdown = this.userInfoService
+    .userInfo()
+    ?.role.rolePermissions.find(
+      rp => rp.permissionId === this.inventoryPermission
+    );
 
   dropdownOptions = [
     {

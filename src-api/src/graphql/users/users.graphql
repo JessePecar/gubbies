@@ -85,28 +85,6 @@ type User {
   address: Address
 }
 
-type Role {
-  id: Int!
-  name: String!
-
-  rolePermissions: [RolePermission]
-  users: [User]
-}
-
-type RolePermission {
-  roleId: Int!
-  permissionId: Int!
-
-  permission: Permission!
-  role: Role!
-}
-
-type Permission {
-  id: Int!
-  name: PermissionName!
-
-  rolePermissions: [RolePermission]
-}
 
 # Using an enum for standard permission names (this will be static data that won't change)
 enum PermissionName {

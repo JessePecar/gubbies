@@ -92,15 +92,23 @@ export class UsersService {
   async authUser(username: string, password: string) {
     return await this.repository.users.findFirst({
       where: {
-        userName: username,
-        password: password,
+        AND: {
+          userName: {
+            equals: username,
+          },
+          password: { equals: password },
+        },
       },
       include: {
         role: {
           include: {
             rolePermissions: {
-              select: {
-                permissionId: true,
+              include: {
+                permission: {
+                  select: {
+                    id: true,
+                  },
+                },
               },
             },
           },

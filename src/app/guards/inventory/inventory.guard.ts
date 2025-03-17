@@ -7,7 +7,9 @@ export const inventoryGuard: CanActivateChildFn = (route, state) => {
   var { userInfo } = inject(UserInfoService);
   if (
     userInfo() &&
-    userInfo()?.role?.permissions.includes(Permission.INVENTORY)
+    userInfo()?.role?.rolePermissions.find(
+      rp => rp.permissionId === Permission.INVENTORY
+    )
   ) {
     return true;
   }

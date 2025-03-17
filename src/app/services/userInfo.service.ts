@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { User } from '../entities/user';
+import { User } from '@interfaces/settings/users';
 
 @Injectable({
   providedIn: 'platform',

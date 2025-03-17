@@ -15,6 +15,7 @@ import {
   CardComponent,
   CardFooterComponent,
 } from '../components/card/card.component';
+import { LoginService } from './login.service';
 
 @Component({
   selector: 'app-login',
@@ -92,9 +93,10 @@ import {
   `,
 })
 export class LoginComponent {
-  userDataService: UserDataService;
-  userInfoService: UserInfoService;
-  router: Router;
+  userDataService = inject(UserDataService);
+  userInfoService = inject(UserInfoService);
+  loginService = inject(LoginService);
+  router = inject(Router);
 
   form: FormGroup = inject(FormBuilder).group({
     username: [
@@ -110,10 +112,6 @@ export class LoginComponent {
   showErrorMessage = false;
 
   constructor() {
-    this.userDataService = inject(UserDataService);
-    this.userInfoService = inject(UserInfoService);
-    this.router = inject(Router);
-
     // Subscribe to the form to reset show error message whenever the change is made
     this.form.valueChanges.subscribe(() => {
       if (this.showErrorMessage) {
@@ -126,15 +124,16 @@ export class LoginComponent {
     // Grab the value of the form for compare
     const { username, password } = this.form.value;
 
-    this.userDataService.authUser(username, password).subscribe(authedUser => {
-      console.log(authedUser);
-      if (authedUser === undefined) {
-        // Show the error message if the login was not found (the login information does not exist)
-        this.showErrorMessage = true;
-      } else {
-        this.userInfoService.setUser(authedUser);
-        this.router.navigate(['']);
-      }
-    });
+    this.loginService
+      .authUser(username, password)
+      .subscribe(({ data: { auth } }) => {
+        if (auth === undefined || auth === null) {
+          // Show the error message if the login was not found (the login information does not exist)
+          this.showErrorMessage = true;
+        } else {
+          this.userInfoService.setUser(auth);
+          this.router.navigate(['']);
+        }
+      });
   }
 }
