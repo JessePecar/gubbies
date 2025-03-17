@@ -22,7 +22,6 @@ import { MatIconModule } from '@angular/material/icon';
     AddressFormComponent,
     ContactFormComponent,
     MatIconModule,
-    RouterLink,
   ],
   template: `
     <div class="flex flex-col w-full h-full justify-center items-center">

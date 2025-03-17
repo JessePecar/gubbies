@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'card',
   imports: [],
   template: `
-    <div class="w-full rounded-lg bg-stone-900 p-2 text-gray-200">
+    <div class="card">
       <ng-content select="[header]" />
       <ng-content select="[body]" />
       <ng-content select="[footer]" />

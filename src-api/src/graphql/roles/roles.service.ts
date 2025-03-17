@@ -9,8 +9,6 @@ export class RolesService {
   constructor(private readonly repository: RepositoryService) {}
 
   async getRoles() {
-    console.log(await this.repository.roles.findMany());
-
     return await this.repository.roles.findMany({
       include: {
         rolePermissions: {

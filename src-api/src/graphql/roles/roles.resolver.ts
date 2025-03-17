@@ -24,7 +24,7 @@ export class RolesResolver {
   @Mutation('upsertRole')
   async upsertRole(@Args('upsertRoleInput') upsertUser: UpsertRoleInput) {
     //TODO: Do some checks on the user so we can't update admin, admin will have a special way of updating in the future
-    console.log(upsertUser);
+
     return await this.rolesService.upsertRole(upsertUser);
   }
 }

@@ -5,6 +5,50 @@
   --font-display: 'Satoshi', 'sans-serif';
 }
 
+@layer components {
+  .toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  /* The circle inside the slider */
+  .slider:before {
+    position: absolute;
+    content: '';
+    height: 0.75rem;
+    width: 0.75rem;
+    border-radius: 50%;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--color-white);
+    transition: 0.4s;
+  }
+
+  /* When the checkbox is checked, slide the circle */
+  input:checked + .slider {
+    background-color: var(--color-purple-400);
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(0.9rem);
+  }
+
+  /* When creating common used tailwind utility classes, I should do something like this so they can have the same name */
+  .card {
+    // w-full rounded-lg bg-stone-900 p-2 text-gray-200
+    width: var(--w-full);
+    border-radius: var(--rounded-lg);
+    background-color: var(--color-stone-900);
+    padding: var(--spacing-2);
+    color: var(--color-gray-200);
+  }
+}
+
+@utility shadow-inset {
+  box-shadow: inset 0 -1px 4px rgba(0, 0, 0, 0.2);
+}
+
 html,
 body {
   height: 100%;

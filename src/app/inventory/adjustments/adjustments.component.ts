@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-adjustments',
-  imports: [ButtonComponent, RouterOutlet],
+  imports: [RouterOutlet],
   template: `
     <div class="p-4">
       <router-outlet />

@@ -25,36 +25,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       useExisting: ToggleComponent,
     },
   ],
-  styles: `
-    /* The toggle switch styling */
-    .toggle input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    /* The circle inside the slider */
-    .slider:before {
-      position: absolute;
-      content: '';
-      height: 0.75rem;
-      width: 0.75rem;
-      border-radius: 50%;
-      left: 2px;
-      bottom: 2px;
-      background-color: white;
-      transition: 0.4s;
-    }
-
-    /* When the checkbox is checked, slide the circle */
-    input:checked + .slider {
-      background-color: var(--color-purple-400);
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(0.9rem);
-    }
-  `,
 })
 export class ToggleComponent implements ControlValueAccessor {
   value = signal<boolean>(false);
