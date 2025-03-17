@@ -4,7 +4,7 @@ type Query {
 }
 
 type Mutation {
-  upsertRole(updateRoleInput: UpsertRoleInput): Role
+  upsertRole(upsertRoleInput: UpsertRoleInput): Role
 } 
 
 type Subscription {

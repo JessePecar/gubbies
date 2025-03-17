@@ -15,7 +15,10 @@ import { Router } from '@angular/router';
     <app-table [toolbarItems]="toolbarItems">
       @if (users().length > 0) {
         @for (user of users(); track $index) {
-          <user-item [user]="user" />
+          <div
+            class="even:bg-stone-900 odd:border odd:border-stone-900 bg-stone-800 border-stone-800 mb-1 rounded">
+            <user-item [user]="user" />
+          </div>
         }
       } @else {
         <div class="flex w-full justify-center items-cetner">
@@ -56,5 +59,11 @@ export class UsersListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUsers();
+
+    this.toolbarItems.push({
+      icon: 'add',
+      text: 'Add User',
+      onClick: this.onCreateUser,
+    });
   }
 }

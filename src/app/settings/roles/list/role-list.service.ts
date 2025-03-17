@@ -10,7 +10,7 @@ export class RoleListService {
   constructor() {}
 
   getRoles() {
-    this.graphQLClient.query<Role>({
+    return this.graphQLClient.watchQuery<{ roles: Role[] }>({
       query: gql`
         query {
           roles {
@@ -26,6 +26,9 @@ export class RoleListService {
           }
         }
       `,
-    });
+      context: {
+        uri: 'http://localhost:3000/graphql',
+      },
+    }).valueChanges;
   }
 }

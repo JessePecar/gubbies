@@ -9,37 +9,34 @@ import { User } from '@interfaces/settings/users';
   selector: 'user-item',
   imports: [ContextButtonComponent, MatIconModule],
   template: `
-    <div
-      class="even:bg-stone-900 odd:border odd:border-stone-900 bg-stone-800 border-stone-800 mb-1 rounded">
-      <div class="grid grid-cols-3 p-2">
-        <div class="flex flex-col justify-center">
-          <div class="flex space-x-2 text-xl items-center">
-            <mat-icon fontIcon="account_circle" />
-            <p>{{ user().firstName }}</p>
-            <p>{{ user().lastName }}</p>
-          </div>
-          <p class="text-sm pl-8">{{ user().role.name }}</p>
+    <div class="grid grid-cols-3 p-2">
+      <div class="flex flex-col justify-center">
+        <div class="flex space-x-2 text-xl items-center">
+          <mat-icon fontIcon="account_circle" />
+          <p>{{ user().firstName }}</p>
+          <p>{{ user().lastName }}</p>
         </div>
+        <p class="text-sm pl-8">{{ user().role.name }}</p>
+      </div>
+      <div>
+        <div class="flex space-x-2 flex-wrap">
+          <p>{{ user().address?.address1 }}</p>
+          @if (user().address?.address2) {
+            <p>{{ user().address?.address2 }}</p>
+          }
+        </div>
+        <div class="flex space-x-2 flex-wrap">
+          <p>{{ user().address?.city }},</p>
+          <p>{{ user().address?.state }},</p>
+          <p>{{ user().address?.countryCode }}</p>
+        </div>
+      </div>
+      <div class="flex justify-between">
         <div>
-          <div class="flex space-x-2 flex-wrap">
-            <p>{{ user().address?.address1 }}</p>
-            @if (user().address?.address2) {
-              <p>{{ user().address?.address2 }}</p>
-            }
-          </div>
-          <div class="flex space-x-2 flex-wrap">
-            <p>{{ user().address?.city }},</p>
-            <p>{{ user().address?.state }},</p>
-            <p>{{ user().address?.countryCode }}</p>
-          </div>
+          <p>{{ createReadablePhoneNumber() }}</p>
         </div>
-        <div class="flex justify-between">
-          <div>
-            <p>{{ createReadablePhoneNumber() }}</p>
-          </div>
-          <div class="flex justify-center items-center w-10">
-            <context-button [options]="userContextMenu" />
-          </div>
+        <div class="flex justify-center items-center w-10">
+          <context-button [options]="userContextMenu" />
         </div>
       </div>
     </div>

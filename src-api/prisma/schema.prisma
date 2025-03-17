@@ -57,6 +57,7 @@ model Permissions {
 model Roles {
   id              Int               @id @default(autoincrement())
   name            String
+  hierarchyTier   Int               @default(1)
   rolePermissions RolePermissions[]
   users           Users[]
 }

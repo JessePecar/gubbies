@@ -35,6 +35,17 @@ export class CreateItemInput {
     unitOfMeasurementType: number;
 }
 
+export class UpsertRoleInput {
+    id?: Nullable<number>;
+    name: string;
+    hierarchyTier: number;
+    rolePermissions?: Nullable<Nullable<RolePermissionInput>[]>;
+}
+
+export class RolePermissionInput {
+    permissionId: number;
+}
+
 export class CreateRoleInput {
     name: string;
     rolePermissions?: Nullable<Nullable<CreateRolePermission>[]>;
@@ -101,6 +112,10 @@ export abstract class IQuery {
 
     abstract item(id: string): Nullable<Item> | Promise<Nullable<Item>>;
 
+    abstract roles(): Nullable<Nullable<Role>[]> | Promise<Nullable<Nullable<Role>[]>>;
+
+    abstract role(id: number): Nullable<Role> | Promise<Nullable<Role>>;
+
     abstract users(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
 
     abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
@@ -111,6 +126,8 @@ export abstract class IQuery {
 export abstract class IMutation {
     abstract createItem(createItemInput?: Nullable<CreateItemInput>): Nullable<Item> | Promise<Nullable<Item>>;
 
+    abstract upsertRole(upsertRoleInput?: Nullable<UpsertRoleInput>): Nullable<Role> | Promise<Nullable<Role>>;
+
     abstract createUser(createUserInput?: Nullable<CreateUserInput>): Nullable<User> | Promise<Nullable<User>>;
 
     abstract updateUser(updateUserInput?: Nullable<UpdateUserInput>): Nullable<User> | Promise<Nullable<User>>;
@@ -120,6 +137,8 @@ export abstract class IMutation {
 
 export abstract class ISubscription {
     abstract itemCreated(): Nullable<Item> | Promise<Nullable<Item>>;
+
+    abstract roleUpdated(): Nullable<Role> | Promise<Nullable<Role>>;
 
     abstract roleCreated(): Nullable<Role> | Promise<Nullable<Role>>;
 
@@ -162,25 +181,10 @@ export class Adjustment {
     adjustmentItems?: Nullable<Nullable<AdjustmentItems>[]>;
 }
 
-export class User {
-    id: number;
-    firstName?: Nullable<string>;
-    lastName?: Nullable<string>;
-    roleId: number;
-    primaryPhoneId?: Nullable<number>;
-    addressId?: Nullable<number>;
-    userName: string;
-    password: string;
-    isActive?: Nullable<boolean>;
-    emailAddress?: Nullable<string>;
-    role: Role;
-    primaryPhone?: Nullable<Phone>;
-    address?: Nullable<Address>;
-}
-
 export class Role {
     id: number;
     name: string;
+    hierarchyTier: number;
     rolePermissions?: Nullable<Nullable<RolePermission>[]>;
     users?: Nullable<Nullable<User>[]>;
 }
@@ -198,6 +202,22 @@ export class Permission {
     rolePermissions?: Nullable<Nullable<RolePermission>[]>;
 }
 
+export class User {
+    id: number;
+    firstName?: Nullable<string>;
+    lastName?: Nullable<string>;
+    roleId: number;
+    primaryPhoneId?: Nullable<number>;
+    addressId?: Nullable<number>;
+    userName: string;
+    password: string;
+    isActive?: Nullable<boolean>;
+    emailAddress?: Nullable<string>;
+    role: Role;
+    primaryPhone?: Nullable<Phone>;
+    address?: Nullable<Address>;
+}
+
 export class Phone {
     id: number;
     rawDigits?: Nullable<string>;
@@ -212,6 +232,7 @@ export class Address {
     state: string;
     city: string;
     countryCode: string;
+    postalCode: number;
     user?: Nullable<User>;
 }
 
