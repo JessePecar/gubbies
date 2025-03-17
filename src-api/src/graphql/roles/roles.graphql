@@ -1,6 +1,7 @@
 type Query {
   roles: [Role]
   role(id: Int!): Role
+  roleTiers: [RoleTiers]
 }
 
 type Mutation {
@@ -44,4 +45,8 @@ type Permission {
   name: PermissionName!
 
   rolePermissions: [RolePermission]
+}
+
+type RoleTiers {
+  tierNumber: Int!
 }

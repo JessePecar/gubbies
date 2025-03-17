@@ -83,13 +83,5 @@ export class RoleListComponent implements OnInit {
         onClick: () => {},
       });
     }
-
-    if (this.userInfoService.userInfo()?.role.hierarchyTier === 1) {
-      this.toolbarItems.push({
-        icon: 'format_list_bulleted_add',
-        text: 'Add Tier',
-        onClick: () => {},
-      });
-    }
   }
 }

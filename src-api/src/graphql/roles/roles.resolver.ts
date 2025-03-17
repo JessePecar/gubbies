@@ -21,6 +21,13 @@ export class RolesResolver {
     return await this.rolesService.getRole(id);
   }
 
+  @Query('roleTiers')
+  async getRoleTiers() {
+    var tiers = await this.rolesService.getRoleTiers();
+    console.log(tiers);
+    return tiers;
+  }
+
   @Mutation('upsertRole')
   async upsertRole(@Args('upsertRoleInput') upsertUser: UpsertRoleInput) {
     //TODO: Do some checks on the user so we can't update admin, admin will have a special way of updating in the future

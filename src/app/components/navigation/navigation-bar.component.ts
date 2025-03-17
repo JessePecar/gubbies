@@ -67,12 +67,12 @@ import { SettingsNavItemComponent } from './settings-nav-item.component';
 
               <app-settings-nav-item />
             </div>
-            <div class="absolute right-0 bottom-0 w-full py-1 px-2">
-              <div class="w-full">
+            <div class="absolute left-0 bottom-0 w-full py-1 px-2 h-24">
+              <div class="flex flex-col justify-between h-full w-full py-2">
                 <app-profile-nav-item />
 
                 <app-button (click)="logout()">
-                  <span class="flex w-full space-x-4">
+                  <span class="pl-2 flex w-full space-x-4">
                     <mat-icon fontIcon="logout" />
                     <p>Logout</p>
                   </span>

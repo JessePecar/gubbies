@@ -37,6 +37,24 @@ export class RolesService {
     });
   }
 
+  async getRoleTiers() {
+    return (
+      await this.repository.roles.findMany({
+        select: {
+          hierarchyTier: true,
+        },
+        where: {
+          hierarchyTier: {
+            not: undefined,
+          },
+        },
+        distinct: 'hierarchyTier',
+      })
+    ).map((role) => ({
+      tierNumber: role.hierarchyTier,
+    }));
+  }
+
   async seedPermissions() {
     var permissions = await this.repository.permissions.findMany();
 
