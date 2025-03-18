@@ -67,17 +67,7 @@ import {
       useExisting: TextInputComponent,
     },
   ],
-  styles: `
-    .input-label {
-      transform: translateY(2.1rem);
-      pointer-events: none;
-    }
-
-    .input-field:focus + .input-label,
-    .input-field:not(:placeholder-shown) ~ .input-label {
-      transform: translateY(-2px) translateX(-1rem);
-    }
-  `,
+  styleUrl: './input.scss',
 })
 export class TextInputComponent implements ControlValueAccessor {
   //
