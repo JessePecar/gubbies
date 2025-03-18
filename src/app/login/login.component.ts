@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatRippleModule } from '@angular/material/core';
-import { TextInputComponent } from '../components/text-input.component';
+import { TextInputComponent } from '@/components';
 import { UserInfoService } from '../services/userInfo.service';
 import { Router } from '@angular/router';
 import { UserDataService } from '../services';

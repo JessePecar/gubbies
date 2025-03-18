@@ -1,6 +1,8 @@
 import { Role } from '@interfaces/settings/roles';
 import { inject, Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
+import { Observable } from 'rxjs';
+import { ApolloQueryResult } from '@apollo/client/core';
 
 @Injectable({
   providedIn: 'root',
@@ -11,8 +13,9 @@ export class RoleDetailsService {
 
   getRole(id?: number) {
     if (id === undefined) {
-      return undefined;
+      return new Observable<ApolloQueryResult<{ role: Role }>>();
     }
+
     return this.graphQLClient.watchQuery<{ role: Role }>({
       query: gql`
         query GetRole($id: Int!) {

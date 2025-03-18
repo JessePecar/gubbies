@@ -4,7 +4,8 @@ import { TableComponent } from '@/components/tables/table.component';
 import { Role } from '@/interfaces/settings/roles';
 import { RoleItemComponent } from './role-item.component';
 import { groupBy, mergeMap, of, toArray, zip } from 'rxjs';
-import { UserDataService, UserInfoService } from '@/services';
+import { UserInfoService } from '@/services';
+import { Router } from '@angular/router';
 
 type GroupedRole = {
   tierId: number;
@@ -43,6 +44,8 @@ type GroupedRole = {
 export class RoleListComponent implements OnInit {
   roleListService = inject(RoleListService);
   userInfoService = inject(UserInfoService);
+  router = inject(Router);
+
   roles = signal<GroupedRole[]>([]);
 
   toolbarItems: { icon: string; text: string; onClick: () => void }[] = [];
@@ -80,8 +83,12 @@ export class RoleListComponent implements OnInit {
       this.toolbarItems.push({
         icon: 'add',
         text: 'Add Role',
-        onClick: () => {},
+        onClick: () => this.onCreateRole(),
       });
     }
+  }
+
+  onCreateRole() {
+    this.router.navigate(['settings/roles/details']);
   }
 }
