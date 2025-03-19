@@ -1,7 +1,8 @@
 import { Role } from '@interfaces/settings/roles';
-import { Component, input, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { ContextButtonComponent } from '@/components';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'role-item',
@@ -26,8 +27,9 @@ import { MatIconModule } from '@angular/material/icon';
   styles: ``,
 })
 export class RoleItemComponent implements OnInit {
-  role = input.required<Role>();
+  router = inject(Router);
 
+  role = input.required<Role>();
   userContextMenu: {
     name: string;
     iconName: string;
@@ -39,7 +41,15 @@ export class RoleItemComponent implements OnInit {
     this.userContextMenu.push({
       name: 'Edit Role',
       iconName: 'edit',
-      onClickEvent: () => {},
+      onClickEvent: () => this.onEditRole(),
+    });
+  }
+
+  onEditRole() {
+    this.router.navigate(['settings', 'roles', 'details'], {
+      queryParams: {
+        roleId: this.role().id,
+      },
     });
   }
 }

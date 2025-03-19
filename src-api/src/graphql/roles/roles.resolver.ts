@@ -24,8 +24,14 @@ export class RolesResolver {
   @Query('roleTiers')
   async getRoleTiers() {
     var tiers = await this.rolesService.getRoleTiers();
-    console.log(tiers);
     return tiers;
+  }
+
+  @Query('permissions')
+  async getPermissions() {
+    var perms = await this.rolesService.getPermissions();
+    console.log(perms);
+    return perms;
   }
 
   @Mutation('upsertRole')

@@ -31,7 +31,7 @@ import {
           class="input-label pl-4 transition-all duration-100 ease-in order-[-1] flex">
           <label [for]="label() + '_input'">{{ label() }} </label>
           @if (inputProps()?.required) {
-            <p class="opacity-50  text-red-700 font-bold pl-1">*</p>
+            <p class="opacity-50 text-red-700 font-bold pl-1">*</p>
           }
         </div>
       </div>

@@ -56,7 +56,7 @@ export class RolesService {
   }
 
   async seedPermissions() {
-    var permissions = await this.repository.permissions.findMany();
+    var permissions = await this.getPermissions();
 
     if (permissions.length > 0) return;
 
@@ -124,6 +124,10 @@ export class RolesService {
         },
       ],
     });
+  }
+
+  async getPermissions() {
+    return await this.repository.permissions.findMany();
   }
 
   async mergeRolePermissions(

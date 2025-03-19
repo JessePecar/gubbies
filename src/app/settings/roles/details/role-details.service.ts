@@ -1,4 +1,4 @@
-import { Role } from '@interfaces/settings/roles';
+import { Permission, Role } from '@interfaces/settings/roles';
 import { inject, Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
@@ -36,7 +36,25 @@ export class RoleDetailsService {
         uri: 'http://localhost:3000/graphql',
       },
       variables: {
-        id,
+        id: +id, // Telling graphql that this will be an integer
+      },
+    }).valueChanges;
+  }
+
+  getPermissions() {
+    return this.graphQLClient.watchQuery<{
+      permissions: Permission[];
+    }>({
+      query: gql`
+        query {
+          permissions {
+            id
+            name
+          }
+        }
+      `,
+      context: {
+        uri: 'http://localhost:3000/graphql',
       },
     }).valueChanges;
   }

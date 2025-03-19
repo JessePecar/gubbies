@@ -2,6 +2,7 @@ type Query {
   roles: [Role]
   role(id: Int!): Role
   roleTiers: [RoleTiers]
+  permissions: [Permission]
 }
 
 type Mutation {

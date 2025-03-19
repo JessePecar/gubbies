@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { ButtonComponent } from '../../../components/button.component';
-import { TextInputComponent } from '../../../components/text-input.component';
+import { TextInputComponent } from '@/components';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AdjustmentFormService } from './adjustmentForm.service';
