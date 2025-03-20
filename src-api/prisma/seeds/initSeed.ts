@@ -73,6 +73,29 @@ async function main() {
       ],
     });
   }
+
+  permissions = await client.permissions.findMany();
+
+  var roles = await client.roles.findMany();
+
+  if(!roles || roles.length < 1) {
+    // Create an admin role
+    var newRole = await client.roles.create({
+      data: {
+        name: 'Administrator',
+        hierarchyTier: 1,
+      }
+    });
+
+    await client.rolePermissions.createMany({
+      data: permissions.map(p => {
+        return {
+          permissionId: p.id,
+          roleId: newRole.id
+        }
+      })
+    });
+  }
 }
 
 main()
