@@ -1,10 +1,13 @@
 import { Permission } from './Permission';
 import { Role } from './Role';
 
-export interface RolePermission {
+export interface RolePermission extends RolePermissionUpdate {
   roleId: number;
-  permissionId: number;
 
   role: Role;
   permission: Permission;
+}
+
+export interface RolePermissionUpdate {
+  permissionId: number;
 }

@@ -26,7 +26,6 @@ export class AdjustmentsListComponent {
   isLoading = true;
 
   onCreate() {
-    console.log('Creating!');
     this.router.navigate(['inventory/adjustments/create']);
   }
 

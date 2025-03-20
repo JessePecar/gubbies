@@ -16,28 +16,30 @@ type GroupedRole = {
   selector: 'app-role-list',
   imports: [TableComponent, RoleItemComponent],
   template: `<app-table [toolbarItems]="toolbarItems">
-    @if (roles().length > 0) {
-      @for (tier of roles(); track $index) {
-        <div>
-          <div
-            class="p-4 w-full border-b border-stone-900 shadow-b bg-stone-900">
-            <p class="text-lg">Tier {{ tier.tierId }}</p>
+    <div class="h-full overflow-y-auto">
+      @if (roles().length > 0) {
+        @for (tier of roles(); track $index) {
+          <div class="mb-1 px-1">
+            <div
+              class="p-4 w-full border-b border-stone-900 shadow-b bg-stone-400 text-stone-900 rounded-t">
+              <p class="text-lg">Tier {{ tier.tierId }}</p>
+            </div>
+            <div class="shadow-inset px-4 py-1">
+              @for (role of tier.roles; track $index) {
+                <div
+                  class="even:bg-stone-900 odd:border-1 odd:border-stone-900 bg-stone-800 border-stone-800 mb-1 rounded">
+                  <role-item [role]="role" />
+                </div>
+              }
+            </div>
           </div>
-          <div class="shadow-inset px-4 py-1">
-            @for (role of tier.roles; track $index) {
-              <div
-                class="even:bg-stone-900 odd:border-1 odd:border-stone-900 bg-stone-800 border-stone-800 mb-1 rounded">
-                <role-item [role]="role" />
-              </div>
-            }
-          </div>
+        }
+      } @else {
+        <div class="flex w-full justify-center items-cetner">
+          <p>No roles found.</p>
         </div>
       }
-    } @else {
-      <div class="flex w-full justify-center items-cetner">
-        <p>No roles found.</p>
-      </div>
-    }
+    </div>
   </app-table>`,
   styles: ``,
 })
@@ -70,8 +72,10 @@ export class RoleListComponent implements OnInit {
           });
         })
         .add(() => {
-          console.log(groupedRoles);
-          this.roles.set(groupedRoles);
+          this.roles.set(
+            // Add the grouped roles sorted by tierId descending
+            groupedRoles.sort((a, b) => a.tierId - b.tierId)
+          );
         });
     });
 

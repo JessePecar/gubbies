@@ -62,3 +62,26 @@ button,
 a {
   cursor: pointer;
 }
+
+/* For Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 10px; /* Scrollbar width */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent; /* Background of the scrollbar track */
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--color-stone-700); /* Color of the scrollbar handle */
+  border-radius: var(--radius-sm);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-stone-500);
+  cursor: pointer;
+}

@@ -9,23 +9,21 @@ import { MatIcon } from '@angular/material/icon';
     <div class="flex justify-center items-center w-full h-full">
       <div class="h-3/4 w-full lg:w-3/4">
         <div
-          class="h-3/4 border border-stone-900 rounded-lg shadow-lg overflow-hidden">
+          class="bg-purple-600 min-h-10 p-1 flex justify-end shadow-lg mb-2 rounded-t-lg">
           <!-- Toolbar will go here -->
-          <div
-            class="bg-purple-600 min-h-10 p-1 flex justify-end shadow-lg mb-2">
-            @for (toolbarItem of toolbarItems(); track $index) {
-              <app-button (handleClick)="toolbarItem.onClick()">
-                <span class="flex p-2">
-                  <mat-icon [fontIcon]="toolbarItem.icon" />
-                  <p>{{ toolbarItem.text }}</p>
-                </span>
-              </app-button>
-            }
-          </div>
-          <div class="w-full overflow-y-auto h-full p-1">
-            <div class="h-full">
-              <ng-content />
-            </div>
+          @for (toolbarItem of toolbarItems(); track $index) {
+            <app-button (handleClick)="toolbarItem.onClick()">
+              <span class="flex p-2">
+                <mat-icon [fontIcon]="toolbarItem.icon" />
+                <p>{{ toolbarItem.text }}</p>
+              </span>
+            </app-button>
+          }
+        </div>
+        <div
+          class="h-3/4 border border-stone-900 rounded-lg shadow-lg overflow-auto">
+          <div class="w-full h-full p-1">
+            <ng-content />
           </div>
         </div>
       </div>

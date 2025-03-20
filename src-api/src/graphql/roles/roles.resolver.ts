@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { RolesService } from './roles.service';
 import { PubSub } from 'graphql-subscriptions';
-import { ParseIntPipe } from '@nestjs/common';
+import { ParseIntPipe, BadRequestException } from '@nestjs/common';
 import { UpsertRoleInput } from 'src/graphql.schema';
 
 const pubSub = new PubSub();
@@ -30,13 +30,15 @@ export class RolesResolver {
   @Query('permissions')
   async getPermissions() {
     var perms = await this.rolesService.getPermissions();
-    console.log(perms);
     return perms;
   }
 
   @Mutation('upsertRole')
   async upsertRole(@Args('upsertRoleInput') upsertUser: UpsertRoleInput) {
-    //TODO: Do some checks on the user so we can't update admin, admin will have a special way of updating in the future
+    // If hierarchy tier is 1, then we will not update because it's an admin
+    if (upsertUser.hierarchyTier === 1) {
+      throw new BadRequestException('Administrators cannot be updated');
+    }
 
     return await this.rolesService.upsertRole(upsertUser);
   }

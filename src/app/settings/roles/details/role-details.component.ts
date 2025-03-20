@@ -14,7 +14,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { RoleDetailsService } from './role-details.service';
-import { Permission, Role } from '@/interfaces/settings/roles';
+import {
+  Permission,
+  Role,
+  RolePermissionUpdate,
+} from '@/interfaces/settings/roles';
 import { UserInfoService } from '@/services';
 import { Router } from '@angular/router';
 
@@ -119,8 +123,6 @@ export class RoleDetailsComponent implements OnInit {
       ],
       permissions: permissionGroup,
     });
-
-    console.log(this.form);
   }
 
   createPermissionForm() {
@@ -180,7 +182,37 @@ export class RoleDetailsComponent implements OnInit {
       });
   }
 
-  onSubmit() {}
+  onSubmit() {
+    if (this.form && this.form.valid) {
+      var formValue = this.form.value;
+
+      var permissionIds = Object.keys(formValue.permissions)
+        .filter(key => {
+          // If the value in the key field isn't in the permissions list, we will not add to the permission id list
+          if (this.permissions().find(p => p.name === key)) {
+            // If the value is true, we will add it, else we will ignore it
+            return formValue.permissions[key];
+          }
+
+          // Default to false to ignore it
+          return false;
+        })
+        .map(key => {
+          // TODO: Change the p.name to p.id when we switch over to using the id
+          // We know that the permission will exist, so we will use the '!'
+          return {
+            permissionId: this.permissions().find(p => p.name === key)!.id,
+          } as RolePermissionUpdate;
+        });
+
+      this.roleDetailsService.updateRole({
+        name: formValue.name,
+        hierarchyTier: formValue.hierarchyTier,
+        id: this.role()?.id ?? 0,
+        rolePermissions: permissionIds,
+      });
+    }
+  }
 
   onCancel() {
     this.router.navigate(['settings/roles/list']);

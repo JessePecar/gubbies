@@ -22,7 +22,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideClientHydration(),
     provideAnimationsAsync(),
-    provideHttpClient(),
     provideApollo(() => {
       const httpLink = inject(HttpLink);
 

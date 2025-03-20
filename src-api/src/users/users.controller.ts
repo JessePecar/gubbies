@@ -13,7 +13,6 @@ export class UsersController {
   ) {
     try {
       const user = await this.userService.authUser(username, password);
-      console.log(user);
       return user;
     } catch (err) {
       console.error(err);

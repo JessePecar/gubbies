@@ -195,21 +195,19 @@ export class RolesService {
   }
 
   async upsertRole(upsertRole: UpsertRoleInput) {
-    await this.mergeRolePermissions(
-      (upsertRole.rolePermissions ?? []) as RolePermissionInput[],
-      upsertRole.id ?? -1,
-    );
-
-    return await this.repository.roles.upsert({
+    var role = await this.repository.roles.upsert({
       where: {
-        id: upsertRole.id ?? -1,
+        id: upsertRole.id === null || upsertRole.id === 0 ? -1 : upsertRole.id,
       },
       update: {
         hierarchyTier: upsertRole.hierarchyTier,
         name: upsertRole.name,
       },
       create: {
-        id: upsertRole.id ?? 1, // This is temporary, this will autogenerate normally
+        id:
+          upsertRole.id === null || upsertRole.id === 0
+            ? undefined
+            : upsertRole.id, // If role id is null, or 0, auto generate
         hierarchyTier: upsertRole.hierarchyTier,
         name: upsertRole.name,
       },
@@ -221,5 +219,11 @@ export class RolesService {
         },
       },
     });
+
+    console.log(role);
+    await this.mergeRolePermissions(
+      (upsertRole.rolePermissions ?? []) as RolePermissionInput[],
+      role.id ?? -1,
+    );
   }
 }

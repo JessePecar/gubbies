@@ -72,7 +72,6 @@ export class CheckboxComponent implements ControlValueAccessor, OnInit {
     this.formControl.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((checked: boolean) => {
-        console.log('Something changed: ' + checked);
         this.onChange(checked);
       });
   }
