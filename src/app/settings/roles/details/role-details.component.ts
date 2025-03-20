@@ -1,11 +1,14 @@
 import {
   ButtonComponent,
+  CheckboxComponent,
   NumberInputComponent,
   TextInputComponent,
 } from '@/components';
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import {
+  FormArray,
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -22,53 +25,59 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     TextInputComponent,
     NumberInputComponent,
+    CheckboxComponent,
   ],
   template: `
-    <div class="flex flex-col w-full h-full justify-center items-center">
-      <div class="flex w-1/2">
-        <p style="font-size: 2rem" class="py-2">Add / Edit Role</p>
-      </div>
-      @if (form) {
-        <form
-          class="flex flex-col justify-between w-1/2 min-h-96 bg-stone-900 rounded shadow p-4"
-          [formGroup]="form"
-          (ngSubmit)="onSubmit()">
-          <p class="text-lg my-4">Information</p>
-          <div class="grid grid-cols-3 gap-4">
-            <app-text-input label="Name" formControlName="name" />
-            <!-- TODO: Change to a number input -->
-            <app-number-input
-              label="Hierarchy Tier"
-              formControlName="hierarchyTier" />
-          </div>
-          <p class="text-lg my-4">Permissions</p>
-          <div class="w-full lg:w-1/2 grid grid-cols-2 gap-1 text-sm ">
-            @for (permission of permissions(); track $index) {
-              <div class="flex space-x-2">
-                <input
-                  [checked]="isPermissionEnabled(permission)"
-                  type="checkbox" />
-                <p>{{ permission.name }}</p>
+    @if (isLoading() === false) {
+      <div class="flex flex-col w-full h-full justify-center items-center">
+        <div class="flex w-1/2">
+          <p style="font-size: 2rem" class="py-2">Add / Edit Role</p>
+        </div>
+        @if (form !== undefined) {
+          <form
+            class="flex flex-col justify-between w-1/2 min-h-96 bg-stone-900 rounded shadow p-4"
+            [formGroup]="form"
+            (ngSubmit)="onSubmit()">
+            <p class="text-lg my-4">Information</p>
+            <div class="grid grid-cols-3 gap-4">
+              <app-text-input label="Name" formControlName="name" />
+
+              <app-number-input
+                label="Hierarchy Tier"
+                formControlName="hierarchyTier" />
+            </div>
+            @if (form.get('permissions')) {
+              <p class="text-lg my-4">Permissions</p>
+              <div
+                formArrayName="permissions"
+                class="w-full lg:w-1/2 grid grid-cols-2 gap-1 text-sm">
+                @for (permission of permissions(); track $index) {
+                  <app-checkbox
+                    [formControlName]="permission.name"
+                    [label]="getPermissionName(permission)" />
+                }
               </div>
             }
-          </div>
-          <div class="flex justify-end space-x-4 h-10">
-            <app-button
-              (handleClick)="onCancel()"
-              buttonType="outline"
-              text="Cancel" />
 
-            <app-button
-              [disabled]="!form.valid"
-              buttonType="raised"
-              text="Submit">
-            </app-button>
-          </div>
-        </form>
-      }
-    </div>
+            <div class="flex justify-end space-x-4 h-10">
+              <app-button
+                (handleClick)="onCancel()"
+                buttonType="outline"
+                text="Cancel" />
+
+              <app-button
+                [disabled]="!form.valid"
+                buttonType="raised"
+                text="Submit">
+              </app-button>
+            </div>
+          </form>
+        }
+      </div>
+    } @else {
+      <strong>Loading...</strong>
+    }
   `,
-  styles: ``,
 })
 export class RoleDetailsComponent implements OnInit {
   formBuilder = inject(FormBuilder);
@@ -76,21 +85,24 @@ export class RoleDetailsComponent implements OnInit {
   userInfoService = inject(UserInfoService);
   router = inject(Router);
 
-  form: FormGroup | undefined;
-
+  form: FormGroup | undefined = undefined;
   roleId = input<number | undefined>();
 
   permissions = signal<Permission[]>([]);
 
   role = signal<Role | undefined>(undefined);
 
-  createForm(role?: Role) {
+  isLoading = signal(true);
+
+  createForm() {
     var userHierarchyTier =
       this.userInfoService.userInfo()?.role.hierarchyTier ?? 99;
 
+    var permissionGroup = this.createPermissionForm();
+
     this.form = this.formBuilder.group({
       name: [
-        role?.name,
+        this.role()?.name,
         [
           Validators.required,
           Validators.maxLength(32),
@@ -98,44 +110,73 @@ export class RoleDetailsComponent implements OnInit {
         ],
       ],
       hierarchyTier: [
-        role?.hierarchyTier,
+        this.role()?.hierarchyTier,
         [
           Validators.required,
           Validators.min(userHierarchyTier + 1), // Can only create a role in the next tier lower
           Validators.max(100),
         ],
       ],
+      permissions: permissionGroup,
     });
+
+    console.log(this.form);
+  }
+
+  createPermissionForm() {
+    // This should translate the array to a dictionary with key = permission name
+    // The value will be an array with the default value set to isPermissionEnabled(permission)
+    var permissionGroup: any = {};
+
+    this.permissions().forEach(p => {
+      permissionGroup[p.name] = this.formBuilder.control(
+        this.isPermissionEnabled(p),
+        {
+          validators: [Validators.required],
+        }
+      );
+    });
+
+    return this.formBuilder.group(permissionGroup);
   }
 
   // Checking if the permissions on the role exist based on the permission given
   isPermissionEnabled(permission: Permission) {
     return (
-      this.role() &&
+      this.role() !== undefined &&
+      this.role() !== null &&
       this.role()?.rolePermissions.find(
         rp => rp.permission.id === permission.id
-      )
+      ) !== undefined
     );
   }
 
+  getPermissionName(permission: Permission) {
+    return permission.name.replace('_', ' ') ?? '';
+  }
+
   ngOnInit(): void {
-    console.log(this.roleId());
-
     if (!this.roleId()) {
-      this.createForm();
+      this.getApplicationPermissions();
     }
-
-    this.roleDetailsService
-      .getPermissions()
-      .subscribe(({ data: { permissions } }) => {
-        this.permissions.set(permissions);
-      });
 
     this.roleDetailsService
       .getRole(this.roleId())
       ?.subscribe(({ data: { role } }) => {
         this.role.set(role);
-        this.createForm(role);
+
+        this.getApplicationPermissions();
+      });
+  }
+
+  getApplicationPermissions() {
+    this.roleDetailsService
+      .getPermissions()
+      .subscribe(({ data: { permissions } }) => {
+        this.permissions.set(permissions);
+        this.createForm();
+
+        this.isLoading.set(false);
       });
   }
 

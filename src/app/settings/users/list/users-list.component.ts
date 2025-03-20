@@ -5,7 +5,7 @@ import { User } from '@interfaces/settings/users';
 import { MatIconModule } from '@angular/material/icon';
 import { UserItemComponent } from './user-item.component';
 import { UserInfoService } from '@/services';
-import { Permission } from '@/entities/role';
+import { Permission } from '@interfaces/settings/roles';
 import { Router } from '@angular/router';
 
 @Component({

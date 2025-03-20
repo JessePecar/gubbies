@@ -1,4 +1,4 @@
-export enum Permission {
+export enum PermissionEnum {
   APPLICATION_LOGIN = 1,
   INVENTORY = 2,
   INVENTORY_ADJUSTMENTS = 3,

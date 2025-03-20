@@ -3,12 +3,13 @@ import { Component, inject, input, OnInit } from '@angular/core';
 import { ContextButtonComponent } from '@/components';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { UserInfoService } from '@/services';
 
 @Component({
   selector: 'role-item',
   imports: [ContextButtonComponent, MatIconModule],
   template: `
-    <div class="grid grid-cols-3 p-2">
+    <div class="grid grid-cols-3 p-2 min-h-16">
       <div class="flex items-center space-x-2">
         <mat-icon fontIcon="manage_accounts" />
         <p class="pt-1">{{ role().name }}</p>
@@ -18,9 +19,11 @@ import { Router } from '@angular/router';
       </div>
       <div class="w-full flex justify-between items-center">
         <p>Tier {{ role().hierarchyTier }}</p>
-        <div class="flex justify-center items-center w-10">
-          <context-button [options]="userContextMenu" />
-        </div>
+        @if (userContextMenu.length > 0) {
+          <div class="flex justify-center items-center w-10">
+            <context-button [options]="userContextMenu" />
+          </div>
+        }
       </div>
     </div>
   `,
@@ -28,6 +31,7 @@ import { Router } from '@angular/router';
 })
 export class RoleItemComponent implements OnInit {
   router = inject(Router);
+  userInfoService = inject(UserInfoService);
 
   role = input.required<Role>();
   userContextMenu: {
@@ -38,11 +42,16 @@ export class RoleItemComponent implements OnInit {
 
   ngOnInit(): void {
     // Check if we can use this
-    this.userContextMenu.push({
-      name: 'Edit Role',
-      iconName: 'edit',
-      onClickEvent: () => this.onEditRole(),
-    });
+    var { role } = this.userInfoService!.userInfo() ?? { role: undefined };
+
+    // If the role we are looking at has a higher hiearchy tier, then we can edit it
+    if (role && this.role().hierarchyTier > role.hierarchyTier) {
+      this.userContextMenu.push({
+        name: 'Edit Role',
+        iconName: 'edit',
+        onClickEvent: () => this.onEditRole(),
+      });
+    }
   }
 
   onEditRole() {

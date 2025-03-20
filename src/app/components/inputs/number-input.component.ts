@@ -87,8 +87,9 @@ export class NumberInputComponent implements ControlValueAccessor {
     this.onChange = onChange;
   }
 
-  registerOnTouched(): void {
+  registerOnTouched(onTouched: (touched: boolean) => void): void {
     // This will be implemented precisely when I intend to
+    this.onTouched = onTouched;
   }
 
   setDisabledState?(isDisabled: boolean): void {
@@ -111,8 +112,15 @@ export class NumberInputComponent implements ControlValueAccessor {
 
   isDisabled = signal<boolean>(false);
   value = signal<number | null>(null);
+
+  touched = signal<boolean>(false);
+
   onChange = (_value: number | null) => {
     // On Change
+  };
+
+  onTouched = (touched: boolean) => {
+    this.touched.set(touched);
   };
 
   inputProps = input<Partial<HTMLInputElement>>();

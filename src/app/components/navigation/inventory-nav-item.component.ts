@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { NavigationDropdownComponentV2 } from './navigation-dropdown.componentV2';
 import { UserInfoService } from '@/services';
-import { Permission } from '../../entities/role';
+import { PermissionEnum } from '@/entities/role';
 
 @Component({
   selector: 'app-inventory-nav-item',
@@ -18,7 +18,7 @@ import { Permission } from '../../entities/role';
   styles: ``,
 })
 export class InventoryNavItemComponent {
-  inventoryPermission = Permission.INVENTORY;
+  inventoryPermission = PermissionEnum.INVENTORY;
 
   userInfoService = inject(UserInfoService);
 
@@ -32,22 +32,22 @@ export class InventoryNavItemComponent {
     {
       linkTitle: 'Adjustments',
       route: 'inventory/adjustments',
-      permission: Permission.INVENTORY_ADJUSTMENTS,
+      permission: PermissionEnum.INVENTORY_ADJUSTMENTS,
     },
     {
       linkTitle: 'Counts',
       route: 'inventory/counts',
-      permission: Permission.INVENTORY_COUNTS,
+      permission: PermissionEnum.INVENTORY_COUNTS,
     },
     {
       linkTitle: 'Inventory List',
       route: 'inventory/list',
-      permission: Permission.INVENTORY,
+      permission: PermissionEnum.INVENTORY,
     },
     {
       linkTitle: 'New Item',
       route: 'inventory/adjustments',
-      permission: Permission.INVENTORY,
+      permission: PermissionEnum.INVENTORY,
     },
   ];
 }
