@@ -15,6 +15,7 @@ import {
   UsersModule as GQUsersModule,
   ItemsModule as GQItemsModule,
 } from './graphql';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -25,6 +26,9 @@ import {
     GQItemsModule,
     GQUsersModule,
     RolesModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
