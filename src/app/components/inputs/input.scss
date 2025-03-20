@@ -6,8 +6,7 @@
 
 .input-field:focus + .input-label,
 .input-field:not(:placeholder-shown) ~ .input-label {
-  transform: translateY(-2px) translateX(-4rem);
-  scale: 75%;
+  transform: translateY(-2px) translateX(-0.75rem);
   color: var(--color-stone-100);
 }
 

@@ -19,6 +19,22 @@ export class UserDetailsService {
 
   isLoading = true;
 
+  getRolesForDropdown() {
+    return this.graphQLClient.query<{ roles: { id: number; name: string }[] }>({
+      query: gql`
+        query {
+          roles {
+            id
+            name
+          }
+        }
+      `,
+      context: {
+        uri: 'http://localhost:3000/graphql',
+      },
+    });
+  }
+
   getUser(id: number) {
     return this.graphQLClient.query<{ user: User }>({
       query: gql`
@@ -215,6 +231,7 @@ export class UserDetailsService {
         [Validators.required, Validators.email],
       ],
       isActive: [user.isActive],
+      roleId: [user.roleId, [Validators.required]],
       address: this.getAddressGroup(user.address),
       primaryPhone: this.getPhoneGroup(user.primaryPhone),
     });

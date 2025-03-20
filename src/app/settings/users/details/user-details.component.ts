@@ -11,6 +11,7 @@ import {
 import { AddressFormComponent } from './address-form.component';
 import { ContactFormComponent } from './contact-form.component';
 import { MatIconModule } from '@angular/material/icon';
+import { DropdownComponent, DropdownOption } from '@/components/inputs';
 
 @Component({
   selector: 'app-user-details',
@@ -22,6 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
     AddressFormComponent,
     ContactFormComponent,
     MatIconModule,
+    DropdownComponent,
   ],
   template: `
     <div class="flex flex-col w-full h-full justify-center items-center">
@@ -62,6 +64,10 @@ import { MatIconModule } from '@angular/material/icon';
                 formControlName="emailAddress"
                 label="Email Address"
                 [formItem]="userDetailService.form.get('emailAddress')" />
+              <app-dropdown
+                [options]="roles()"
+                label="Role"
+                formControlName="roleId" />
             </div>
           </div>
           <address-form />
@@ -88,8 +94,14 @@ export class UserDetailsComponent implements OnInit {
 
   currentUser = signal<User | undefined>(undefined);
 
+  roles = signal<DropdownOption[]>([]);
   ngOnInit(): void {
     this.userDetailService.populateForm(this.userId());
+    this.userDetailService
+      .getRolesForDropdown()
+      .subscribe(({ data: { roles } }) => {
+        this.roles.set(roles);
+      });
   }
 
   onSubmit() {
