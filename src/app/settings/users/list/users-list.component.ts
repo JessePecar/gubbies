@@ -51,6 +51,24 @@ export class UsersListComponent implements OnInit {
     });
   }
 
+  subscribeToChanges() {
+    this.userListService.subscribeToChanges().subscribe(({ data }) => {
+      console.log('Changes were made');
+      if (data && data.usersChanged) {
+        this.users.update(user => {
+          return user.map(u => {
+            if (u.id === data.usersChanged.id) {
+              return data.usersChanged;
+            }
+            return u;
+          });
+        });
+      }
+    });
+
+    this.userListService.subscribeToMore();
+  }
+
   onCreateUser = async () => {
     await this.router.navigate(['settings/users/details']);
   };
@@ -65,5 +83,8 @@ export class UsersListComponent implements OnInit {
       text: 'Add User',
       onClick: this.onCreateUser,
     });
+
+    // On change, refetch users
+    this.subscribeToChanges();
   }
 }

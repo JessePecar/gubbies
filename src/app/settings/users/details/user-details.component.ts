@@ -26,13 +26,14 @@ import { DropdownComponent, DropdownOption } from '@/components/inputs';
     DropdownComponent,
   ],
   template: `
-    <div class="flex flex-col w-full h-full justify-center items-center">
+    <div
+      class="flex flex-col w-full h-full justify-center items-center pr-2 lg: pr-0">
       <div class="flex w-1/2">
         <p style="font-size: 2rem" class="py-2">Add / Edit User</p>
       </div>
       @if (!userDetailService.isLoading) {
         <form
-          class="w-1/2 min-h-96 bg-stone-900 rounded shadow p-4"
+          class="w-full lg:w-1/2 min-h-96 bg-stone-900 rounded shadow p-4"
           [formGroup]="userDetailService.form"
           (ngSubmit)="onSubmit()">
           <div class="py-4 flex justify-end space-x-8">

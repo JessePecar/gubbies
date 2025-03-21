@@ -37,9 +37,6 @@ export class RoleDetailsService {
           }
         }
       `,
-      context: {
-        uri: 'http://localhost:3000/graphql',
-      },
       variables: {
         id: +id, // Telling graphql that this will be an integer
       },
@@ -58,9 +55,6 @@ export class RoleDetailsService {
           }
         }
       `,
-      context: {
-        uri: 'http://localhost:3000/graphql',
-      },
     }).valueChanges;
   }
 
@@ -75,9 +69,6 @@ export class RoleDetailsService {
           }
         }
       `,
-      context: {
-        uri: 'http://localhost:3000/graphql',
-      },
     }).valueChanges;
   }
 
@@ -99,9 +90,6 @@ export class RoleDetailsService {
             }
           }
         `,
-        context: {
-          uri: 'http://localhost:3000/graphql',
-        },
         variables: {
           upsertRoleInput: role,
         },

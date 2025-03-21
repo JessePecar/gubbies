@@ -29,9 +29,6 @@ export class UserDetailsService {
           }
         }
       `,
-      context: {
-        uri: 'http://localhost:3000/graphql',
-      },
     });
   }
 
@@ -68,9 +65,6 @@ export class UserDetailsService {
           }
         }
       `,
-      context: {
-        uri: 'http://localhost:3000/graphql',
-      },
       variables: {
         id: id,
       },
@@ -138,9 +132,6 @@ export class UserDetailsService {
             }
           }
         `,
-        context: {
-          uri: 'http://localhost:3000/graphql',
-        },
         variables: {
           updatedUser: this.currentUser() as UpdateUser,
         },

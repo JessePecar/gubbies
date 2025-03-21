@@ -6,7 +6,7 @@ import { MatIcon } from '@angular/material/icon';
   selector: 'app-table',
   imports: [ButtonComponent, MatIcon],
   template: `
-    <div class="flex justify-center items-center w-full h-full">
+    <div class="flex justify-center items-center w-full h-full pr-2 lg:p-0">
       <div class="h-3/4 w-full lg:w-3/4">
         <div
           class="bg-purple-600 min-h-10 p-1 flex justify-end shadow-lg mb-2 rounded-t-lg">

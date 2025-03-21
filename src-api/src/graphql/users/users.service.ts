@@ -11,42 +11,44 @@ export class UsersService {
   authUtil = new AuthUtil();
   constructor(private repository: RepositoryService) {}
 
-  async getUsers() {
-    return await this.repository.users.findMany({
+  private readonly defaultInclude = {
+    role: {
       include: {
-        role: {
+        rolePermissions: {
           include: {
-            rolePermissions: {
-              include: {
-                permission: {
-                  select: {
-                    id: true,
-                    name: true,
-                  },
-                },
+            permission: {
+              select: {
+                id: true,
+                name: true,
               },
             },
           },
         },
-        address: {
-          select: {
-            address1: true,
-            address2: true,
-            city: true,
-            countryCode: true,
-            id: true,
-            postalCode: true,
-            state: true,
-          },
-        },
-        primaryPhone: {
-          select: {
-            id: true,
-            nationalDigits: true,
-            rawDigits: true,
-          },
-        },
       },
+    },
+    address: {
+      select: {
+        address1: true,
+        address2: true,
+        city: true,
+        countryCode: true,
+        id: true,
+        postalCode: true,
+        state: true,
+      },
+    },
+    primaryPhone: {
+      select: {
+        id: true,
+        nationalDigits: true,
+        rawDigits: true,
+      },
+    },
+  };
+
+  async getUsers() {
+    return await this.repository.users.findMany({
+      include: this.defaultInclude,
     });
   }
 
@@ -109,21 +111,7 @@ export class UsersService {
           },
         },
       },
-      include: {
-        role: {
-          include: {
-            rolePermissions: {
-              include: {
-                permission: {
-                  select: {
-                    id: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
+      include: this.defaultInclude,
     });
   }
 
@@ -191,7 +179,9 @@ export class UsersService {
   }
 
   async updateUser(user: UpdateUserInput) {
-    const encryptedPassword = await this.authUtil.encryptPassword(user.password);
+    const encryptedPassword = await this.authUtil.encryptPassword(
+      user.password,
+    );
     // Update the address and primary phone at the same time
     var [address, primaryPhone] = await Promise.all([
       this.updateAddress(user),
@@ -225,6 +215,7 @@ export class UsersService {
         primaryPhoneId: primaryPhone.id,
         roleId: user.roleId, // Change if the role Id is different
       },
+      include: this.defaultInclude,
     });
   }
 }

@@ -26,9 +26,6 @@ export class RoleListService {
           }
         }
       `,
-      context: {
-        uri: 'http://localhost:3000/graphql',
-      },
     }).valueChanges;
   }
 }

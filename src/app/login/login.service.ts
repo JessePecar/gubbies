@@ -47,9 +47,6 @@ export class LoginService {
           }
         }
       `,
-      context: {
-        uri: 'http://localhost:3000/graphql',
-      },
       variables: {
         username,
         password,
