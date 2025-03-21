@@ -3,9 +3,12 @@ import { UpdateUserInput } from 'src/graphql.schema';
 import { RepositoryService } from 'src/repository/repository.service';
 
 import * as crypto from 'crypto';
+import { promisify } from 'util';
+import { AuthUtil } from 'src/utilities/authUtils';
 
 @Injectable()
 export class UsersService {
+  authUtil = new AuthUtil();
   constructor(private repository: RepositoryService) {}
 
   async getUsers() {
@@ -93,7 +96,7 @@ export class UsersService {
 
   async authUser(username: string, password: string) {
     // Encrypting the password
-    var encryptedPassword = ''; //this.encryptPassword(password);
+    var encryptedPassword = await this.authUtil.encryptPassword(password);
 
     return await this.repository.users.findFirst({
       where: {
@@ -188,6 +191,7 @@ export class UsersService {
   }
 
   async updateUser(user: UpdateUserInput) {
+    const encryptedPassword = await this.authUtil.encryptPassword(user.password);
     // Update the address and primary phone at the same time
     var [address, primaryPhone] = await Promise.all([
       this.updateAddress(user),
@@ -204,7 +208,7 @@ export class UsersService {
         firstName: user.firstName,
         lastName: user.lastName,
         userName: user.userName,
-        password: user.password,
+        password: encryptedPassword,
         isActive: user.isActive ?? true,
         addressId: address.id,
         primaryPhoneId: primaryPhone.id,
@@ -215,7 +219,7 @@ export class UsersService {
         firstName: user.firstName,
         lastName: user.lastName,
         userName: user.userName,
-        password: user.password,
+        password: encryptedPassword,
         isActive: user.isActive ?? true,
         addressId: address.id,
         primaryPhoneId: primaryPhone.id,
@@ -223,24 +227,4 @@ export class UsersService {
       },
     });
   }
-
-  private readonly algorithm = 'aes-256-cbc';
-
-  // private readonly key = crypto.createPrivateKey(process.env.ENCRYPT_KEY ?? '');
-  // private readonly iv = new TextEncoder().encode(process.env.IV_KEY ?? '');
-
-  // private encryptPassword(password: string) {
-  //   const cipher = crypto.createCipheriv(this.algorithm, this.key, this.iv);
-  //   let encrypted = cipher.update(password, 'utf-8', 'hex');
-  //   encrypted += cipher.final('hex');
-  //   return encrypted;
-  // }
-
-  // // This is only here in case I need it, but will almost never be used
-  // private decryptPassword(encryptedPassword: string) {
-  //   const decipher = crypto.createDecipheriv(this.algorithm, this.key, this.iv);
-  //   let decrypted = decipher.update(encryptedPassword, 'hex', 'utf-8');
-  //   decrypted += decipher.final('utf-8');
-  //   return decrypted;
-  // }
 }

@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-
+import { AuthUtil } from '../../src/utilities';
 const client = new PrismaClient();
 
 async function main() {
@@ -7,7 +7,7 @@ async function main() {
 
   var permissions = await client.permissions.findMany();
   if (!permissions || permissions.length < 1) {
-    console.log("Adding permissions to the db");
+    console.log('Adding permissions to the db');
     await client.permissions.createMany({
       data: [
         {
@@ -77,33 +77,78 @@ async function main() {
   permissions = await client.permissions.findMany();
 
   var roles = await client.roles.findMany();
-
-  if(!roles || roles.length < 1) {
+  var newRole: any | undefined = undefined
+  if (!roles || roles.length < 1) {
     // Create an admin role
-    var newRole = await client.roles.create({
+    newRole = await client.roles.create({
       data: {
         name: 'Administrator',
         hierarchyTier: 1,
-      }
+      },
     });
 
     await client.rolePermissions.createMany({
-      data: permissions.map(p => {
+      data: permissions.map((p) => {
         return {
           permissionId: p.id,
-          roleId: newRole.id
-        }
-      })
+          roleId: newRole.id,
+        };
+      }),
+    });
+  }
+  // Create the default admin user
+  var users = await client.users.findMany();
+
+  var address: any | undefined = undefined;
+  var primaryPhone: any | undefined = undefined;
+  if (!users || users.length < 1) {
+    var addresses = await client.address.findMany();
+    if (!addresses || addresses.length < 1) {
+      address = await client.address.create({
+        data: {
+          address1: '',
+          city: '',
+          state: '',
+          countryCode: 'US',
+          postalCode: 0,
+        },
+      });
+    }
+
+    var phones = await client.phone.findMany();
+
+    if (!phones || phones.length < 1) {
+      primaryPhone = await client.phone.create({
+        data: {
+          nationalDigits: '',
+          rawDigits: '',
+        },
+      });
+    }
+
+    var authUtil = new AuthUtil();
+    await client.users.create({
+      data: {
+        firstName: 'Admin',
+        emailAddress: 'admin@gubbies.com',
+        addressId: address?.id ?? 1,
+        roleId: newRole?.id ?? 1,
+        isActive: true,
+        lastName: 'User',
+        password: await authUtil.encryptPassword('password'),
+        userName: 'admin',
+        primaryPhoneId: primaryPhone?.id ?? 1,
+      },
     });
   }
 }
 
 main()
   .then(async () => {
-    await client.$disconnect()
+    await client.$disconnect();
   })
   .catch(async (e) => {
-    console.error(e)
-    await client.$disconnect()
-    process.exit(1)
-  })
+    console.error(e);
+    await client.$disconnect();
+    process.exit(1);
+  });
