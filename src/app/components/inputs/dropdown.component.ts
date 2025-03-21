@@ -24,58 +24,32 @@ export type DropdownOption = {
   selector: 'app-dropdown',
   imports: [MatIconModule, MatRippleModule, ReactiveFormsModule],
   template: `
-    <div>
-      <div class="pl-1">
-        <label [for]="label() + '_input'">{{ label() }} </label>
-      </div>
-      <select
-        [value]="value()?.id ?? 0"
-        (change)="handleChange($event)"
-        class="minimal block sm:text-sm w-full h-10 rounded-lg border border-stone-600 p-1">
+    <div #dropdown class="dropdown my-2" tabindex="1">
+      <i class="db2" tabindex="1"></i>
+      <a
+        matRipple
+        [matRippleCentered]="true"
+        matRippleColor="#44444444"
+        class="dropbtn w-full flex items-center justify-between p-1 h-[42px] w-full rounded-lg border border-stone-600">
+        {{ getSelectedOption() }}
+        <mat-icon fontIcon="arrow_drop_down" />
+      </a>
+      <div class="dropdown-content bg-stone-700 text-grey-200">
         @for (option of options(); track $index) {
-          <option
-            class="bg-stone-900 text-stone-200 h-8"
-            [value]="option.id"
+          <a
             matRipple
-            matRippleColor="#44444444">
-            <span class="h-8">
+            matRippleColor="#44444444"
+            class="dropdown-item"
+            (click)="handleChange(option)">
+            <span class="flex space-x-8 items-center">
               {{ option.name }}
             </span>
-          </option>
+          </a>
         }
-      </select>
+      </div>
     </div>
   `,
-  styles: `
-    select {
-      margin: 0;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-    }
-
-    select.minimal {
-      background-image:
-        linear-gradient(45deg, transparent 50%, var(--color-stone-400) 50%),
-        linear-gradient(135deg, var(--color-stone-400) 50%, transparent 50%),
-        linear-gradient(
-          to right,
-          var(--color-stone-400),
-          var(--color-stone-400)
-        );
-      background-position:
-        calc(100% - 20px) calc(1em + 2px),
-        calc(100% - 15px) calc(1em + 2px),
-        calc(100% - 2.5em) 0.5em;
-      background-size:
-        5px 5px,
-        5px 5px,
-        1px 1.5em;
-      background-repeat: no-repeat;
-    }
-  `,
+  styleUrl: '../context-button.component.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -85,32 +59,39 @@ export type DropdownOption = {
   ],
 })
 export class DropdownComponent implements ControlValueAccessor {
-  @ViewChild('input')
-  input!: ElementRef<HTMLInputElement>;
+  @ViewChild('dropdown')
+  dropdown!: ElementRef<HTMLDivElement>;
 
   isDisabled = signal<boolean>(false);
-  value = signal<DropdownOption | null>(null);
+  value = signal<number | null>(null);
 
   options = input.required<DropdownOption[] | null>();
-  inputProps = input<Partial<HTMLInputElement>>();
   label = input<string | undefined>(undefined);
 
   handleUnfocus = output<string>();
 
-  handleChange(event: Event) {
-    const inputElement = event.currentTarget as HTMLInputElement;
-    const inputValue = inputElement.value;
-    console.log(inputValue);
-    this.onChange(parseInt(inputValue) ?? null);
+  handleChange(selectedOption: DropdownOption) {
+    const inputValue = selectedOption.id;
+
+    this.onChange(inputValue);
+    this.writeValue(inputValue);
+    // Closes the dropdown
+    this.dropdown.nativeElement.blur();
   }
 
   onChange: (value: number | null) => void = noop;
   onTouched: (touched: boolean) => void = noop;
 
+  getSelectedOption() {
+    if (this.options() !== null && this.value() !== null) {
+      return this.options()?.find(opt => opt.id === this.value())?.name;
+    }
+    return this.label();
+  }
   //
   // Implementing ControlValueAccessor
   //
-  writeValue(value: DropdownOption | null): void {
+  writeValue(value: number | null): void {
     this.value.set(value);
   }
 

@@ -6,7 +6,7 @@ import { MatRippleModule } from '@angular/material/core';
   selector: 'context-button',
   imports: [MatIconModule, MatRippleModule],
   template: `
-    <div class="dropdown" tabindex="1">
+    <div class="dropdown m-3" tabindex="1">
       <i class="db2" tabindex="1"></i>
       <a
         matRipple
@@ -37,73 +37,7 @@ import { MatRippleModule } from '@angular/material/core';
       </div>
     </div>
   `,
-  styles: `
-    /* dd container */
-    .dropdown {
-      position: relative;
-      outline: none;
-      margin: 10px;
-    }
-
-    /* button */
-    .dropbtn {
-    }
-
-    /* dd content */
-    .dropdown .dropdown-content {
-      position: absolute;
-      top: 50%;
-      right: 50%;
-      min-width: 10rem;
-      z-index: 100000;
-      visibility: hidden;
-      opacity: 0;
-      transition: 0.15s ease-out;
-    }
-    .dropdown-content .dropdown-item {
-      padding: 0.25rem 16px;
-      display: block;
-      text-decoration: none;
-      transition: 0.15s ease-out;
-    }
-    .dropdown-content .dropdown-item:hover {
-      background-image: linear-gradient(rgb(0 0 0/20%) 0 0);
-    }
-
-    /* show dd content */
-    .dropdown:focus .dropdown-content {
-      outline: none;
-      transform: translateY(20px);
-      visibility: visible;
-      opacity: 1;
-    }
-
-    .dropbtn:hover,
-    .dropdown:focus .dropbtn {
-      background-image: linear-gradient(rgb(0 0 0/20%) 0 0);
-    }
-
-    /* mask to close menu by clicking on the button */
-    .dropdown .db2 {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      opacity: 0;
-      cursor: pointer;
-      z-index: 10;
-      display: none;
-    }
-    .dropdown:focus .db2 {
-      display: inline-block;
-    }
-    .dropdown .db2:focus .dropdown-content {
-      outline: none;
-      visibility: hidden;
-      opacity: 0;
-    }
-  `,
+  styleUrl: './context-button.component.scss',
 })
 export class ContextButtonComponent {
   options = input.required<

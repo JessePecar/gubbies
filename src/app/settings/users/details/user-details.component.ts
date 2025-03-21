@@ -105,12 +105,9 @@ export class UserDetailsComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.userDetailService.form.value);
-
     if (
       this.userDetailService.form !== undefined &&
-      this.userDetailService.form.valid &&
-      false
+      this.userDetailService.form.valid
     ) {
       this.userDetailService.updateUser(this.userDetailService.form?.value);
     }

@@ -46,6 +46,7 @@ export class UserDetailsService {
             userName
             isActive
             emailAddress
+            roleId
             primaryPhone {
               id
               rawDigits
@@ -84,13 +85,11 @@ export class UserDetailsService {
     address,
     isActive,
     primaryPhone,
+    roleId,
   }: any) {
     this.currentUser.set({
       id: this.currentUser()?.id ?? 0,
-      roleId:
-        (this.currentUser()?.roleId ?? -1) > 0
-          ? (this.currentUser()?.roleId ?? 1)
-          : 1,
+      roleId: roleId,
       password: this.currentUser()?.password ?? 'password',
       firstName,
       lastName,
