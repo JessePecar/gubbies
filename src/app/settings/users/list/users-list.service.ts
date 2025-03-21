@@ -50,14 +50,5 @@ export class UsersListService {
     return this.userSubscriptionService.subscribe();
   }
 
-  subscribeToMore() {
-    return this.getUsersQuery().subscribeToMore({
-      document: this.userSubscriptionService.document,
-      updateQuery: () => {
-        console.log('Update received');
-      },
-    });
-  }
-
   constructor() {}
 }

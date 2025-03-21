@@ -53,7 +53,6 @@ export class UsersListComponent implements OnInit {
 
   subscribeToChanges() {
     this.userListService.subscribeToChanges().subscribe(({ data }) => {
-      console.log('Changes were made');
       if (data && data.usersChanged) {
         this.users.update(user => {
           return user.map(u => {
@@ -65,8 +64,6 @@ export class UsersListComponent implements OnInit {
         });
       }
     });
-
-    this.userListService.subscribeToMore();
   }
 
   onCreateUser = async () => {
