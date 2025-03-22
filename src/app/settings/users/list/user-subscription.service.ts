@@ -20,6 +20,13 @@ export class UserSubscriptionService extends Subscription<{
         role {
           id
           name
+          hierarchyTier
+          rolePermissions {
+            permissionId
+            permission {
+              id
+            }
+          }
         }
         primaryPhone {
           rawDigits
