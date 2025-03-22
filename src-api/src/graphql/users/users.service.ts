@@ -99,7 +99,7 @@ export class UsersService {
   async authUser(username: string, password: string) {
     // Encrypting the password
     var encryptedPassword = await this.authUtil.encryptPassword(password);
-
+    
     return await this.repository.users.findFirst({
       where: {
         AND: {

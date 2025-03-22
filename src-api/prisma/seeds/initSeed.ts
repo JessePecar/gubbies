@@ -126,6 +126,7 @@ async function main() {
       });
     }
 
+    // NOTE: The password associated with this account may be wrong, so we will need to fix that at some point
     var authUtil = new AuthUtil();
     await client.users.create({
       data: {

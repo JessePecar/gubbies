@@ -43,3 +43,5 @@ Thumbs.db
 
 **/node_modules/**
 src-api/prisma/gubbies.db
+package-lock.json
+**/package-lock.json
