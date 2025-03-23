@@ -19,7 +19,11 @@ export enum PermissionName {
     REPORTS_INVENTORY = "REPORTS_INVENTORY",
     REPORTS_PRICING = "REPORTS_PRICING",
     REPORTS_PROMOTIONS = "REPORTS_PROMOTIONS",
-    SETTINGS = "SETTINGS"
+    SETTINGS = "SETTINGS",
+    EDIT_USER = "EDIT_USER",
+    CREATE_USER = "CREATE_USER",
+    EDIT_ROLE = "EDIT_ROLE",
+    CREATE_ROLE = "CREATE_ROLE"
 }
 
 export class CreateItemInput {
@@ -108,6 +112,8 @@ export interface BaseItem {
 }
 
 export abstract class IQuery {
+    abstract login(username?: Nullable<string>, password?: Nullable<string>): Nullable<AuthResponse> | Promise<Nullable<AuthResponse>>;
+
     abstract items(): Nullable<Nullable<Item>[]> | Promise<Nullable<Nullable<Item>[]>>;
 
     abstract item(id: string): Nullable<Item> | Promise<Nullable<Item>>;
@@ -116,11 +122,20 @@ export abstract class IQuery {
 
     abstract role(id: number): Nullable<Role> | Promise<Nullable<Role>>;
 
+    abstract roleTiers(): Nullable<Nullable<RoleTiers>[]> | Promise<Nullable<Nullable<RoleTiers>[]>>;
+
+    abstract permissions(): Nullable<Nullable<Permission>[]> | Promise<Nullable<Nullable<Permission>[]>>;
+
     abstract users(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
 
     abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
 
     abstract auth(username?: Nullable<string>, password?: Nullable<string>): Nullable<User> | Promise<Nullable<User>>;
+}
+
+export class AuthResponse {
+    accessToken: string;
+    user: User;
 }
 
 export abstract class IMutation {
@@ -186,7 +201,6 @@ export class Role {
     name: string;
     hierarchyTier: number;
     rolePermissions?: Nullable<Nullable<RolePermission>[]>;
-    users?: Nullable<Nullable<User>[]>;
 }
 
 export class RolePermission {
@@ -200,6 +214,10 @@ export class Permission {
     id: number;
     name: PermissionName;
     rolePermissions?: Nullable<Nullable<RolePermission>[]>;
+}
+
+export class RoleTiers {
+    tierNumber: number;
 }
 
 export class User {

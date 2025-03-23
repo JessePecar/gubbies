@@ -1,0 +1,8 @@
+type Query {
+  login(username: String, password: String): AuthResponse
+}
+
+type AuthResponse {
+  accessToken: String!
+  user: User!
+}

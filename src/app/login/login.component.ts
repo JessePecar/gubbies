@@ -126,12 +126,13 @@ export class LoginComponent {
 
     this.loginService
       .authUser(username, password)
-      .subscribe(({ data: { auth } }) => {
-        if (auth === undefined || auth === null) {
+      .subscribe(({ data: { login: { accessToken, user} } }) => {
+        // TODO: Setup the process to save the token and then attach on outgoing requests
+        if (user === undefined || user === null) {
           // Show the error message if the login was not found (the login information does not exist)
           this.showErrorMessage = true;
         } else {
-          this.userInfoService.setUser(auth);
+          this.userInfoService.setUser(user);
           this.router.navigate(['']);
         }
       });

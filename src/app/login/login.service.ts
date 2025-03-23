@@ -12,37 +12,45 @@ export class LoginService {
   constructor() {}
 
   authUser(username: string, password: string) {
-    return this.graphQLClient.query<{ auth: User }>({
+    return this.graphQLClient.query<{
+      login: {
+        accessToken: string;
+        user: User;
+      };
+    }>({
       query: gql`
         query AuthUser($username: String!, $password: String!) {
-          auth(username: $username, password: $password) {
-            id
-            firstName
-            lastName
-            userName
-            isActive
-            emailAddress
-            primaryPhone {
+          login(username: $username, password: $password) {
+            accessToken
+            user {
               id
-              rawDigits
-              nationalDigits
-            }
-            role {
-              name
-              id
-              hierarchyTier
-              rolePermissions {
-                permissionId
+              firstName
+              lastName
+              userName
+              isActive
+              emailAddress
+              primaryPhone {
+                id
+                rawDigits
+                nationalDigits
               }
-            }
-            address {
-              id
-              address1
-              address2
-              city
-              state
-              countryCode
-              postalCode
+              role {
+                name
+                id
+                hierarchyTier
+                rolePermissions {
+                  permissionId
+                }
+              }
+              address {
+                id
+                address1
+                address2
+                city
+                state
+                countryCode
+                postalCode
+              }
             }
           }
         }
