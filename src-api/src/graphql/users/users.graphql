@@ -1,7 +1,6 @@
 type Query {
   users: [User]
   user(id: ID!): User
-  auth(username: String, password: String): User
 }
 
 type Mutation {

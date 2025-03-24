@@ -136,7 +136,7 @@ async function main() {
         roleId: newRole?.id ?? 1,
         isActive: true,
         lastName: 'User',
-        password: await authUtil.encryptPassword('password'),
+        password: await authUtil.hashPassword('password'),
         userName: 'admin',
         primaryPhoneId: primaryPhone?.id ?? 1,
       },

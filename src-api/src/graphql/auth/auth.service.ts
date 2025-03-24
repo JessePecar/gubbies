@@ -44,20 +44,22 @@ export class AuthService {
 
   async authUser(username: string, password: string) {
     // Encrypting the password
-    var encryptedPassword = await this.authUtil.encryptPassword(password);
-    
-    return await this.repository.users.findFirst({
+    var encryptedPassword = await this.authUtil.hashPassword(password);
+
+    var user = await this.repository.users.findFirst({
       where: {
-        AND: {
-          userName: {
-            equals: username,
-          },
-          password: {
-            in: [password, encryptedPassword], // Going to temporarily check this until all user's passwords are encrypted
-          },
+        userName: {
+          equals: username,
         },
       },
       include: this.defaultInclude,
     });
+
+    if(user && user.password === encryptedPassword) {
+      user.password = '';
+      return user;
+    }
+
+    return undefined;
   }
 }

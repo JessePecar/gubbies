@@ -96,25 +96,6 @@ export class UsersService {
     });
   }
 
-  async authUser(username: string, password: string) {
-    // Encrypting the password
-    var encryptedPassword = await this.authUtil.encryptPassword(password);
-    
-    return await this.repository.users.findFirst({
-      where: {
-        AND: {
-          userName: {
-            equals: username,
-          },
-          password: {
-            in: [password, encryptedPassword], // Going to temporarily check this until all user's passwords are encrypted
-          },
-        },
-      },
-      include: this.defaultInclude,
-    });
-  }
-
   private async updateAddress({ address }: UpdateUserInput) {
     if (address !== null && address !== undefined) {
       return await this.repository.address.upsert({
@@ -179,9 +160,7 @@ export class UsersService {
   }
 
   async updateUser(user: UpdateUserInput) {
-    const encryptedPassword = await this.authUtil.encryptPassword(
-      user.password,
-    );
+    const encryptedPassword = await this.authUtil.hashPassword(user.password);
     // Update the address and primary phone at the same time
     var [address, primaryPhone] = await Promise.all([
       this.updateAddress(user),

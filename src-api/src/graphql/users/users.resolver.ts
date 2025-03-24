@@ -22,16 +22,6 @@ export class UsersResolver {
     return await this.usersService.getUserById(id);
   }
 
-  // Authenticate the user (this is not something that I would keep as a username/password endpoint
-  // and would usually have tokenization with claims that came from external auth)
-  @Query('auth')
-  async authUser(
-    @Args('username') username: string,
-    @Args('password') password: string,
-  ) {
-    return await this.usersService.authUser(username, password);
-  }
-
   // Update the user, will add phone and address if they do not exist already
   @Mutation('updateUser')
   async updateUser(@Args('updateUserInput') updatedUser: UpdateUserInput) {
