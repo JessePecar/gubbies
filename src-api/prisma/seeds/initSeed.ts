@@ -5,6 +5,8 @@ const client = new PrismaClient();
 async function main() {
   client.$connect;
 
+  var authUtil = new AuthUtil();
+
   var permissions = await client.permissions.findMany();
   if (!permissions || permissions.length < 1) {
     console.log('Adding permissions to the db');
@@ -77,7 +79,7 @@ async function main() {
   permissions = await client.permissions.findMany();
 
   var roles = await client.roles.findMany();
-  var newRole: any | undefined = undefined
+  var newRole: any | undefined = undefined;
   if (!roles || roles.length < 1) {
     // Create an admin role
     newRole = await client.roles.create({
@@ -126,8 +128,6 @@ async function main() {
       });
     }
 
-    // NOTE: The password associated with this account may be wrong, so we will need to fix that at some point
-    var authUtil = new AuthUtil();
     await client.users.create({
       data: {
         firstName: 'Admin',
@@ -139,6 +139,18 @@ async function main() {
         password: await authUtil.hashPassword('password'),
         userName: 'admin',
         primaryPhoneId: primaryPhone?.id ?? 1,
+      },
+    });
+  } else {
+    // We will change anybody with a plain text password of 'password' to a hashed password
+    await client.users.updateMany({
+      where: {
+        password: {
+          equals: 'password',
+        },
+      },
+      data: {
+        password: await authUtil.hashPassword('password'),
       },
     });
   }

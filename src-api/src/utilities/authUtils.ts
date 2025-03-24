@@ -13,7 +13,7 @@ export class AuthUtil {
   }
 
   async hashPassword(password: string) {
-    var hash = await bcrypt.hash(password, await this.passKey);
+    var hash = await bcrypt.hash(password, this.passKey);
     return hash;
   }
 
