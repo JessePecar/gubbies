@@ -220,10 +220,11 @@ export class RolesService {
       },
     });
 
-    console.log(role);
     await this.mergeRolePermissions(
       (upsertRole.rolePermissions ?? []) as RolePermissionInput[],
       role.id ?? -1,
     );
+
+    return await this.getRole(upsertRole.id ?? -1);
   }
 }

@@ -10,7 +10,6 @@ type Mutation {
 } 
 
 type Subscription {
-  roleCreated: Role # TODO: Determine if this is needed
   usersChanged: User
 }
 

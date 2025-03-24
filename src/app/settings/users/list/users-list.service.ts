@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { User } from '@interfaces/settings/users';
-import { UserSubscriptionService } from './user-subscription.service';
+import { UserSubscriptionService } from '@/settings/users';
 
 @Injectable({
   providedIn: 'root',

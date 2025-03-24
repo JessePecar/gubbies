@@ -1,4 +1,5 @@
-import { UserSubscriptionService } from '@/settings/users/list/user-subscription.service';
+import { RoleSubscriptionService } from '@/settings/roles';
+import { UserSubscriptionService } from '@/settings/users';
 import { Injectable, signal } from '@angular/core';
 import { User } from '@interfaces/settings/users';
 
@@ -9,7 +10,10 @@ export class UserInfoService {
   private readonly localStorageKey = 'userInfo';
   public userInfo = signal<User | undefined>(undefined);
 
-  constructor(userSubService: UserSubscriptionService) {
+  constructor(
+    userSubService: UserSubscriptionService,
+    roleSubService: RoleSubscriptionService
+  ) {
     userSubService.subscribe().subscribe(({ data }) => {
       if (
         data &&
@@ -17,6 +21,23 @@ export class UserInfoService {
         data.usersChanged.id === this.userInfo()?.id
       ) {
         this.userInfo.set(data.usersChanged);
+      }
+    });
+
+    roleSubService.subscribe().subscribe(({ data }) => {
+      if (
+        data &&
+        data.roleUpdated &&
+        data.roleUpdated.id === this.userInfo()?.roleId
+      ) {
+        this.userInfo.update(ui => {
+          // Update the role on the user object
+          if (ui) {
+            ui.role = data.roleUpdated;
+          }
+
+          return ui;
+        });
       }
     });
   }
