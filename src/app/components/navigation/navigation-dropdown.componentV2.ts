@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { NavbarService } from '../../services/navbar.service';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../button.component';
+import { UserInfoService } from '@/services';
 
 @Component({
   selector: 'app-navigation-dropdownv2',
@@ -38,11 +39,13 @@ import { ButtonComponent } from '../button.component';
         <div
           class="flex flex-col border-t border-stone-800 pt-1 divide-y divide-stone-800 w-full">
           @for (opt of dropdownOptions(); track $index) {
-            <a
-              [routerLink]="opt.route"
-              class="w-full hover:bg-stone-800 rounded-sm p-1 "
-              >{{ opt.linkTitle }}</a
-            >
+            @if (!opt.permissionId || hasAccess(opt.permissionId)) {
+              <a
+                [routerLink]="opt.route"
+                class="w-full hover:bg-stone-800 rounded-sm p-1 "
+                >{{ opt.linkTitle }}</a
+              >
+            }
           }
         </div>
       </div>
@@ -54,13 +57,13 @@ export class NavigationDropdownComponentV2 {
   @ViewChild('menu')
   menu!: ElementRef<HTMLDivElement>;
 
-  navbarService?: NavbarService = undefined;
+  navbarService = inject(NavbarService);
+  userInfoService = inject(UserInfoService);
 
-  constructor() {
-    this.navbarService = inject(NavbarService);
-  }
-
-  dropdownOptions = input.required<{ linkTitle: string; route: string }[]>();
+  dropdownOptions =
+    input.required<
+      { linkTitle: string; route: string; permissionId?: number }[]
+    >();
 
   showArrow = input<boolean>(true);
 
@@ -78,5 +81,14 @@ export class NavigationDropdownComponentV2 {
     if (this.showMenu()) {
       this.navbarService?.tiggerEvent(name);
     }
+  }
+
+  hasAccess(permissionId: number) {
+    return (
+      this.userInfoService
+        .userInfo()
+        ?.role?.rolePermissions.find(rp => rp.permissionId === permissionId) !==
+      undefined
+    );
   }
 }

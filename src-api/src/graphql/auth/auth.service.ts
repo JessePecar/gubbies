@@ -55,7 +55,7 @@ export class AuthService {
       include: this.defaultInclude,
     });
 
-    if(user && user.password === encryptedPassword) {
+    if (user && user.password === encryptedPassword) {
       user.password = '';
       return user;
     }

@@ -16,7 +16,7 @@ import { NavigationDropdownComponentV2 } from './navigation-dropdown.componentV2
 export class SettingsNavItemComponent {
   dropdownOptions = [
     {
-      linkTitle: 'User List',
+      linkTitle: 'Users',
       route: '/settings/users/list',
     },
     {

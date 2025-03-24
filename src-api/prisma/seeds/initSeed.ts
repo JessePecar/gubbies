@@ -146,7 +146,7 @@ async function main() {
     await client.users.updateMany({
       where: {
         password: {
-          equals: 'password',
+          in: ['password', 'ffec5bfce2df0cda4bdebb70f89ab11b'],
         },
       },
       data: {
