@@ -92,8 +92,8 @@ export class RoleListComponent {
 
   private onRoleUpdated(): Observable<Role> {
     return this.roleSubService.subscribe().pipe(
-      filter(({ data }) => !!data?.roleUpdated),
-      map(({ data }) => data!.roleUpdated)
+      map(({ data }) => data?.roleUpdated),
+      filter((role): role is Role => !!role)
     );
   }
 
