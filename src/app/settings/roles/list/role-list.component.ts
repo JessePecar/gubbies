@@ -3,12 +3,10 @@ import { RoleListService } from './role-list.service';
 import { TableComponent } from '@/components/tables/table.component';
 import { Role } from '@/interfaces/settings/roles';
 import { RoleItemComponent } from './role-item.component';
-import { groupBy, map, mergeMap, of, toArray, zip } from 'rxjs';
 import { UserInfoService } from '@/services';
 import { Router } from '@angular/router';
 import { RoleSubscriptionService } from '../role-subscription.service';
 import { JsonPipe } from '@angular/common';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 type GroupedRole = {
   tierId: number;
@@ -17,12 +15,11 @@ type GroupedRole = {
 
 @Component({
   selector: 'app-role-list',
-  imports: [TableComponent, RoleItemComponent, JsonPipe],
+  imports: [TableComponent, RoleItemComponent],
   template: `<app-table [toolbarItems]="toolbarItems">
     <div class="h-full overflow-y-auto">
-      @if (rolesV2(); as roles) {
-        {{ roles | json }}
-        @if (roles.length > 0) {
+      @if (roles(); as roles) {
+        @if (roles) {
           @for (tier of roles; track tier.tierId) {
             <div class="mb-1 px-1">
               <div
@@ -60,114 +57,57 @@ export class RoleListComponent implements OnInit {
 
     roleSubService.subscribe().subscribe(({ data }) => {
       if (data && data.roleUpdated) {
-        // this.getRoles();
-        var groupedTier = this.roles().find(
-          r => r.tierId === data.roleUpdated.hierarchyTier
-        );
-        // If the tier exists, then we will add/update to the tier
-        if (groupedTier) {
-          if (groupedTier.roles.find(role => role.id === data.roleUpdated.id)) {
-            groupedTier.roles = groupedTier.roles.map(role => {
-              if (role.id === data.roleUpdated.id) return data.roleUpdated;
-              return role;
-            });
-          } else {
-            groupedTier.roles.push(data.roleUpdated);
-          }
-
-          var updatedRoles = this.roles().map(r => {
-            if (r.tierId === groupedTier!.tierId) {
-              return groupedTier!;
-            }
-            return r;
-          });
-
-          this.roles.set([...updatedRoles]);
-
-          console.log(this.roles());
+        var rawRoles = this.rawRoles();
+        var roleIndex = rawRoles.findIndex(rr => rr.id === data.roleUpdated.id);
+        if (roleIndex !== -1) {
+          rawRoles[roleIndex] = data.roleUpdated;
+        } else {
+          rawRoles.push(data.roleUpdated);
+          rawRoles = rawRoles.sort((a, b) => a.hierarchyTier - b.hierarchyTier);
         }
-        // Else, we refetch which will do the sorting that we want as well
-        else {
-          this.getRoles();
-        }
+
+        this.rawRoles.set(rawRoles);
+        this.groupRoles();
       }
     });
   }
 
+  rawRoles = signal<Role[]>([]);
   roles = signal<GroupedRole[]>([]);
-  rolesV2 = toSignal(
-    inject(RoleSubscriptionService)
-      .subscribe()
-      .pipe(
-        map(({ data }) => {
-          if (data && data.roleUpdated) {
-            // this.getRoles();
-            var groupedTier = this.roles().find(
-              r => r.tierId === data.roleUpdated.hierarchyTier
-            );
-            // If the tier exists, then we will add/update to the tier
-            if (groupedTier) {
-              if (
-                groupedTier.roles.find(role => role.id === data.roleUpdated.id)
-              ) {
-                groupedTier.roles = groupedTier.roles.map(role => {
-                  if (role.id === data.roleUpdated.id) return data.roleUpdated;
-                  return role;
-                });
-              } else {
-                groupedTier.roles.push(data.roleUpdated);
-              }
 
-              var updatedRoles = this.roles().map(r => {
-                if (r.tierId === groupedTier!.tierId) {
-                  return groupedTier!;
-                }
-                return r;
-              });
-
-              return [...updatedRoles];
-            }
-            // Else, we refetch which will do the sorting that we want as well
-            else {
-              return this.getRoles();
-            }
-          }
-
-          return this.roles();
-        })
-      )
-  );
   toolbarItems: { icon: string; text: string; onClick: () => void }[] = [];
 
   getRoles() {
-    var groupedRoles: GroupedRole[] = [];
-
-    this.roleListService.getRoles().subscribe(({ data: roles }) => {
-      of(roles)
-        .pipe(
-          mergeMap(obs => {
-            return obs.roles;
-          }),
-          groupBy(role => role.hierarchyTier, {
-            element: role => role,
-          }),
-          mergeMap(group => zip(of(group.key), group.pipe(toArray())))
-        )
-        .subscribe(res => {
-          groupedRoles.push({
-            roles: res[1],
-            tierId: res[0],
-          });
-        })
-        .add(() => {
-          this.roles.set(
-            // Add the grouped roles sorted by tierId descending
-            groupedRoles.sort((a, b) => a.tierId - b.tierId)
-          );
-        });
+    this.roleListService.getRoles().subscribe(({ data: { roles } }) => {
+      this.rawRoles.set(roles);
+      this.groupRoles();
     });
+  }
 
-    return this.roles();
+  groupRoles() {
+    let groupedRoles: GroupedRole[] = [];
+    var rawRoles = [...this.rawRoles()];
+    rawRoles
+      .sort((a, b) => a.hierarchyTier - b.hierarchyTier)
+      .reduce<GroupedRole[]>((collection, value) => {
+        // If the item exists in the collection, add the role
+        var collectionIndex = collection.findIndex(
+          c => c.tierId === value.hierarchyTier
+        );
+
+        if (collectionIndex !== -1) {
+          collection[collectionIndex].roles.push(value);
+        } else {
+          collection.push({
+            tierId: value.hierarchyTier,
+            roles: [value],
+          });
+        }
+        return collection;
+      }, groupedRoles);
+
+    console.log(groupedRoles);
+    this.roles.set(groupedRoles);
   }
 
   ngOnInit(): void {
