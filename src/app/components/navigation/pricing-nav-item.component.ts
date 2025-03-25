@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationDropdownComponentV2 } from './navigation-dropdown.componentV2';
+import { PermissionEnum } from '@/entities/role';
 
 @Component({
   selector: 'app-pricing-nav-item',
@@ -7,13 +8,16 @@ import { NavigationDropdownComponentV2 } from './navigation-dropdown.componentV2
   template: `
     <app-navigation-dropdownv2
       dropdownName="pricing"
-      [dropdownOptions]="dropdownOptions">
+      [dropdownOptions]="dropdownOptions"
+      [dropdownPermission]="pricingPermission">
       <p menuItem class="hover:underline">Pricing</p>
     </app-navigation-dropdownv2>
   `,
   styles: ``,
 })
 export class PricingNavItemComponent {
+  pricingPermission = PermissionEnum.PRICING;
+
   dropdownOptions = [
     {
       linkTitle: 'Item Pricing',

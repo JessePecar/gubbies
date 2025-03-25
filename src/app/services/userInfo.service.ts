@@ -1,6 +1,7 @@
 import { RoleSubscriptionService } from '@/settings/roles';
 import { UserSubscriptionService } from '@/settings/users';
 import { Injectable, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { User } from '@interfaces/settings/users';
 
 @Injectable({
@@ -64,5 +65,9 @@ export class UserInfoService {
     }
 
     // TODO: Get the user from the db since this would actually be a token in the future
+  }
+
+  onUserChange() {
+    return toObservable(this.userInfo);
   }
 }
