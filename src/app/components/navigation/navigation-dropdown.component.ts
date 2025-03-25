@@ -12,45 +12,50 @@ import { ButtonComponent } from '../button.component';
 import { UserInfoService } from '@/services';
 import { DropdownOption } from '@/types/components/navigation/DropdownOption';
 import { DropdownItemComponent } from '@/components/navigation/dropdown-item.component';
+import { NavigationDropdownDirective } from './navigation-dropdown.directive';
+import { PermissionEnum } from '@/entities/role';
 
 @Component({
-  selector: 'app-navigation-dropdownv2',
-  imports: [MatIconModule, ButtonComponent, DropdownItemComponent],
+  selector: 'app-navigation-dropdown',
+  imports: [
+    MatIconModule,
+    ButtonComponent,
+    DropdownItemComponent,
+    NavigationDropdownDirective,
+  ],
   template: `
-    @if (canViewDropdown()) {
-      <div>
-        <app-button (click)="toggleMenu()">
-          <div class="w-full flex justify-between pl-4 py-1">
-            <ng-content select="[menuItem]" />
-            @if (showArrow()) {
-              <mat-icon
-                [class]="
-                  'transition duration-200 ' +
-                  (showMenu() ? 'rotate-180' : 'rotate-0')
-                "
-                fontIcon="keyboard_arrow_down" />
-            }
-          </div>
-        </app-button>
-        <!-- Drop down menu -->
+    <div *hasPermission="dropdownPermission()">
+      <app-button (click)="toggleMenu()">
+        <div class="w-full flex justify-between pl-4 py-1">
+          <ng-content select="[menuItem]" />
+          @if (showArrow()) {
+            <mat-icon
+              [class]="
+                'transition duration-200 ' +
+                (showMenu() ? 'rotate-180' : 'rotate-0')
+              "
+              fontIcon="keyboard_arrow_down" />
+          }
+        </div>
+      </app-button>
+      <!-- Drop down menu -->
+      <div
+        #menu
+        (blur)="toggleMenu()"
+        style="max-height: 0px;"
+        class="w-full transition-all duration-200 overflow-hidden pl-4">
         <div
-          #menu
-          (blur)="toggleMenu()"
-          style="max-height: 0px;"
-          class="w-full transition-all duration-200 overflow-hidden pl-4">
-          <div
-            class="flex flex-col border-t border-stone-800 pt-1 divide-y divide-stone-800 w-full">
-            @for (opt of dropdownOptions(); track $index) {
-              <app-dropdown-item [option]="opt" />
-            }
-          </div>
+          class="flex flex-col border-t border-stone-800 pt-1 divide-y divide-stone-800 w-full">
+          @for (opt of dropdownOptions(); track $index) {
+            <app-dropdown-item [option]="opt" />
+          }
         </div>
       </div>
-    }
+    </div>
   `,
   styles: ``,
 })
-export class NavigationDropdownComponentV2 {
+export class NavigationDropdownComponent {
   @ViewChild('menu')
   menu!: ElementRef<HTMLDivElement>;
 
@@ -78,7 +83,7 @@ export class NavigationDropdownComponentV2 {
 
   showMenu = signal<boolean>(false);
 
-  dropdownPermission = input.required<number>();
+  dropdownPermission = input.required<PermissionEnum>();
 
   toggleMenu() {
     const name = this.dropdownName();

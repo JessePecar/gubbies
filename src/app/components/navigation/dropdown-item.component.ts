@@ -1,49 +1,33 @@
 import { UserInfoService } from '@/services';
 import { DropdownOption } from '@/types/components/navigation/DropdownOption';
-import { Component, inject, input, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  OnInit,
+  signal,
+  effect,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { NavigationDropdownDirective } from './navigation-dropdown.directive';
 
 @Component({
   selector: 'app-dropdown-item',
-  imports: [RouterLink],
+  imports: [RouterLink, NavigationDropdownDirective],
   template: `
-    @if (option(); as option) {
-      @if (!option.permissionId || hasAccess()) {
+    <div class="w-full" *hasPermission="option().permissionId">
+      @if (option(); as option) {
         <a
           [routerLink]="option.route"
           class="w-full hover:bg-stone-800 rounded-sm p-1 "
           >{{ option.linkTitle }}</a
         >
       }
-    }
+    </div>
   `,
   styles: ``,
 })
-export class DropdownItemComponent implements OnInit {
+export class DropdownItemComponent {
   option = input.required<DropdownOption>();
   userInfoService = inject(UserInfoService);
-
-  hasAccess = signal<boolean>(false);
-
-  setHasAccess() {
-    if (this.option().permissionId) {
-      var permission = this.userInfoService
-        .userInfo()
-        ?.role.rolePermissions.find(
-          rp => rp.permissionId === this.option().permissionId
-        );
-
-      this.hasAccess.set(permission !== undefined);
-    }
-
-    return this.hasAccess.set(true);
-  }
-
-  ngOnInit(): void {
-    this.setHasAccess();
-
-    this.userInfoService.onUserChange().subscribe(() => {
-      this.setHasAccess();
-    });
-  }
 }

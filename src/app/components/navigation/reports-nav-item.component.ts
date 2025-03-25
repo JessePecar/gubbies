@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { NavigationDropdownComponentV2 } from './navigation-dropdown.componentV2';
+import { NavigationDropdownComponent } from './navigation-dropdown.component';
 import { PermissionEnum } from '@/entities/role';
 
 @Component({
   selector: 'app-reports-nav-item',
-  imports: [NavigationDropdownComponentV2],
+  imports: [NavigationDropdownComponent],
   template: `
-    <app-navigation-dropdownv2
+    <app-navigation-dropdown
       dropdownName="reports"
       [dropdownOptions]="dropdownOptions"
       [dropdownPermission]="reportPermission">
       <p menuItem class="hover:underline">Reports</p>
-    </app-navigation-dropdownv2>
+    </app-navigation-dropdown>
   `,
   styles: ``,
 })

@@ -1,18 +1,19 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { NavigationDropdownComponentV2 } from './navigation-dropdown.componentV2';
+import { NavigationDropdownComponent } from './navigation-dropdown.component';
 import { UserInfoService } from '@/services';
 import { PermissionEnum } from '@/entities/role';
+import { NavigationDropdownDirective } from './navigation-dropdown.directive';
 
 @Component({
   selector: 'app-inventory-nav-item',
-  imports: [NavigationDropdownComponentV2],
+  imports: [NavigationDropdownComponent],
   template: `
-    <app-navigation-dropdownv2
+    <app-navigation-dropdown
       dropdownName="inventory"
       [dropdownOptions]="dropdownOptions"
       [dropdownPermission]="inventoryPermission">
       <p menuItem class="hover:underline">Inventory</p>
-    </app-navigation-dropdownv2>
+    </app-navigation-dropdown>
   `,
   styles: ``,
 })
