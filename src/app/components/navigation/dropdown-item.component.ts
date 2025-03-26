@@ -15,15 +15,17 @@ import { NavigationDropdownDirective } from './navigation-dropdown.directive';
   selector: 'app-dropdown-item',
   imports: [RouterLink, NavigationDropdownDirective],
   template: `
-    <div class="w-full" *hasPermission="option().permissionId">
-      @if (option(); as option) {
-        <a
-          [routerLink]="option.route"
-          class="w-full hover:bg-stone-800 rounded-sm p-1 "
-          >{{ option.linkTitle }}</a
-        >
-      }
-    </div>
+    @if (option(); as option) {
+      <ng-template navDropdown *hasPermission="option.permissionId">
+        <div class="w-full my-1">
+          <a
+            [routerLink]="option.route"
+            class="block w-full hover:bg-stone-800 rounded-sm p-1 pl-3"
+            >{{ option.linkTitle }}</a
+          >
+        </div>
+      </ng-template>
+    }
   `,
   styles: ``,
 })

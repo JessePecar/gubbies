@@ -66,8 +66,4 @@ export class UserInfoService {
 
     // TODO: Get the user from the db since this would actually be a token in the future
   }
-
-  onUserChange() {
-    return toObservable(this.userInfo);
-  }
 }
