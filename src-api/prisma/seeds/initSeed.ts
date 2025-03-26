@@ -1,8 +1,20 @@
 import { PrismaClient } from '@prisma/client';
 import { AuthUtil } from '../../src/utilities';
+import { parseArgs } from 'node:util'
+import {resetPassword as runReset} from './resetPasswords'
 const client = new PrismaClient();
 
 async function main() {
+  const {
+    values: { resetPassword },
+  } = parseArgs({ options: {
+    resetPassword: { type: 'boolean'}
+  }})
+         
+  if(resetPassword) {
+    await runReset();
+    return;
+  }
   client.$connect;
 
   var authUtil = new AuthUtil();
