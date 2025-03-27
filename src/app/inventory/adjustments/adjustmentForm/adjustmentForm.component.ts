@@ -1,10 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
-import { ButtonComponent } from '../../../components/button.component';
+import { ButtonComponent } from '@/components/buttons';
 import { TextInputComponent } from '@/components';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { AdjustmentFormService } from './adjustmentForm.service';
-import { Item } from '../../models/items';
+import { Item } from '@/inventory/models/items';
 
 @Component({
   selector: 'app-adjustments-form',

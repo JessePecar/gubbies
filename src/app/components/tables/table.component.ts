@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
-import { ButtonComponent } from '../button.component';
 import { MatIcon } from '@angular/material/icon';
+import { ButtonComponent } from '@/components/buttons';
 
 @Component({
   selector: 'app-table',

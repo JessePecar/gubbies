@@ -8,6 +8,7 @@ import { AddressFormComponent } from './address-form.component';
 import { ContactFormComponent } from './contact-form.component';
 import { MatIconModule } from '@angular/material/icon';
 import { DropdownComponent, DropdownOption } from '@/components/inputs';
+import { ButtonComponent } from '@/components/buttons';
 
 @Component({
   selector: 'app-user-details',

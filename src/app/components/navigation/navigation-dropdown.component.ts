@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { NavbarService } from '@/services/navbar.service';
-import { ButtonComponent } from '../button.component';
+import { ButtonComponent } from '@/components/buttons';
 import { UserInfoService } from '@/services';
 import { DropdownOption } from '@/types/components/navigation/DropdownOption';
 import { DropdownItemComponent } from '@/components/navigation/dropdown-item.component';

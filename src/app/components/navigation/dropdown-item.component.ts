@@ -1,13 +1,6 @@
 import { UserInfoService } from '@/services';
 import { DropdownOption } from '@/types/components/navigation/DropdownOption';
-import {
-  Component,
-  inject,
-  input,
-  OnInit,
-  signal,
-  effect,
-} from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NavigationDropdownDirective } from './navigation-dropdown.directive';
 

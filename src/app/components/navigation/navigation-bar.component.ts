@@ -13,8 +13,8 @@ import { PromotionNavItemComponent } from './promotion-nav-item.component';
 import { ProfileNavItemComponent } from './profile-nav-item.component';
 import { Router } from '@angular/router';
 import { UserInfoService } from '../../services';
-import { ButtonComponent } from '../button.component';
 import { SettingsNavItemComponent } from './settings-nav-item.component';
+import { ButtonComponent } from '@/components/buttons';
 
 @Component({
   selector: 'app-navigation-bar',

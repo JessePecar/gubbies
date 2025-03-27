@@ -1,14 +1,11 @@
 import {
-  ButtonComponent,
   CheckboxComponent,
   NumberInputComponent,
   TextInputComponent,
 } from '@/components';
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import {
-  FormArray,
   FormBuilder,
-  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -21,6 +18,7 @@ import {
 } from '@/interfaces/settings/roles';
 import { UserInfoService } from '@/services';
 import { Router } from '@angular/router';
+import { ButtonComponent } from '@/components/buttons';
 
 @Component({
   selector: 'app-role-details',

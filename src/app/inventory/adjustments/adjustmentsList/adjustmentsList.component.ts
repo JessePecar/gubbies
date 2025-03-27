@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { AdjustmentsListService } from './adjustmentsList.service';
-import { ButtonComponent } from '../../../components/button.component';
+import { ButtonComponent } from '@/components/buttons';
 import { Router } from '@angular/router';
 
 @Component({
