@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateUserInput } from 'src/graphql.schema';
+import { CreateUserInput, UpdateUserInput } from 'src/graphql.schema';
 import { RepositoryService } from 'src/repository/repository.service';
 
 import * as crypto from 'crypto';
@@ -96,30 +96,49 @@ export class UsersService {
     });
   }
 
-  private async updateAddress({ address }: UpdateUserInput) {
+  private async updateAddress(user: UpdateUserInput | CreateUserInput) {
+    var { address } = user;
     if (address !== null && address !== undefined) {
-      return await this.repository.address.upsert({
-        where: {
-          id: address.id,
-        },
-        create: {
-          address1: address.address1,
-          city: address.city,
-          countryCode: address.countryCode,
-          state: address.state,
-          address2: address.address2,
-          postalCode: address.postalCode,
-        },
-        update: {
-          address1: address.address1,
-          city: address.city,
-          countryCode: address.countryCode,
-          state: address.state,
-          address2: address.address2,
-          postalCode: address.postalCode,
-        },
-      });
-    } else {
+      // If we are using the update user input, then we will perform an upsert
+      if (user instanceof UpdateUserInput) {
+        return await this.repository.address.upsert({
+          where: {
+            id: address.id,
+          },
+          create: {
+            address1: address.address1,
+            city: address.city,
+            countryCode: address.countryCode,
+            state: address.state,
+            address2: address.address2,
+            postalCode: address.postalCode,
+          },
+          update: {
+            address1: address.address1,
+            city: address.city,
+            countryCode: address.countryCode,
+            state: address.state,
+            address2: address.address2,
+            postalCode: address.postalCode,
+          },
+        });
+      }
+      // If we are using the create user input, then we will perform a create
+      else {
+        return await this.repository.address.create({
+          data: {
+            address1: address.address1,
+            city: address.city,
+            countryCode: address.countryCode,
+            state: address.state,
+            address2: address.address2,
+            postalCode: address.postalCode,
+          },
+        });
+      }
+    }
+    // If the address is null or undefined, then create a blank address
+    else {
       return await this.repository.address.create({
         data: {
           address1: '',
@@ -133,23 +152,37 @@ export class UsersService {
     }
   }
 
-  private async updatePrimaryPhone({ primaryPhone }: UpdateUserInput) {
+  private async updatePrimaryPhone(user: UpdateUserInput | CreateUserInput) {
+    var { primaryPhone } = user;
+
     if (primaryPhone !== null && primaryPhone !== undefined) {
-      return await this.repository.phone.upsert({
-        where: {
-          id: primaryPhone.id,
-        },
-        create: {
-          nationalDigits: primaryPhone.nationalDigits,
-          rawDigits: primaryPhone.rawDigits,
-        },
-        update: {
-          nationalDigits: primaryPhone.nationalDigits,
-          rawDigits: primaryPhone.rawDigits,
-        },
-      });
+      // If user is an update user input, then run an upsert
+      if (primaryPhone instanceof UpdateUserInput) {
+        return await this.repository.phone.upsert({
+          where: {
+            id: primaryPhone.id,
+          },
+          create: {
+            nationalDigits: primaryPhone.nationalDigits,
+            rawDigits: primaryPhone.rawDigits,
+          },
+          update: {
+            nationalDigits: primaryPhone.nationalDigits,
+            rawDigits: primaryPhone.rawDigits,
+          },
+        });
+      }
+      // If user is create user input, then run a create
+      else {
+        return await this.repository.phone.create({
+          data: {
+            nationalDigits: primaryPhone.nationalDigits,
+            rawDigits: primaryPhone.rawDigits,
+          },
+        });
+      }
     } else {
-      // Create a default obect that holds empty strings since the admin user doesn't have a phone attached :)
+      // Create a default object that holds empty strings since the admin user doesn't have a phone attached :)
       return await this.repository.phone.create({
         data: {
           nationalDigits: '',
@@ -160,7 +193,6 @@ export class UsersService {
   }
 
   async updateUser(user: UpdateUserInput) {
-    const encryptedPassword = await this.authUtil.hashPassword(user.password);
     // Update the address and primary phone at the same time
     var [address, primaryPhone] = await Promise.all([
       this.updateAddress(user),
@@ -177,7 +209,6 @@ export class UsersService {
         firstName: user.firstName,
         lastName: user.lastName,
         userName: user.userName,
-        password: encryptedPassword,
         isActive: user.isActive ?? true,
         addressId: address.id,
         primaryPhoneId: primaryPhone.id,
@@ -188,8 +219,36 @@ export class UsersService {
         firstName: user.firstName,
         lastName: user.lastName,
         userName: user.userName,
-        password: encryptedPassword,
+        password: await this.authUtil.hashPassword('password'),
         isActive: user.isActive ?? true,
+        addressId: address.id,
+        primaryPhoneId: primaryPhone.id,
+        roleId: user.roleId, // Change if the role Id is different
+      },
+      include: this.defaultInclude,
+    });
+  }
+
+  async createUser(user: CreateUserInput) {
+    var encryptedPassword = await this.authUtil.hashPassword(
+      user.password ?? 'password',
+    );
+
+    // Update the address and primary phone at the same time
+    var [address, primaryPhone] = await Promise.all([
+      this.updateAddress(user),
+      this.updatePrimaryPhone(user),
+    ]);
+
+    // Update the user information
+    return await this.repository.users.create({
+      data: {
+        emailAddress: user.emailAddress,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        userName: user.userName,
+        password: encryptedPassword,
+        isActive: true,
         addressId: address.id,
         primaryPhoneId: primaryPhone.id,
         roleId: user.roleId, // Change if the role Id is different

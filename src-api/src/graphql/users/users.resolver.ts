@@ -2,7 +2,7 @@ import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { ParseIntPipe } from '@nestjs/common';
 import { PubSub } from 'graphql-subscriptions';
-import { UpdateUserInput } from 'src/graphql.schema';
+import { CreateUserInput, UpdateUserInput } from 'src/graphql.schema';
 
 const pubSub = new PubSub();
 
@@ -26,6 +26,13 @@ export class UsersResolver {
   @Mutation('updateUser')
   async updateUser(@Args('updateUserInput') updatedUser: UpdateUserInput) {
     var user = await this.usersService.updateUser(updatedUser);
+
+    pubSub.publish('usersChanged', { usersChanged: user });
+  }
+
+  @Mutation('createUser')
+  async createUser(@Args('createUserInput') createUser: CreateUserInput) {
+    var user = await this.usersService.createUser(createUser);
 
     pubSub.publish('usersChanged', { usersChanged: user });
   }

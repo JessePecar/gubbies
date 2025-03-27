@@ -54,7 +54,7 @@ import { SettingsNavItemComponent } from './settings-nav-item.component';
           }
         </div>
         @if (menuExpanded()) {
-          <div class="h-full p-2 mt-4 flex flex-col justify-between">
+          <div class="h-full p-2 pl-0 mt-4 flex flex-col justify-between">
             <div
               class="space-y-4 flex flex-col overflow-y-auto overflow-x-hidden">
               <app-inventory-nav-item />

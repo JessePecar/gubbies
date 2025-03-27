@@ -16,6 +16,7 @@ import {
   CardFooterComponent,
 } from '../components/card/card.component';
 import { LoginService } from './login.service';
+import { ButtonComponent } from '@/components/buttons/button.component';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +27,7 @@ import { LoginService } from './login.service';
     CardFooterComponent,
     ReactiveFormsModule,
     TextInputComponent,
+    ButtonComponent,
   ],
   template: `
     <div class="h-full">
@@ -33,17 +35,18 @@ import { LoginService } from './login.service';
         <img alt="Gubbies" src="../../assets/Gubbies.PNG" />
       </div>
       <div class="flex flex-col justify-center items-center h-3/4 px-20">
-        <div class="min-w-84 w-2/3">
+        <div class="min-w-84 w-full lg:w-1/3">
           <card appearance="raised">
             <card-body>
-              <div class="mb-2 pl-4">
+              <div class="px-0 lg:px-10 mb-2 pl-4">
                 <p class="text-[3rem]">Sign In</p>
                 <p class="text-sm pl-1">
                   If you don't have an account, contact your administrator
                 </p>
               </div>
 
-              <div class="w-full flex flex-col justify-between p-4">
+              <div
+                class="px-0 lg:px-10 w-full flex flex-col justify-between p-4">
                 @if (showErrorMessage) {
                   <div class="bg-red-900 rounded-xl px-2 py-4 mb-4">
                     <p class="text-red-200 ">
@@ -54,11 +57,13 @@ import { LoginService } from './login.service';
                 <form [formGroup]="form" (ngSubmit)="onSubmit()">
                   <div class="flex flex-col space-y-4">
                     <app-text-input
+                      tabindex="1"
                       [inputProps]="{ required: true }"
                       label="Username"
                       formControlName="username" />
 
                     <app-text-input
+                      tabindex="2"
                       [required]="true"
                       label="Password"
                       formControlName="password"
@@ -68,17 +73,23 @@ import { LoginService } from './login.service';
               </div>
             </card-body>
             <card-footer>
-              <div class="flex justify-center w-full p-4 px-8">
-                <button
-                  matRipple
-                  [matRippleDisabled]="!form.valid"
-                  matRippleColor="#44444444"
-                  class="text-stone-600 disabled:text-stone-400 disabled:bg-stone-300 disabled:cursor-default  font-bold bg-stone-200 rounded-lg px-4 py-1 w-full"
-                  [disabled]="!form.valid"
-                  type="button"
-                  (click)="onSubmit()">
-                  Login
-                </button>
+              <div class="flex justify-between w-full p-4 px-8 space-x-2">
+                <app-button
+                  color="secondary"
+                  buttonType="text"
+                  contentType="min-content"
+                  text="Forgot Password"
+                  (handleClick)="onSubmit()" />
+
+                <app-button
+                  tabindex="3"
+                  class="w-full lg:w-1/2"
+                  color="primary"
+                  buttonType="raised"
+                  contentType="full"
+                  text="Login"
+                  (handleClick)="onSubmit()"
+                  [disabled]="!form.valid" />
               </div>
             </card-footer>
           </card>
@@ -124,9 +135,12 @@ export class LoginComponent {
     // Grab the value of the form for compare
     const { username, password } = this.form.value;
 
-    this.loginService
-      .authUser(username, password)
-      .subscribe(({ data: { login: { accessToken, user} } }) => {
+    this.loginService.authUser(username, password).subscribe(
+      ({
+        data: {
+          login: { accessToken, user },
+        },
+      }) => {
         // TODO: Setup the process to save the token and then attach on outgoing requests
         if (user === undefined || user === null) {
           // Show the error message if the login was not found (the login information does not exist)
@@ -135,6 +149,7 @@ export class LoginComponent {
           this.userInfoService.setUser(user);
           this.router.navigate(['']);
         }
-      });
+      }
+    );
   }
 }

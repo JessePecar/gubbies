@@ -1,5 +1,7 @@
 import {
   Component,
+  computed,
+  effect,
   ElementRef,
   inject,
   input,
@@ -24,7 +26,7 @@ import { PermissionEnum } from '@/entities/role';
     NavigationDropdownDirective,
   ],
   template: `
-    <div *hasPermission="dropdownPermission()">
+    <ng-template navDropdown *hasPermission="dropdownPermission()">
       <app-button (click)="toggleMenu()">
         <div class="w-full flex justify-between pl-4 py-1">
           <ng-content select="[menuItem]" />
@@ -43,34 +45,21 @@ import { PermissionEnum } from '@/entities/role';
         #menu
         (blur)="toggleMenu()"
         style="max-height: 0px;"
-        class="w-full transition-all duration-200 overflow-hidden pl-4">
+        class="w-full transition-all duration-200 overflow-hidden pl-2">
         <div
           class="flex flex-col border-t border-stone-800 pt-1 divide-y divide-stone-800 w-full">
           @for (opt of dropdownOptions(); track $index) {
-            <app-dropdown-item [option]="opt" />
+            <app-dropdown-item class="w-full" [option]="opt" />
           }
         </div>
       </div>
-    </div>
+    </ng-template>
   `,
   styles: ``,
 })
 export class NavigationDropdownComponent {
   @ViewChild('menu')
   menu!: ElementRef<HTMLDivElement>;
-
-  canViewDropdown = signal<boolean>(false);
-
-  setCanViewDropdown() {
-    var canView =
-      this.userInfoService
-        .userInfo()
-        ?.role.rolePermissions.find(
-          rp => rp.permissionId === this.dropdownPermission()
-        ) !== undefined;
-
-    this.canViewDropdown.set(canView);
-  }
 
   navbarService = inject(NavbarService);
   userInfoService = inject(UserInfoService);
@@ -89,28 +78,11 @@ export class NavigationDropdownComponent {
     const name = this.dropdownName();
     this.showMenu.set(!this.showMenu());
     this.showMenu()
-      ? (this.menu.nativeElement.style.maxHeight = '100px')
+      ? (this.menu.nativeElement.style.maxHeight = '200px')
       : (this.menu.nativeElement.style.maxHeight = '0px');
 
     if (this.showMenu()) {
       this.navbarService?.tiggerEvent(name);
     }
-  }
-
-  hasAccess(permissionId: number) {
-    return (
-      this.userInfoService
-        .userInfo()
-        ?.role?.rolePermissions.find(rp => rp.permissionId === permissionId) !==
-      undefined
-    );
-  }
-
-  ngOnInit(): void {
-    this.setCanViewDropdown();
-
-    this.userInfoService.onUserChange().subscribe(() => {
-      this.setCanViewDropdown();
-    });
   }
 }

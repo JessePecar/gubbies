@@ -12,10 +12,11 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[hasPermission]', //TODO: Determine if more are needed
+  selector: '[navDropdown], [hasPermission]', //TODO: Determine if more are needed
   standalone: true,
+  providers: [],
 })
-export class NavigationDropdownDirective implements OnInit {
+export class NavigationDropdownDirective {
   userInfoService = inject(UserInfoService);
 
   private viewContainer = inject(ViewContainerRef);
@@ -26,11 +27,11 @@ export class NavigationDropdownDirective implements OnInit {
 
   //TODO: Add any additional selectors
 
-  ngOnInit(): void {
-    this.checkAccess(this.userInfoService.userInfo());
-
+  constructor() {
     effect(() => {
       var userInfo = this.userInfoService.userInfo();
+
+      console.log(userInfo);
 
       this.checkAccess(userInfo);
     });

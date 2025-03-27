@@ -63,7 +63,11 @@ export class CreateUserInput {
     firstName?: Nullable<string>;
     lastName?: Nullable<string>;
     roleId: number;
-    userName?: Nullable<string>;
+    userName: string;
+    isActive?: Nullable<boolean>;
+    emailAddress?: Nullable<string>;
+    primaryPhone?: Nullable<UpdatePhoneInput>;
+    address?: Nullable<UpdateAddressInput>;
     password?: Nullable<string>;
 }
 
@@ -73,7 +77,6 @@ export class UpdateUserInput {
     lastName?: Nullable<string>;
     roleId: number;
     userName: string;
-    password: string;
     isActive?: Nullable<boolean>;
     emailAddress?: Nullable<string>;
     primaryPhoneId?: Nullable<number>;
@@ -129,8 +132,6 @@ export abstract class IQuery {
     abstract users(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
 
     abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract auth(username?: Nullable<string>, password?: Nullable<string>): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export class AuthResponse {
@@ -154,8 +155,6 @@ export abstract class ISubscription {
     abstract itemCreated(): Nullable<Item> | Promise<Nullable<Item>>;
 
     abstract roleUpdated(): Nullable<Role> | Promise<Nullable<Role>>;
-
-    abstract roleCreated(): Nullable<Role> | Promise<Nullable<Role>>;
 
     abstract usersChanged(): Nullable<User> | Promise<Nullable<User>>;
 }
@@ -228,7 +227,6 @@ export class User {
     primaryPhoneId?: Nullable<number>;
     addressId?: Nullable<number>;
     userName: string;
-    password: string;
     isActive?: Nullable<boolean>;
     emailAddress?: Nullable<string>;
     role: Role;

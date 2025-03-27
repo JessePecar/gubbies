@@ -1,17 +1,24 @@
 import { PrismaClient } from '@prisma/client';
 import { AuthUtil } from '../../src/utilities';
-import { parseArgs } from 'node:util'
-import {resetPassword as runReset} from './resetPasswords'
+import { parseArgs } from 'node:util';
+import { resetPassword as runReset } from './resetPasswords';
 const client = new PrismaClient();
 
+const {
+  values: { resetPassword },
+} = parseArgs({
+  options: {
+    resetPassword: {
+      type: 'boolean',
+    },
+  },
+  args: ['--resetPassword'],
+});
+
 async function main() {
-  const {
-    values: { resetPassword },
-  } = parseArgs({ options: {
-    resetPassword: { type: 'boolean'}
-  }})
-         
-  if(resetPassword) {
+  var passwordFlag = process.env.RESET_PASSWORD;
+
+  if (resetPassword || passwordFlag === 'true') {
     await runReset();
     return;
   }
