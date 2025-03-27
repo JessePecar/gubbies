@@ -3,11 +3,7 @@ import { UserDetailsService } from './user-details.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { User } from '@/interfaces/settings/users';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import {
-  TextInputComponent,
-  ToggleComponent,
-  ButtonComponent,
-} from '@/components';
+import { TextInputComponent, ToggleComponent } from '@/components';
 import { AddressFormComponent } from './address-form.component';
 import { ContactFormComponent } from './contact-form.component';
 import { MatIconModule } from '@angular/material/icon';
