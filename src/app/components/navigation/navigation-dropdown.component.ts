@@ -27,8 +27,11 @@ import { PermissionEnum } from '@/entities/role';
   ],
   template: `
     <ng-template navDropdown *hasPermission="dropdownPermission()">
-      <app-button (click)="toggleMenu()">
-        <div class="w-full flex justify-between pl-4 py-1">
+      <app-button
+        contentType="full"
+        buttonType="default"
+        (click)="toggleMenu()">
+        <div class="w-full flex justify-between pl-2 py-1">
           <ng-content select="[menuItem]" />
           @if (showArrow()) {
             <mat-icon

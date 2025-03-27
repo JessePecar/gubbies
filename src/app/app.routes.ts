@@ -17,6 +17,7 @@ import {
   UserComponent,
   UserDetailsComponent,
   UsersListComponent,
+  UserCreateComponent,
   usersGuard,
 } from './settings/users';
 import { SettingsComponent, settingsGuard } from './settings';
@@ -85,6 +86,7 @@ export const routes: Routes = [
             component: UserComponent,
             canActivateChild: [usersGuard],
             children: [
+              { path: 'create', component: UserCreateComponent },
               {
                 path: 'list',
                 component: UsersListComponent,

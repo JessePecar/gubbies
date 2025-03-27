@@ -67,7 +67,7 @@ export class UsersListComponent implements OnInit {
   }
 
   onCreateUser = async () => {
-    await this.router.navigate(['settings/users/details']);
+    await this.router.navigate(['settings/users/create']);
   };
 
   constructor() {}

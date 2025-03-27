@@ -31,8 +31,6 @@ export class NavigationDropdownDirective {
     effect(() => {
       var userInfo = this.userInfoService.userInfo();
 
-      console.log(userInfo);
-
       this.checkAccess(userInfo);
     });
   }

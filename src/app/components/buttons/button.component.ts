@@ -14,7 +14,7 @@ import { ButtonColor, ButtonContent, ButtonType } from './button.types';
       [disabled]="disabled()"
       type="button"
       (click)="handleClick.emit()">
-      <div class="px-4 py-1">
+      <div class="py-1">
         {{ text() }}
       </div>
       <ng-content />

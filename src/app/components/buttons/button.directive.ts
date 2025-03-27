@@ -41,7 +41,7 @@ export class ButtonDirective {
   }
 
   private readonly buttonType: ButtonStyle = {
-    base: 'disabled:opacity-50 disabled:cursor-default flex justify-center',
+    base: 'disabled:opacity-50 disabled:cursor-default flex',
     color: {
       primary: {
         outline:
@@ -62,7 +62,8 @@ export class ButtonDirective {
     },
     content: {
       'min-content': '',
-      full: 'w-full',
+      full: 'w-full justify-start',
+      'full-center': 'w-full justify-center',
     },
   };
 }
