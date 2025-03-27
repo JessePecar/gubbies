@@ -1,4 +1,3 @@
-export * from './button.component';
 export * from './context-button.component';
 export * from './password-form.component';
 export * from './toggle.component';

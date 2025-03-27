@@ -13,28 +13,45 @@ type BreadcrumbOption = {
   selector: 'app-breadcrumbs',
   imports: [RouterLink, MatIconModule],
   template: `
-    @if (activeOptions().activeOptions(); as options) {
-      <div class="flex space-x-1">
-        <a [routerLink]="baseOption().route" (click)="onClickOption(-1)">{{
-          baseOption().text
-        }}</a>
-        @for (option of options; track $index) {
-          <mat-icon fontIcon="arrow_right" />
+    <!-- TODO: Determine the rounded I want -->
+    <div class="flex px-5 py-3 rounded-full shadow-lg">
+      <ul class="flex space-x-4 items-center">
+        <li>
           <a
-            (click)="onClickOption($index)"
+            class="flex items-center space-x-2 hover:text-purple-400"
             [routerLink]="baseOption().route"
-            >{{ baseOption().text }}</a
-          >
+            (click)="onClickOption(-1)">
+            <mat-icon class="icon" [inline]="true" [fontIcon]="baseIcon()" />
+            <span>{{ baseOption().text }}</span>
+          </a>
+        </li>
+        @if (activeOptions().activeOptions(); as options) {
+          @for (option of options; track $index) {
+            <mat-icon fontIcon="chevron_right" />
+            <a
+              class="hover:text-purple-400"
+              (click)="onClickOption($index)"
+              [routerLink]="option.route"
+              >{{ option.text }}</a
+            >
+          }
         }
-      </div>
+      </ul>
+    </div>
+  `,
+  styles: `
+    .icon {
+      font-size: 1.2rem;
     }
   `,
-  styles: ``,
 })
 export class BreadcrumbsComponent {
-  // TODO: I think the best way to actually do this is have the bread crumbs check the route that is currently in use 
+  // TODO: I think the best way to actually do this is have the bread crumbs check the route that is currently in use
   // the breadcrumbs should have a base router, then it should look for each individual piece to determine if it's active
+  baseIcon = input.required<string>();
   breadcrumbOptions = input<BreadcrumbOption[]>([]);
+  currentOption = signal<number>(0);
+
   baseOption = input.required<BreadcrumbOption>();
 
   // This creates a copy of the input prop to a signal so we can write to it

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ButtonComponent } from '../../components/button.component';
 import { RouterOutlet } from '@angular/router';
 
 @Component({

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CardComponent } from '../components/card/card.component';
-import { BreadcrumbsComponent } from "../components/navigation/breadcrumbs.component";
+import { BreadcrumbsComponent } from '../components/navigation/breadcrumbs.component';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +11,13 @@ import { BreadcrumbsComponent } from "../components/navigation/breadcrumbs.compo
       <!-- TODO: Search box to look for items in the system -->
       <card>
         <div class="p-4">
-          <app-breadcrumbs [baseOption]="{text: 'Base', route: '', active: true}"/>
+          <app-breadcrumbs
+            baseIcon="home"
+            [baseOption]="{ text: 'Base', route: '', active: true }"
+            [breadcrumbOptions]="[
+              { text: 'Option 1', route: '', active: true },
+              { text: 'Option 2', route: '', active: true },
+            ]" />
           <p>Welcome to gubbies!</p>
         </div>
       </card>
