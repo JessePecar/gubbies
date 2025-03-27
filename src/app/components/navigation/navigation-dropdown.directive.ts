@@ -45,7 +45,6 @@ export class NavigationDropdownDirective {
 
       // If the user has the role, or there is no guard, show the content
       if (rolePermission !== undefined || this.permission === undefined) {
-        console.log('Has access to: ' + this.permission);
         this.viewContainer.clear();
         this.viewContainer.createEmbeddedView(this.templateRef);
         return;

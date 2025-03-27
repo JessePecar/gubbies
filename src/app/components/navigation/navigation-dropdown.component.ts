@@ -61,19 +61,6 @@ export class NavigationDropdownComponent {
   @ViewChild('menu')
   menu!: ElementRef<HTMLDivElement>;
 
-  canViewDropdown = signal<boolean>(false);
-
-  temp = computed(() => ({
-    userInfo: this.userInfoService.userInfo(),
-    canViewDropdown: signal<boolean>(
-      this.userInfoService
-        .userInfo()
-        ?.role.rolePermissions.find(
-          rp => rp.permissionId === this.dropdownPermission()
-        ) !== undefined
-    ),
-  }));
-
   navbarService = inject(NavbarService);
   userInfoService = inject(UserInfoService);
 
@@ -97,14 +84,5 @@ export class NavigationDropdownComponent {
     if (this.showMenu()) {
       this.navbarService?.tiggerEvent(name);
     }
-  }
-
-  hasAccess(permissionId: number) {
-    return (
-      this.userInfoService
-        .userInfo()
-        ?.role?.rolePermissions.find(rp => rp.permissionId === permissionId) !==
-      undefined
-    );
   }
 }
