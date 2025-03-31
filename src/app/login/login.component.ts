@@ -86,7 +86,7 @@ import { ButtonComponent } from '@/components/buttons/button.component';
                   class="w-full lg:w-1/2"
                   color="primary"
                   buttonType="raised"
-                  contentType="full"
+                  contentType="full-center"
                   text="Login"
                   (handleClick)="onSubmit()"
                   [disabled]="!form.valid" />

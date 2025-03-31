@@ -71,11 +71,14 @@ import { ButtonComponent } from '@/components/buttons';
               <div class="flex flex-col justify-between h-full w-full py-2">
                 <app-profile-nav-item />
 
-                <app-button (click)="logout()">
-                  <span class="pl-2 flex w-full space-x-4">
+                <app-button
+                  contentType="full"
+                  buttonType="default"
+                  (click)="logout()">
+                  <div class="py-1 flex space-x-2">
                     <mat-icon fontIcon="logout" />
                     <p>Logout</p>
-                  </span>
+                  </div>
                 </app-button>
               </div>
             </div>
