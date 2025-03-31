@@ -4,42 +4,107 @@ import {
   BreadcrumbOption,
   BreadcrumbsComponent,
 } from '@/components/navigation/breadcrumbs.component';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import {
+  AddressFormComponent,
+  ContactFormComponent,
+  InformationFormComponent,
+  UserDetailsService,
+  UserFormGroupNames,
+} from '@/settings/users/details';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DropdownOption } from '@/components';
 
 @Component({
   selector: 'app-create',
-  imports: [ButtonComponent, CardComponent, BreadcrumbsComponent],
+  imports: [
+    ButtonComponent,
+    CardComponent,
+    BreadcrumbsComponent,
+    InformationFormComponent,
+    AddressFormComponent,
+    ContactFormComponent,
+    ReactiveFormsModule,
+  ],
   template: `
     <div class="pl-20 h-full overflow-hidden">
-      <app-breadcrumbs
-        baseIcon="account_circle"
-        (onOptionClicked)="onOptionClicked($event)"
-        [breadcrumbOptions]="activeOptions()" />
-      <div class="flex w-full h-full items-center justify-center">
-        <card class="w-1/2 h-1/2">
-          <div class="h-full flex justify-end items-end p-8">
-            <div>
-              <app-button
-                contentType="full-center"
-                class="w-full"
-                (click)="onMoveToNext()"
-                text="Next" />
+      @if (userDetailService.form; as form) {
+        <form class="h-full" [formGroup]="form" (ngSubmit)="onSubmit()">
+          <app-breadcrumbs
+            baseIcon="account_circle"
+            (onOptionClicked)="onOptionClicked($event)"
+            [breadcrumbOptions]="activeOptions()"
+            [selectedContent]="selectedOption()">
+            @switch (selectedOption()) {
+              <!-- The user information form that will hold the their name and role -->
+              @case ('info') {
+                <card>
+                  <div class="p-4">
+                    <information-form [roles]="roles()" />
+                  </div>
+                </card>
+              }
+              @case ('address') {
+                <!-- The user address form that will hold their address info -->
+                <card>
+                  <div class="p-4">
+                    <address-form />
+                  </div>
+                </card>
+              }
+              <!-- The user contact information that will hold their phone(s) -->
+              @case ('primaryPhone') {
+                <card>
+                  <div class="p-4">
+                    <contact-form />
+                  </div>
+                </card>
+              }
+            }
+
+            <div class="py-2 flex justify-end">
+              @switch (selectedOption()) {
+                @case ('primaryPhone') {
+                  <!-- Submit button -->
+                  <app-button
+                    buttonType="raised"
+                    [disabled]="!form.valid"
+                    text="Submit"
+                    (handleClick)="onSubmit()" />
+                }
+                @default {
+                  <!-- Next button -->
+                  <app-button
+                    buttonType="raised"
+                    text="Continue"
+                    [disabled]="!form.get(selectedOption())?.valid"
+                    (handleClick)="onMoveToNext()" />
+                }
+              }
             </div>
-          </div>
-        </card>
-      </div>
+          </app-breadcrumbs>
+        </form>
+      }
     </div>
   `,
   styles: ``,
 })
 export class UserCreateComponent {
-  defaultOptions: BreadcrumbOption[] = [
+  userDetailService = inject(UserDetailsService);
+
+  defaultOptions: BreadcrumbOption<UserFormGroupNames>[] = [
     { text: 'User Information', id: 'info' },
     { text: 'Address', id: 'address' },
-    { text: 'Phone', id: 'phone' },
+    { text: 'Phone', id: 'primaryPhone' },
   ];
 
-  activeOptions = signal<BreadcrumbOption[]>([this.defaultOptions[0]]);
+  activeOptions = signal<BreadcrumbOption<UserFormGroupNames>[]>([
+    this.defaultOptions[0],
+  ]);
+
+  selectedOption = signal<UserFormGroupNames>(this.defaultOptions[0].id);
+
+  roles = signal<DropdownOption[]>([]);
 
   onOptionClicked(id: string | number) {
     var index = this.defaultOptions.findIndex(opt => opt.id === id);
@@ -54,6 +119,7 @@ export class UserCreateComponent {
     }
   }
 
+  // Set the active options based on the index given
   setActiveOptions(index: number) {
     // If id doesn't exist, we will just reset to the beginning
     if (index === -1) {
@@ -64,5 +130,34 @@ export class UserCreateComponent {
         this.defaultOptions.filter((_, idx) => idx <= index)
       );
     }
+
+    // Grab the last item in the list
+    this.selectedOption.set(
+      this.activeOptions()[this.activeOptions().length - 1].id
+    );
+  }
+
+  // Submit the user to the database
+  onSubmit() {
+    if (
+      this.userDetailService.form !== undefined &&
+      this.userDetailService.form.valid
+    ) {
+      this.userDetailService.updateUser(
+        this.userDetailService.form?.value as Record<UserFormGroupNames, any>
+      );
+    }
+  }
+
+  constructor() {
+    // Populate the form object with a blank user
+    this.userDetailService.populateForm();
+
+    // Get available roles
+    this.userDetailService
+      .getRolesForDropdown()
+      .subscribe(({ data: { roles } }) => {
+        this.roles.set(roles);
+      });
   }
 }

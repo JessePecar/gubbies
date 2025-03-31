@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Apollo, gql } from 'apollo-angular';
 
+export type UserFormGroupNames = 'info' | 'address' | 'primaryPhone';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -72,15 +74,10 @@ export class UserDetailsService {
   }
 
   updateUser({
-    firstName,
-    lastName,
-    userName,
-    emailAddress,
+    info: { firstName, lastName, userName, emailAddress, isActive, roleId },
     address,
-    isActive,
     primaryPhone,
-    roleId,
-  }: any) {
+  }: Record<UserFormGroupNames, any>) {
     this.currentUser.set({
       id: this.currentUser()?.id ?? 0,
       roleId: roleId,
@@ -191,37 +188,8 @@ export class UserDetailsService {
   }
 
   sharedForm(user: User): FormGroup {
-    return this.formBuilder.group({
-      userName: [
-        user.userName,
-        [
-          Validators.required,
-          Validators.maxLength(12),
-          Validators.minLength(3),
-        ],
-      ],
-      firstName: [
-        user.firstName,
-        [
-          Validators.required,
-          Validators.maxLength(32),
-          Validators.minLength(2),
-        ],
-      ],
-      lastName: [
-        user.lastName,
-        [
-          Validators.required,
-          Validators.maxLength(32),
-          Validators.minLength(2),
-        ],
-      ],
-      emailAddress: [
-        user.emailAddress,
-        [Validators.required, Validators.email],
-      ],
-      isActive: [user.isActive],
-      roleId: [user.roleId, [Validators.required]],
+    return this.formBuilder.group<Record<UserFormGroupNames, FormGroup>>({
+      info: this.getInfoGroup(user),
       address: this.getAddressGroup(user.address),
       primaryPhone: this.getPhoneGroup(user.primaryPhone),
     });
@@ -275,6 +243,41 @@ export class UserDetailsService {
           Validators.minLength(10),
         ],
       ],
+    });
+  }
+
+  getInfoGroup(user: User) {
+    return this.formBuilder.group({
+      userName: [
+        user.userName,
+        [
+          Validators.required,
+          Validators.maxLength(12),
+          Validators.minLength(3),
+        ],
+      ],
+      firstName: [
+        user.firstName,
+        [
+          Validators.required,
+          Validators.maxLength(32),
+          Validators.minLength(2),
+        ],
+      ],
+      lastName: [
+        user.lastName,
+        [
+          Validators.required,
+          Validators.maxLength(32),
+          Validators.minLength(2),
+        ],
+      ],
+      emailAddress: [
+        user.emailAddress,
+        [Validators.required, Validators.email],
+      ],
+      isActive: [user.isActive],
+      roleId: [user.roleId, [Validators.required]],
     });
   }
 

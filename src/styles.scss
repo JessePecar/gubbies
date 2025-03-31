@@ -38,10 +38,10 @@
   .card {
     // w-full rounded-lg bg-stone-900 p-2 text-gray-200
     width: var(--w-full);
-    border-radius: var(--rounded-lg);
+    border-radius: var(--radius-lg);
     background-color: var(--color-stone-900);
     padding: var(--spacing-2);
-    color: var(--color-gray-200);
+    color: var(--color-stone-200);
   }
 }
 

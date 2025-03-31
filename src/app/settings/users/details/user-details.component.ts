@@ -1,26 +1,26 @@
 import { Component, inject, input, OnInit, signal } from '@angular/core';
-import { UserDetailsService } from './user-details.service';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { UserDetailsService, UserFormGroupNames } from './user-details.service';
+import { ActivatedRoute } from '@angular/router';
 import { User } from '@/interfaces/settings/users';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { TextInputComponent, ToggleComponent } from '@/components';
+import { ToggleComponent } from '@/components';
 import { AddressFormComponent } from './address-form.component';
 import { ContactFormComponent } from './contact-form.component';
 import { MatIconModule } from '@angular/material/icon';
-import { DropdownComponent, DropdownOption } from '@/components/inputs';
+import { DropdownOption } from '@/components/inputs';
 import { ButtonComponent } from '@/components/buttons';
+import { InformationFormComponent } from './information-form.component';
 
 @Component({
   selector: 'app-user-details',
   imports: [
-    TextInputComponent,
     ReactiveFormsModule,
     ButtonComponent,
     ToggleComponent,
     AddressFormComponent,
     ContactFormComponent,
+    InformationFormComponent,
     MatIconModule,
-    DropdownComponent,
   ],
   template: `
     <div
@@ -39,37 +39,9 @@ import { ButtonComponent } from '@/components/buttons';
               <label for="is-active-checkbox">Is Active</label>
             </div>
           </div>
-          <div class="mb-4">
-            <p class="text-lg mb-1">Information</p>
-            <div class="grid grid-cols-4 gap-2">
-              <app-text-input
-                [inputProps]="{ required: true }"
-                formControlName="firstName"
-                label="First Name"
-                [formItem]="userDetailService.form.get('firstName')" />
-              <app-text-input
-                [inputProps]="{ required: true }"
-                formControlName="lastName"
-                label="Last Name"
-                [formItem]="userDetailService.form.get('lastName')" />
-              <app-text-input
-                [inputProps]="{ required: true }"
-                formControlName="userName"
-                label="User Name"
-                [formItem]="userDetailService.form.get('userName')" />
-              <app-text-input
-                [inputProps]="{ required: true, type: 'email' }"
-                formControlName="emailAddress"
-                label="Email Address"
-                [formItem]="userDetailService.form.get('emailAddress')" />
-              <app-dropdown
-                [options]="roles()"
-                label="Role"
-                formControlName="roleId" />
-            </div>
-          </div>
+          <information-form [roles]="roles()" />
           <address-form />
-          <contact-form formGroupName="primaryPhone" />
+          <contact-form />
           <div class="flex justify-end space-x-4">
             <app-button
               (handleClick)="onCancel()"
@@ -107,7 +79,9 @@ export class UserDetailsComponent implements OnInit {
       this.userDetailService.form !== undefined &&
       this.userDetailService.form.valid
     ) {
-      this.userDetailService.updateUser(this.userDetailService.form?.value);
+      this.userDetailService.updateUser(
+        this.userDetailService.form?.value as Record<UserFormGroupNames, any>
+      );
     }
   }
 
