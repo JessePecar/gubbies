@@ -40,7 +40,7 @@ import { DropdownOption } from '@/components';
               @case ('info') {
                 <card>
                   <div class="p-4">
-                    <information-form [roles]="roles()" />
+                    <information-form [isCreate]="true" [roles]="roles()" />
                   </div>
                 </card>
               }
@@ -143,7 +143,7 @@ export class UserCreateComponent {
       this.userDetailService.form !== undefined &&
       this.userDetailService.form.valid
     ) {
-      this.userDetailService.updateUser(
+      this.userDetailService.createUser(
         this.userDetailService.form?.value as Record<UserFormGroupNames, any>
       );
     }

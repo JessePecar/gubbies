@@ -1,5 +1,12 @@
 import { GlobalAlertService } from '@/components/alert/global-alert.service';
-import { Address, Phone, UpdateUser, User } from '@/interfaces/settings/users';
+import {
+  Address,
+  CreateUser,
+  Phone,
+  UpdateUser,
+  User,
+} from '@/interfaces/settings/users';
+import { FieldMetchValidator } from '@/utilities/FieldMatchValidator';
 import { inject, Injectable, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -81,7 +88,6 @@ export class UserDetailsService {
     this.currentUser.set({
       id: this.currentUser()?.id ?? 0,
       roleId: roleId,
-      password: this.currentUser()?.password ?? 'password',
       firstName,
       lastName,
       userName,
@@ -131,6 +137,93 @@ export class UserDetailsService {
         `,
         variables: {
           updatedUser: this.currentUser() as UpdateUser,
+        },
+      })
+      .subscribe(res => {
+        if (res.errors && res.errors.length > 0) {
+          // Show Errors
+          this.alertService.addAlert(
+            'error',
+            'Error adding or updating user',
+            2000
+          );
+        } else {
+          this.alertService.addAlert(
+            'success',
+            'Successfully added or updated user',
+            2000
+          );
+          this.router.navigate(['settings/users/list']);
+        }
+      });
+  }
+
+  createUser({
+    info: {
+      firstName,
+      lastName,
+      userName,
+      emailAddress,
+      isActive,
+      roleId,
+      password,
+    },
+    address,
+    primaryPhone,
+  }: Record<UserFormGroupNames, any>) {
+    this.currentUser.set({
+      id: this.currentUser()?.id ?? 0,
+      roleId: roleId,
+      password: password,
+      firstName,
+      lastName,
+      userName,
+      address: {
+        id: this.currentUser()?.address?.id ?? 0, // This should bring over the id
+        ...address, // This should fill out everything that was included in the form
+        postalCode: Number(address.postalCode),
+      } as Address,
+      emailAddress,
+      isActive,
+      primaryPhone: {
+        id: this.currentUser()?.primaryPhone?.id ?? 0,
+        ...primaryPhone, // This should fill out everything that was included in the form
+        nationalDigits: '+1' + primaryPhone.rawDigits,
+      } as Phone,
+    });
+
+    return this.graphQLClient
+      .mutate({
+        mutation: gql`
+          mutation CreateUser($updatedUser: CreateUserInput) {
+            createUser(createUserInput: $updatedUser) {
+              id
+              firstName
+              lastName
+              userName
+              isActive
+              emailAddress
+              primaryPhone {
+                rawDigits
+                nationalDigits
+              }
+              role {
+                name
+                id
+              }
+              address {
+                address1
+                address2
+                city
+                state
+                countryCode
+                postalCode
+              }
+            }
+          }
+        `,
+        variables: {
+          updatedUser: this.currentUser() as CreateUser,
         },
       })
       .subscribe(res => {
@@ -247,38 +340,48 @@ export class UserDetailsService {
   }
 
   getInfoGroup(user: User) {
-    return this.formBuilder.group({
-      userName: [
-        user.userName,
-        [
-          Validators.required,
-          Validators.maxLength(12),
-          Validators.minLength(3),
+    return this.formBuilder.group(
+      {
+        userName: [
+          user.userName,
+          [
+            Validators.required,
+            Validators.maxLength(12),
+            Validators.minLength(3),
+          ],
         ],
-      ],
-      firstName: [
-        user.firstName,
-        [
-          Validators.required,
-          Validators.maxLength(32),
-          Validators.minLength(2),
+        firstName: [
+          user.firstName,
+          [
+            Validators.required,
+            Validators.maxLength(32),
+            Validators.minLength(2),
+          ],
         ],
-      ],
-      lastName: [
-        user.lastName,
-        [
-          Validators.required,
-          Validators.maxLength(32),
-          Validators.minLength(2),
+        lastName: [
+          user.lastName,
+          [
+            Validators.required,
+            Validators.maxLength(32),
+            Validators.minLength(2),
+          ],
         ],
-      ],
-      emailAddress: [
-        user.emailAddress,
-        [Validators.required, Validators.email],
-      ],
-      isActive: [user.isActive],
-      roleId: [user.roleId, [Validators.required]],
-    });
+        emailAddress: [
+          user.emailAddress,
+          [Validators.required, Validators.email],
+        ],
+        isActive: [user.isActive],
+        roleId: [user.roleId, [Validators.required]],
+        password: ['', [Validators.required, Validators.minLength(8)]], // TODO: Add special characters validators
+        passwordConfirm: ['', [Validators.required, Validators.minLength(8)]],
+      },
+      {
+        validator: FieldMetchValidator.matchField(
+          'password',
+          'passwordConfirm'
+        ),
+      }
+    );
   }
 
   constructor() {}

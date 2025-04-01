@@ -36,7 +36,7 @@ import {
         </div>
       </div>
       <span class="absolute pt-1">
-        @if (formItem()?.hasError && formItem()?.touched) {
+        @if (formItem()?.hasError) {
           @if (getErrorKeys().length > 1) {
             <!-- If more than one key, we will show "Field value is invalid" -->
             <p class="text-sm text-red-400">{{ label() }} is invalid.</p>
@@ -53,6 +53,11 @@ import {
               }
               @case ('email') {
                 <p class="text-sm text-red-400">Must be an email.</p>
+              }
+              @case ('fieldsMatchError') {
+                <p class="text-sm text-red-400">
+                  {{ getError('fieldsMatchError') }}
+                </p>
               }
             }
           }
@@ -81,8 +86,8 @@ export class TextInputComponent implements ControlValueAccessor {
     this.onChange = onChange;
   }
 
-  registerOnTouched(): void {
-    // This will be implemented precisely when I intend to
+  registerOnTouched(onTouched: (touched: boolean) => void): void {
+    this.onTouched = onTouched;
   }
 
   setDisabledState?(isDisabled: boolean): void {
@@ -100,13 +105,33 @@ export class TextInputComponent implements ControlValueAccessor {
 
     return [] as string[];
   }
+
+  getError(errorKey: string) {
+    // Deconstruct, but default to undefined
+    var { errors } = this.formItem() ?? { errors: undefined };
+
+    // Grab the keys that are in the errors to be added to the list of errors displayed
+    if (errors !== null && errors !== undefined) {
+      return errors[errorKey] ?? '';
+    }
+
+    return '';
+  }
+
   @ViewChild('input')
   input!: ElementRef<HTMLInputElement>;
 
   isDisabled = signal<boolean>(false);
   value = signal<string | number | null>(null);
+
+  touched = signal<boolean>(false);
+
   onChange = (_value: string | number | null) => {
     // On Change
+  };
+
+  onTouched = (touched: boolean) => {
+    this.touched.set(touched);
   };
 
   inputProps = input<Partial<HTMLInputElement>>();

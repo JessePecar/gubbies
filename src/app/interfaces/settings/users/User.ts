@@ -13,10 +13,22 @@ export interface UpdateUser {
   primaryPhoneId?: number;
   addressId?: number;
   userName: string;
-  password: string;
+  password?: string;
   emailAddress: string;
   isActive: boolean;
 
   primaryPhone?: Phone;
   address?: Address;
+}
+
+export interface CreateUser {
+  firstName?: string;
+  lastName?: string;
+  roleId: number;
+  userName: string;
+  isActive?: boolean;
+  emailAddress?: string;
+  primaryPhone?: Phone;
+  address?: Address;
+  password?: string;
 }

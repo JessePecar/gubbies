@@ -58,8 +58,8 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
-button,
-a {
+button:enabled,
+a:enabled {
   cursor: pointer;
 }
 

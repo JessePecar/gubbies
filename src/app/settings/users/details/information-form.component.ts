@@ -35,6 +35,16 @@ import { UserDetailsService } from './user-details.service';
             [options]="roles()"
             label="Role"
             formControlName="roleId" />
+          @if (isCreate()) {
+            <app-text-input
+              [inputProps]="{ required: true, type: 'password' }"
+              formControlName="password"
+              label="Password" />
+            <app-text-input
+              [inputProps]="{ required: true, type: 'password' }"
+              formControlName="passwordConfirm"
+              label="Confirm Password" />
+          }
         </div>
       </form>
     </div>
@@ -48,6 +58,8 @@ import { UserDetailsService } from './user-details.service';
   ],
 })
 export class InformationFormComponent {
+  isCreate = input<boolean>(false);
+
   userDetailsService = inject(UserDetailsService);
   roles = input.required<DropdownOption[]>();
 }

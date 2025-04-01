@@ -24,13 +24,16 @@ export type DropdownOption = {
   selector: 'app-dropdown',
   imports: [MatIconModule, MatRippleModule, ReactiveFormsModule],
   template: `
-    <div #dropdown class="dropdown my-2" tabindex="1">
+    <div class="mb-[2px] mt-[-2px]">
+      <p>{{ label() }}</p>
+    </div>
+    <div #dropdown class="dropdown" tabindex="1">
       <i class="db2" tabindex="1"></i>
       <a
         matRipple
         [matRippleCentered]="true"
         matRippleColor="#44444444"
-        class="dropbtn w-full flex items-center justify-between p-1 h-[42px] w-full rounded-lg border border-stone-600">
+        class="dropbtn w-full flex items-center justify-between p-1 h-[42px] w-full rounded-lg border border-stone-600 pl-4">
         {{ getSelectedOption() }}
         <mat-icon fontIcon="arrow_drop_down" />
       </a>
