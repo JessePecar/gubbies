@@ -1,6 +1,6 @@
 import { RoleSubscriptionService } from '@/settings/roles';
 import { UserSubscriptionService } from '@/settings/users';
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { User } from '@interfaces/settings/users';
 
@@ -10,6 +10,12 @@ import { User } from '@interfaces/settings/users';
 export class UserInfoService {
   private readonly localStorageKey = 'userInfo';
   public userInfo = signal<User | undefined>(undefined);
+
+  public user = computed(() => ({
+    userInfo: this.userInfo(),
+    role: this.userInfo()?.role,
+    permissions: this.userInfo()?.role.rolePermissions,
+  }));
 
   constructor(
     userSubService: UserSubscriptionService,
