@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ReadRequest } from 'src/graphql.schema';
 import { RepositoryService } from 'src/repository/repository.service';
 
 @Injectable()
@@ -28,38 +29,41 @@ export class ItemsService {
     },
   };
 
-  // TODO: Have the UI determine the filter it wants
   async getItems() {
     return await this.repository.items.findMany({
       include: {
         ...this.defaultInclude,
       },
-      where: {
-        AND: [
-          {
-            isActive: {
-              equals: true,
-            },
-          },
-          {
-            retirementStatus: {
-              equals: 0,
-            },
-          },
-        ],
+    });
+  }
+
+  async getItemsFromRequest(request: ReadRequest) {
+    let filterObject = {};
+
+    request.filters?.forEach((filter) => {
+      if (filter.field && filter.field !== null) {
+        filterObject[filter.field] = {
+          equals: filter.value,
+        };
+      }
+    });
+
+    return await this.repository.items.findMany({
+      include: {
+        ...this.defaultInclude,
       },
+      where: {
+        AND: filterObject,
+      },
+      skip: request.offset ?? 0, // If no offset given, start at 0
+      take: request.limit ?? 25, // If no limit given, only grab 25 records
     });
   }
 
   async getItemById(id: number) {
     return await this.repository.items.findFirst({
       include: {
-        category: {
-          select: {
-            code: true,
-            name: true,
-          },
-        },
+        ...this.defaultInclude,
       },
       where: {
         id: {

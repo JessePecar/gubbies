@@ -53,8 +53,8 @@ export class RolePermissionInput {
 export class ReadRequest {
     limit?: Nullable<number>;
     offset?: Nullable<number>;
-    filters?: Nullable<Nullable<FilterOption>[]>;
-    sort?: Nullable<Nullable<SortOption>[]>;
+    filters?: Nullable<FilterOption[]>;
+    sort?: Nullable<SortOption[]>;
 }
 
 export class FilterOption {

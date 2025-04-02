@@ -9,7 +9,8 @@ type Mutation {
 }
 
 type Subscription {
-  itemCreated: Item
+  itemChanged(id: ID!): Item
+  itemsChanged: Item
 }
 
 interface BaseItem {

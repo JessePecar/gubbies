@@ -1,10 +1,10 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { ItemsService } from './items.service';
 import { ParseIntPipe } from '@nestjs/common';
 import { ReadRequest } from 'src/graphql.schema';
+import { PubSub } from 'graphql-subscriptions';
 
-// import { PubSub } from 'graphql-subscriptions';
-// const pubSub = new PubSub();
+const pubSub = new PubSub();
 
 @Resolver('Items')
 export class ItemsResolver {
@@ -15,12 +15,26 @@ export class ItemsResolver {
     return this.itemsService.getItems();
   }
 
-  // TODO: Implement this request
   @Query('items')
-  async getItemsFromRequest(@Args('request') request: ReadRequest) {}
+  async getItemsFromRequest(@Args('request') request: ReadRequest) {
+    return this.itemsService.getItemsFromRequest(request);
+  }
 
   @Query('item')
   async getItemById(@Args('id', ParseIntPipe) id: number) {
     return await this.itemsService.getItemById(id);
+  }
+
+  // Filter out the items changed to the one with the selected Id
+  @Subscription('itemChanged', {
+    filter: (payload, variables) => payload.itemChanged.id === variables.id,
+  })
+  async subscribeToItemChanges(@Args('id', ParseIntPipe) id: number) {
+    return pubSub.asyncIterableIterator('itemChanged');
+  }
+
+  @Subscription('itemsChanged')
+  async subscriveToChanges() {
+    return pubSub.asyncIterableIterator('itemsChanged');
   }
 }

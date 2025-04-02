@@ -5,8 +5,8 @@
 input ReadRequest {
   limit: Int
   offset: Int
-  filters: [FilterOption]
-  sort: [SortOption]
+  filters: [FilterOption!]
+  sort: [SortOption!]
 }
 
 union SearchType = Int | String | Boolean
