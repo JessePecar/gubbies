@@ -1,24 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 import { AuthUtil } from '../../src/utilities';
-import { parseArgs } from 'node:util';
 import { resetPassword as runReset } from './resetPasswords';
+import { permissionSeed } from './data';
 const client = new PrismaClient();
-
-const {
-  values: { resetPassword },
-} = parseArgs({
-  options: {
-    resetPassword: {
-      type: 'boolean',
-    },
-  },
-  args: ['--resetPassword'],
-});
 
 async function main() {
   var passwordFlag = process.env.RESET_PASSWORD;
 
-  if (resetPassword || passwordFlag === 'true') {
+  if (passwordFlag === 'true') {
     await runReset();
     return;
   }
@@ -27,72 +16,27 @@ async function main() {
   var authUtil = new AuthUtil();
 
   var permissions = await client.permissions.findMany();
-  if (!permissions || permissions.length < 1) {
+  if (!permissions || permissions.length !== permissionSeed.length) {
     console.log('Adding permissions to the db');
-    await client.permissions.createMany({
-      data: [
-        {
-          id: 1,
-          name: 'APPLICATION_LOGIN',
+
+    // Add or update the permission based on the seed
+    // WILL NOT DELETE PERMISSIONS
+    const upsertTasks = permissionSeed.map((ps) => {
+      return client.permissions.upsert({
+        where: {
+          id: ps.id,
         },
-        {
-          id: 2,
-          name: 'INVENTORY',
+        create: {
+          id: ps.id,
+          name: ps.name,
         },
-        {
-          id: 3,
-          name: 'INVENTORY_ADJUSTMENTS',
+        update: {
+          name: ps.name,
         },
-        {
-          id: 4,
-          name: 'INVENTORY_COUNTS',
-        },
-        {
-          id: 5,
-          name: 'PRICING',
-        },
-        {
-          id: 6,
-          name: 'PROMOTIONS',
-        },
-        {
-          id: 7,
-          name: 'REPORTS',
-        },
-        {
-          id: 8,
-          name: 'REPORTS_INVENTORY',
-        },
-        {
-          id: 9,
-          name: 'REPORTS_PRICING',
-        },
-        {
-          id: 10,
-          name: 'REPORTS_PROMOTIONS',
-        },
-        {
-          id: 11,
-          name: 'SETTINGS',
-        },
-        {
-          id: 12,
-          name: 'EDIT_USER',
-        },
-        {
-          id: 13,
-          name: 'CREATE_USER',
-        },
-        {
-          id: 14,
-          name: 'EDIT_ROLE',
-        },
-        {
-          id: 15,
-          name: 'CREATE_ROLE',
-        },
-      ],
+      });
     });
+
+    await Promise.all(upsertTasks);
   }
 
   permissions = await client.permissions.findMany();
@@ -116,6 +60,33 @@ async function main() {
         };
       }),
     });
+  }
+  else {
+    // Find all admins and ensure they have every permission
+    const admins = roles.filter(nr => nr.hierarchyTier === 1);
+
+    const rolePermTasks = admins.map(admin => {
+      return Promise.all(permissionSeed.map(ps => {
+        return client.rolePermissions.upsert({
+          where: {
+            roleId_permissionId: {
+              permissionId: ps.id,
+              roleId: admin.id
+            }
+          },
+          create: {
+            permissionId: ps.id,
+            roleId: admin.id
+          },
+          update: {
+            permissionId: ps.id,
+            roleId: admin.id
+          }
+        })
+      }))
+    });
+
+    await Promise.all(rolePermTasks);
   }
   // Create the default admin user
   var users = await client.users.findMany();

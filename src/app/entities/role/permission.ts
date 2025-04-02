@@ -14,4 +14,6 @@ export enum PermissionEnum {
   CREATE_USER = 13,
   EDIT_ROLE = 14,
   CREATE_ROLE = 15,
+  EDIT_ITEM = 16,
+  CREATE_ITEM = 17,
 }

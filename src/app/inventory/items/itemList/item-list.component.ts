@@ -1,11 +1,11 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { ItemListService } from './item-list.service';
-import { Item } from '../../models/items';
+import { Item } from '@/inventory/models/items';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
-import { TableComponent } from '../../../components/tables/table.component';
+import { TableComponent } from '@components/tables';
 import { ItemComponent } from './item.component';
-import { UserDataService, UserInfoService } from '@/services';
+import { UserInfoService } from '@/services';
 import { PermissionEnum } from '@/entities/role';
 
 @Component({
@@ -41,8 +41,7 @@ export class ItemListComponent {
       .user()
       .permissions?.findIndex(
         p =>
-          p.permissionId ===
-          /* TODO: Change this to CREATE_ITEM*/ PermissionEnum.INVENTORY
+          p.permissionId === PermissionEnum.CREATE_ITEM
       );
 
     // If the permission is found, we will add the toolbar item
