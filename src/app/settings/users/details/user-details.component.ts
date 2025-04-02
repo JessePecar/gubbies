@@ -55,7 +55,7 @@ import { InformationFormComponent } from './information-form.component';
     </div>
   `,
 })
-export class UserDetailsComponent implements OnInit {
+export class UserDetailsComponent {
   userDetailService = inject(UserDetailsService);
   route = inject(ActivatedRoute);
   formBuilder = inject(FormBuilder);
@@ -65,12 +65,22 @@ export class UserDetailsComponent implements OnInit {
   currentUser = signal<User | undefined>(undefined);
 
   roles = signal<DropdownOption[]>([]);
-  ngOnInit(): void {
+
+  constructor() {
     this.userDetailService.populateForm(this.userId());
+
     this.userDetailService
       .getRolesForDropdown()
       .subscribe(({ data: { roles } }) => {
-        this.roles.set(roles);
+        this.roles.set(
+          roles.map(
+            r =>
+              ({
+                id: r.id,
+                name: r.name,
+              }) as DropdownOption
+          )
+        );
       });
   }
 

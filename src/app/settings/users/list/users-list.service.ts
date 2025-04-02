@@ -1,54 +1,44 @@
-import { inject, Injectable } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
-import { User } from '@interfaces/settings/users';
-import { UserSubscriptionService } from '@/settings/users';
+import { inject, Injectable, signal } from '@angular/core';
+import { GetUsersService, UserSubscriptionService } from '@/settings/users';
+import { User } from '@/interfaces/settings/users';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersListService {
-  private readonly graphQLClient = inject(Apollo);
   private readonly userSubscriptionService = inject(UserSubscriptionService);
+  private readonly getUsersService = inject(GetUsersService);
 
-  getUsersQuery() {
-    return this.graphQLClient.watchQuery<{ users: User[] }>({
-      query: gql`
-        query {
-          users {
-            id
-            firstName
-            lastName
-            userName
-            emailAddress
-            isActive
-            role {
-              name
-            }
-            primaryPhone {
-              rawDigits
-              nationalDigits
-            }
-            address {
-              address1
-              address2
-              city
-              state
-              countryCode
-            }
-          }
-        }
-      `,
-    });
-  }
+  public users = signal<User[]>([]);
+  public loading = true;
 
   getUsers() {
-    return this.getUsersQuery().valueChanges;
+    return this.getUsersService
+      .watch()
+      .valueChanges.subscribe(({ data, loading }) => {
+        this.users.set(data.users);
+        this.loading = loading;
+      });
   }
 
   subscribeToChanges() {
-    console.log('Subscribing to changes');
-    return this.userSubscriptionService.subscribe();
+    return this.userSubscriptionService.subscribe().subscribe(({ data }) => {
+      if (data && data.usersChanged) {
+        this.users.update(user => {
+          return user.map(u => {
+            if (u.id === data.usersChanged.id) {
+              return data.usersChanged;
+            }
+            return u;
+          });
+        });
+      }
+    });
   }
 
-  constructor() {}
+  constructor() {
+    this.getUsers();
+
+    this.subscribeToChanges();
+  }
 }

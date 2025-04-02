@@ -14,6 +14,7 @@ import {
 } from '@/settings/users/details';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownOption } from '@/components';
+import { UserCreateService } from './user-create.service';
 
 @Component({
   selector: 'app-create',
@@ -91,6 +92,7 @@ import { DropdownOption } from '@/components';
 })
 export class UserCreateComponent {
   userDetailService = inject(UserDetailsService);
+  private readonly userCreateService = inject(UserCreateService);
 
   defaultOptions: BreadcrumbOption<UserFormGroupNames>[] = [
     { text: 'User Information', id: 'info' },
@@ -143,7 +145,7 @@ export class UserCreateComponent {
       this.userDetailService.form !== undefined &&
       this.userDetailService.form.valid
     ) {
-      this.userDetailService.createUser(
+      this.userCreateService.createUser(
         this.userDetailService.form?.value as Record<UserFormGroupNames, any>
       );
     }

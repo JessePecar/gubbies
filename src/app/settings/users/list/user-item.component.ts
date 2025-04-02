@@ -1,5 +1,7 @@
 import { GlobalAlertService } from '@/components/alert/global-alert.service';
 import { ContextButtonComponent } from '@/components/context-button.component';
+import { PermissionEnum } from '@/entities/role';
+import { UserInfoService } from '@/services';
 import { Component, inject, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -43,9 +45,11 @@ import { User } from '@interfaces/settings/users';
   `,
 })
 export class UserItemComponent {
+  globalAlertService = inject(GlobalAlertService);
+  private readonly userInfoService = inject(UserInfoService);
+
   user = input.required<User>();
   router = inject(Router);
-  globalAlertService = inject(GlobalAlertService);
 
   onEditUser = async () => {
     await this.router.navigate(['settings/users/details'], {
@@ -55,15 +59,15 @@ export class UserItemComponent {
     });
   };
 
-  userContextMenu = [
-    { name: 'Edit', iconName: 'edit', onClickEvent: this.onEditUser },
-    //TODO: Check if the user is active, then show Deactivate
-    {
-      name: 'Deactivate',
-      iconName: 'auto_delete',
-      onClickEvent: () => {},
-    },
-  ];
+  onDeactivateUser = () => {
+    // TODO: Deactivate the user
+  };
+
+  userContextMenu: {
+    name: string;
+    iconName: string;
+    onClickEvent: () => Promise<void> | void;
+  }[] = [{ name: 'Edit', iconName: 'edit', onClickEvent: this.onEditUser }];
 
   createReadablePhoneNumber = () => {
     var { primaryPhone } = this.user();
@@ -75,4 +79,23 @@ export class UserItemComponent {
 
     return 'N/A';
   };
+
+  constructor() {
+    const { permissions } = this.userInfoService.user();
+    if (permissions !== undefined) {
+      // Find the first index that contains the permission id
+      const permissionIndex = permissions.findIndex(
+        p => p.permissionId === PermissionEnum.EDIT_USER
+      );
+
+      // If perrmission id was found and the user is active, allow for quick deactivation
+      if (permissionIndex >= 0 && this.user().isActive) {
+        this.userContextMenu.push({
+          name: 'Deactivate',
+          iconName: 'auto_delete',
+          onClickEvent: this.onDeactivateUser,
+        });
+      }
+    }
+  }
 }

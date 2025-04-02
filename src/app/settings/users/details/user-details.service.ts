@@ -10,7 +10,12 @@ import { FieldMetchValidator } from '@/utilities/FieldMatchValidator';
 import { inject, Injectable, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Apollo, gql } from 'apollo-angular';
+import {
+  CreateUserService,
+  GetUserService,
+  UpdateUserService,
+} from '@/settings/users/requests';
+import { GetRolesService } from '@/settings/roles';
 
 export type UserFormGroupNames = 'info' | 'address' | 'primaryPhone';
 
@@ -18,9 +23,14 @@ export type UserFormGroupNames = 'info' | 'address' | 'primaryPhone';
   providedIn: 'root',
 })
 export class UserDetailsService {
-  private readonly graphQLClient = inject(Apollo);
   private readonly formBuilder = inject(FormBuilder);
   private readonly alertService = inject(GlobalAlertService);
+
+  private readonly createUserService = inject(CreateUserService);
+  private readonly updateUserService = inject(UpdateUserService);
+  private readonly getUserService = inject(GetUserService);
+  private readonly getRolesService = inject(GetRolesService);
+
   readonly router = inject(Router);
 
   form = this.formBuilder.group({});
@@ -29,55 +39,15 @@ export class UserDetailsService {
   isLoading = true;
 
   getRolesForDropdown() {
-    return this.graphQLClient.query<{ roles: { id: number; name: string }[] }>({
-      query: gql`
-        query {
-          roles {
-            id
-            name
-          }
-        }
-      `,
-    });
+    return this.getRolesService.watch().valueChanges;
   }
 
   getUser(id: number) {
-    return this.graphQLClient.query<{ user: User }>({
-      query: gql`
-        query GetUsersById($id: ID!) {
-          user(id: $id) {
-            id
-            firstName
-            lastName
-            userName
-            isActive
-            emailAddress
-            roleId
-            primaryPhone {
-              id
-              rawDigits
-              nationalDigits
-            }
-            role {
-              name
-              id
-            }
-            address {
-              id
-              address1
-              address2
-              city
-              state
-              countryCode
-              postalCode
-            }
-          }
-        }
-      `,
+    return this.getUserService.watch({
       variables: {
         id: id,
       },
-    });
+    }).valueChanges;
   }
 
   updateUser({
@@ -105,36 +75,8 @@ export class UserDetailsService {
       } as Phone,
     });
 
-    return this.graphQLClient
+    return this.updateUserService
       .mutate({
-        mutation: gql`
-          mutation UpdateUser($updatedUser: UpdateUserInput) {
-            updateUser(updateUserInput: $updatedUser) {
-              id
-              firstName
-              lastName
-              userName
-              isActive
-              emailAddress
-              primaryPhone {
-                rawDigits
-                nationalDigits
-              }
-              role {
-                name
-                id
-              }
-              address {
-                address1
-                address2
-                city
-                state
-                countryCode
-                postalCode
-              }
-            }
-          }
-        `,
         variables: {
           updatedUser: this.currentUser() as UpdateUser,
         },
@@ -142,102 +84,11 @@ export class UserDetailsService {
       .subscribe(res => {
         if (res.errors && res.errors.length > 0) {
           // Show Errors
-          this.alertService.addAlert(
-            'error',
-            'Error adding or updating user',
-            2000
-          );
+          this.alertService.addAlert('error', 'Error updating user', 2000);
         } else {
           this.alertService.addAlert(
             'success',
-            'Successfully added or updated user',
-            2000
-          );
-          this.router.navigate(['settings/users/list']);
-        }
-      });
-  }
-
-  createUser({
-    info: {
-      firstName,
-      lastName,
-      userName,
-      emailAddress,
-      isActive,
-      roleId,
-      password,
-    },
-    address,
-    primaryPhone,
-  }: Record<UserFormGroupNames, any>) {
-    this.currentUser.set({
-      id: this.currentUser()?.id ?? 0,
-      roleId: roleId,
-      password: password,
-      firstName,
-      lastName,
-      userName,
-      address: {
-        id: this.currentUser()?.address?.id ?? 0, // This should bring over the id
-        ...address, // This should fill out everything that was included in the form
-        postalCode: Number(address.postalCode),
-      } as Address,
-      emailAddress,
-      isActive,
-      primaryPhone: {
-        id: this.currentUser()?.primaryPhone?.id ?? 0,
-        ...primaryPhone, // This should fill out everything that was included in the form
-        nationalDigits: '+1' + primaryPhone.rawDigits,
-      } as Phone,
-    });
-
-    return this.graphQLClient
-      .mutate({
-        mutation: gql`
-          mutation CreateUser($updatedUser: CreateUserInput) {
-            createUser(createUserInput: $updatedUser) {
-              id
-              firstName
-              lastName
-              userName
-              isActive
-              emailAddress
-              primaryPhone {
-                rawDigits
-                nationalDigits
-              }
-              role {
-                name
-                id
-              }
-              address {
-                address1
-                address2
-                city
-                state
-                countryCode
-                postalCode
-              }
-            }
-          }
-        `,
-        variables: {
-          updatedUser: this.currentUser() as CreateUser,
-        },
-      })
-      .subscribe(res => {
-        if (res.errors && res.errors.length > 0) {
-          // Show Errors
-          this.alertService.addAlert(
-            'error',
-            'Error adding or updating user',
-            2000
-          );
-        } else {
-          this.alertService.addAlert(
-            'success',
-            'Successfully added or updated user',
+            'Successfully updated user',
             2000
           );
           this.router.navigate(['settings/users/list']);
