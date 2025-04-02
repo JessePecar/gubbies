@@ -185,6 +185,24 @@ export class Category {
     code: string;
     name?: Nullable<string>;
     items?: Nullable<Nullable<Item>[]>;
+    subCategories?: Nullable<Nullable<SubCategory>[]>;
+}
+
+export class SubCategory {
+    code: string;
+    categoryCode: string;
+    name?: Nullable<string>;
+    category: Category;
+    items?: Nullable<Nullable<Item>[]>;
+    families?: Nullable<Nullable<Family>[]>;
+}
+
+export class Family {
+    code: string;
+    name?: Nullable<string>;
+    subCategoryCode: string;
+    subCategory?: Nullable<SubCategory>;
+    items?: Nullable<Nullable<Item>[]>;
 }
 
 export class Adjustment {

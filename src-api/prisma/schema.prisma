@@ -26,16 +26,43 @@ model Adjustments {
   adjustmentItems AdjustmentItems[]
 }
 
+// Promotions could be created on the Sub Category (rare) or Family level (common), but never Category level
+// Categories could have Sub Categories 
 model Categories {
-  code  String  @id
-  name  String?
-  items Items[]
+  code String  @id
+  name String?
+
+  items         Items[]
+  subCategories SubCategory[]
+}
+
+// Sub Categories could have Families
+model SubCategory {
+  code         String  @id
+  categoryCode String
+  name         String?
+
+  category Categories @relation(fields: [categoryCode], references: [code])
+  items    Items[]
+  families Family[]
+}
+
+// A family is under a Sub Category that relates branded items together for promotions 
+model Family {
+  code            String  @id
+  subCategoryCode String
+  name            String?
+
+  subCategory SubCategory @relation(fields: [subCategoryCode], references: [code])
+  items       Items[]
 }
 
 model Items {
   id                    Int     @id @default(autoincrement())
   name                  String
   categoryCode          String
+  subCategoryCode       String?
+  fieldCode             String?
   quantityOnHand        String
   basePrice             Decimal
   currentPrice          Decimal
@@ -46,6 +73,8 @@ model Items {
 
   adjustmentItems AdjustmentItems[]
   category        Categories        @relation(fields: [categoryCode], references: [code])
+  subCategory     SubCategory?      @relation(fields: [subCategoryCode], references: [code])
+  family          Family?           @relation(fields: [fieldCode], references: [code])
 }
 
 model Permissions {

@@ -38,7 +38,6 @@ input CreateItemInput {
 }
 
 type Item implements BaseItem {
-  # Implemented properties for a base item, shared with create
   id: Int!
   name: String!
   categoryCode: String!
@@ -65,6 +64,27 @@ type AdjustmentItems {
 type Category {
   code: String!
   name: String
+  
+  items: [Item]
+  subCategories: [SubCategory]
+}
+
+type SubCategory {
+  code: String!
+  categoryCode: String!
+  name: String
+
+  category: Category!
+  items: [Item]
+  families: [Family]
+}
+
+type Family {
+  code: String!
+  name: String
+  subCategoryCode: String!
+
+  subCategory: SubCategory
   items: [Item]
 }
 
