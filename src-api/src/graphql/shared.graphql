@@ -2,6 +2,8 @@
 # Shared request objects that can be used with any resolver
 ####
 
+scalar JSON
+
 input ReadRequest {
   limit: Int
   offset: Int
@@ -9,11 +11,9 @@ input ReadRequest {
   sort: [SortOption!]
 }
 
-union SearchType = Int | String | Boolean
-
 input FilterOption {
-  field: String
-  value: SearchType
+  field: String!
+  value: JSON!
 }
 
 enum SortOption {

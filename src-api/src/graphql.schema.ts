@@ -58,8 +58,8 @@ export class ReadRequest {
 }
 
 export class FilterOption {
-    field?: Nullable<string>;
-    value?: Nullable<SearchType>;
+    field: string;
+    value: JSON;
 }
 
 export class SortOption {
@@ -169,7 +169,9 @@ export abstract class IMutation {
 }
 
 export abstract class ISubscription {
-    abstract itemCreated(): Nullable<Item> | Promise<Nullable<Item>>;
+    abstract itemChanged(id: string): Nullable<Item> | Promise<Nullable<Item>>;
+
+    abstract itemsChanged(): Nullable<Item> | Promise<Nullable<Item>>;
 
     abstract roleUpdated(): Nullable<Role> | Promise<Nullable<Role>>;
 
@@ -287,5 +289,5 @@ export class Address {
     user?: Nullable<User>;
 }
 
-export type SearchType = Int | String | Boolean;
+export type JSON = any;
 type Nullable<T> = T | null;
