@@ -26,7 +26,6 @@ export class UserDetailsService {
   private readonly formBuilder = inject(FormBuilder);
   private readonly alertService = inject(GlobalAlertService);
 
-  private readonly createUserService = inject(CreateUserService);
   private readonly updateUserService = inject(UpdateUserService);
   private readonly getUserService = inject(GetUserService);
   private readonly getRolesService = inject(GetRolesService);
