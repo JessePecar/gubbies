@@ -1,6 +1,7 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { ItemsService } from './items.service';
 import { ParseIntPipe } from '@nestjs/common';
+import { ReadRequest } from 'src/graphql.schema';
 
 // import { PubSub } from 'graphql-subscriptions';
 // const pubSub = new PubSub();
@@ -13,6 +14,10 @@ export class ItemsResolver {
   async getItems() {
     return this.itemsService.getItems();
   }
+
+  // TODO: Implement this request
+  @Query('items')
+  async getItemsFromRequest(@Args('request') request: ReadRequest) {}
 
   @Query('item')
   async getItemById(@Args('id', ParseIntPipe) id: number) {

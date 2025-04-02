@@ -1,0 +1,27 @@
+#### 
+# Shared request objects that can be used with any resolver
+####
+
+input ReadRequest {
+  limit: Int
+  offset: Int
+  filters: [FilterOption]
+  sort: [SortOption]
+}
+
+union SearchType = Int | String | Boolean
+
+input FilterOption {
+  field: String
+  value: SearchType
+}
+
+enum SortOption {
+  DESC,
+  ASC
+}
+
+input SortOption {
+  field: String
+  option: SortOption
+}

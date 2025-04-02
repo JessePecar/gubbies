@@ -20,6 +20,8 @@ import { UserInfoService } from '@/services';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '@/components/buttons';
 
+//TODO: Move a lot of the logic for fetching into the service
+
 @Component({
   selector: 'app-role-details',
   imports: [

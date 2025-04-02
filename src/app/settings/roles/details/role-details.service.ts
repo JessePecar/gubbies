@@ -1,18 +1,27 @@
-import { Permission, Role, UpdateRole } from '@interfaces/settings/roles';
+import { Role, UpdateRole } from '@interfaces/settings/roles';
 import { inject, Injectable } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { GlobalAlertService } from '@/components/alert/global-alert.service';
 import { Router } from '@angular/router';
+import {
+  UpsertRoleService,
+  GetTiersService,
+  GetPermissionsService,
+  GetRoleService,
+} from '@/settings/roles';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoleDetailsService {
-  graphQLClient = inject(Apollo);
   alertService = inject(GlobalAlertService);
   router = inject(Router);
+
+  private readonly upsertRoleService = inject(UpsertRoleService);
+  private readonly getTiersService = inject(GetTiersService);
+  private readonly getPermissionsService = inject(GetPermissionsService);
+  private readonly getRoleService = inject(GetRoleService);
 
   constructor() {}
 
@@ -21,22 +30,7 @@ export class RoleDetailsService {
       return new Observable<ApolloQueryResult<{ role: Role }>>();
     }
 
-    return this.graphQLClient.watchQuery<{ role: Role }>({
-      query: gql`
-        query GetRole($id: Int!) {
-          role(id: $id) {
-            id
-            name
-            hierarchyTier
-            rolePermissions {
-              permission {
-                id
-                name
-              }
-            }
-          }
-        }
-      `,
+    return this.getRoleService.watch({
       variables: {
         id: +id, // Telling graphql that this will be an integer
       },
@@ -44,55 +38,17 @@ export class RoleDetailsService {
   }
 
   getPermissions() {
-    return this.graphQLClient.watchQuery<{
-      permissions: Permission[];
-    }>({
-      query: gql`
-        query {
-          permissions {
-            id
-            name
-          }
-        }
-      `,
-    }).valueChanges;
+    return this.getPermissionsService.watch().valueChanges;
   }
 
   getTiers() {
-    return this.graphQLClient.watchQuery<{
-      roleTiers: { tierNumber: number }[];
-    }>({
-      query: gql`
-        query {
-          roleTiers {
-            tierNumber
-          }
-        }
-      `,
-    }).valueChanges;
+    return this.getTiersService.watch().valueChanges;
   }
 
   updateRole(role: UpdateRole) {
-    return this.graphQLClient
+    return this.upsertRoleService
       .mutate({
-        mutation: gql`
-          mutation UpsertRole($upsertRoleInput: UpsertRoleInput) {
-            upsertRole(upsertRoleInput: $upsertRoleInput) {
-              id
-              name
-              hierarchyTier
-              rolePermissions {
-                permission {
-                  id
-                  name
-                }
-              }
-            }
-          }
-        `,
-        variables: {
-          upsertRoleInput: role,
-        },
+        upsertRoleInput: role,
       })
       .subscribe(res => {
         if (res.errors && res.errors.length > 0) {

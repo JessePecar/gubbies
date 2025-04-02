@@ -50,6 +50,23 @@ export class RolePermissionInput {
     permissionId: number;
 }
 
+export class ReadRequest {
+    limit?: Nullable<number>;
+    offset?: Nullable<number>;
+    filters?: Nullable<Nullable<FilterOption>[]>;
+    sort?: Nullable<Nullable<SortOption>[]>;
+}
+
+export class FilterOption {
+    field?: Nullable<string>;
+    value?: Nullable<SearchType>;
+}
+
+export class SortOption {
+    field?: Nullable<string>;
+    option?: Nullable<SortOption>;
+}
+
 export class CreateRoleInput {
     name: string;
     rolePermissions?: Nullable<Nullable<CreateRolePermission>[]>;
@@ -117,7 +134,7 @@ export interface BaseItem {
 export abstract class IQuery {
     abstract login(username?: Nullable<string>, password?: Nullable<string>): Nullable<AuthResponse> | Promise<Nullable<AuthResponse>>;
 
-    abstract items(): Nullable<Nullable<Item>[]> | Promise<Nullable<Nullable<Item>[]>>;
+    abstract items(request: ReadRequest): Nullable<Nullable<Item>[]> | Promise<Nullable<Nullable<Item>[]>>;
 
     abstract item(id: string): Nullable<Item> | Promise<Nullable<Item>>;
 
@@ -270,4 +287,5 @@ export class Address {
     user?: Nullable<User>;
 }
 
+export type SearchType = Int | String | Boolean;
 type Nullable<T> = T | null;
