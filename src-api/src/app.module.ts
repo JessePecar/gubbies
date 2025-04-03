@@ -1,29 +1,19 @@
 import { Module } from '@nestjs/common';
-import { UsersModule, UserService, UsersController } from './users';
-import {
-  AdjustmentsController,
-  AdjustmentsService,
-  AdjustmentsModule,
-} from './adjustments';
 import { RepositoryService } from './repository/repository.service';
 import { RepositoryModule } from './repository/repository.module';
-import { ItemsController, ItemsService, ItemsModule } from './items';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import {
   RolesModule,
   UsersModule as GQUsersModule,
   ItemsModule as GQItemsModule,
-  AuthModule
+  AuthModule,
 } from './graphql';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     RepositoryModule,
-    UsersModule,
-    AdjustmentsModule,
-    ItemsModule,
     GQItemsModule,
     GQUsersModule,
     RolesModule,
@@ -39,7 +29,6 @@ import { ConfigModule } from '@nestjs/config';
       },
     }),
   ],
-  controllers: [UsersController, AdjustmentsController, ItemsController],
-  providers: [UserService, RepositoryService, AdjustmentsService, ItemsService],
+  providers: [RepositoryService],
 })
 export class AppModule {}
