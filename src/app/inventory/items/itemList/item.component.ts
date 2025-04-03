@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
         <div class="col-span-3">
           <p class="p-2">{{ item().name }}</p>
           <p class="text-sm p-2">{{ item().category.name }}</p>
+          <p class="text-sm p-2">{{ item().subCategory?.name }}</p>
+          <p class="text-sm p-2">{{ item().family?.name }}</p>
         </div>
         <div class="flex col-span-2">
           <p class="py-2 pr-1">{{ item().quantityOnHand }}</p>

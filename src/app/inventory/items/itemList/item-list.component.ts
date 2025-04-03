@@ -31,8 +31,8 @@ export class ItemListComponent {
   }));
 
   constructor(service: ItemListService) {
-    service.getItems().subscribe(res => {
-      this.items.set(res);
+    service.getItems().subscribe(({ data: { items } }) => {
+      this.items.set(items);
     });
   }
 
@@ -40,18 +40,18 @@ export class ItemListComponent {
     const permissionIndex = this.userInfoService
       .user()
       .permissions?.findIndex(
-        p =>
-          p.permissionId === PermissionEnum.CREATE_ITEM
+        p => p.permissionId === PermissionEnum.CREATE_ITEM
       );
 
     // If the permission is found, we will add the toolbar item
-    if (permissionIndex && permissionIndex > 0) {
+    if (permissionIndex && permissionIndex >= 0) {
       return [{ icon: 'add', text: 'Add Item', onClick: this.onCreateItem }];
     }
     return [];
   }
 
-  async onCreateItem() {
-    await this.router.navigate(['inventory/details']);
+  onCreateItem = async () => {
+    console.log('Creating item')
+    await this.router.navigate(['inventory/create']);
   }
 }

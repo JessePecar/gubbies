@@ -11,7 +11,7 @@ import {
   adjustmentsGuard,
   AdjustmentsListComponent,
 } from './inventory/adjustments';
-import { ItemDetailsComponent, ItemListComponent } from './inventory/items';
+import { ItemCreateComponent, ItemDetailsComponent, ItemListComponent } from './inventory/items';
 import { InventoryComponent } from './inventory/inventory.component';
 import {
   UserComponent,
@@ -53,6 +53,11 @@ export const routes: Routes = [
             path: 'details',
             component: ItemDetailsComponent,
             canActivate: [],
+          },
+          {
+            path: 'create',
+            component: ItemCreateComponent,
+            canActivate: [], //TODO: Add the item create guard
           },
           {
             path: 'adjustments',

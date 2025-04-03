@@ -54,6 +54,8 @@ type Item implements BaseItem {
   # Navigation properties
   adjustmentItems: [AdjustmentItems]
   category: Category
+  subCategory: SubCategory
+  family: Family
 }
 
 type AdjustmentItems {

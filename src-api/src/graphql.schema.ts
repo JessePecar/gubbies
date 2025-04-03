@@ -23,7 +23,9 @@ export enum PermissionName {
     EDIT_USER = "EDIT_USER",
     CREATE_USER = "CREATE_USER",
     EDIT_ROLE = "EDIT_ROLE",
-    CREATE_ROLE = "CREATE_ROLE"
+    CREATE_ROLE = "CREATE_ROLE",
+    EDIT_ITEM = "EDIT_ITEM",
+    CREATE_ITEM = "CREATE_ITEM"
 }
 
 export class CreateItemInput {
@@ -191,6 +193,8 @@ export class Item implements BaseItem {
     unitOfMeasurementType: number;
     adjustmentItems?: Nullable<Nullable<AdjustmentItems>[]>;
     category?: Nullable<Category>;
+    subCategory?: Nullable<SubCategory>;
+    family?: Nullable<Family>;
 }
 
 export class AdjustmentItems {
