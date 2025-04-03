@@ -7,9 +7,8 @@ import {
 } from '@angular/forms';
 import { MatRippleModule } from '@angular/material/core';
 import { TextInputComponent } from '@/components';
-import { UserInfoService } from '../services/userInfo.service';
+import { UserInfoService } from '@/services/';
 import { Router } from '@angular/router';
-import { UserDataService } from '../services';
 import {
   CardBodyComponent,
   CardComponent,
@@ -104,7 +103,6 @@ import { ButtonComponent } from '@/components/buttons/button.component';
   `,
 })
 export class LoginComponent {
-  userDataService = inject(UserDataService);
   userInfoService = inject(UserInfoService);
   loginService = inject(LoginService);
   router = inject(Router);
@@ -146,7 +144,7 @@ export class LoginComponent {
           // Show the error message if the login was not found (the login information does not exist)
           this.showErrorMessage = true;
         } else {
-          this.userInfoService.setUser(user);
+          this.userInfoService.setUser(accessToken, user);
           this.router.navigate(['']);
         }
       }

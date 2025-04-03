@@ -26,7 +26,7 @@ export class ItemListComponent {
   router = inject(Router);
 
   toolbar = computed(() => ({
-    permissions: this.userInfoService.user().permissions,
+    permissions: this.userInfoService.user().permissions(),
     items: signal(this.getToolbarItems()),
   }));
 
@@ -39,9 +39,8 @@ export class ItemListComponent {
   getToolbarItems() {
     const permissionIndex = this.userInfoService
       .user()
-      .permissions?.findIndex(
-        p => p.permissionId === PermissionEnum.CREATE_ITEM
-      );
+      .permissions()
+      ?.findIndex(p => p.permissionId === PermissionEnum.CREATE_ITEM);
 
     // If the permission is found, we will add the toolbar item
     if (permissionIndex && permissionIndex >= 0) {
@@ -51,7 +50,7 @@ export class ItemListComponent {
   }
 
   onCreateItem = async () => {
-    console.log('Creating item')
+    console.log('Creating item');
     await this.router.navigate(['inventory/create']);
-  }
+  };
 }

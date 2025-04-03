@@ -1,7 +1,7 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
-import { AuthService } from './auth.service';
+import { AuthModel, AuthService } from './auth.service';
 
 // TODO: Add public token check to ensure that this request is coming from an expected source
 @Resolver('Auth')
@@ -29,7 +29,7 @@ export class AuthResolver {
       {
         sub: authedUser.id,
         roleId: authedUser.roleId,
-      },
+      } as AuthModel,
       // TODO: Add configuration for the token generation
     );
 
@@ -38,5 +38,17 @@ export class AuthResolver {
       accessToken: token,
       user: authedUser,
     };
+  }
+
+  @Query('auth')
+  async authenticateToken(@Args('token') token: string) {
+    var user = this.authService.verifyUser(token);
+
+    // If the user is not found in the database, they will get an unauthorized exception
+    if (user === null || user === undefined) {
+      throw new UnauthorizedException();
+    }
+
+    return user;
   }
 }

@@ -84,12 +84,12 @@ export class UserItemComponent {
     const { permissions } = this.userInfoService.user();
     if (permissions !== undefined) {
       // Find the first index that contains the permission id
-      const permissionIndex = permissions.findIndex(
+      const permissionIndex = permissions()?.findIndex(
         p => p.permissionId === PermissionEnum.EDIT_USER
       );
 
       // If perrmission id was found and the user is active, allow for quick deactivation
-      if (permissionIndex >= 0 && this.user().isActive) {
+      if (permissionIndex && permissionIndex >= 0 && this.user().isActive) {
         this.userContextMenu.push({
           name: 'Deactivate',
           iconName: 'auto_delete',

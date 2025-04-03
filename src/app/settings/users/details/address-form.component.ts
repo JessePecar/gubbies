@@ -6,7 +6,7 @@ import { UserDetailsService } from './user-details.service';
 @Component({
   selector: 'address-form',
   imports: [TextInputComponent, ReactiveFormsModule],
-  template: `<div [formGroup]="userDataService.form">
+  template: `<div [formGroup]="userDetailsService.form">
     <form formGroupName="address" class="mb-4">
       <p class="text-lg mb-1">User Address</p>
       <div class="grid grid-cols-4 gap-2">
@@ -40,5 +40,5 @@ import { UserDetailsService } from './user-details.service';
   </div>`,
 })
 export class AddressFormComponent {
-  userDataService = inject(UserDetailsService);
+  userDetailsService = inject(UserDetailsService);
 }

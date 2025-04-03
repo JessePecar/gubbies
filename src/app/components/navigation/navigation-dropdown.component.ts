@@ -1,7 +1,5 @@
 import {
   Component,
-  computed,
-  effect,
   ElementRef,
   inject,
   input,
@@ -9,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { NavbarService } from '@/services/navbar.service';
+import { NavbarService } from '@/components/navigation/navbar.service';
 import { ButtonComponent } from '@/components/buttons';
 import { UserInfoService } from '@/services';
 import { DropdownOption } from '@/types/components/navigation/DropdownOption';

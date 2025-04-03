@@ -1,11 +1,20 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { RepositoryService } from 'src/repository/repository.service';
 import { AuthUtil } from 'src/utilities/authUtils';
+
+export type AuthModel = {
+  sub: number;
+  roleId: number;
+};
 
 @Injectable()
 export class AuthService {
   private authUtil = new AuthUtil();
-  constructor(private repository: RepositoryService) {}
+  constructor(
+    private repository: RepositoryService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   private readonly defaultInclude = {
     role: {
@@ -63,7 +72,23 @@ export class AuthService {
     return undefined;
   }
 
-  async verifyUser() {
-    return false;
+  async verifyUser(token: string) {
+    var decodedToken = this.jwtService.decode<AuthModel>(token);
+
+    var user = await this.repository.users.findFirst({
+      where: {
+        AND: {
+          id: {
+            equals: decodedToken.sub,
+          },
+          roleId: {
+            equals: decodedToken.roleId,
+          },
+        },
+      },
+      include: this.defaultInclude,
+    });
+
+    return user;
   }
 }
