@@ -3,6 +3,7 @@ import { Args, Query, Resolver } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 
+// TODO: Add public token check to ensure that this request is coming from an expected source
 @Resolver('Auth')
 export class AuthResolver {
   constructor(
@@ -26,7 +27,7 @@ export class AuthResolver {
     // Generate the user's token
     var token = await this.jwtService.signAsync(
       {
-        userId: authedUser.id,
+        sub: authedUser.id,
         roleId: authedUser.roleId,
       },
       // TODO: Add configuration for the token generation

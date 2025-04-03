@@ -62,4 +62,8 @@ export class AuthService {
 
     return undefined;
   }
+
+  async verifyUser() {
+    return false;
+  }
 }

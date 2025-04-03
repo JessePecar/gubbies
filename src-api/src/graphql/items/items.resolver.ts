@@ -1,8 +1,9 @@
 import { Args, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { ItemsService } from './items.service';
-import { ParseIntPipe } from '@nestjs/common';
+import { ParseIntPipe, UseGuards } from '@nestjs/common';
 import { ReadRequest } from 'src/graphql.schema';
 import { PubSub } from 'graphql-subscriptions';
+import { AppAuthGuard } from 'src/guards/app-auth.guard';
 
 const pubSub = new PubSub();
 
@@ -10,16 +11,19 @@ const pubSub = new PubSub();
 export class ItemsResolver {
   constructor(private readonly itemsService: ItemsService) {}
 
+  @UseGuards(AppAuthGuard)
   @Query('items')
   async getItems() {
     return this.itemsService.getItems();
   }
 
+  @UseGuards(AppAuthGuard)
   @Query('items')
   async getItemsFromRequest(@Args('request') request: ReadRequest) {
     return this.itemsService.getItemsFromRequest(request);
   }
 
+  @UseGuards(AppAuthGuard)
   @Query('item')
   async getItemById(@Args('id', ParseIntPipe) id: number) {
     return await this.itemsService.getItemById(id);
@@ -33,6 +37,7 @@ export class ItemsResolver {
     return pubSub.asyncIterableIterator('itemChanged');
   }
 
+  @UseGuards(AppAuthGuard)
   @Subscription('itemsChanged')
   async subscriveToChanges() {
     return pubSub.asyncIterableIterator('itemsChanged');

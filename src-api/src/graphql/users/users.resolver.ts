@@ -1,11 +1,13 @@
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { ParseIntPipe } from '@nestjs/common';
+import { ParseIntPipe, UseGuards } from '@nestjs/common';
 import { PubSub } from 'graphql-subscriptions';
 import { CreateUserInput, UpdateUserInput } from 'src/graphql.schema';
+import { AppAuthGuard } from 'src/guards/app-auth.guard';
 
 const pubSub = new PubSub();
 
+@UseGuards(AppAuthGuard)
 @Resolver('Users')
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}

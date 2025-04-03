@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserInput, UpdateUserInput } from 'src/graphql.schema';
 import { RepositoryService } from 'src/repository/repository.service';
 
-import * as crypto from 'crypto';
-import { promisify } from 'util';
 import { AuthUtil } from 'src/utilities/authUtils';
 
 @Injectable()
