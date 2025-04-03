@@ -7,5 +7,5 @@ export function initializeApp(): Promise<any> {
 }
 
 async function loadFromLoader() {
-  await inject(UserInfoService).setupStore();
+  await inject(UserInfoService).getStoredToken();
 }

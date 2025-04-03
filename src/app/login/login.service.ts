@@ -13,10 +13,8 @@ export class LoginService {
 
   authUser(username: string, password: string) {
     return this.authUserService.watch({
-      variables: {
-        username,
-        password,
-      },
+      username: username,
+      password: password,
     }).valueChanges;
   }
 }

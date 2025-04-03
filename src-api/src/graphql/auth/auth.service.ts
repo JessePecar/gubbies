@@ -91,4 +91,22 @@ export class AuthService {
 
     return user;
   }
+
+  async authTokenInfo(userId: number, roleId: number) {
+    var user = await this.repository.users.findFirst({
+      where: {
+        AND: {
+          id: {
+            equals: userId,
+          },
+          roleId: {
+            equals: roleId,
+          },
+        },
+      },
+      include: this.defaultInclude,
+    });
+
+    return user;
+  }
 }

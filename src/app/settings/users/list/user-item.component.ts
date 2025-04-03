@@ -48,7 +48,7 @@ export class UserItemComponent {
   globalAlertService = inject(GlobalAlertService);
   private readonly userInfoService = inject(UserInfoService);
 
-  user = input.required<User>();
+  user = input<User>({} as User);
   router = inject(Router);
 
   onEditUser = async () => {

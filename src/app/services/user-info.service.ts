@@ -1,17 +1,17 @@
 import { AuthTokenService } from '@/login/requests';
 import { RoleSubscriptionService } from '@/settings/roles';
 import { UserSubscriptionService } from '@/settings/users';
+import { LocalStorageKeys } from '@/utilities';
 import { Injectable, computed, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from '@interfaces/settings/users';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserInfoService {
-  private readonly localStorageKey = 'userInfo';
-  private readonly authTokenKey = 'access_token';
-
   private readonly authTokenService = inject(AuthTokenService);
+  private readonly router = inject(Router);
 
   public userInfo = signal<User | undefined>(undefined);
 
@@ -53,19 +53,19 @@ export class UserInfoService {
     });
   }
 
-  setUser(token: string, newUserInfo?: User) {
+  setUser(token?: string, newUserInfo?: User) {
     this.userInfo.set(newUserInfo);
 
     // If the token and the user info is valid, then set, otherwise clear the userinfo and token
     if (newUserInfo && token) {
-      localStorage.setItem(this.authTokenKey, JSON.stringify(newUserInfo));
+      localStorage.setItem(LocalStorageKeys.access_token, token);
     } else {
-      localStorage.removeItem(this.authTokenKey);
+      localStorage.removeItem(LocalStorageKeys.access_token);
     }
   }
 
   getStoredToken() {
-    const token = localStorage.getItem(this.authTokenKey);
+    const token = localStorage.getItem(LocalStorageKeys.access_token);
     if (token) {
       // If token exists, we will go to the api and get the user
       this.authTokenService
@@ -82,6 +82,7 @@ export class UserInfoService {
           else {
             // set the userinfo
             this.userInfo.set(auth);
+            this.router.navigate(['']);
           }
         });
     }

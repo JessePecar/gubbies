@@ -121,7 +121,7 @@ export class NavigationBarComponent implements OnInit {
   }
 
   logout() {
-    this.userInfoService.setUser(undefined);
+    this.userInfoService.setUser(undefined, undefined);
     this.router.navigate(['login']);
   }
 }

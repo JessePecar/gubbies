@@ -1,9 +1,10 @@
 import { inject } from '@angular/core';
 import { CanActivateChildFn, Router } from '@angular/router';
-import { UserInfoService } from '../../services/userInfo.service';
+import { UserInfoService } from '../../services/user-info.service';
 
 export const authenticatedGuard: CanActivateChildFn = () => {
-  if (inject(UserInfoService).userInfo() === undefined) {
+  const userInfoService = inject(UserInfoService);
+  if (userInfoService.userInfo() === undefined) {
     inject(Router).navigate(['login']);
   }
 

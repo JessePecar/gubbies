@@ -43,9 +43,7 @@ export class UserDetailsService {
 
   getUser(id: number) {
     return this.getUserService.watch({
-      variables: {
-        id: id,
-      },
+      id: id,
     }).valueChanges;
   }
 

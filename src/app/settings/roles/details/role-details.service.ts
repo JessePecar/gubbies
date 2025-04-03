@@ -31,9 +31,7 @@ export class RoleDetailsService {
     }
 
     return this.getRoleService.watch({
-      variables: {
-        id: +id, // Telling graphql that this will be an integer
-      },
+      id: +id, // Telling graphql that this will be an integer
     }).valueChanges;
   }
 
