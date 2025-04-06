@@ -81,10 +81,10 @@ export class UserItemComponent {
   };
 
   constructor() {
-    const { permissions } = this.userInfoService.user();
+    const permissions = this.userInfoService.permissions();
     if (permissions !== undefined) {
       // Find the first index that contains the permission id
-      const permissionIndex = permissions()?.findIndex(
+      const permissionIndex = permissions?.findIndex(
         p => p.permissionId === PermissionEnum.EDIT_USER
       );
 
