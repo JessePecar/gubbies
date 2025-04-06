@@ -24,6 +24,7 @@ import { ConfigModule } from '@nestjs/config';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
+      path: '',
       subscriptions: {
         'graphql-ws': true,
       },

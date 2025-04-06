@@ -8,7 +8,7 @@ import { Kind, OperationTypeNode } from 'graphql';
 import { GetAccessToken } from './utilities';
 import { setContext } from '@apollo/client/link/context';
 
-const uri = '://localhost:3000/graphql';
+const uri = '://localhost:3000';
 
 export const apolloProvider = () => {
   const httpLink = inject(HttpLink);
