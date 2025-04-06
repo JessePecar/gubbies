@@ -5,7 +5,6 @@ import { HttpLink } from 'apollo-angular/http';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
 import { Kind, OperationTypeNode } from 'graphql';
-import { HttpHeaders } from '@angular/common/http';
 import { GetAccessToken } from './utilities';
 import { setContext } from '@apollo/client/link/context';
 
