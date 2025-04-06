@@ -8,6 +8,7 @@ import {
   Input,
   OnInit,
   TemplateRef,
+  untracked,
   ViewContainerRef,
 } from '@angular/core';
 
@@ -31,13 +32,16 @@ export class NavigationDropdownDirective {
     effect(() => {
       var userInfo = this.userInfoService.userInfo();
 
-      this.checkAccess(userInfo);
+      untracked(() => {
+        this.checkAccess();
+      });
     });
   }
 
-  checkAccess(user?: User) {
-    if (user) {
-      var rolePermission = user.role.rolePermissions.find(
+  checkAccess() {
+    const permissions = this.userInfoService.permissions();
+    if (permissions) {
+      const rolePermission = permissions.find(
         rp => rp.permissionId === this.permission
       );
 

@@ -99,8 +99,7 @@ export class RoleDetailsComponent implements OnInit {
   isLoading = signal(true);
 
   createForm() {
-    var userHierarchyTier =
-      this.userInfoService.userInfo()?.role.hierarchyTier ?? 99;
+    var userHierarchyTier = this.userInfoService.role()?.hierarchyTier ?? 99;
 
     var permissionGroup = this.createPermissionForm();
 

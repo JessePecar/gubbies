@@ -1,14 +1,11 @@
 import { inject } from '@angular/core';
 import { CanActivateFn } from '@angular/router';
 import { UserInfoService } from '../../services';
-import { Permission } from '../../entities/role';
+import { PermissionEnum } from '@/entities/role';
 
 export const promotionsGuardGuard: CanActivateFn = (route, state) => {
-  var { userInfo } = inject(UserInfoService);
-  if (
-    userInfo() &&
-    userInfo()?.role?.permissions.includes(Permission.PROMOTIONS)
-  ) {
+  var { permissions } = inject(UserInfoService);
+  if (permissions()?.some(p => p.permissionId === PermissionEnum.PROMOTIONS)) {
     return true;
   }
 

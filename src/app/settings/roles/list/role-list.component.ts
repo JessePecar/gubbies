@@ -47,9 +47,7 @@ export class RoleListComponent implements OnInit {
 
   ngOnInit(): void {
     if (
-      this.userInfoService
-        .userInfo()
-        ?.role.rolePermissions.find(rp => rp.permissionId === 15)
+      this.userInfoService.permissions()?.some(rp => rp.permissionId === 15)
     ) {
       this.toolbarItems.push({
         icon: 'add',

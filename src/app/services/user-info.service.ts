@@ -1,8 +1,15 @@
+import { Role } from '@/interfaces/settings/roles';
 import { AuthTokenService } from '@/login/requests';
 import { RoleSubscriptionService } from '@/settings/roles';
 import { UserSubscriptionService } from '@/settings/users';
 import { LocalStorageKeys } from '@/utilities';
-import { Injectable, computed, inject, signal } from '@angular/core';
+import {
+  Injectable,
+  computed,
+  inject,
+  linkedSignal,
+  signal,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@interfaces/settings/users';
 
@@ -15,11 +22,8 @@ export class UserInfoService {
 
   public userInfo = signal<User | undefined>(undefined);
 
-  public user = computed(() => ({
-    userInfo: this.userInfo(),
-    role: signal(this.userInfo()?.role),
-    permissions: signal(this.userInfo()?.role.rolePermissions),
-  }));
+  role = linkedSignal<Role | undefined>(() => this.userInfo()?.role);
+  permissions = linkedSignal(() => this.role()?.rolePermissions);
 
   constructor(
     userSubService: UserSubscriptionService,

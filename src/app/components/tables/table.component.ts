@@ -2,6 +2,12 @@ import { Component, input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { ButtonComponent } from '@/components/buttons';
 
+export type ToolbarItem = {
+  icon: string;
+  text: string;
+  onClick: () => void | Promise<void>;
+};
+
 @Component({
   selector: 'app-table',
   imports: [ButtonComponent, MatIcon],
@@ -32,11 +38,5 @@ import { ButtonComponent } from '@/components/buttons';
   styles: ``,
 })
 export class TableComponent {
-  toolbarItems = input<
-    {
-      icon: string;
-      text: string;
-      onClick: () => void | Promise<void>;
-    }[]
-  >();
+  toolbarItems = input<ToolbarItem[]>();
 }

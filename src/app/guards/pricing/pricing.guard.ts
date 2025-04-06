@@ -1,11 +1,11 @@
 import { CanActivateFn } from '@angular/router';
 import { UserInfoService } from '../../services';
 import { inject } from '@angular/core';
-import { Permission } from '../../entities/role';
+import { PermissionEnum } from '@/entities/role';
 
 export const pricingGuard: CanActivateFn = (route, state) => {
-  var { userInfo } = inject(UserInfoService);
-  if (userInfo() && userInfo()?.permissions.includes(Permission.PRICING)) {
+  var { permissions } = inject(UserInfoService);
+  if (permissions()?.some(p => p.permissionId === PermissionEnum.PRICING)) {
     return true;
   }
 

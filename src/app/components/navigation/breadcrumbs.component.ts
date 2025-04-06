@@ -1,4 +1,4 @@
-import { Component, computed, input, output, signal } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 export type BreadcrumbOption<TOptionId> = {
@@ -46,19 +46,9 @@ export class BreadcrumbsComponent<TOptionId> {
   breadcrumbOptions = input<BreadcrumbOption<TOptionId>[]>([]);
   selectedContent = input.required<TOptionId>();
 
-  content = computed(() => ({
-    selectedContent: this.selectedContent,
-    contentName: signal<string>(this.getSelector()),
-  }));
-
   onOptionClicked = output<TOptionId>();
 
   onClickOption(id: TOptionId) {
     this.onOptionClicked.emit(id);
-  }
-
-  getSelector() {
-    console.log(`[${this.selectedContent()}]`);
-    return `[${this.selectedContent()}]`;
   }
 }
