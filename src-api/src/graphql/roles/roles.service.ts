@@ -154,7 +154,7 @@ export class RolesService {
 
     permissionIds.forEach((permId) => {
       // If we don't find the perm, we will be adding
-      if (!rolePerms.find((rp) => rp.permissionId === permId)) {
+      if (!rolePerms.some((rp) => rp.permissionId === permId)) {
         // Create the role permission record
         createPerms.push(permId);
       }
@@ -164,7 +164,7 @@ export class RolesService {
 
     rolePerms.forEach((rolePerm) => {
       // If the database has the value that the list doesn't we will delete
-      if (!permissionIds.find((pi) => pi === rolePerm.permissionId)) {
+      if (!permissionIds.some((pi) => pi === rolePerm.permissionId)) {
         deletePerms.push(rolePerm.permissionId);
       }
     });

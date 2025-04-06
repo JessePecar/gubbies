@@ -41,7 +41,7 @@ export class NavigationDropdownDirective {
   checkAccess() {
     const permissions = this.userInfoService.permissions();
     if (permissions) {
-      const rolePermission = permissions.find(
+      const rolePermission = permissions.some(
         rp => rp.permissionId === this.permission
       );
 

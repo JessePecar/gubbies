@@ -146,9 +146,9 @@ export class RoleDetailsComponent implements OnInit {
     return (
       this.role() !== undefined &&
       this.role() !== null &&
-      this.role()?.rolePermissions.find(
+      this.role()?.rolePermissions.some(
         rp => rp.permission.id === permission.id
-      ) !== undefined
+      )
     );
   }
 
@@ -188,7 +188,7 @@ export class RoleDetailsComponent implements OnInit {
       var permissionIds = Object.keys(formValue.permissions)
         .filter(key => {
           // If the value in the key field isn't in the permissions list, we will not add to the permission id list
-          if (this.permissions().find(p => p.name === key)) {
+          if (this.permissions().some(p => p.name === key)) {
             // If the value is true, we will add it, else we will ignore it
             return formValue.permissions[key];
           }

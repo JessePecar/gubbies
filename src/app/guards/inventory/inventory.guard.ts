@@ -5,7 +5,7 @@ import { PermissionEnum } from '@/entities/role';
 
 export const inventoryGuard: CanActivateChildFn = (route, state) => {
   var { permissions } = inject(UserInfoService);
-  if (permissions()?.find(rp => rp.permissionId === PermissionEnum.INVENTORY)) {
+  if (permissions()?.some(rp => rp.permissionId === PermissionEnum.INVENTORY)) {
     return true;
   }
 
