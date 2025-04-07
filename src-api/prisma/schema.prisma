@@ -67,16 +67,22 @@ model Vendor {
   secondaryPhoneId Int?
   addressId        Int?
 
-  primaryPhone   Phone?       @relation(name: "primaryVendor", fields: [primaryPhoneId], references: [id])
-  secondaryPhone Phone?       @relation(name: "secondaryVendor", fields: [secondaryPhoneId], references: [id])
+  primaryPhone   Phone?       @relation(name: "primaryPhone", fields: [primaryPhoneId], references: [id])
+  secondaryPhone Phone?       @relation(name: "secondaryPhone", fields: [secondaryPhoneId], references: [id])
   address        Address?     @relation(fields: [addressId], references: [id])
   itemVendors    ItemVendor[]
 }
 
 model ItemVendor {
-  itemId   Int
-  vendorId Int
-  cost     Decimal
+  itemId            Int
+  vendorId          Int
+  vendorItemId      String // This is the vendor's item id in their system
+  cost              Decimal
+  canReturn         Boolean @default(true)
+  isAutoReplenish   Boolean @default(true)
+  isPreferredVendor Boolean @default(false) // If item has no preferred vendor, will use lowest cost
+  canPromote        Boolean @default(false)
+  reorderQuantity   Decimal @default(0)
 
   item   Items  @relation(fields: [itemId], references: [id])
   vendor Vendor @relation(fields: [vendorId], references: [id])
@@ -158,8 +164,8 @@ model Phone {
   nationalDigits String
 
   users           Users[]
-  primaryVendor   Vendor[] @relation(name: "primaryVendor")
-  secondaryVendor Vendor[] @relation(name: "secondaryVendor")
+  primaryVendor   Vendor[] @relation(name: "primaryPhone")
+  secondaryVendor Vendor[] @relation(name: "secondaryPhone")
 }
 
 model Address {
