@@ -37,6 +37,8 @@ input CreateItemInput {
   retirementStatus: Int!
   reorderQuantity: Float
   unitOfMeasurementType: Int!
+
+  vendors: [CreateItemVendorInput]
 }
 
 type Item implements BaseItem {

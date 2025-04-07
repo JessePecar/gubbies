@@ -39,6 +39,7 @@ export class CreateItemInput {
     retirementStatus: number;
     reorderQuantity?: Nullable<number>;
     unitOfMeasurementType: number;
+    vendors?: Nullable<Nullable<CreateItemVendorInput>[]>;
 }
 
 export class UpsertRoleInput {
@@ -126,6 +127,17 @@ export class CreateVendorInput {
     primaryPhone?: Nullable<Phone>;
     secondaryPhone?: Nullable<Phone>;
     address?: Nullable<Address>;
+}
+
+export class CreateItemVendorInput {
+    vendorId: string;
+    vendorItemId?: Nullable<string>;
+    cost?: Nullable<number>;
+    canReturn?: Nullable<boolean>;
+    isAutoReplenish?: Nullable<boolean>;
+    isPreferredVendor?: Nullable<boolean>;
+    canPromote?: Nullable<boolean>;
+    reorderQuantity?: Nullable<number>;
 }
 
 export interface BaseItem {
@@ -319,6 +331,20 @@ export class Vendor {
     primaryPhone?: Nullable<Phone>;
     secondaryPhone?: Nullable<Phone>;
     address?: Nullable<Address>;
+}
+
+export class ItemVendor {
+    itemId: string;
+    vendorId: string;
+    vendorItemId?: Nullable<string>;
+    cost?: Nullable<number>;
+    canReturn?: Nullable<boolean>;
+    isAutoReplenish?: Nullable<boolean>;
+    isPreferredVendor?: Nullable<boolean>;
+    canPromote?: Nullable<boolean>;
+    reorderQuantity?: Nullable<number>;
+    vendor: Vendor;
+    item: Item;
 }
 
 export type JSON = any;

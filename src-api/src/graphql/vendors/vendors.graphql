@@ -24,6 +24,21 @@ type Vendor {
   address: Address
 }
 
+type ItemVendor {
+  itemId: ID!
+  vendorId: ID!
+  vendorItemId: String
+  cost: Float
+  canReturn: Boolean
+  isAutoReplenish: Boolean
+  isPreferredVendor: Boolean
+  canPromote: Boolean
+  reorderQuantity: Float
+
+  vendor: Vendor!
+  item: Item!
+}
+
 input CreateVendorInput {
   name: String
   notes: String
@@ -31,4 +46,15 @@ input CreateVendorInput {
   primaryPhone: Phone
   secondaryPhone: Phone
   address: Address
+}
+
+input CreateItemVendorInput {
+  vendorId: ID!
+  vendorItemId: String
+  cost: Float
+  canReturn: Boolean
+  isAutoReplenish: Boolean
+  isPreferredVendor: Boolean
+  canPromote: Boolean
+  reorderQuantity: Float
 }
