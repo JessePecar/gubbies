@@ -56,7 +56,7 @@ export class RolesService {
   }
 
   async seedPermissions() {
-    var permissions = await this.getPermissions();
+    const permissions = await this.getPermissions();
 
     if (permissions.length > 0) return;
 
@@ -138,9 +138,9 @@ export class RolesService {
 
     await this.seedPermissions();
 
-    var permissionIds = rolePermissionInput.map((rpi) => rpi.permissionId);
+    const permissionIds = rolePermissionInput.map((rpi) => rpi.permissionId);
 
-    var rolePerms = await this.repository.rolePermissions.findMany({
+    const rolePerms = await this.repository.rolePermissions.findMany({
       where: {
         roleId: {
           equals: roleId,
@@ -149,8 +149,8 @@ export class RolesService {
     });
 
     // Get the rolePerms to delete
-    var deletePerms: number[] = [];
-    var createPerms: number[] = [];
+    const deletePerms: number[] = [];
+    const createPerms: number[] = [];
 
     permissionIds.forEach((permId) => {
       // If we don't find the perm, we will be adding
@@ -195,7 +195,7 @@ export class RolesService {
   }
 
   async upsertRole(upsertRole: UpsertRoleInput) {
-    var role = await this.repository.roles.upsert({
+    const role = await this.repository.roles.upsert({
       where: {
         id: upsertRole.id === null || upsertRole.id === 0 ? -1 : upsertRole.id,
       },

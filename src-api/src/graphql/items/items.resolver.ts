@@ -31,15 +31,20 @@ export class ItemsResolver {
 
   // Filter out the items changed to the one with the selected Id
   @Subscription('itemChanged', {
-    filter: (payload, variables) => payload.itemChanged.id === variables.id,
+    filter: (payload, variables) => {
+      // Type casting
+      const pl = payload as { itemChanged: { id: number } };
+      const v = variables as { id: number };
+      return pl.itemChanged.id === v.id;
+    },
   })
-  async subscribeToItemChanges(@Args('id', ParseIntPipe) id: number) {
+  subscribeToItemChanges() {
     return pubSub.asyncIterableIterator('itemChanged');
   }
 
   @UseGuards(AppAuthGuard)
   @Subscription('itemsChanged')
-  async subscriveToChanges() {
+  subscriveToChanges() {
     return pubSub.asyncIterableIterator('itemsChanged');
   }
 }

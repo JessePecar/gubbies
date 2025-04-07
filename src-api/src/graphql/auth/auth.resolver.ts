@@ -17,7 +17,7 @@ export class AuthResolver {
     @Args('password') password: string,
   ) {
     // Get the user from the Auth Service
-    var authedUser = await this.authService.authUser(username, password);
+    const authedUser = await this.authService.authUser(username, password);
 
     // If the user didn't exist
     if (!authedUser) {
@@ -25,7 +25,7 @@ export class AuthResolver {
     }
 
     // Generate the user's token
-    var token = await this.jwtService.signAsync(
+    const token = await this.jwtService.signAsync(
       {
         sub: authedUser.id,
         roleId: authedUser.roleId,
@@ -42,7 +42,7 @@ export class AuthResolver {
 
   @Query('auth')
   async authenticateToken(@Args('token') token: string) {
-    var user = this.authService.verifyUser(token);
+    const user = this.authService.verifyUser(token);
 
     // If the user is not found in the database, they will get an unauthorized exception
     if (user === null || user === undefined) {

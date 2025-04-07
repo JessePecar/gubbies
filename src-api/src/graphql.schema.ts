@@ -120,6 +120,14 @@ export class UpdateAddressInput {
     postalCode: number;
 }
 
+export class CreateVendorInput {
+    name?: Nullable<string>;
+    notes?: Nullable<string>;
+    primaryPhone?: Nullable<Phone>;
+    secondaryPhone?: Nullable<Phone>;
+    address?: Nullable<Address>;
+}
+
 export interface BaseItem {
     id: number;
     name: string;
@@ -136,6 +144,8 @@ export interface BaseItem {
 export abstract class IQuery {
     abstract login(username?: Nullable<string>, password?: Nullable<string>): Nullable<AuthResponse> | Promise<Nullable<AuthResponse>>;
 
+    abstract auth(token?: Nullable<string>): Nullable<User> | Promise<Nullable<User>>;
+
     abstract items(request: ReadRequest): Nullable<Nullable<Item>[]> | Promise<Nullable<Nullable<Item>[]>>;
 
     abstract item(id: string): Nullable<Item> | Promise<Nullable<Item>>;
@@ -151,6 +161,10 @@ export abstract class IQuery {
     abstract users(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
 
     abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract vendors(): Nullable<Nullable<Vendor>[]> | Promise<Nullable<Nullable<Vendor>[]>>;
+
+    abstract vendor(id: string): Nullable<Vendor> | Promise<Nullable<Vendor>>;
 }
 
 export class AuthResponse {
@@ -168,6 +182,8 @@ export abstract class IMutation {
     abstract updateUser(updateUserInput?: Nullable<UpdateUserInput>): Nullable<User> | Promise<Nullable<User>>;
 
     abstract createRole(createRoleInput?: Nullable<CreateRoleInput>): Nullable<Role> | Promise<Nullable<Role>>;
+
+    abstract createVendor(createVendorInput?: Nullable<CreateVendorInput>): Nullable<Vendor> | Promise<Nullable<Vendor>>;
 }
 
 export abstract class ISubscription {
@@ -291,6 +307,18 @@ export class Address {
     countryCode: string;
     postalCode: number;
     user?: Nullable<User>;
+}
+
+export class Vendor {
+    id: string;
+    name?: Nullable<string>;
+    notes?: Nullable<string>;
+    primaryPhoneId?: Nullable<number>;
+    secondaryPhoneId?: Nullable<number>;
+    addressId?: Nullable<number>;
+    primaryPhone?: Nullable<Phone>;
+    secondaryPhone?: Nullable<Phone>;
+    address?: Nullable<Address>;
 }
 
 export type JSON = any;

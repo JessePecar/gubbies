@@ -1,0 +1,34 @@
+type Query {
+  vendors: [Vendor]
+  vendor(id: ID!): Vendor
+}
+
+type Mutation {
+  createVendor(createVendorInput: CreateVendorInput): Vendor
+} 
+
+# type Subscription {
+# }
+
+type Vendor {
+  id: ID!
+  name: String
+  notes: String
+  primaryPhoneId: Int
+  ## Secondary phone for the vendor, users may want two phones to contact vendor (business and point of contact)
+  secondaryPhoneId: Int 
+  addressId: Int
+
+  primaryPhone: Phone
+  secondaryPhone: Phone
+  address: Address
+}
+
+input CreateVendorInput {
+  name: String
+  notes: String
+  
+  primaryPhone: Phone
+  secondaryPhone: Phone
+  address: Address
+}

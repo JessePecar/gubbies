@@ -25,13 +25,13 @@ export class RolesResolver {
   @UseGuards(AppAuthGuard)
   @Query('roleTiers')
   async getRoleTiers() {
-    var tiers = await this.rolesService.getRoleTiers();
+    const tiers = await this.rolesService.getRoleTiers();
     return tiers;
   }
   @UseGuards(AppAuthGuard)
   @Query('permissions')
   async getPermissions() {
-    var perms = await this.rolesService.getPermissions();
+    const perms = await this.rolesService.getPermissions();
     return perms;
   }
   @UseGuards(AppAuthGuard)
@@ -42,15 +42,15 @@ export class RolesResolver {
       throw new BadRequestException('Administrators cannot be updated');
     }
 
-    var updatedRole = await this.rolesService.upsertRole(upsertRole);
+    const updatedRole = await this.rolesService.upsertRole(upsertRole);
     console.log(updatedRole);
-    pubSub.publish('roleUpdated', { roleUpdated: updatedRole });
+    await pubSub.publish('roleUpdated', { roleUpdated: updatedRole });
 
     return updatedRole;
   }
 
   @Subscription('roleUpdated')
-  async roleUpdated() {
+  roleUpdated() {
     return pubSub.asyncIterableIterator('roleUpdated');
   }
 }

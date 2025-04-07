@@ -27,23 +27,23 @@ export class UsersResolver {
   // Update the user, will add phone and address if they do not exist already
   @Mutation('updateUser')
   async updateUser(@Args('updateUserInput') updatedUser: UpdateUserInput) {
-    var user = await this.usersService.updateUser(updatedUser);
+    const user = await this.usersService.updateUser(updatedUser);
 
-    pubSub.publish('usersChanged', { usersChanged: user });
+    await pubSub.publish('usersChanged', { usersChanged: user });
   }
 
   @Mutation('createUser')
   async createUser(@Args('createUserInput') createUser: CreateUserInput) {
-    var user = await this.usersService.createUser(createUser);
+    const user = await this.usersService.createUser(createUser);
 
-    pubSub.publish('usersChanged', { usersChanged: user });
+    await pubSub.publish('usersChanged', { usersChanged: user });
   }
 
   // Subscribe to a user being changed
   // Client will either add the user to the list of users (or refresh the list)
   // Or they will update the user that was changed
   @Subscription('usersChanged')
-  async userChanged() {
+  userChanged() {
     return pubSub.asyncIterableIterator('usersChanged');
   }
 }

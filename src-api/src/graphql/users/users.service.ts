@@ -95,7 +95,7 @@ export class UsersService {
   }
 
   private async updateAddress(user: UpdateUserInput | CreateUserInput) {
-    var { address } = user;
+    const { address } = user;
     if (address !== null && address !== undefined) {
       // If we are using the update user input, then we will perform an upsert
       if (user instanceof UpdateUserInput) {
@@ -151,7 +151,7 @@ export class UsersService {
   }
 
   private async updatePrimaryPhone(user: UpdateUserInput | CreateUserInput) {
-    var { primaryPhone } = user;
+    const { primaryPhone } = user;
 
     if (primaryPhone !== null && primaryPhone !== undefined) {
       // If user is an update user input, then run an upsert
@@ -192,7 +192,7 @@ export class UsersService {
 
   async updateUser(user: UpdateUserInput) {
     // Update the address and primary phone at the same time
-    var [address, primaryPhone] = await Promise.all([
+    const [address, primaryPhone] = await Promise.all([
       this.updateAddress(user),
       this.updatePrimaryPhone(user),
     ]);
@@ -228,12 +228,12 @@ export class UsersService {
   }
 
   async createUser(user: CreateUserInput) {
-    var encryptedPassword = await this.authUtil.hashPassword(
+    const encryptedPassword = await this.authUtil.hashPassword(
       user.password ?? 'password',
     );
 
     // Update the address and primary phone at the same time
-    var [address, primaryPhone] = await Promise.all([
+    const [address, primaryPhone] = await Promise.all([
       this.updateAddress(user),
       this.updatePrimaryPhone(user),
     ]);

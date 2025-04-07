@@ -57,6 +57,33 @@ model Family {
   items       Items[]
 }
 
+model Vendor {
+  id   Int    @id @default(autoincrement())
+  name String
+  note String
+
+  primaryPhoneId   Int?
+  // Secondary phone for the vendor, users may want two phones to contact vendor (business and point of contact)
+  secondaryPhoneId Int?
+  addressId        Int?
+
+  primaryPhone   Phone?       @relation(name: "primaryVendor", fields: [primaryPhoneId], references: [id])
+  secondaryPhone Phone?       @relation(name: "secondaryVendor", fields: [secondaryPhoneId], references: [id])
+  address        Address?     @relation(fields: [addressId], references: [id])
+  itemVendors    ItemVendor[]
+}
+
+model ItemVendor {
+  itemId   Int
+  vendorId Int
+  cost     Decimal
+
+  item   Items  @relation(fields: [itemId], references: [id])
+  vendor Vendor @relation(fields: [vendorId], references: [id])
+
+  @@id([vendorId, itemId])
+}
+
 model Items {
   id                    Int     @id @default(autoincrement())
   name                  String
@@ -70,11 +97,13 @@ model Items {
   retirementStatus      Int
   reorderQuantity       Decimal
   unitOfMeasurementType Int
+  vendorId              Int
 
   adjustmentItems AdjustmentItems[]
   category        Categories        @relation(fields: [categoryCode], references: [code])
   subCategory     SubCategory?      @relation(fields: [subCategoryCode], references: [code])
   family          Family?           @relation(fields: [fieldCode], references: [code])
+  itemVendors     ItemVendor[]
 }
 
 model Permissions {
@@ -128,7 +157,9 @@ model Phone {
   rawDigits      String
   nationalDigits String
 
-  Users Users[]
+  users           Users[]
+  primaryVendor   Vendor[] @relation(name: "primaryVendor")
+  secondaryVendor Vendor[] @relation(name: "secondaryVendor")
 }
 
 model Address {
@@ -140,5 +171,6 @@ model Address {
   countryCode String
   postalCode  Int
 
-  User Users?
+  user    Users?
+  vendors Vendor[]
 }

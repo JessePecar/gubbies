@@ -53,9 +53,9 @@ export class AuthService {
 
   async authUser(username: string, password: string) {
     // Encrypting the password
-    var encryptedPassword = await this.authUtil.hashPassword(password);
+    const encryptedPassword = await this.authUtil.hashPassword(password);
 
-    var user = await this.repository.users.findFirst({
+    const user = await this.repository.users.findFirst({
       where: {
         userName: {
           equals: username,
@@ -73,9 +73,9 @@ export class AuthService {
   }
 
   async verifyUser(token: string) {
-    var decodedToken = this.jwtService.decode<AuthModel>(token);
+    const decodedToken = this.jwtService.decode<AuthModel>(token);
 
-    var user = await this.repository.users.findFirst({
+    const user = await this.repository.users.findFirst({
       where: {
         AND: {
           id: {
@@ -93,7 +93,7 @@ export class AuthService {
   }
 
   async authTokenInfo(userId: number, roleId: number) {
-    var user = await this.repository.users.findFirst({
+    const user = await this.repository.users.findFirst({
       where: {
         AND: {
           id: {
