@@ -1,22 +1,22 @@
+import { CardModule } from '@/components/card';
 import { Component, inject } from '@angular/core';
 import { ItemStoreService } from './item-store.service';
-import { CardModule } from '@/components/card';
 
 @Component({
-  selector: 'app-item-information',
+  selector: 'app-item-location',
   imports: [CardModule],
   template: `
     <card>
       <card-header>
-        <p>Item Information</p>
+        <p>Location</p>
       </card-header>
       <card-body>
-        <!-- Form fields for item information -->
+        <!-- Form fields for item location -->
       </card-body>
     </card>
   `,
   styles: ``,
 })
-export class ItemInformationComponent {
+export class ItemLocationComponent {
   itemStore = inject(ItemStoreService);
 }
