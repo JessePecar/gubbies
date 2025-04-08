@@ -16,12 +16,10 @@ export class PhoneValidator implements BaseValidator<PhoneSchema> {
     rawDigits: yup
       .string()
       .required()
-      .matches(new RegExp('\d{10}'), 'Must be a valid phone number'),
+      .matches(/^\d{7,14}$/, 'Must be a valid phone number'),
   });
 
   initialData: PhoneSchema = {
     rawDigits: '',
   };
 }
-
-//^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$

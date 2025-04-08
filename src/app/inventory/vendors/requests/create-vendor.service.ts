@@ -5,5 +5,11 @@ import { gql, Mutation } from 'apollo-angular';
   providedIn: 'root',
 })
 export class CreateVendorService extends Mutation<{ createVendor: any }> {
-  document = gql``;
+  document = gql`
+    mutation CreateVendor($createVendor: CreateVendorInput) {
+      createVendor(createVendorInput: $createVendor) {
+        id
+      }
+    }
+  `;
 }

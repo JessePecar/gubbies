@@ -11,7 +11,10 @@ import {
   BreadcrumbOption,
   BreadcrumbsComponent,
 } from '@/components/navigation/breadcrumbs.component';
-import { VendorFormGroupNames } from './create-vendor.service';
+import {
+  CreateVendorService,
+  VendorFormGroupNames,
+} from './create-vendor.service';
 import { ButtonComponent } from '../../../components/buttons/button.component';
 
 @Component({
@@ -79,6 +82,7 @@ import { ButtonComponent } from '../../../components/buttons/button.component';
 })
 export class CreateVendorComponent {
   vendorStore = inject(VendorStoreService);
+  private readonly createVendorService = inject(CreateVendorService);
 
   defaultOptions: BreadcrumbOption<VendorFormGroupNames>[] = [
     { text: 'Vendor Information', id: 'info' },
@@ -115,7 +119,11 @@ export class CreateVendorComponent {
     );
   }
 
-  onSubmit() {}
+  onSubmit() {
+    const vendorFormValue = this.vendorStore.form.value;
+
+    this.createVendorService.onCreate(vendorFormValue);
+  }
 
   onMoveToNext() {
     // If there are more options to add, then add the active option

@@ -1,18 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { RepositoryService } from '.';
-import { UpdateAddressInput, UpdatePhoneInput } from 'src/graphql.schema';
+import {
+  CreateAddressInput,
+  CreatePhoneInput,
+  UpdateAddressInput,
+  UpdatePhoneInput,
+} from 'src/graphql.schema';
 
 @Injectable()
 export class SharedService {
   constructor(private repository: RepositoryService) {}
 
   async updateAddress(
-    address?: UpdateAddressInput | null,
-    isUpdate: boolean = true,
+    address?: UpdateAddressInput | CreateAddressInput | null,
   ) {
     if (address !== null && address !== undefined) {
       // If we are using the update user input, then we will perform an upsert
-      if (isUpdate) {
+      if (address instanceof UpdateAddressInput) {
         return await this.repository.address.upsert({
           where: {
             id: address.id,
@@ -64,10 +68,10 @@ export class SharedService {
     }
   }
 
-  async updatePhone(phone?: UpdatePhoneInput | null, isUpdate: boolean = true) {
+  async updatePhone(phone?: UpdatePhoneInput | CreatePhoneInput | null) {
     if (phone !== null && phone !== undefined) {
       // If user is an update user input, then run an upsert
-      if (isUpdate) {
+      if (phone instanceof UpdatePhoneInput) {
         return await this.repository.phone.upsert({
           where: {
             id: phone.id,

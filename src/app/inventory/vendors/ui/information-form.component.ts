@@ -21,8 +21,8 @@ import { ReactiveFormsModule } from '@angular/forms';
           <div class="col-span-4">
             <app-text-input
               [inputProps]="{ required: true, isTextArea: true }"
-              formControlName="note"
-              label="Note" />
+              formControlName="notes"
+              label="Notes" />
           </div>
         </div>
       </form>

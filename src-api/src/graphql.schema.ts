@@ -86,8 +86,8 @@ export class CreateUserInput {
     userName: string;
     isActive?: Nullable<boolean>;
     emailAddress?: Nullable<string>;
-    primaryPhone?: Nullable<UpdatePhoneInput>;
-    address?: Nullable<UpdateAddressInput>;
+    primaryPhone?: Nullable<CreatePhoneInput>;
+    address?: Nullable<CreateAddressInput>;
     password?: Nullable<string>;
 }
 
@@ -105,10 +105,24 @@ export class UpdateUserInput {
     address?: Nullable<UpdateAddressInput>;
 }
 
+export class CreatePhoneInput {
+    rawDigits: string;
+    nationalDigits: string;
+}
+
 export class UpdatePhoneInput {
     id: number;
     rawDigits: string;
     nationalDigits: string;
+}
+
+export class CreateAddressInput {
+    address1: string;
+    address2?: Nullable<string>;
+    state: string;
+    city: string;
+    countryCode: string;
+    postalCode: number;
 }
 
 export class UpdateAddressInput {
@@ -124,9 +138,9 @@ export class UpdateAddressInput {
 export class CreateVendorInput {
     name?: Nullable<string>;
     notes?: Nullable<string>;
-    primaryPhone?: Nullable<UpdatePhoneInput>;
-    secondaryPhone?: Nullable<UpdatePhoneInput>;
-    address?: Nullable<UpdateAddressInput>;
+    primaryPhone?: Nullable<CreatePhoneInput>;
+    secondaryPhone?: Nullable<CreatePhoneInput>;
+    address?: Nullable<CreateAddressInput>;
 }
 
 export class UpdateVendorInput {

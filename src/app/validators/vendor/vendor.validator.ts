@@ -12,7 +12,7 @@ export type VendorSchema =
   | {
       info: {
         name: string;
-        note: string;
+        notes: string;
       };
       address: AddressSchema;
       primaryPhone: PhoneSchema;
@@ -48,7 +48,7 @@ export class VendorValidator implements BaseValidator<VendorSchema> {
   initialData: VendorSchema = {
     info: {
       name: '',
-      note: '',
+      notes: '',
     },
     address: this.addressValidator.initialData,
     primaryPhone: this.phoneValidator.initialData,

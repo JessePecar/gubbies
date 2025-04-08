@@ -40,20 +40,16 @@ export class VendorsService {
     let secondaryPhone = { id: isUpdate ? vendor.secondaryPhoneId : 1 };
 
     if (vendor.address) {
-      address = await this.sharedService.updateAddress(vendor.address, true);
+      address = await this.sharedService.updateAddress(vendor.address);
     }
 
     if (vendor.primaryPhone) {
-      primaryPhone = await this.sharedService.updatePhone(
-        vendor.primaryPhone,
-        true,
-      );
+      primaryPhone = await this.sharedService.updatePhone(vendor.primaryPhone);
     }
 
     if (vendor.secondaryPhone) {
       secondaryPhone = await this.sharedService.updatePhone(
         vendor.secondaryPhone,
-        true,
       );
     }
 

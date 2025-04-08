@@ -44,9 +44,9 @@ input CreateVendorInput {
   name: String
   notes: String
   
-  primaryPhone: UpdatePhoneInput
-  secondaryPhone: UpdatePhoneInput
-  address: UpdateAddressInput
+  primaryPhone: CreatePhoneInput
+  secondaryPhone: CreatePhoneInput
+  address: CreateAddressInput
 }
 
 input UpdateVendorInput {

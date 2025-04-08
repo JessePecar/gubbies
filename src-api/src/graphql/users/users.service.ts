@@ -100,19 +100,13 @@ export class UsersService {
 
   private async updateAddress(user: UpdateUserInput | CreateUserInput) {
     const { address } = user;
-    return await this.sharedService.updateAddress(
-      address,
-      user instanceof UpdateUserInput,
-    );
+    return await this.sharedService.updateAddress(address);
   }
 
   private async updatePrimaryPhone(user: UpdateUserInput | CreateUserInput) {
     const { primaryPhone } = user;
 
-    return await this.sharedService.updatePhone(
-      primaryPhone,
-      user instanceof UpdateUserInput,
-    );
+    return await this.sharedService.updatePhone(primaryPhone);
   }
 
   async updateUser(user: UpdateUserInput) {

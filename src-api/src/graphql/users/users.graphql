@@ -31,9 +31,9 @@ input CreateUserInput {
   isActive: Boolean
   emailAddress: String
 
-  primaryPhone: UpdatePhoneInput
+  primaryPhone: CreatePhoneInput
 
-  address: UpdateAddressInput
+  address: CreateAddressInput
   password: String
 }
 
@@ -53,11 +53,25 @@ input UpdateUserInput {
   address: UpdateAddressInput
 }
 
+input CreatePhoneInput {
+  rawDigits: String!
+  nationalDigits: String!
+}
+
 input UpdatePhoneInput {
   id: Int!
 
   rawDigits: String!
   nationalDigits: String!
+}
+
+input CreateAddressInput {
+  address1: String!
+  address2: String
+  state: String!
+  city: String!
+  countryCode: String!
+  postalCode: Int!
 }
 
 input UpdateAddressInput {
