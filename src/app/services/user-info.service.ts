@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@interfaces/settings/users';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -68,27 +69,28 @@ export class UserInfoService {
     }
   }
 
-  getStoredToken() {
+  async getStoredToken() {
     const token = localStorage.getItem(LocalStorageKeys.access_token);
     if (token) {
       // If token exists, we will go to the api and get the user
-      this.authTokenService
+      const {
+        data: { auth },
+        error,
+      } = await this.authTokenService
         .watch({
           token: token,
         })
-        .valueChanges.subscribe(({ data: { auth }, error }) => {
-          // If there is an error, or the user object does not exist
-          if (error || !auth) {
-            // Set userinfo to undefined, which the guard will send back to login
-            this.userInfo.set(undefined);
-          }
-          // No error and the user was authorized based on the token
-          else {
-            // set the userinfo
-            this.userInfo.set(auth);
-            this.router.navigate(['']);
-          }
-        });
+        .result();
+
+      if (error || !auth) {
+        // Set userinfo to undefined, which the guard will send back to login
+        this.userInfo.set(undefined);
+      }
+      // No error and the user was authorized based on the token
+      else {
+        // set the userinfo
+        this.userInfo.set(auth);
+      }
     }
   }
 }

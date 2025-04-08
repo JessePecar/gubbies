@@ -1,32 +1,37 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home.component';
-import { LoginComponent } from './login/login.component';
-import { authenticatedGuard, loginGuard } from './guards';
-import { NavigationComponent } from './components/navigation';
-import { inventoryGuard } from './guards/inventory/inventory.guard';
-import { CountsComponent } from './pages/inventory/counts.component';
+import { HomeComponent } from '@/pages/home.component';
+import { LoginComponent } from '@/login/login.component';
+import { authenticatedGuard, loginGuard } from '@/guards';
+import { NavigationComponent } from '@/components/navigation';
+import { inventoryGuard } from '@/guards/inventory/inventory.guard';
+import { CountsComponent } from '@/pages/inventory/counts.component';
 import {
   AdjustmentsComponent,
   AdjustmentFormComponent,
   adjustmentsGuard,
   AdjustmentsListComponent,
-} from './inventory/adjustments';
-import { ItemCreateComponent, ItemDetailsComponent, ItemListComponent } from './inventory/items';
-import { InventoryComponent } from './inventory/inventory.component';
+} from '@/inventory/adjustments';
+import {
+  ItemCreateComponent,
+  ItemDetailsComponent,
+  ItemListComponent,
+} from '@/inventory/items';
+import { InventoryComponent } from '@/inventory/inventory.component';
 import {
   UserComponent,
   UserDetailsComponent,
   UsersListComponent,
   UserCreateComponent,
   usersGuard,
-} from './settings/users';
-import { SettingsComponent, settingsGuard } from './settings';
+} from '@/settings/users';
+import { SettingsComponent, settingsGuard } from '@/settings';
 import {
   RoleComponent,
   roleGuard,
   RoleDetailsComponent,
   RoleListComponent,
-} from './settings/roles';
+} from '@/settings/roles';
+import { vendorRoutes, VendorsComponent } from '@/inventory/vendors';
 
 export const routes: Routes = [
   {
@@ -78,6 +83,11 @@ export const routes: Routes = [
             path: 'counts',
             component: CountsComponent,
             canActivate: [],
+          },
+          {
+            path: 'vendors',
+            component: VendorsComponent,
+            children: vendorRoutes,
           },
         ],
       },

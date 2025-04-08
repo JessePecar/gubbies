@@ -39,8 +39,8 @@ export class InventoryNavItemComponent {
       permission: PermissionEnum.INVENTORY,
     },
     {
-      linkTitle: 'New Item',
-      route: 'inventory/adjustments',
+      linkTitle: 'Vendors',
+      route: 'inventory/vendors/create',
       permission: PermissionEnum.INVENTORY,
     },
   ];

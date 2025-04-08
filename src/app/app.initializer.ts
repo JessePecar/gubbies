@@ -1,11 +1,11 @@
 import { inject } from '@angular/core';
 import { UserInfoService } from './services';
 
-export function initializeApp(): Promise<any> {
+export async function initializeApp() {
   // Do the initialization  of the code
-  return loadFromLoader();
+  return await loadFromLoader();
 }
 
 async function loadFromLoader() {
-  await inject(UserInfoService).getStoredToken();
+  return await inject(UserInfoService).getStoredToken();
 }

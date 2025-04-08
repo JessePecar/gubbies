@@ -1,15 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { VendorStoreService } from '@/inventory/vendors/store';
+import { TextInputComponent } from '@/components';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-information-form',
-  imports: [],
+  selector: 'vendor-information-form',
+  imports: [TextInputComponent, ReactiveFormsModule],
   template: `
-    <p>
-      information-form works!
-    </p>
+    <div [formGroup]="vendorStore.form">
+      <form formGroupName="info" class="mb-4">
+        <p class="text-lg mb-1">Vendor Information</p>
+        <div class="grid grid-cols-4 gap-2">
+          <div class="col-span-2">
+            <app-text-input
+              [inputProps]="{ required: true }"
+              formControlName="name"
+              label="Name" />
+          </div>
+
+          <div class="col-span-4">
+            <app-text-input
+              [inputProps]="{ required: true, isTextArea: true }"
+              formControlName="note"
+              label="Note" />
+          </div>
+        </div>
+      </form>
+    </div>
   `,
-  styles: ``
+  styles: ``,
 })
 export class InformationFormComponent {
-
+  vendorStore = inject(VendorStoreService);
 }

@@ -19,14 +19,25 @@ import {
   template: `
     <span>
       <div class="text-gray-200 flex flex-col">
-        <input
-          [id]="label() + '_input'"
-          class="rounded-lg shadow-xl p-2 border-1 border-stone-600 focus:border-purple-400 bg-stone-900 outline-none input-field"
-          [type]="inputProps()?.type ?? 'type'"
-          [value]="value()"
-          [required]="inputProps()?.required"
-          (change)="handleChange($event)"
-          placeholder=" " />
+        @if (inputProps()?.isTextArea) {
+          <textarea
+            [id]="label() + '_input'"
+            class="rounded-lg shadow-xl p-2 border-1 border-stone-600 focus:border-purple-400 bg-stone-900 outline-none input-field max-h-64"
+            [value]="value()"
+            [required]="inputProps()?.required"
+            (change)="handleChange($event)"
+            placeholder=" "></textarea>
+        } @else {
+          <input
+            [id]="label() + '_input'"
+            class="rounded-lg shadow-xl p-2 border-1 border-stone-600 focus:border-purple-400 bg-stone-900 outline-none input-field"
+            [type]="inputProps()?.type ?? 'text'"
+            [value]="value()"
+            [required]="inputProps()?.required"
+            (change)="handleChange($event)"
+            placeholder=" " />
+        }
+
         <div
           class="input-label pl-4 transition-all duration-100 ease-in order-[-1] flex">
           <label [for]="label() + '_input'">{{ label() }} </label>
@@ -35,34 +46,6 @@ import {
           }
         </div>
       </div>
-      <span class="absolute pt-1">
-        @if (formItem()?.hasError) {
-          @if (getErrorKeys().length > 1) {
-            <!-- If more than one key, we will show "Field value is invalid" -->
-            <p class="text-sm text-red-400">{{ label() }} is invalid.</p>
-          } @else {
-            @switch (getErrorKeys()[0]) {
-              @case ('minLength') {
-                <p class="text-sm text-red-400">{{ label() }} is too short.</p>
-              }
-              @case ('maxLength') {
-                <p class="text-sm text-red-400">{{ label() }} is too long.</p>
-              }
-              @case ('required') {
-                <p class="text-sm text-red-400">{{ label() }} is required.</p>
-              }
-              @case ('email') {
-                <p class="text-sm text-red-400">Must be an email.</p>
-              }
-              @case ('fieldsMatchError') {
-                <p class="text-sm text-red-400">
-                  {{ getError('fieldsMatchError') }}
-                </p>
-              }
-            }
-          }
-        }
-      </span>
     </span>
   `,
   providers: [
@@ -134,7 +117,7 @@ export class TextInputComponent implements ControlValueAccessor {
     this.touched.set(touched);
   };
 
-  inputProps = input<Partial<HTMLInputElement>>();
+  inputProps = input<Partial<HTMLInputElement> & { isTextArea?: boolean }>();
   label = input<string | undefined>(undefined);
 
   formItem = input<AbstractControl<never, never> | null>();
