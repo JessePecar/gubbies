@@ -100,7 +100,7 @@ export class UsersService {
 
   private async updateAddress(user: UpdateUserInput | CreateUserInput) {
     const { address } = user;
-    return this.sharedService.updateAddress(
+    return await this.sharedService.updateAddress(
       address,
       user instanceof UpdateUserInput,
     );
@@ -109,7 +109,7 @@ export class UsersService {
   private async updatePrimaryPhone(user: UpdateUserInput | CreateUserInput) {
     const { primaryPhone } = user;
 
-    return this.sharedService.updatePhone(
+    return await this.sharedService.updatePhone(
       primaryPhone,
       user instanceof UpdateUserInput,
     );

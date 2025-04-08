@@ -16,13 +16,13 @@ export class VendorsService {
   };
 
   async getVendors() {
-    return this.repository.vendor.findMany({
+    return await this.repository.vendor.findMany({
       include: this.defaultIncludes,
     });
   }
 
   async getVendorById(id: number) {
-    return this.repository.vendor.findFirst({
+    return await this.repository.vendor.findFirst({
       include: this.defaultIncludes,
       where: {
         id: {

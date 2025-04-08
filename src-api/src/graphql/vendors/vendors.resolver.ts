@@ -6,29 +6,33 @@ import { CreateVendorInput, UpdateVendorInput } from 'src/graphql.schema';
 
 @Resolver('Vendors')
 export class VendorsResolver {
-  constructor(private readonly itemsService: VendorsService) {}
+  constructor(private readonly vendorsService: VendorsService) {}
 
   @UseGuards(AppAuthGuard)
   @Query('vendors')
   async getVendors() {
-    return this.itemsService.getVendors();
+    return await this.vendorsService.getVendors();
   }
 
   @UseGuards(AppAuthGuard)
   @Query('vendor')
   async getVendorById(@Args('id', ParseIntPipe) id: number) {
-    return this.itemsService.getVendorById(id);
+    return await this.vendorsService.getVendorById(id);
   }
 
   @UseGuards(AppAuthGuard)
   @Mutation('updateVendor')
   async updateVendor(
     @Args('updateVendorInput') updatedVendor: UpdateVendorInput,
-  ) {}
+  ) {
+    return await this.vendorsService.updateVendor(updatedVendor);
+  }
 
   @UseGuards(AppAuthGuard)
   @Mutation('createVendor')
   async createVendor(
     @Args('createVendorInput') createVendor: CreateVendorInput,
-  ) {}
+  ) {
+    return await this.vendorsService.createVendor(createVendor);
+  }
 }
