@@ -4,12 +4,14 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from '@/interfaces/settings/users';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ToggleComponent } from '@/components';
-import { AddressFormComponent } from './address-form.component';
-import { ContactFormComponent } from './contact-form.component';
+import {
+  AddressFormComponent,
+  ContactFormComponent,
+  InformationFormComponent,
+} from '@/settings/users/ui';
 import { MatIconModule } from '@angular/material/icon';
 import { DropdownOption } from '@/components/inputs';
 import { ButtonComponent } from '@/components/buttons';
-import { InformationFormComponent } from './information-form.component';
 
 @Component({
   selector: 'app-user-details',

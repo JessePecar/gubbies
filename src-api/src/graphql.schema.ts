@@ -124,9 +124,21 @@ export class UpdateAddressInput {
 export class CreateVendorInput {
     name?: Nullable<string>;
     notes?: Nullable<string>;
-    primaryPhone?: Nullable<Phone>;
-    secondaryPhone?: Nullable<Phone>;
-    address?: Nullable<Address>;
+    primaryPhone?: Nullable<UpdatePhoneInput>;
+    secondaryPhone?: Nullable<UpdatePhoneInput>;
+    address?: Nullable<UpdateAddressInput>;
+}
+
+export class UpdateVendorInput {
+    id: string;
+    name?: Nullable<string>;
+    notes?: Nullable<string>;
+    primaryPhoneId?: Nullable<number>;
+    secondaryPhoneId?: Nullable<number>;
+    addressId?: Nullable<number>;
+    primaryPhone?: Nullable<UpdatePhoneInput>;
+    secondaryPhone?: Nullable<UpdatePhoneInput>;
+    address?: Nullable<UpdateAddressInput>;
 }
 
 export class CreateItemVendorInput {
@@ -196,6 +208,8 @@ export abstract class IMutation {
     abstract createRole(createRoleInput?: Nullable<CreateRoleInput>): Nullable<Role> | Promise<Nullable<Role>>;
 
     abstract createVendor(createVendorInput?: Nullable<CreateVendorInput>): Nullable<Vendor> | Promise<Nullable<Vendor>>;
+
+    abstract updateVendor(updateVendorInput?: Nullable<UpdateVendorInput>): Nullable<Vendor> | Promise<Nullable<Vendor>>;
 }
 
 export abstract class ISubscription {
@@ -322,7 +336,7 @@ export class Address {
 }
 
 export class Vendor {
-    id: string;
+    id: number;
     name?: Nullable<string>;
     notes?: Nullable<string>;
     primaryPhoneId?: Nullable<number>;

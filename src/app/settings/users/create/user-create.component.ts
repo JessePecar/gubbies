@@ -6,12 +6,14 @@ import {
 } from '@/components/navigation/breadcrumbs.component';
 import { Component, inject, signal } from '@angular/core';
 import {
-  AddressFormComponent,
-  ContactFormComponent,
-  InformationFormComponent,
   UserDetailsService,
   UserFormGroupNames,
 } from '@/settings/users/details';
+import {
+  AddressFormComponent,
+  ContactFormComponent,
+  InformationFormComponent,
+} from '@/settings/users/ui';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownOption } from '@/components';
 import { UserCreateService } from './user-create.service';

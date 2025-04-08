@@ -5,13 +5,14 @@ type Query {
 
 type Mutation {
   createVendor(createVendorInput: CreateVendorInput): Vendor
+  updateVendor(updateVendorInput: UpdateVendorInput): Vendor
 } 
 
 # type Subscription {
 # }
 
 type Vendor {
-  id: ID!
+  id: Int!
   name: String
   notes: String
   primaryPhoneId: Int
@@ -43,9 +44,22 @@ input CreateVendorInput {
   name: String
   notes: String
   
-  primaryPhone: Phone
-  secondaryPhone: Phone
-  address: Address
+  primaryPhone: UpdatePhoneInput
+  secondaryPhone: UpdatePhoneInput
+  address: UpdateAddressInput
+}
+
+input UpdateVendorInput {
+  id: ID!
+  name: String
+  notes: String
+  primaryPhoneId: Int
+  secondaryPhoneId: Int 
+  addressId: Int
+  
+  primaryPhone: UpdatePhoneInput
+  secondaryPhone: UpdatePhoneInput
+  address: UpdateAddressInput
 }
 
 input CreateItemVendorInput {

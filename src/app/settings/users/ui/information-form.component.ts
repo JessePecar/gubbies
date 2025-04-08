@@ -5,7 +5,7 @@ import {
 } from '@/components';
 import { Component, inject, input } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { UserDetailsService } from './user-details.service';
+import { UserDetailsService } from '@/settings/users/details';
 
 @Component({
   selector: 'information-form',

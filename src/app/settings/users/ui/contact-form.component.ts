@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TextInputComponent } from '@/components';
-import { UserDetailsService } from './user-details.service';
+import { UserDetailsService } from '@/settings/users/details';
 
 @Component({
   selector: 'contact-form',
