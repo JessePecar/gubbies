@@ -1,7 +1,9 @@
+import { Phone } from '@/interfaces/settings/users';
 import { VendorSchema, VendorValidator, YupFormControls } from '@/validators';
 import { FormHandler } from '@/validators';
 import { inject, Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { CreateVendor } from '@/inventory/vendors/create/create-vendor.service';
 
 @Injectable({
   providedIn: 'root',
@@ -31,5 +33,23 @@ export class VendorStoreService {
     this.form.setValidators(
       FormHandler.validate<VendorSchema>(this.vendorValidator.validator)
     );
+  }
+
+  schemaToCreateObject(vendor: VendorSchema) {
+    return {
+      ...vendor.info,
+      address: {
+        ...vendor.address,
+        postalCode: +vendor.address.postalCode,
+      },
+      primaryPhone: {
+        ...vendor.primaryPhone,
+        nationalDigits: `+1${vendor.primaryPhone.rawDigits}`,
+      } as Phone,
+      secondaryPhone: {
+        ...vendor.secondaryPhone,
+        nationalDigits: `+1${vendor.primaryPhone.rawDigits}`,
+      },
+    } as CreateVendor;
   }
 }

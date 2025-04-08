@@ -4,6 +4,7 @@ import { CreateVendorService as CreateVendorMutation } from '@/inventory/vendors
 import { Phone, Address } from '@/interfaces/settings/users';
 import { GlobalAlertService } from '@/components/alert';
 import { Router } from '@angular/router';
+import { VendorStoreService } from '../store';
 
 export type VendorFormGroupNames = 'info' | 'address' | 'phone';
 
@@ -21,26 +22,13 @@ export type CreateVendor = {
 })
 export class CreateVendorService {
   private readonly createVendorService = inject(CreateVendorMutation);
+  private readonly vendorStore = inject(VendorStoreService);
   private readonly alertService = inject(GlobalAlertService);
   private readonly router = inject(Router);
 
   onCreate(vendor: VendorSchema) {
     // Translate vendor schema to the vendor object
-    const newVendor = {
-      ...vendor.info,
-      address: {
-        ...vendor.address,
-        postalCode: +vendor.address.postalCode,
-      },
-      primaryPhone: {
-        ...vendor.primaryPhone,
-        nationalDigits: `+1${vendor.primaryPhone.rawDigits}`,
-      } as Phone,
-      secondaryPhone: {
-        ...vendor.secondaryPhone,
-        nationalDigits: `+1${vendor.primaryPhone.rawDigits}`,
-      },
-    } as CreateVendor;
+    const newVendor = this.vendorStore.schemaToCreateObject(vendor);
 
     // Submit to the API in a mutation
     this.createVendorService
