@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { gql, Query } from 'apollo-angular';
+import { gql, Mutation } from 'apollo-angular';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CreateVendorService extends Query<{ createVendor: any }> {
+export class CreateVendorService extends Mutation<{ createVendor: any }> {
   document = gql``;
 }
