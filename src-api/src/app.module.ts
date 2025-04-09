@@ -8,6 +8,7 @@ import {
   UsersModule as GQUsersModule,
   ItemsModule as GQItemsModule,
   AuthModule,
+  VendorsModule,
 } from './graphql';
 import { ConfigModule } from '@nestjs/config';
 
@@ -18,6 +19,7 @@ import { ConfigModule } from '@nestjs/config';
     GQUsersModule,
     RolesModule,
     AuthModule,
+    VendorsModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

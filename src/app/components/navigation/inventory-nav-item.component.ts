@@ -40,7 +40,7 @@ export class InventoryNavItemComponent {
     },
     {
       linkTitle: 'Vendors',
-      route: 'inventory/vendors/create',
+      route: 'inventory/vendors/list',
       permission: PermissionEnum.INVENTORY,
     },
   ];

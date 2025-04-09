@@ -11,7 +11,9 @@ export class VendorsResolver {
   @UseGuards(AppAuthGuard)
   @Query('vendors')
   async getVendors() {
-    return await this.vendorsService.getVendors();
+    const vendors = await this.vendorsService.getVendors();
+
+    return vendors;
   }
 
   @UseGuards(AppAuthGuard)

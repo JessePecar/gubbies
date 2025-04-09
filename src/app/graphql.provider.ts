@@ -6,31 +6,25 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
 import { Kind, OperationTypeNode } from 'graphql';
 import { GetAccessToken } from './utilities';
-import { setContext } from '@apollo/client/link/context';
 
 const uri = '://localhost:3000';
 
 export const apolloProvider = () => {
   const httpLink = inject(HttpLink);
 
-  const baseContext = setContext((operation, context) => ({
-    headers: {
-      Accept: 'application/json',
-    },
-  }));
-
-  const authContext = setContext((operation, context) => {
+  const authMiddleware = new ApolloLink((operation, forward) => {
     const token = GetAccessToken();
-    if (token === null || token === undefined) {
-      return {};
-    }
 
-    return {
+    operation.setContext(({ headers = {} }) => ({
       headers: {
-        Authorization: `Bearer ${token}`,
+        ...headers,
+        authorization: `Bearer ${token} || null`,
       },
-    };
+    }));
+
+    return forward(operation);
   });
+
   // Create an http link:
   const http = httpLink.create({
     uri: `http${uri}`,
@@ -40,6 +34,11 @@ export const apolloProvider = () => {
   const ws = new GraphQLWsLink(
     createClient({
       url: `ws${uri}`,
+      connectionParams: {
+        headers: {
+          authorization: `Bearer ${GetAccessToken() || null}`,
+        },
+      },
     })
   );
 
@@ -55,7 +54,7 @@ export const apolloProvider = () => {
       );
     },
     ws,
-    ApolloLink.from([baseContext, authContext, http])
+    ApolloLink.from([authMiddleware, http])
   );
 
   return {

@@ -6,6 +6,12 @@ import { AuthGuard } from '@nestjs/passport';
 export class AppAuthGuard extends AuthGuard('jwt') {
   getRequest(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
-    return ctx?.getContext()?.req;
+    const { req } = ctx.getContext();
+
+    if (req.connectionParams?.headers) {
+      req.headers = req.connectionParams.headers;
+    }
+
+    return req;
   }
 }
