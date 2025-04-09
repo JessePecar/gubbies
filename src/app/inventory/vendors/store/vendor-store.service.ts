@@ -8,7 +8,7 @@ import { CreateVendor } from '@/inventory/vendors/create/create-vendor.service';
 export type Vendor = {
   id: number;
   name: string;
-  note: string;
+  notes: string;
 
   address: Address;
   primaryPhone: Phone;

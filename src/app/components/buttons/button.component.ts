@@ -1,10 +1,11 @@
 import { Component, input, output } from '@angular/core';
 import { ButtonDirective } from './button.directive';
 import { ButtonColor, ButtonContent, ButtonType } from './button.types';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-button',
-  imports: [ButtonDirective],
+  imports: [ButtonDirective, MatIconModule],
   template: `
     <button
       button
@@ -14,7 +15,12 @@ import { ButtonColor, ButtonContent, ButtonType } from './button.types';
       [disabled]="disabled()"
       type="button"
       (click)="handleClick.emit()">
-      <div class="py-1">
+      <div class="flex space-x-2 py-1">
+        @if (icon(); as icon) {
+          @if (icon) {
+            <mat-icon [fontIcon]="icon" />
+          }
+        }
         {{ text() }}
       </div>
       <ng-content />
@@ -35,6 +41,7 @@ export class ButtonComponent {
   buttonType = input<ButtonType>('default');
   contentType = input<ButtonContent>('min-content');
   color = input<ButtonColor>('primary');
+  icon = input<string | undefined>();
 
   handleClick = output<void>();
 }

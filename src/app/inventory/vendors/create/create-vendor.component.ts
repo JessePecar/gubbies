@@ -16,6 +16,7 @@ import {
   VendorFormGroupNames,
 } from './create-vendor.service';
 import { ButtonComponent } from '../../../components/buttons/button.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-vendor',
@@ -30,8 +31,16 @@ import { ButtonComponent } from '../../../components/buttons/button.component';
   ],
   template: `
     <div class="h-full w-full">
+      <div class="absolute pl-10 pt-4">
+        <app-button
+          buttonType="text"
+          color="secondary"
+          icon="chevron_left"
+          (handleClick)="onBackClicked()"
+          text="Vendor List" />
+      </div>
       <app-breadcrumbs
-        baseIcon="account_circle"
+        baseIcon="local_shipping"
         (onOptionClicked)="onOptionClicked($event)"
         [breadcrumbOptions]="activeOptions()"
         [selectedContent]="selectedOption()">
@@ -82,6 +91,8 @@ import { ButtonComponent } from '../../../components/buttons/button.component';
 })
 export class CreateVendorComponent {
   vendorStore = inject(VendorStoreService);
+  router = inject(Router);
+
   private readonly createVendorService = inject(CreateVendorService);
 
   defaultOptions: BreadcrumbOption<VendorFormGroupNames>[] = [
@@ -130,5 +141,9 @@ export class CreateVendorComponent {
     if (this.activeOptions().length < this.defaultOptions.length) {
       this.setActiveOptions(this.activeOptions().length);
     }
+  }
+
+  onBackClicked() {
+    this.router.navigate(['inventory', 'vendors', 'list']);
   }
 }

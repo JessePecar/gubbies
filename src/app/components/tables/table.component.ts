@@ -5,7 +5,7 @@ import { ButtonComponent } from '@/components/buttons';
 export type ToolbarItem = {
   icon: string;
   text: string;
-  onClick: () => void | Promise<void>;
+  onClick: () => void | boolean | Promise<void> | Promise<boolean>;
 };
 
 @Component({
