@@ -1,9 +1,19 @@
-import { Phone } from '@/interfaces/settings/users';
+import { Address, Phone } from '@/interfaces/settings/users';
 import { VendorSchema, VendorValidator, YupFormControls } from '@/validators';
 import { FormHandler } from '@/validators';
 import { inject, Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CreateVendor } from '@/inventory/vendors/create/create-vendor.service';
+
+export type Vendor = {
+  id: number;
+  name: string;
+  note: string;
+
+  address: Address;
+  primaryPhone: Phone;
+  secondaryPhone: Phone;
+};
 
 @Injectable({
   providedIn: 'root',

@@ -7,6 +7,7 @@ import { CreateUserService } from '@/settings/users/requests';
 import { Address, CreateUser, Phone } from '@/interfaces/settings/users';
 import { GlobalAlertService } from '@/components/alert';
 import { Router } from '@angular/router';
+import { handleResponse } from '@/utilities/GraphQLResponseHandler';
 
 @Injectable({
   providedIn: 'root',
@@ -57,18 +58,20 @@ export class UserCreateService {
           updatedUser: this.userDetailsService.currentUser() as CreateUser,
         },
       })
-      .subscribe(res => {
-        if (res.errors && res.errors.length > 0) {
-          // Show Errors
-          this.alertService.addAlert('error', 'Error adding user', 2000);
-        } else {
-          this.alertService.addAlert(
-            'success',
-            'Successfully added user',
-            2000
-          );
-          this.router.navigate(['settings/users/list']);
-        }
+      .subscribe(({ errors }) => {
+        return handleResponse(
+          this.alertService,
+          () => {
+            this.alertService.addAlert(
+              'success',
+              'Successfully added user',
+              2000
+            );
+            this.router.navigate(['settings/users/list']);
+          },
+          undefined,
+          errors
+        );
       });
   }
 }

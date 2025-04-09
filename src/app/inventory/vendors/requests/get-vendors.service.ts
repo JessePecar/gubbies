@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { gql, Query } from 'apollo-angular';
+import { Vendor } from '@/inventory/vendors/store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class GetVendorsService extends Query<{ vendors: any[] }> {
+export class GetVendorsService extends Query<{ vendors: Vendor[] }> {
   document = gql`
     query {
       vendors {
@@ -12,11 +13,9 @@ export class GetVendorsService extends Query<{ vendors: any[] }> {
         name
         notes
         primaryPhone {
-          rawDigits
           nationalDigits
         }
         secondaryPhone {
-          rawDigits
           nationalDigits
         }
         address {
