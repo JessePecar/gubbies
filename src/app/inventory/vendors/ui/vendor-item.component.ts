@@ -28,9 +28,9 @@ import { PermissionEnum } from '@/entities/role';
       </div>
       <div class="col-span-2">
         <div class="flex space-x-2 flex-wrap">
-          <p>{{ vendor.address?.address1 }}</p>
-          @if (vendor.address?.address2) {
-            <p>{{ vendor.address?.address2 }}</p>
+          <p>{{ vendor.address.address1 }}</p>
+          @if (vendor.address.address2) {
+            <p>{{ vendor.address.address2 }}</p>
           }
         </div>
         <div class="flex flex-wrap">

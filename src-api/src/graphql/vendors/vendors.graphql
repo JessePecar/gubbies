@@ -41,8 +41,8 @@ type ItemVendor {
 }
 
 input CreateVendorInput {
-  name: String
-  notes: String
+  name: String!
+  notes: String!
   
   primaryPhone: CreatePhoneInput
   secondaryPhone: CreatePhoneInput
@@ -51,8 +51,8 @@ input CreateVendorInput {
 
 input UpdateVendorInput {
   id: ID!
-  name: String
-  notes: String
+  name: String!
+  notes: String!
   primaryPhoneId: Int
   secondaryPhoneId: Int 
   addressId: Int

@@ -136,8 +136,8 @@ export class UpdateAddressInput {
 }
 
 export class CreateVendorInput {
-    name?: Nullable<string>;
-    notes?: Nullable<string>;
+    name: string;
+    notes: string;
     primaryPhone?: Nullable<CreatePhoneInput>;
     secondaryPhone?: Nullable<CreatePhoneInput>;
     address?: Nullable<CreateAddressInput>;
@@ -145,8 +145,8 @@ export class CreateVendorInput {
 
 export class UpdateVendorInput {
     id: string;
-    name?: Nullable<string>;
-    notes?: Nullable<string>;
+    name: string;
+    notes: string;
     primaryPhoneId?: Nullable<number>;
     secondaryPhoneId?: Nullable<number>;
     addressId?: Nullable<number>;
