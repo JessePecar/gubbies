@@ -3,7 +3,7 @@ import { ItemsService } from './items.service';
 import { ParseIntPipe, UseGuards } from '@nestjs/common';
 import { ReadRequest } from 'src/graphql.schema';
 import { PubSub } from 'graphql-subscriptions';
-import { AppAuthGuard } from 'src/guards/app-auth.guard';
+import { AppAuthGuard } from 'src/common/guards';
 
 const pubSub = new PubSub();
 

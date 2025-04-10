@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { ParseIntPipe, UseGuards } from '@nestjs/common';
 import { PubSub } from 'graphql-subscriptions';
 import { CreateUserInput, UpdateUserInput } from 'src/graphql.schema';
-import { AppAuthGuard } from 'src/guards/app-auth.guard';
+import { AppAuthGuard } from 'src/common/guards';
 
 const pubSub = new PubSub();
 

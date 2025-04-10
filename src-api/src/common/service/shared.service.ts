@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { RepositoryService } from '.';
+import { RepositoryService } from 'src/common/repository';
 import {
   CreateAddressInput,
   CreatePhoneInput,

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { RepositoryService } from 'src/common/repository';
 import { ReadRequest } from 'src/graphql.schema';
-import { RepositoryService } from 'src/repository/repository.service';
 
 @Injectable()
 export class ItemsService {

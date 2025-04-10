@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserInput, UpdateUserInput } from 'src/graphql.schema';
-import { SharedService } from 'src/repository';
-import { RepositoryService } from 'src/repository/repository.service';
+import { SharedService } from 'src/common/service';
+import { RepositoryService } from 'src/common/repository';
 
 import { AuthUtil } from 'src/utilities/authUtils';
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RolePermissionInput, UpsertRoleInput } from 'src/graphql.schema';
-import { RepositoryService } from 'src/repository';
+import { RepositoryService } from 'src/common/repository';
 
 @Injectable({
   providedIn: 'root',

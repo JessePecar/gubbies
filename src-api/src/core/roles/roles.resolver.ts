@@ -3,7 +3,7 @@ import { RolesService } from './roles.service';
 import { PubSub } from 'graphql-subscriptions';
 import { ParseIntPipe, BadRequestException, UseGuards } from '@nestjs/common';
 import { UpsertRoleInput } from 'src/graphql.schema';
-import { AppAuthGuard } from 'src/guards/app-auth.guard';
+import { AppAuthGuard } from 'src/common/guards';
 
 const pubSub = new PubSub();
 

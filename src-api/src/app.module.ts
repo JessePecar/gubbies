@@ -1,23 +1,17 @@
 import { Module } from '@nestjs/common';
-import { RepositoryService } from './repository/repository.service';
-import { RepositoryModule } from './repository/repository.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import {
-  RolesModule,
-  UsersModule as GQUsersModule,
-  ItemsModule as GQItemsModule,
-  AuthModule,
-  VendorsModule,
-} from './graphql';
+import { UsersModule, RolesModule, AuthModule } from 'src/core';
+import { ItemsModule, VendorsModule } from 'src/inventory';
 import { ConfigModule } from '@nestjs/config';
+import { RepositoryModule, RepositoryService } from 'src/common/repository';
 
 @Module({
   imports: [
     RepositoryModule,
-    GQItemsModule,
-    GQUsersModule,
     RolesModule,
+    ItemsModule,
+    UsersModule,
     AuthModule,
     VendorsModule,
     ConfigModule.forRoot({

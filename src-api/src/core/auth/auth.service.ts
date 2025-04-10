@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { RepositoryService } from 'src/repository/repository.service';
+import { RepositoryService } from 'src/common/repository';
 import { AuthUtil } from 'src/utilities/authUtils';
 
 export type AuthModel = {

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateVendorInput, UpdateVendorInput } from 'src/graphql.schema';
-import { RepositoryService, SharedService } from 'src/repository';
+import { RepositoryService } from 'src/common/repository';
+import { SharedService } from 'src/common/service';
 
 @Injectable()
 export class VendorsService {

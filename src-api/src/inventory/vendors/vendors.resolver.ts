@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { VendorsService } from './vendors.service';
 import { ParseIntPipe, UseGuards } from '@nestjs/common';
-import { AppAuthGuard } from 'src/guards/app-auth.guard';
+import { AppAuthGuard } from 'src/common/guards';
 import { CreateVendorInput, UpdateVendorInput } from 'src/graphql.schema';
 
 @Resolver('Vendors')
