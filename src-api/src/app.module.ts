@@ -5,10 +5,12 @@ import { UsersModule, RolesModule, AuthModule } from 'src/core';
 import { ItemsModule, VendorsModule } from 'src/inventory';
 import { ConfigModule } from '@nestjs/config';
 import { RepositoryModule, RepositoryService } from 'src/common/repository';
+import { SharedModule } from 'src/common/service';
 
 @Module({
   imports: [
     RepositoryModule,
+    SharedModule,
     RolesModule,
     ItemsModule,
     UsersModule,

@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
             <div class="shadow-inset px-4 py-1">
               @for (role of tier.roles; track $index) {
                 <div
-                  class="even:bg-stone-900 odd:border-1 odd:border-stone-900 bg-stone-800 border-stone-800 mb-1 rounded">
+                  class="even:bg-stone-900 odd:border-1 odd:border-stone-900 bg-primary border-stone-800 mb-1 rounded">
                   <role-item [role]="role" />
                 </div>
               }

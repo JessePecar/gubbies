@@ -38,7 +38,7 @@ import { ButtonComponent } from '@/components/buttons';
           <button
             (click)="toggleMenu()"
             type="button"
-            class="text-grey-200 hover:bg-stone-800 rounded-lg p-1 flex items-center justify-center ">
+            class="text-grey-200 hover:bg-primary rounded-lg p-1 flex items-center justify-center ">
             <mat-icon menuItem fontIcon="menu" />
           </button>
           @if (menuExpanded()) {

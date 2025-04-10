@@ -31,7 +31,7 @@ import { Item } from '@/inventory/models/items';
 
           <div class="p-4 w-full">
             <table
-              class="table-fixed w-full bg-stone-800 rounded max-h-96 overflow-y-auto">
+              class="table-fixed w-full bg-primary rounded max-h-96 overflow-y-auto">
               <thead
                 class="bg-stone-900 border-b border-stone-700 shadow-lg divide-x divide-stone-700">
                 <th class="text-lg px-2 text-start w-1/5">Category</th>

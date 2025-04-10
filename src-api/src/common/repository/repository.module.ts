@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { RepositoryService } from './repository.service';
-import { SharedService } from 'src/common/service';
 
 @Module({
   imports: [],
   exports: [],
-  providers: [RepositoryService, SharedService],
+  providers: [RepositoryService],
   controllers: [],
 })
 export class RepositoryModule {}

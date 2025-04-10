@@ -13,7 +13,7 @@ import { NavigationDropdownDirective } from './navigation-dropdown.directive';
         <div class="w-full my-1">
           <a
             [routerLink]="option.route"
-            class="block w-full hover:bg-stone-800 rounded-sm p-1 pl-3"
+            class="block w-full hover:bg-primary rounded-sm p-1 pl-3"
             >{{ option.linkTitle }}</a
           >
         </div>

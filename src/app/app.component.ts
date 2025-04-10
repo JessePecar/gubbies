@@ -8,7 +8,7 @@ import { GlobalAlertComponent } from './components/alert/global-alert.component'
   selector: 'app-root',
   imports: [RouterOutlet, MatIconModule, GlobalAlertComponent],
   template: `
-    <main class="bg-stone-800 h-full">
+    <main class="bg-primary h-full">
       <router-outlet />
       <app-global-alert />
     </main>

@@ -1,11 +1,11 @@
-import { RepositoryModule, RepositoryService } from 'src/repository';
+import { RepositoryModule, RepositoryService } from 'src/common/repository';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { AuthConstants } from 'src/constants';
-import { JwtStrategy } from './jwt.strategy';
+import { AuthConstants } from 'src/common/constants';
+import { JwtStrategy } from 'src/common/strategy';
 
 @Module({
   imports: [

@@ -1,6 +1,6 @@
 import { RolesService } from './roles.service';
 import { RolesResolver } from './roles.resolver';
-import { RepositoryModule, RepositoryService } from 'src/repository';
+import { RepositoryModule, RepositoryService } from 'src/common/repository';
 import { Module } from '@nestjs/common';
 
 @Module({

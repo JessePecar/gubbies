@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   imports: [ContextButtonComponent],
   template: `
     <div
-      class="even:bg-stone-900 odd:border odd:border-stone-900 bg-stone-800 border-stone-800 mb-1">
+      class="even:bg-stone-900 odd:border odd:border-stone-900 bg-primary border-stone-800 mb-1">
       <div class="grid grid-cols-8">
         <div class="col-span-3">
           <p class="p-2">{{ item().name }}</p>
