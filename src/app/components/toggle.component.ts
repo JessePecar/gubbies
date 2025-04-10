@@ -14,7 +14,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
           type="checkbox"
           id="toggle-switch" />
         <span
-          class="slider absolute right-0 left-0 top-0 bottom-0 cursor-pointer transition-all duration-150 rounded-full bg-stone-900 outline outline-stone-800"></span>
+          class="slider absolute right-0 left-0 top-0 bottom-0 cursor-pointer transition-all duration-150 rounded-full bg-primary-dark outline outline-stone-800"></span>
       </label>
     </div>
   `,

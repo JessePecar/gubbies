@@ -37,7 +37,7 @@ export type DropdownOption = {
         {{ getSelectedOption() }}
         <mat-icon fontIcon="arrow_drop_down" />
       </a>
-      <div class="dropdown-content bg-stone-700 text-grey-200">
+      <div class="dropdown-content bg-stone-700 text-primary">
         @for (option of options(); track $index) {
           <a
             matRipple

@@ -9,7 +9,7 @@ import { UserInfoService } from '@/services';
   selector: 'role-item',
   imports: [ContextButtonComponent, MatIconModule],
   template: `
-    <div class="grid grid-cols-3 p-2 min-h-16">
+    <div class="grid grid-cols-3 p-2 min-h-16 text-primary">
       <div class="flex items-center space-x-2">
         <mat-icon fontIcon="manage_accounts" />
         <p class="pt-1">{{ role().name }}</p>

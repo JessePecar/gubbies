@@ -26,14 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
       <ng-content />
     </button>
   `,
-  styles: `
-    .button {
-    }
-
-    .button:hover:enabled {
-      background-image: linear-gradient(rgb(194 122 255/40%) 0 0);
-    }
-  `,
+  styles: ``,
 })
 export class ButtonComponent {
   disabled = input<boolean>(false);

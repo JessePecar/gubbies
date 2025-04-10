@@ -32,7 +32,7 @@ import { ButtonComponent } from '@/components/buttons';
       </div>
       @if (!userDetailService.isLoading) {
         <form
-          class="w-full lg:w-1/2 min-h-96 bg-stone-900 rounded shadow p-4"
+          class="w-full lg:w-1/2 min-h-96 bg-primary-dark rounded shadow p-4"
           [formGroup]="userDetailService.form"
           (ngSubmit)="onSubmit()">
           <div class="py-4 flex justify-end space-x-8">

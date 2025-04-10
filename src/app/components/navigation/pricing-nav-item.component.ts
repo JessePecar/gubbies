@@ -10,7 +10,7 @@ import { PermissionEnum } from '@/entities/role';
       dropdownName="pricing"
       [dropdownOptions]="dropdownOptions"
       [dropdownPermission]="pricingPermission">
-      <p menuItem class="hover:underline">Pricing</p>
+      <p menuItem>Pricing</p>
     </app-navigation-dropdown>
   `,
   styles: ``,

@@ -11,7 +11,7 @@ import { PermissionEnum } from '@/entities/role';
       [dropdownOptions]="dropdownOptions"
       dropdownName="promotions"
       [dropdownPermission]="promotionPermission">
-      <p menuItem class="hover:underline">Promotions</p>
+      <p menuItem>Promotions</p>
     </app-navigation-dropdown>
   `,
   styles: ``,

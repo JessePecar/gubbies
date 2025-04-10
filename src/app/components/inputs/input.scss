@@ -27,7 +27,7 @@ input[type='checkbox'] {
 /* When checkbox is checked */
 input[type='checkbox']:checked {
   background-color: var(
-    --color-purple-700
+    --color-primary-green
   ); /* Purple background when checked */
 }
 
@@ -43,5 +43,5 @@ input[type='checkbox']:checked::before {
 
 /* Optional: Hover effect */
 input[type='checkbox']:hover {
-  border-color: var(--color-purple-800); /* Lighter purple on hover */
+  border-color: var(--color-primary-green); /* Lighter purple on hover */
 }

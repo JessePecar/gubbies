@@ -14,13 +14,13 @@ import { Router } from '@angular/router';
         @for (tier of roles; track tier.tierId) {
           <div class="mb-1 px-1">
             <div
-              class="p-4 w-full border-b border-stone-900 shadow-b bg-stone-400 text-stone-900 rounded-t">
+              class="p-4 w-full border-b border-stone-400 shadow-b bg-primary-dark text-stone-900 rounded-t">
               <p class="text-lg">Tier {{ tier.tierId }}</p>
             </div>
             <div class="shadow-inset px-4 py-1">
               @for (role of tier.roles; track $index) {
                 <div
-                  class="even:bg-stone-900 odd:border-1 odd:border-stone-900 bg-primary border-stone-800 mb-1 rounded">
+                  class="even:bg-primary-dark odd:border-1 odd:border-stone-900 bg-primary border-stone-800 mb-1 rounded">
                   <role-item [role]="role" />
                 </div>
               }

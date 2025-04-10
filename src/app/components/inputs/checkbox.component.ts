@@ -24,7 +24,7 @@ import { noop } from 'rxjs';
   template: `
     <div class="flex space-x-2">
       <input
-        class="bg-transparent checked:bg-purple-700"
+        class="bg-transparent checked:bg-primary-green"
         [id]="formControlName()"
         [formControl]="formControl"
         type="checkbox" />

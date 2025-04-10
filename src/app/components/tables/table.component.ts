@@ -14,8 +14,7 @@ export type ToolbarItem = {
   template: `
     <div class="flex justify-center items-center w-full h-full pr-2 lg:p-0">
       <div class="h-3/4 w-full lg:w-3/4">
-        <div
-          class="bg-purple-600 min-h-10 p-1 flex justify-end shadow-lg mb-2 rounded-t-lg">
+        <div class="min-h-10 p-1 flex justify-end shadow-md mb-2 rounded-t-lg">
           <!-- Toolbar will go here -->
           @for (toolbarItem of toolbarItems(); track $index) {
             <app-button (handleClick)="toolbarItem.onClick()">
@@ -26,8 +25,7 @@ export type ToolbarItem = {
             </app-button>
           }
         </div>
-        <div
-          class="h-3/4 border border-stone-900 rounded-lg shadow-lg overflow-auto">
+        <div class="h-3/4 rounded-lg overflow-auto">
           <div class="w-full h-full p-1">
             <ng-content />
           </div>

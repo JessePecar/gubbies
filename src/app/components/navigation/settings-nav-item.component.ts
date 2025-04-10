@@ -10,7 +10,7 @@ import { PermissionEnum } from '@/entities/role';
       dropdownName="settings"
       [dropdownOptions]="dropdownOptions"
       [dropdownPermission]="settingsPermission">
-      <p menuItem class="hover:underline">Settings</p>
+      <p menuItem>Settings</p>
     </app-navigation-dropdown>
   `,
   styles: ``,

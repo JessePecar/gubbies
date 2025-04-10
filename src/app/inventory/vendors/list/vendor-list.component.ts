@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
     @if (vendorListService.vendors().length > 0) {
       @for (vendor of vendorListService.vendors(); track $index) {
         <div
-          class="even:bg-stone-900 odd:border odd:border-stone-900 bg-primary border-stone-800 mb-1 rounded">
+          class="even:bg-primary-dark odd:border odd:border-stone-900 bg-primary border-stone-800 mb-1 rounded">
           <!-- <user-item [user]="user" /> -->
           <vendor-item [vendor]="vendor" />
         </div>

@@ -39,7 +39,7 @@ import { ButtonComponent } from '@/components/buttons';
         </div>
         @if (form !== undefined) {
           <form
-            class="flex flex-col justify-between w-1/2 min-h-96 bg-stone-900 rounded shadow p-4"
+            class="flex flex-col justify-between w-1/2 min-h-96 bg-primary-dark rounded shadow p-4"
             [formGroup]="form"
             (ngSubmit)="onSubmit()">
             <p class="text-lg my-4">Information</p>

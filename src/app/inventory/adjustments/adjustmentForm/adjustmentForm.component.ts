@@ -11,7 +11,7 @@ import { Item } from '@/inventory/models/items';
   template: `
     <div>
       <div
-        class="p-2 border-b border-stone-800 fixed top-0 right-0 left-0 flex justify-end space-x-4 bg-stone-900 shadow-lg">
+        class="p-2 border-b border-stone-800 fixed top-0 right-0 left-0 flex justify-end space-x-4 bg-primary-dark shadow-lg">
         <app-button
           buttonType="outline"
           (handleClick)="onCancel()"
@@ -22,7 +22,7 @@ import { Item } from '@/inventory/models/items';
           (handleClick)="onSubmit()"
           text="Submit" />
       </div>
-      <div class="mt-10 p-4 bg-stone-900 rounded-lg shadow-lg">
+      <div class="mt-10 p-4 bg-primary-dark rounded-lg shadow-lg">
         <div>
           <!-- Input for the Adjustment Type -->
           <div class="w-1/4 min-w-36">
@@ -33,7 +33,7 @@ import { Item } from '@/inventory/models/items';
             <table
               class="table-fixed w-full bg-primary rounded max-h-96 overflow-y-auto">
               <thead
-                class="bg-stone-900 border-b border-stone-700 shadow-lg divide-x divide-stone-700">
+                class="bg-primary-dark border-b border-stone-700 shadow-lg divide-x divide-stone-700">
                 <th class="text-lg px-2 text-start w-1/5">Category</th>
                 <th class="text-lg px-2 text-start w-1/4">Name</th>
                 <th class="text-lg px-2 text-start">Quantity on Hand</th>
@@ -41,7 +41,7 @@ import { Item } from '@/inventory/models/items';
               </thead>
               <tbody class="mt-2 divide-y divide-stone-700">
                 @for (item of items(); track $index) {
-                  <tr class="even:bg-stone-900">
+                  <tr class="even:bg-primary-dark">
                     <td class="p-2">{{ item.category.name }}</td>
                     <td class="p-2">{{ item.name }}</td>
                     <td class="p-2">{{ item.quantityOnHand }}</td>

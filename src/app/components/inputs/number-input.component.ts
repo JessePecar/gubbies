@@ -18,10 +18,10 @@ import {
   imports: [],
   template: `
     <span>
-      <div class="text-gray-200 flex flex-col">
+      <div class="text-primary flex flex-col">
         <input
           [id]="label() + '_input'"
-          class="rounded-lg shadow-xl p-2 border-1 border-stone-600 focus:border-purple-400 bg-stone-900 outline-none input-field"
+          class="rounded-lg shadow p-2 border-1 border-stone-400 focus:border-purple-400 bg-primary outline-none input-field"
           type="number"
           [value]="value()"
           [required]="inputProps()?.required"

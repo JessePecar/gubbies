@@ -12,7 +12,7 @@ import { NavigationDropdownDirective } from './navigation-dropdown.directive';
       dropdownName="inventory"
       [dropdownOptions]="dropdownOptions"
       [dropdownPermission]="inventoryPermission">
-      <p menuItem class="hover:underline">Inventory</p>
+      <p menuItem>Inventory</p>
     </app-navigation-dropdown>
   `,
   styles: ``,
