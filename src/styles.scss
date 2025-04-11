@@ -3,6 +3,7 @@
 
 $hoverable: rgb(0 0 0/20%);
 $primary-dark: rgb(180, 183, 186);
+$primary: rgb(223, 226, 229);
 
 @theme {
   --font-display: 'Satoshi', 'sans-serif';
@@ -46,7 +47,7 @@ $primary-dark: rgb(180, 183, 186);
     // w-full rounded-lg bg-stone-900 p-2 text-gray-200
     width: var(--w-full);
     border-radius: var(--radius-lg);
-    background-color: $primary-dark;
+    background-color: $primary;
     padding: var(--spacing-2);
     color: var(--color-stone-800);
   }

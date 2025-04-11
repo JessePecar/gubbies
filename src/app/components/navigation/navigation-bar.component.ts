@@ -24,12 +24,10 @@ import { ButtonComponent } from '@/components/buttons';
     ReportsNavItemComponent,
     PricingNavItemComponent,
     PromotionNavItemComponent,
-    ProfileNavItemComponent,
-    ButtonComponent,
     SettingsNavItemComponent,
   ],
   template: `
-    <nav class="h-full w-[12rem] border-r border-primary-dark bg-primary p-1">
+    <nav class="bg-primary p-1">
       <div class="flex justify-between pr-4 pb-1">
         <div
           class="flex w-full text-lg font-bold items-center justify-center focus:outline-none focus:opacity-80 text-primary"

@@ -2,6 +2,7 @@ import { GlobalAlertService } from '@/components/alert/global-alert.service';
 import { ContextButtonComponent } from '@/components/context-button.component';
 import { PermissionEnum } from '@/entities/role';
 import { UserInfoService } from '@/services';
+import { getLocationLine } from '@/utilities';
 import { Component, inject, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -28,9 +29,7 @@ import { User } from '@interfaces/settings/users';
           }
         </div>
         <div class="flex space-x-2 flex-wrap">
-          <p>{{ user().address?.city }},</p>
-          <p>{{ user().address?.state }},</p>
-          <p>{{ user().address?.countryCode }}</p>
+          <p>{{ formatAddress(user()) }}</p>
         </div>
       </div>
       <div class="flex justify-between">
@@ -72,7 +71,7 @@ export class UserItemComponent {
   createReadablePhoneNumber = () => {
     var { primaryPhone } = this.user();
 
-    if (primaryPhone !== undefined && primaryPhone.rawDigits !== undefined) {
+    if (primaryPhone && primaryPhone.rawDigits) {
       var { rawDigits } = primaryPhone;
       return `(${rawDigits.substring(0, 3)}) ${rawDigits.substring(3, 6)} - ${rawDigits.substring(6, 10)}`;
     }
@@ -98,4 +97,7 @@ export class UserItemComponent {
       }
     }
   }
+
+  formatAddress = ({ address }: User) =>
+    address ? getLocationLine(address) : '';
 }

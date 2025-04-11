@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
       @if (userListService.users().length > 0) {
         @for (user of userListService.users(); track $index) {
           <div
-            class="even:bg-primary-dark odd:border odd:border-stone-900 bg-primary border-stone-800 mb-1 rounded">
+            class="even:bg-primary-dark odd:border odd:border-stone-300 bg-primary border-stone-200 mb-1 rounded">
             <user-item [user]="user" />
           </div>
         }

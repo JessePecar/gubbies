@@ -11,10 +11,10 @@ export type BreadcrumbOption<TOptionId> = {
   imports: [MatIconModule],
   template: `
     <div class="flex flex-col justify-center items-center h-full w-full">
-      <div class="flex w-2/3 justify-start">
-        <div class="w-min flex px-5 py-3 rounded-full shadow-lg">
+      <div class="flex w-2/3 justify-start mb-2">
+        <div class="w-min flex px-5 py-3">
           <ul class="flex space-x-4 items-center">
-            <li class="flex items-center">
+            <li class="flex items-center text-primary-blue">
               <mat-icon [fontIcon]="baseIcon()" />
             </li>
             @if (breadcrumbOptions(); as options) {
@@ -24,7 +24,7 @@ export type BreadcrumbOption<TOptionId> = {
                     <mat-icon fontIcon="chevron_right" />
                   }
                   <a
-                    class="text-nowrap hover:text-purple-400"
+                    class="text-nowrap cursor-pointer hover:text-primary-green"
                     (click)="onClickOption(option.id)"
                     >{{ option.text }}</a
                   >

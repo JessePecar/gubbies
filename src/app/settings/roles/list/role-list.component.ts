@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RoleListService } from './role-list.service';
 import { TableComponent } from '@/components/tables/table.component';
-import { RoleItemComponent } from './role-item.component';
+import { RoleItemComponent } from '@/settings/roles/ui';
 import { UserInfoService } from '@/services';
 import { Router } from '@angular/router';
 
@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
             <div class="shadow-inset px-4 py-1">
               @for (role of tier.roles; track $index) {
                 <div
-                  class="even:bg-primary-dark odd:border-1 odd:border-stone-900 bg-primary border-stone-800 mb-1 rounded">
+                  class="even:bg-primary-dark odd:border-1 odd:border-stone-300 bg-primary border-stone-200 mb-1 rounded">
                   <role-item [role]="role" />
                 </div>
               }

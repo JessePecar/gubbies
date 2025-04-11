@@ -8,10 +8,11 @@ import {
   signal,
   untracked,
 } from '@angular/core';
-import { ContextButtonComponent } from '../../../components/context-button.component';
+import { ContextButtonComponent } from '@/components/context-button.component';
 import { Router } from '@angular/router';
 import { UserInfoService } from '@/services';
 import { PermissionEnum } from '@/entities/role';
+import { getLocationLine } from '@/utilities';
 
 @Component({
   selector: 'vendor-item',
@@ -34,7 +35,7 @@ import { PermissionEnum } from '@/entities/role';
           }
         </div>
         <div class="flex flex-wrap">
-          <p>{{ getLocationLine() }}</p>
+          <p>{{ formatAddress(vendor) }}</p>
         </div>
       </div>
       <div class="col-span-2">
@@ -93,20 +94,5 @@ export class VendorItemComponent {
     });
   }
 
-  getLocationLine() {
-    const addressArray: string[] = [];
-    const addressParts: (keyof Address)[] = ['city', 'state', 'countryCode'];
-    const { address } = this.vendor();
-
-    // Take the address parts that are set above and grab the property from the address object and add to the array
-    if (address) {
-      addressParts.forEach(ap => {
-        if (address[ap]) {
-          addressArray.push(address[ap] + '');
-        }
-      });
-    }
-
-    return addressArray.join(', ');
-  }
+  formatAddress = ({ address }: Vendor) => getLocationLine(address);
 }

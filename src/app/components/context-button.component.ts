@@ -15,12 +15,12 @@ import { MatRippleModule } from '@angular/material/core';
         class="dropbtn text-primary flex items-center p-1 rounded">
         <mat-icon fontIcon="more_vert" />
       </a>
-      <div class="dropdown-content bg-stone-700 text-primary">
+      <div class="dropdown-content bg-primary-dark text-primary shadow-lg">
         @for (option of options(); track $index) {
           <a
             matRipple
             matRippleColor="#44444444"
-            class="dropdown-item"
+            class="dropdown-item cursor-pointer"
             (click)="option.onClickEvent()">
             <span class="flex space-x-8 items-center">
               @if (option.iconName) {

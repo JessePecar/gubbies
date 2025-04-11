@@ -33,11 +33,11 @@ export type DropdownOption = {
         matRipple
         [matRippleCentered]="true"
         matRippleColor="#44444444"
-        class="dropbtn w-full flex items-center justify-between p-1 h-[42px] w-full rounded-lg border border-stone-600 pl-4">
+        class="dropbtn w-full flex items-center justify-between p-1 h-[42px] w-full rounded-lg border border-stone-400 bg-primary shadow pl-4">
         {{ getSelectedOption() }}
         <mat-icon fontIcon="arrow_drop_down" />
       </a>
-      <div class="dropdown-content bg-stone-700 text-primary">
+      <div class="dropdown-content bg-primary text-primary">
         @for (option of options(); track $index) {
           <a
             matRipple

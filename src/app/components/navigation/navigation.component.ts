@@ -16,27 +16,21 @@ import { MatIconModule } from '@angular/material/icon';
     MatIconModule,
   ],
   template: `
-    <div class="flex h-[95%] w-[100%]">
-      <app-navigation-bar class="h-full" />
-      <div class="h-full w-full">
-        <div
-          class="h-10 border-b border-primary-dark flex justify-end items-center pr-4 space-x-8">
-          <app-profile-nav-item />
+    <app-navigation-bar
+      class="absolute top-0 bottom-0 w-[12rem] border-r border-primary-dark" />
+    <div class="absolute top-10 right-0 bottom-0 left-48">
+      <router-outlet />
+    </div>
+    <div
+      class="absolute top-0 right-0 h-10 left-48 border-b border-primary-dark flex justify-end items-center pr-4 space-x-8">
+      <app-profile-nav-item />
 
-          <!-- TODO: Move this button into context menu under the app-profile-nav-item component -->
-          <app-button
-            contentType="full"
-            buttonType="default"
-            (click)="logout()">
-            <div class="py-1 flex space-x-2">
-              <mat-icon fontIcon="logout" />
-            </div>
-          </app-button>
+      <!-- TODO: Move this button into context menu under the app-profile-nav-item component -->
+      <app-button contentType="full" buttonType="default" (click)="logout()">
+        <div class="py-1 flex space-x-2">
+          <mat-icon fontIcon="logout" />
         </div>
-        <div class="h-full">
-          <router-outlet />
-        </div>
-      </div>
+      </app-button>
     </div>
   `,
   styles: ``,

@@ -24,7 +24,7 @@
   transition: 0.15s ease-out;
 }
 .dropdown-content .dropdown-item:hover {
-  background-image: linear-gradient(rgb(0 0 0/20%) 0 0);
+  background-image: linear-gradient(rgb(200 203 206/20%) 0 0);
 }
 
 /* show dd content */
@@ -37,7 +37,7 @@
 
 .dropbtn:hover,
 .dropdown:focus .dropbtn {
-  background-image: linear-gradient(rgb(0 0 0/20%) 0 0);
+  background-image: linear-gradient(rgb(160 163 166/20%) 0 0);
 }
 
 /* mask to close menu by clicking on the button */

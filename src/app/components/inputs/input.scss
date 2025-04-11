@@ -1,7 +1,7 @@
 .input-label {
   transform: translateY(2.1rem);
   pointer-events: none;
-  color: var(--color-stone-300);
+  color: var(--color-stone-900);
 }
 
 .input-field:focus + .input-label,
@@ -26,9 +26,7 @@ input[type='checkbox'] {
 
 /* When checkbox is checked */
 input[type='checkbox']:checked {
-  background-color: var(
-    --color-primary-green
-  ); /* Purple background when checked */
+  background-color: var(--color-primary-green);
 }
 
 /* Create a checkmark */
@@ -43,5 +41,4 @@ input[type='checkbox']:checked::before {
 
 /* Optional: Hover effect */
 input[type='checkbox']:hover {
-  border-color: var(--color-primary-green); /* Lighter purple on hover */
 }
