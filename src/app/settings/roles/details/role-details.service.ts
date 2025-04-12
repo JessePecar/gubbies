@@ -23,8 +23,6 @@ export class RoleDetailsService {
   private readonly getPermissionsService = inject(GetPermissionsService);
   private readonly getRoleService = inject(GetRoleService);
 
-  constructor() {}
-
   getRole(id?: number) {
     if (id === undefined) {
       return new Observable<ApolloQueryResult<{ role: Role }>>();
