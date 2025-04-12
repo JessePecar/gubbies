@@ -26,6 +26,7 @@ export class RoleValidator implements BaseValidator<RoleSchema> {
       untracked(() => {
         const permissionRecord: Record<string, yup.BooleanSchema> = {};
 
+        // TODO: I will be updating this to have roles in groups, will need to tweak this logic when that happens
         permissions.forEach(p => {
           permissionRecord[p.name] = yup.boolean();
         });
