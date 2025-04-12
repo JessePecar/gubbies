@@ -1,6 +1,6 @@
 import { Role } from '@interfaces/settings/roles';
 import { Component, inject, input, OnInit } from '@angular/core';
-import { ContextButtonComponent } from '@/components';
+import { ContextButtonComponent } from '@/components/buttons';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { UserInfoService } from '@/services';

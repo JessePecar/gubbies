@@ -1,0 +1,62 @@
+/* dd container */
+.dropdown {
+  position: relative;
+  outline: none;
+}
+
+/* dd content */
+.dropdown .dropdown-content {
+  position: absolute;
+  top: 50%;
+  right: 0%;
+  min-width: 10rem;
+  width: 100%;
+  z-index: 100000;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.15s ease-out;
+}
+
+.dropdown-content .dropdown-item {
+  padding: 0.25rem 16px;
+  display: block;
+  text-decoration: none;
+  transition: 0.15s ease-out;
+}
+.dropdown-content .dropdown-item:hover {
+  background-image: linear-gradient(rgb(200 203 206/20%) 0 0);
+}
+
+/* show dd content */
+.dropdown:focus .dropdown-content {
+  outline: none;
+  transform: translateY(20px);
+  visibility: visible;
+  opacity: 1;
+}
+
+.dropbtn:hover,
+.dropdown:focus .dropbtn {
+  background-image: linear-gradient(rgb(160 163 166/20%) 0 0);
+}
+
+/* mask to close menu by clicking on the button */
+.dropdown .db2 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 10;
+  display: none;
+}
+.dropdown:focus .db2 {
+  display: inline-block;
+}
+.dropdown .db2:focus .dropdown-content {
+  outline: none;
+  visibility: hidden;
+  opacity: 0;
+}

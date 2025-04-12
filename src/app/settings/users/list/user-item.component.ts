@@ -1,5 +1,5 @@
 import { GlobalAlertService } from '@/components/alert/global-alert.service';
-import { ContextButtonComponent } from '@/components/context-button.component';
+import { ContextButtonComponent } from '@/components/buttons';
 import { PermissionEnum } from '@/entities/role';
 import { UserInfoService } from '@/services';
 import { getLocationLine } from '@/utilities';

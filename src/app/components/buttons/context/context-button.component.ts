@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { MatIconModule, IconOptions } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
 
 @Component({
@@ -13,7 +13,7 @@ import { MatRippleModule } from '@angular/material/core';
         [matRippleCentered]="true"
         matRippleColor="#44444444"
         class="dropbtn text-primary flex items-center p-1 rounded">
-        <mat-icon fontIcon="more_vert" />
+        <mat-icon [fontIcon]="contextIcon()" />
       </a>
       <div class="dropdown-content bg-primary-dark text-primary shadow-lg">
         @for (option of options(); track $index) {
@@ -40,6 +40,8 @@ import { MatRippleModule } from '@angular/material/core';
   styleUrl: './context-button.component.scss',
 })
 export class ContextButtonComponent {
+  contextIcon = input<string>('more_vert');
+
   options = input.required<
     {
       name: string;

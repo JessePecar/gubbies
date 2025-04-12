@@ -52,7 +52,7 @@ export type DropdownOption = {
       </div>
     </div>
   `,
-  styleUrl: '../context-button.component.scss',
+  styleUrl: '../buttons/context/context-button.component.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
