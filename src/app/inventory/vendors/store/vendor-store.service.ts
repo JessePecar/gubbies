@@ -21,8 +21,6 @@ export type Vendor = {
 export class VendorStoreService {
   private readonly vendorValidator = inject(VendorValidator);
 
-  formBuilder = inject(FormBuilder);
-
   form: FormGroup<YupFormControls<VendorSchema>>;
 
   constructor() {
@@ -35,10 +33,8 @@ export class VendorStoreService {
     );
   }
 
-  populateForm(
-    vendor: any /* Given a fully populated vendor, we will replace the form data in the Form Group */
-  ) {
-    this.form = FormHandler.formControls<VendorSchema>(vendor as VendorSchema);
+  populateForm(vendor: VendorSchema) {
+    this.form = FormHandler.formControls<VendorSchema>(vendor);
     // Not sure if this is necessary
     this.form.setValidators(
       FormHandler.validate<VendorSchema>(this.vendorValidator.validator)

@@ -2,24 +2,27 @@ import { inject, Injectable } from '@angular/core';
 import {
   AddressSchema,
   AddressValidator,
+  passwordValidator,
   PhoneSchema,
   PhoneValidator,
 } from '@/validators/shared';
 import * as yup from 'yup';
 import { BaseValidator } from '@/validators';
 
+export type UserInfoSchema = {
+  userName: string;
+  firstName: string;
+  lastName: string;
+  emailAddress: string;
+  isActive: boolean;
+  roleId: number;
+  password: string;
+  passwordConfirm: string;
+};
+
 export type UserSchema =
   | {
-      info: {
-        userName: string;
-        firstName: string;
-        lastName: string;
-        emailAddress: string;
-        isActive: boolean;
-        roleId: number;
-        password: string; // TODO: Add special characters validators
-        passwordConfirm: string;
-      };
+      info: UserInfoSchema;
       address: AddressSchema;
       primaryPhone: PhoneSchema;
       secondaryPhone: PhoneSchema;
@@ -41,7 +44,7 @@ export class UserValidator implements BaseValidator<UserSchema> {
       emailAddress: yup.string().required().email(),
       isActive: yup.boolean(),
       roleId: yup.number(),
-      password: yup.string().required().min(8).max(16), // TODO: Add special characters validators
+      password: passwordValidator,
       passwordConfirm: yup.string().when('password', password => {
         return yup
           .string()
