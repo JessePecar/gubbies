@@ -3,6 +3,7 @@ type Query {
   role(id: Int!): Role
   roleTiers: [RoleTiers]
   permissions: [Permission]
+  permissionGroups: [PermissionGroup]
 }
 
 type Mutation {
@@ -39,6 +40,13 @@ type RolePermission {
 
   permission: Permission!
   role: Role!
+}
+
+type PermissionGroup {
+  id: Int!
+  name: String!
+
+  permissions: [Permission]
 }
 
 type Permission {

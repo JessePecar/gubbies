@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { RolesService } from './roles.service';
 import { PubSub } from 'graphql-subscriptions';
@@ -17,23 +18,34 @@ export class RolesResolver {
   async getItems() {
     return await this.rolesService.getRoles();
   }
+
   @UseGuards(AppAuthGuard)
   @Query('role')
   async getRoleById(@Args('id', ParseIntPipe) id: number) {
     return await this.rolesService.getRole(id);
   }
+
   @UseGuards(AppAuthGuard)
   @Query('roleTiers')
   async getRoleTiers() {
     const tiers = await this.rolesService.getRoleTiers();
     return tiers;
   }
+
   @UseGuards(AppAuthGuard)
   @Query('permissions')
   async getPermissions() {
     const perms = await this.rolesService.getPermissions();
     return perms;
   }
+
+  @UseGuards(AppAuthGuard)
+  @Query('permissionGroups')
+  async getPermissionGroups() {
+    const perms = await this.rolesService.getPermissionGroups();
+    return perms;
+  }
+
   @UseGuards(AppAuthGuard)
   @Mutation('upsertRole')
   async upsertRole(@Args('upsertRoleInput') upsertRole: UpsertRoleInput) {

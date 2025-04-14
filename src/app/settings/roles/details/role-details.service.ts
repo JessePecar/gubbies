@@ -1,5 +1,5 @@
-import { Role, UpdateRole } from '@interfaces/settings/roles';
-import { inject, Injectable } from '@angular/core';
+import { PermissionGroup, Role, UpdateRole } from '@interfaces/settings/roles';
+import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { GlobalAlertService } from '@/components/alert/global-alert.service';
@@ -7,9 +7,10 @@ import { Router } from '@angular/router';
 import {
   UpsertRoleService,
   GetTiersService,
-  GetPermissionsService,
   GetRoleService,
+  GetPermissionGroupsService,
 } from '@/settings/roles';
+import { RoleStoreService } from '@/settings/roles/store';
 
 @Injectable({
   providedIn: 'root',
@@ -20,8 +21,17 @@ export class RoleDetailsService {
 
   private readonly upsertRoleService = inject(UpsertRoleService);
   private readonly getTiersService = inject(GetTiersService);
-  private readonly getPermissionsService = inject(GetPermissionsService);
+  private readonly roleStore = inject(RoleStoreService);
+  private readonly getPermissionGroupsService = inject(
+    GetPermissionGroupsService
+  );
   private readonly getRoleService = inject(GetRoleService);
+
+  permissionGroups = signal<PermissionGroup[]>([]);
+
+  constructor() {
+    this.getPermissions();
+  }
 
   getRole(id?: number) {
     if (id === undefined) {
@@ -34,7 +44,11 @@ export class RoleDetailsService {
   }
 
   getPermissions() {
-    return this.getPermissionsService.watch().valueChanges;
+    return this.getPermissionGroupsService
+      .watch()
+      .valueChanges.subscribe(({ data: { permissionGroups } }) => {
+        this.permissionGroups.set(permissionGroups);
+      });
   }
 
   getTiers() {

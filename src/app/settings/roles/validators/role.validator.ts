@@ -4,6 +4,7 @@ import { BaseValidator } from '@/validators';
 import { UserInfoService } from '@/services';
 import { GetPermissionsService } from '@/settings/roles';
 import { Permission } from '@/interfaces/settings/roles';
+
 export type RoleSchema =
   | {
       name: string;

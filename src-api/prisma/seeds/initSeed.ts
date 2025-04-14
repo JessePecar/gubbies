@@ -1,21 +1,48 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 import { PrismaClient } from '@prisma/client';
 import { AuthUtil } from '../../src/utilities';
 import { resetPassword as runReset } from './resetPasswords';
-import { permissionSeed } from './data';
+import { permissionGroupSeed, permissionSeed } from './data';
 const client = new PrismaClient();
 
 async function main() {
-  var passwordFlag = process.env.RESET_PASSWORD;
+  const passwordFlag = process.env.RESET_PASSWORD;
 
   if (passwordFlag === 'true') {
     await runReset();
     return;
   }
-  client.$connect;
+  await client.$connect();
 
-  var authUtil = new AuthUtil();
+  const authUtil = new AuthUtil();
 
-  var permissions = await client.permissions.findMany();
+  const permissionGroup = (await client.permissionGroup.findMany()) ?? [];
+  if (
+    !permissionGroup ||
+    permissionGroup.length !== permissionGroupSeed.length
+  ) {
+    console.log('Adding Permission groups to the db');
+
+    const upsertPermGroupTasks = permissionGroupSeed.map((pgs) => {
+      return client.permissionGroup.upsert({
+        where: {
+          id: pgs.id,
+        },
+        create: {
+          id: pgs.id,
+          name: pgs.name,
+        },
+        update: {
+          name: pgs.name,
+        },
+      });
+    });
+
+    await Promise.all(upsertPermGroupTasks);
+  }
+
+  let permissions = await client.permissions.findMany();
   if (!permissions || permissions.length !== permissionSeed.length) {
     console.log('Adding permissions to the db');
 
@@ -29,9 +56,11 @@ async function main() {
         create: {
           id: ps.id,
           name: ps.name,
+          permissionGroupId: ps.permissionGroupId,
         },
         update: {
           name: ps.name,
+          permissionGroupId: ps.permissionGroupId,
         },
       });
     });
@@ -41,8 +70,9 @@ async function main() {
 
   permissions = await client.permissions.findMany();
 
-  var roles = await client.roles.findMany();
-  var newRole: any | undefined = undefined;
+  const roles = await client.roles.findMany();
+
+  let newRole: any | undefined = undefined;
   if (!roles || roles.length < 1) {
     // Create an admin role
     newRole = await client.roles.create({
@@ -60,41 +90,42 @@ async function main() {
         };
       }),
     });
-  }
-  else {
+  } else {
     // Find all admins and ensure they have every permission
-    const admins = roles.filter(nr => nr.hierarchyTier === 1);
+    const admins = roles.filter((nr) => nr.hierarchyTier === 1);
 
-    const rolePermTasks = admins.map(admin => {
-      return Promise.all(permissionSeed.map(ps => {
-        return client.rolePermissions.upsert({
-          where: {
-            roleId_permissionId: {
+    const rolePermTasks = admins.map((admin) => {
+      return Promise.all(
+        permissionSeed.map((ps) => {
+          return client.rolePermissions.upsert({
+            where: {
+              roleId_permissionId: {
+                permissionId: ps.id,
+                roleId: admin.id,
+              },
+            },
+            create: {
               permissionId: ps.id,
-              roleId: admin.id
-            }
-          },
-          create: {
-            permissionId: ps.id,
-            roleId: admin.id
-          },
-          update: {
-            permissionId: ps.id,
-            roleId: admin.id
-          }
-        })
-      }))
+              roleId: admin.id,
+            },
+            update: {
+              permissionId: ps.id,
+              roleId: admin.id,
+            },
+          });
+        }),
+      );
     });
 
     await Promise.all(rolePermTasks);
   }
   // Create the default admin user
-  var users = await client.users.findMany();
+  const users = await client.users.findMany();
 
-  var address: any | undefined = undefined;
-  var primaryPhone: any | undefined = undefined;
+  let address: any | undefined = undefined;
+  let primaryPhone: any | undefined = undefined;
   if (!users || users.length < 1) {
-    var addresses = await client.address.findMany();
+    const addresses = await client.address.findMany();
     if (!addresses || addresses.length < 1) {
       address = await client.address.create({
         data: {
@@ -107,7 +138,7 @@ async function main() {
       });
     }
 
-    var phones = await client.phone.findMany();
+    const phones = await client.phone.findMany();
 
     if (!phones || phones.length < 1) {
       primaryPhone = await client.phone.create({

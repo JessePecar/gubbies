@@ -113,9 +113,17 @@ model Items {
 }
 
 model Permissions {
-  id              Int               @id @default(autoincrement())
-  name            String?
-  rolePermissions RolePermissions[]
+  id                Int               @id @default(autoincrement())
+  name              String?
+  permissionGroupId Int?
+  rolePermissions   RolePermissions[]
+  PermissionGroup   PermissionGroup?  @relation(fields: [permissionGroupId], references: [id])
+}
+
+model PermissionGroup {
+  id          Int           @id @default(autoincrement())
+  name        String
+  permissions Permissions[]
 }
 
 model Roles {

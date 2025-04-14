@@ -7,13 +7,13 @@ const client = new PrismaClient();
 // ATTENTION: ONLY RUN LOCALLY
 export async function resetPassword() {
   console.log('### Reseting the passwords ###');
-  
-  var authUtil = new AuthUtil();
+
+  const authUtil = new AuthUtil();
   await client.$connect();
 
   await client.users.updateMany({
     data: {
-      password: await authUtil.hashPassword('password')
-    }
-  })
+      password: await authUtil.hashPassword('password'),
+    },
+  });
 }
