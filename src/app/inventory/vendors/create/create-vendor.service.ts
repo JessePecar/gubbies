@@ -1,4 +1,4 @@
-import { VendorSchema } from '@/validators';
+import { VendorSchema } from '@/inventory/vendors/validators';
 import { inject, Injectable } from '@angular/core';
 import { CreateVendorService as CreateVendorMutation } from '@/inventory/vendors/requests';
 import { Phone, Address } from '@/interfaces/settings/users';
