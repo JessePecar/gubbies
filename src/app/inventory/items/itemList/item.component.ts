@@ -68,9 +68,21 @@ export class ItemComponent {
       iconName: 'edit',
       onClickEvent: this.onEditItem,
     },
-    { name: 'Delete', iconName: 'delete_forever', onClickEvent: () => {} },
-    { name: 'Retire', iconName: 'auto_delete', onClickEvent: () => {} },
+    {
+      name: 'Delete',
+      iconName: 'delete_forever',
+      onClickEvent: this.onDelete,
+    },
+    { name: 'Retire', iconName: 'auto_delete', onClickEvent: this.onRetire },
   ];
+
+  onRetire() {
+    //TODO: Retire the item
+  }
+
+  onDelete() {
+    //TODO: Delete the item
+  }
 
   getUnitOfMeasurementType() {
     try {

@@ -1,21 +1,12 @@
 import { GlobalAlertService } from '@/components/alert/global-alert.service';
-import {
-  Address,
-  CreateUser,
-  Phone,
-  UpdateUser,
-  User,
-} from '@/interfaces/settings/users';
+import { Address, Phone, UpdateUser, User } from '@/interfaces/settings/users';
 import { FieldMetchValidator } from '@/utilities/FieldMatchValidator';
 import { inject, Injectable, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import {
-  CreateUserService,
-  GetUserService,
-  UpdateUserService,
-} from '@/settings/users/requests';
+import { GetUserService, UpdateUserService } from '@/settings/users/requests';
 import { GetRolesService } from '@/settings/roles';
+import { UserSchema } from '@/settings/users/validators';
 
 export type UserFormGroupNames = 'info' | 'address' | 'primaryPhone';
 
@@ -51,7 +42,7 @@ export class UserDetailsService {
     info: { firstName, lastName, userName, emailAddress, isActive, roleId },
     address,
     primaryPhone,
-  }: Record<UserFormGroupNames, any>) {
+  }: UserSchema) {
     this.currentUser.set({
       id: this.currentUser()?.id ?? 0,
       roleId: roleId,
@@ -104,7 +95,7 @@ export class UserDetailsService {
     }
     // Else, we are creating a new user, so we will populate the form with a blank user
     else {
-      var newUser: User = {
+      const newUser: User = {
         id: 0,
         firstName: '',
         lastName: '',
@@ -231,6 +222,4 @@ export class UserDetailsService {
       }
     );
   }
-
-  constructor() {}
 }

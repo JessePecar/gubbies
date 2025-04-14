@@ -1,4 +1,3 @@
-
 import { Vendor } from '@/inventory/vendors/store';
 import {
   Component,

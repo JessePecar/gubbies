@@ -9,7 +9,7 @@ import {
 import * as yup from 'yup';
 import { BaseValidator } from '@/validators';
 
-export type UserInfoSchema = {
+export interface UserInfoSchema {
   userName: string;
   firstName: string;
   lastName: string;
@@ -18,7 +18,7 @@ export type UserInfoSchema = {
   roleId: number;
   password: string;
   passwordConfirm: string;
-};
+}
 
 export type UserSchema =
   | {

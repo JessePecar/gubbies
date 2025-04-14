@@ -42,7 +42,7 @@ export class RoleItemComponent implements OnInit {
 
   ngOnInit(): void {
     // Check if we can use this
-    var role = this.userInfoService.role();
+    const role = this.userInfoService.role();
 
     // If the role we are looking at has a higher hiearchy tier, then we can edit it
     if (role && this.role().hierarchyTier > role.hierarchyTier) {

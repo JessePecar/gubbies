@@ -69,10 +69,10 @@ export class UserItemComponent {
   }[] = [{ name: 'Edit', iconName: 'edit', onClickEvent: this.onEditUser }];
 
   createReadablePhoneNumber = () => {
-    var { primaryPhone } = this.user();
+    const { primaryPhone } = this.user();
 
     if (primaryPhone && primaryPhone.rawDigits) {
-      var { rawDigits } = primaryPhone;
+      const { rawDigits } = primaryPhone;
       return `(${rawDigits.substring(0, 3)}) ${rawDigits.substring(3, 6)} - ${rawDigits.substring(6, 10)}`;
     }
 

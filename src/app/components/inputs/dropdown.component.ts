@@ -15,10 +15,10 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { noop } from 'rxjs';
 
-export type DropdownOption = {
+export interface DropdownOption {
   id: number;
   name: string;
-};
+}
 
 @Component({
   selector: 'app-dropdown',
