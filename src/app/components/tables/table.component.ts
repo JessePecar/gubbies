@@ -13,8 +13,12 @@ export type ToolbarItem = {
   imports: [ButtonComponent, MatIcon],
   template: `
     <div class="flex justify-center items-center w-full h-full pr-2 lg:p-0">
-      <div class="h-3/4 w-full lg:w-3/4">
-        <div class="min-h-10 p-1 flex justify-end shadow-md mb-2 rounded-t-lg">
+      <div class="h-3/4 w-full">
+        <div
+          class="min-h-10 p-1 flex justify-between shadow-md mb-2 rounded-t-lg">
+          <div>
+            <ng-content select="[header]" />
+          </div>
           <!-- Toolbar will go here -->
           @for (toolbarItem of toolbarItems(); track $index) {
             <app-button (handleClick)="toolbarItem.onClick()">

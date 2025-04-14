@@ -1,23 +1,28 @@
-import { RolePermissionUpdate, UpdateRole } from '@/interfaces/settings/roles';
-import { GetPermissionsService } from '@/settings/roles/requests';
+import {
+  PermissionGroup,
+  RolePermissionUpdate,
+  UpdateRole,
+} from '@/interfaces/settings/roles';
+import { GetPermissionGroupsService } from '@/settings/roles/requests';
 import { RoleSchema, RoleValidator } from '@/settings/roles/validators';
 import { FormHandler, YupFormControls } from '@/validators';
 import { effect, inject, Injectable, signal, untracked } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ObjectSchema } from 'yup';
 import { Permission } from '@/interfaces/settings/roles';
-import { assert } from 'node:console';
-
+import assert from 'assert';
 @Injectable({
   providedIn: 'root',
 })
 export class RoleStoreService {
   private readonly roleValidator = inject(RoleValidator);
-  private readonly permissionsService = inject(GetPermissionsService);
+  private readonly permissionsService = inject(GetPermissionGroupsService);
+  private readonly formBuilder = inject(FormBuilder);
 
   permissions = signal<Permission[]>([]);
+  permissionGroups = signal<PermissionGroup[]>([]);
 
-  form!: FormGroup<YupFormControls<RoleSchema>>;
+  form: FormGroup<YupFormControls<RoleSchema>> = this.formBuilder.group({});
 
   setupForm(initData: RoleSchema, validator: ObjectSchema<RoleSchema>) {
     const formData: RoleSchema = initData;
@@ -27,20 +32,19 @@ export class RoleStoreService {
   }
 
   constructor() {
-    this.permissionsService.fetch().subscribe(({ data: { permissions } }) => {
-      this.permissions.set(permissions);
-    });
-
-    this.setupForm(
-      this.roleValidator.initialData,
-      this.roleValidator.validator
-    );
+    this.permissionsService
+      .fetch()
+      .subscribe(({ data: { permissionGroups } }) => {
+        this.permissions.set(permissionGroups.flatMap(pg => pg.permissions));
+        this.permissionGroups.set(permissionGroups);
+      });
 
     effect(() => {
       const validator = this.roleValidator.validator;
       const initData = this.roleValidator.initialData;
 
       untracked(() => {
+        console.log('Setting up the form');
         this.setupForm(initData, validator);
       });
     });

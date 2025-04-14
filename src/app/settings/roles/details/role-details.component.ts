@@ -4,14 +4,15 @@ import {
   TextInputComponent,
 } from '@/components';
 import { Component, inject, input, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RoleDetailsService } from './role-details.service';
 import { Permission, Role } from '@/interfaces/settings/roles';
 import { UserInfoService } from '@/services';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '@/components/buttons';
 import { RoleStoreService } from '@/settings/roles/store';
-import { RoleSchema } from '@/settings/roles/validators';
+import { RoleSchema, RoleValidator } from '@/settings/roles/validators';
+import { TableComponent } from '@/components/tables/table.component';
 
 //TODO: Move a lot of the logic for fetching into the service
 
@@ -23,6 +24,7 @@ import { RoleSchema } from '@/settings/roles/validators';
     TextInputComponent,
     NumberInputComponent,
     CheckboxComponent,
+    TableComponent,
   ],
   template: `
     @if (isLoading() === false) {
@@ -30,9 +32,9 @@ import { RoleSchema } from '@/settings/roles/validators';
         <div class="flex w-1/2">
           <p style="font-size: 2rem" class="py-2">Add / Edit Role</p>
         </div>
-        @if (this.roleStore.form !== undefined) {
+        @if (roleStore.form !== undefined) {
           <form
-            class="flex flex-col justify-between w-1/2 min-h-96 bg-primary-dark rounded shadow p-4"
+            class="flex flex-col justify-between w-1/2 min-h-96 p-4"
             [formGroup]="roleStore.form"
             (ngSubmit)="onSubmit()">
             <p class="text-lg my-4">Information</p>
@@ -44,26 +46,29 @@ import { RoleSchema } from '@/settings/roles/validators';
                 formControlName="hierarchyTier" />
             </div>
             @if (
-              roleStore.form.get('permissions') &&
-                roleDetailsService.permissionGroups();
+              roleStore.form.contains('permissions') &&
+                roleStore.permissionGroups();
               as groups
             ) {
-              <p class="text-lg my-4">Permissions</p>
-              <div formArrayName="permissions">
-                @for (group of groups; track group.id) {
-                  <p>{{ group.name }}</p>
-                  <div class="w-full lg:w-1/2 grid grid-cols-2 gap-1 text-sm">
-                    @for (
-                      permission of group.permissions;
-                      track permission.id
-                    ) {
-                      <app-checkbox
-                        [formControlName]="permission.name"
-                        [label]="getPermissionName(permission)" />
-                    }
-                  </div>
-                }
-              </div>
+              <app-table>
+                <p header class="text-lg">Permissions</p>
+                <div formArrayName="permissions" class="w-full text-sm">
+                  @for (group of groups; track $index) {
+                    <div>
+                      <div class="p-4 w-full border-b border-primary-dark">
+                        <p class="font-bold">{{ group.name }}</p>
+                      </div>
+                      <div class="w-full grid grid-cols-3 gap-1 text-sm pt-2">
+                        @for (permission of group.permissions; track $index) {
+                          <app-checkbox
+                            [formControlName]="permission.name"
+                            [label]="getPermissionName(permission)" />
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
+              </app-table>
             }
 
             <div class="flex justify-end space-x-4 h-10">
@@ -90,6 +95,7 @@ export class RoleDetailsComponent {
   formBuilder = inject(FormBuilder);
   roleDetailsService = inject(RoleDetailsService);
   roleStore = inject(RoleStoreService);
+  roleValidator = inject(RoleValidator);
   userInfoService = inject(UserInfoService);
   router = inject(Router);
 
@@ -112,6 +118,12 @@ export class RoleDetailsComponent {
 
   getPermissionName(permission: Permission) {
     return permission.name.replace('_', ' ') ?? '';
+  }
+
+  isFormPermissionSet(permissionName: string) {
+    return (this.roleStore.form.get('permissions') as FormGroup).contains(
+      permissionName
+    );
   }
 
   constructor() {

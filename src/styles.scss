@@ -82,19 +82,19 @@ a:enabled {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: transparent; /* Background of the scrollbar track */
+  background: var(--color-primary-dark); /* Background of the scrollbar track */
   border-radius: 10px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--color-stone-700); /* Color of the scrollbar handle */
+  background: var(--color-primary-green); /* Color of the scrollbar handle */
   border-radius: var(--radius-sm);
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-stone-500);
+  background-image: linear-gradient(rgb(0 0 0/20%) 0 0);
   cursor: pointer;
 }
 

@@ -22,13 +22,13 @@ import { noop } from 'rxjs';
   selector: 'app-checkbox',
   imports: [ReactiveFormsModule],
   template: `
-    <div class="flex space-x-2">
+    <div class="flex space-x-2 items-center">
       <input
         class="bg-transparent checked:bg-primary-green"
         [id]="formControlName()"
         [formControl]="formControl"
         type="checkbox" />
-      <label [for]="formControlName()" class="text-sm cursor-pointer">
+      <label [for]="formControlName()" class="text-xs cursor-pointer">
         {{ label() }}
       </label>
     </div>
@@ -42,7 +42,7 @@ import { noop } from 'rxjs';
   ],
   styleUrl: './input.scss',
 })
-export class CheckboxComponent implements ControlValueAccessor, OnInit {
+export class CheckboxComponent implements ControlValueAccessor {
   readonly formControl = new FormControl();
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
@@ -65,10 +65,7 @@ export class CheckboxComponent implements ControlValueAccessor, OnInit {
     isDisabled ? this.formControl.disable() : this.formControl.enable();
   }
 
-  //
-  // Implementing OnInit
-  //
-  ngOnInit(): void {
+  constructor() {
     this.formControl.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((checked: boolean) => {
@@ -81,7 +78,7 @@ export class CheckboxComponent implements ControlValueAccessor, OnInit {
   }
 
   label = input<string>();
-  formControlName = input.required<string>();
+  formControlName = input<string>();
 
   disabled = signal<boolean>(false);
   touched = signal<boolean>(false);

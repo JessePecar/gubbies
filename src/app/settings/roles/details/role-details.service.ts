@@ -21,17 +21,7 @@ export class RoleDetailsService {
 
   private readonly upsertRoleService = inject(UpsertRoleService);
   private readonly getTiersService = inject(GetTiersService);
-  private readonly roleStore = inject(RoleStoreService);
-  private readonly getPermissionGroupsService = inject(
-    GetPermissionGroupsService
-  );
   private readonly getRoleService = inject(GetRoleService);
-
-  permissionGroups = signal<PermissionGroup[]>([]);
-
-  constructor() {
-    this.getPermissions();
-  }
 
   getRole(id?: number) {
     if (id === undefined) {
@@ -41,14 +31,6 @@ export class RoleDetailsService {
     return this.getRoleService.watch({
       id: +id, // Telling graphql that this will be an integer
     }).valueChanges;
-  }
-
-  getPermissions() {
-    return this.getPermissionGroupsService
-      .watch()
-      .valueChanges.subscribe(({ data: { permissionGroups } }) => {
-        this.permissionGroups.set(permissionGroups);
-      });
   }
 
   getTiers() {
