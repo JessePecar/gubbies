@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { UserDetailsService, UserFormGroupNames } from './user-details.service';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '@/interfaces/settings/users';

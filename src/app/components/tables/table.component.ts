@@ -30,7 +30,7 @@ export type ToolbarItem = {
           }
         </div>
         <div class="h-3/4 rounded-lg overflow-auto">
-          <div class="w-full h-full p-1">
+          <div class="w-full h-full p-1 min-h-96">
             <ng-content />
           </div>
         </div>

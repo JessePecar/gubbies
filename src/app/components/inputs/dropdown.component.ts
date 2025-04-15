@@ -24,25 +24,25 @@ export interface DropdownOption {
   selector: 'app-dropdown',
   imports: [MatIconModule, MatRippleModule, ReactiveFormsModule],
   template: `
-    <div class="mb-[2px] mt-[-2px]">
+    <div class="mb-[2px] mt-[-2px] text-sm">
       <p>{{ label() }}</p>
     </div>
-    <div #dropdown class="dropdown" tabindex="1">
+    <div #dropdown class="dropdown " tabindex="1">
       <i class="db2" tabindex="1"></i>
       <a
         matRipple
         [matRippleCentered]="true"
         matRippleColor="#44444444"
-        class="dropbtn w-full flex items-center justify-between p-1 h-[42px] w-full rounded-lg border border-stone-400 bg-primary shadow pl-4">
-        {{ getSelectedOption() }}
+        class="dropbtn w-full flex items-center justify-between p-1 h-8 w-full rounded-lg border border-primary-dark bg-primary pl-4">
+        {{ getSelectedOption() ?? '--' }}
         <mat-icon fontIcon="arrow_drop_down" />
       </a>
-      <div class="dropdown-content bg-primary text-primary">
+      <div class="dropdown-content bg-primary text-primary shadow-lg">
         @for (option of options(); track $index) {
           <a
             matRipple
             matRippleColor="#44444444"
-            class="dropdown-item"
+            class="dropdown-item cursor-pointer"
             (click)="handleChange(option)">
             <span class="flex space-x-8 items-center">
               {{ option.name }}
