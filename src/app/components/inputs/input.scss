@@ -1,12 +1,12 @@
 .input-label {
-  transform: translateY(2.1rem);
+  transform: translateY(1.75rem);
   pointer-events: none;
   color: var(--color-stone-900);
 }
 
 .input-field:focus + .input-label,
 .input-field:not(:placeholder-shown) ~ .input-label {
-  transform: translateY(-2px) translateX(-0.75rem);
+  transform: translateY(-2px) translateX(-0.5rem);
   color: var(--color-stone-100);
 }
 

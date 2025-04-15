@@ -1,39 +1,38 @@
 import { Component, DestroyRef, inject, input, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
-  ControlValueAccessor,
   FormControl,
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { noop } from 'rxjs';
 
 @Component({
-  standalone: true,
-  selector: 'app-checkbox',
+  selector: 'app-switch-input',
   imports: [ReactiveFormsModule],
   template: `
-    <div class="flex space-x-2 items-center">
-      <input
-        class="bg-transparent checked:bg-primary-green"
-        [id]="formControlName()"
-        [formControl]="formControl"
-        type="checkbox" />
-      <label [for]="formControlName()" class="text-xs cursor-pointer">
-        {{ label() }}
+    <div class="flex space-x-4 p-1">
+      <label class="switch">
+        <input
+          class="switch-input"
+          [id]="formControlName()"
+          [formControl]="formControl"
+          type="checkbox" />
+        <span class="slider round"></span>
       </label>
+      <p>{{ label() }}</p>
     </div>
   `,
+  styleUrl: './switch-input.component.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: CheckboxComponent,
+      useExisting: SwitchInputComponent,
     },
   ],
-  styleUrl: './input.scss',
 })
-export class CheckboxComponent implements ControlValueAccessor {
+export class SwitchInputComponent {
   readonly formControl = new FormControl();
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 

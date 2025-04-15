@@ -30,7 +30,7 @@ import {
         } @else {
           <input
             [id]="label() + '_input'"
-            class="rounded-lg shadow p-2 border-1 border-stone-400 focus:border-primary-green bg-primary outline-none input-field"
+            class="rounded-lg shadow p-2 border-1 border-stone-400 focus:border-primary-green bg-primary outline-none input-field h-8"
             [type]="inputProps()?.type ?? 'text'"
             [value]="value()"
             [required]="inputProps()?.required"

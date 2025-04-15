@@ -29,6 +29,8 @@ export class RoleStoreService {
 
     this.form = FormHandler.formControls<RoleSchema>(formData);
     this.form.setValidators(FormHandler.validate<RoleSchema>(validator));
+
+    console.log(this.form);
   }
 
   constructor() {
@@ -40,18 +42,17 @@ export class RoleStoreService {
       });
 
     effect(() => {
-      const validator = this.roleValidator.validator;
-      const initData = this.roleValidator.initialData;
+      const validator = this.roleValidator.validatorSignal();
+      const initData = this.roleValidator.initialDataSignal();
 
       untracked(() => {
-        console.log('Setting up the form');
         this.setupForm(initData, validator);
       });
     });
   }
 
-  populateForm(user: RoleSchema) {
-    this.form = FormHandler.formControls<RoleSchema>(user);
+  populateForm(role: RoleSchema) {
+    this.form = FormHandler.formControls<RoleSchema>(role);
     this.form.setValidators(
       FormHandler.validate<RoleSchema>(this.roleValidator.validator)
     );

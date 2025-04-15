@@ -13,6 +13,7 @@ import { ButtonComponent } from '@/components/buttons';
 import { RoleStoreService } from '@/settings/roles/store';
 import { RoleSchema, RoleValidator } from '@/settings/roles/validators';
 import { TableComponent } from '@/components/tables/table.component';
+import { SwitchInputComponent } from '@/components/inputs/switch-input.component';
 
 //TODO: Move a lot of the logic for fetching into the service
 
@@ -23,12 +24,13 @@ import { TableComponent } from '@/components/tables/table.component';
     ReactiveFormsModule,
     TextInputComponent,
     NumberInputComponent,
-    CheckboxComponent,
     TableComponent,
+    SwitchInputComponent,
   ],
   template: `
     @if (isLoading() === false) {
-      <div class="flex flex-col w-full h-full justify-center items-center">
+      <div
+        class="flex flex-col w-full h-full justify-center items-center max-h-1/2">
         <div class="flex w-1/2">
           <p style="font-size: 2rem" class="py-2">Add / Edit Role</p>
         </div>
@@ -50,7 +52,7 @@ import { TableComponent } from '@/components/tables/table.component';
                 roleStore.permissionGroups();
               as groups
             ) {
-              <app-table>
+              <app-table class="max-h-96">
                 <p header class="text-lg">Permissions</p>
                 <div formArrayName="permissions" class="w-full text-sm">
                   @for (group of groups; track $index) {
@@ -60,9 +62,12 @@ import { TableComponent } from '@/components/tables/table.component';
                       </div>
                       <div class="w-full grid grid-cols-3 gap-1 text-sm pt-2">
                         @for (permission of group.permissions; track $index) {
-                          <app-checkbox
+                          <app-switch-input
                             [formControlName]="permission.name"
                             [label]="getPermissionName(permission)" />
+                          <!-- <app-checkbox
+                            [formControlName]="permission.name"
+                            [label]="getPermissionName(permission)" /> -->
                         }
                       </div>
                     </div>
@@ -117,7 +122,14 @@ export class RoleDetailsComponent {
   }
 
   getPermissionName(permission: Permission) {
-    return permission.name.replace('_', ' ') ?? '';
+    let permissionName = permission.name.split('_');
+    permissionName = permissionName.map(pn => {
+      const lowercaseString = pn.substring(1, pn.length).toLocaleLowerCase();
+
+      return `${pn[0]}${lowercaseString}`;
+    });
+
+    return permissionName.join(' ');
   }
 
   isFormPermissionSet(permissionName: string) {
