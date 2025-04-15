@@ -15,27 +15,6 @@ export type YupFormControls<TSchema> = {
 };
 
 export class FormHandler {
-  static generateForm<TSchema extends AnyObject>(
-    objectSchema: yup.ObjectSchema<TSchema>
-  ): FormGroup<YupFormControls<TSchema>> {
-    const formControls: YupFormControls<TSchema> =
-      {} as YupFormControls<TSchema>;
-    // If the object schema is not of type object, we no do this
-    if (objectSchema.type === 'object') {
-      // Grab the fields for the object schema and start adding them to the form controls
-      for (const [key, value] of Object.entries(objectSchema.fields)) {
-        if (value.type === 'object') {
-          formControls[key as keyof TSchema] = this.generateForm(value);
-        } else {
-          // TODO: Finish this if necessary, else delete this
-          formControls[key as keyof TSchema] = new FormControl(value);
-        }
-      }
-    }
-
-    return new FormGroup(formControls);
-  }
-
   // Generate the form controls based on the yup schema given
   static formControls<TSchema extends AnyObject>(
     formFields: TSchema

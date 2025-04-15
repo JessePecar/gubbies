@@ -1,8 +1,4 @@
-import {
-  CheckboxComponent,
-  NumberInputComponent,
-  TextInputComponent,
-} from '@/components';
+import { NumberInputComponent, TextInputComponent } from '@/components';
 import { Component, inject, input, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RoleDetailsService } from './role-details.service';
@@ -34,7 +30,9 @@ import { SwitchInputComponent } from '@/components/inputs/switch-input.component
         <div class="flex w-1/2">
           <p style="font-size: 2rem" class="py-2">Add / Edit Role</p>
         </div>
-        @if (roleStore.form !== undefined) {
+        @if (
+          roleStore.form.get('name') && roleStore.form.get('hierarchyTier')
+        ) {
           <form
             class="flex flex-col justify-between w-1/2 min-h-96 p-4"
             [formGroup]="roleStore.form"
@@ -65,9 +63,6 @@ import { SwitchInputComponent } from '@/components/inputs/switch-input.component
                           <app-switch-input
                             [formControlName]="permission.name"
                             [label]="getPermissionName(permission)" />
-                          <!-- <app-checkbox
-                            [formControlName]="permission.name"
-                            [label]="getPermissionName(permission)" /> -->
                         }
                       </div>
                     </div>
@@ -79,11 +74,12 @@ import { SwitchInputComponent } from '@/components/inputs/switch-input.component
             <div class="flex justify-end space-x-4 h-10">
               <app-button
                 (handleClick)="onCancel()"
-                buttonType="outline"
+                buttonType="text"
                 text="Cancel" />
 
               <app-button
                 [disabled]="!roleStore.form.valid"
+                (handleClick)="onSubmit()"
                 buttonType="raised"
                 text="Submit">
               </app-button>
@@ -157,6 +153,7 @@ export class RoleDetailsComponent {
   }
 
   onSubmit() {
+    console.log(this.roleStore.form);
     if (this.roleStore.form && this.roleStore.form.valid) {
       const formValue = this.roleStore.schemaToCreateObject(
         this.roleStore.form.value as RoleSchema,

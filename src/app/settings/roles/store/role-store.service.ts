@@ -10,7 +10,7 @@ import { effect, inject, Injectable, signal, untracked } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ObjectSchema } from 'yup';
 import { Permission } from '@/interfaces/settings/roles';
-import assert from 'assert';
+import { assert } from 'console';
 @Injectable({
   providedIn: 'root',
 })
@@ -25,12 +25,11 @@ export class RoleStoreService {
   form: FormGroup<YupFormControls<RoleSchema>> = this.formBuilder.group({});
 
   setupForm(initData: RoleSchema, validator: ObjectSchema<RoleSchema>) {
+    console.log('Setting up the form again');
     const formData: RoleSchema = initData;
 
     this.form = FormHandler.formControls<RoleSchema>(formData);
     this.form.setValidators(FormHandler.validate<RoleSchema>(validator));
-
-    console.log(this.form);
   }
 
   constructor() {
@@ -52,10 +51,7 @@ export class RoleStoreService {
   }
 
   populateForm(role: RoleSchema) {
-    this.form = FormHandler.formControls<RoleSchema>(role);
-    this.form.setValidators(
-      FormHandler.validate<RoleSchema>(this.roleValidator.validator)
-    );
+    this.setupForm(role, this.roleValidator.validator);
   }
 
   schemaToCreateObject(role: RoleSchema, id: number) {
@@ -67,10 +63,9 @@ export class RoleStoreService {
         const permissions = this.permissions();
         const keyedPermission = permissions.find(perm => perm.name === key);
 
-        assert(
-          keyedPermission?.id !== undefined,
-          'role-store.service.ts: keyedPermission is undefined'
-        );
+        if (keyedPermission?.id === undefined) {
+          throw 'role-store.service.ts: keyedPermission is undefined';
+        }
 
         return {
           permissionId: keyedPermission!.id,
@@ -80,7 +75,7 @@ export class RoleStoreService {
     return {
       id: id,
       hierarchyTier: role.hierarchyTier,
-      name: role.hierarchyTier,
+      name: role.name,
       rolePermissions: rolePermissions,
     } as UpdateRole;
   }

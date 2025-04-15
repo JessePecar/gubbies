@@ -17,6 +17,7 @@ import {
 } from './create-vendor.service';
 import { ButtonComponent } from '../../../components/buttons/button.component';
 import { Router } from '@angular/router';
+import { VendorDetailsComponent } from '@/inventory/vendors/details/vendor-details.component';
 
 @Component({
   selector: 'app-create-vendor',

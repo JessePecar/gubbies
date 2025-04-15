@@ -1,5 +1,5 @@
-import { PermissionGroup, Role, UpdateRole } from '@interfaces/settings/roles';
-import { inject, Injectable, signal } from '@angular/core';
+import { Role, UpdateRole } from '@interfaces/settings/roles';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { GlobalAlertService } from '@/components/alert/global-alert.service';
@@ -8,9 +8,7 @@ import {
   UpsertRoleService,
   GetTiersService,
   GetRoleService,
-  GetPermissionGroupsService,
 } from '@/settings/roles';
-import { RoleStoreService } from '@/settings/roles/store';
 
 @Injectable({
   providedIn: 'root',
