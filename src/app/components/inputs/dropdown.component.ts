@@ -24,7 +24,7 @@ export interface DropdownOption {
   selector: 'app-dropdown',
   imports: [MatIconModule, MatRippleModule, ReactiveFormsModule],
   template: `
-    <div class="mb-[2px] mt-[-2px] text-sm">
+    <div class="mb-[2px] pl-2 mt-[-2px] text-sm">
       <p>{{ label() }}</p>
     </div>
     <div #dropdown class="dropdown " tabindex="1">
