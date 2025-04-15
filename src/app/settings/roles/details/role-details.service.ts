@@ -2,7 +2,7 @@ import { Role, UpdateRole } from '@interfaces/settings/roles';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApolloQueryResult } from '@apollo/client/core';
-import { GlobalAlertService } from '@/components/alert/global-alert.service';
+import { GlobalAlertService } from '@/components/alert';
 import { Router } from '@angular/router';
 import {
   UpsertRoleService,

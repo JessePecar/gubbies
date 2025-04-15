@@ -6,7 +6,7 @@ import { Permission, Role } from '@/interfaces/settings/roles';
 import { UserInfoService } from '@/services';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '@/components/buttons';
-import { RoleStoreService } from '@/settings/roles/store';
+import { RoleStore } from '@/settings/roles/store';
 import { RoleSchema, RoleValidator } from '@/settings/roles/validators';
 import { TableComponent } from '@/components/tables/table.component';
 import { SwitchInputComponent } from '@/components/inputs/switch-input.component';
@@ -39,11 +39,15 @@ import { SwitchInputComponent } from '@/components/inputs/switch-input.component
             (ngSubmit)="onSubmit()">
             <p class="text-lg my-4">Information</p>
             <div class="grid grid-cols-3 gap-4">
-              <app-text-input label="Name" formControlName="name" />
+              <app-text-input
+                label="Name"
+                formControlName="name"
+                [formItem]="roleStore.form.get('name')" />
 
               <app-number-input
                 label="Hierarchy Tier"
-                formControlName="hierarchyTier" />
+                formControlName="hierarchyTier"
+                [formItem]="roleStore.form.get('hierarchyTier')" />
             </div>
             @if (
               roleStore.form.contains('permissions') &&
@@ -95,7 +99,7 @@ import { SwitchInputComponent } from '@/components/inputs/switch-input.component
 export class RoleDetailsComponent {
   formBuilder = inject(FormBuilder);
   roleDetailsService = inject(RoleDetailsService);
-  roleStore = inject(RoleStoreService);
+  roleStore = inject(RoleStore);
   roleValidator = inject(RoleValidator);
   userInfoService = inject(UserInfoService);
   router = inject(Router);

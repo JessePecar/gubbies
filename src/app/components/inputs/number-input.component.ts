@@ -20,48 +20,27 @@ import {
     <span>
       <div class="text-primary flex flex-col">
         <input
+          (blur)="onUnfocused()"
           [id]="label() + '_input'"
-          class="rounded-lg shadow p-2 border-1 border-stone-400 focus:border-primary-green bg-primary outline-none input-field h-8"
+          class="rounded-lg p-2 border-1 border-primary-dark focus:border-primary-green bg-primary outline-none input-field h-8"
           type="number"
           [value]="value()"
           [required]="inputProps()?.required"
           (change)="handleChange($event)"
           placeholder=" " />
         <div
-          class="input-label pl-4 transition-all duration-100 ease-in order-[-1] flex">
+          class="input-label pl-4 transition-all duration-100 ease-in order-[-1] flex text-sm">
           <label [for]="label() + '_input'">{{ label() }} </label>
           @if (inputProps()?.required) {
             <p class="opacity-50 text-red-700 font-bold pl-1">*</p>
           }
         </div>
       </div>
-      <span class="absolute pt-1">
-        @if (formItem()?.hasError && formItem()?.touched) {
-          @if (getErrorKeys().length > 1) {
-            <!-- If more than one key, we will show "Field value is invalid" -->
-            <p class="text-sm text-red-400">{{ label() }} is invalid.</p>
-          } @else {
-            @switch (getErrorKeys()[0]) {
-              @case ('minLength') {
-                <p class="text-sm text-red-400">{{ label() }} is too short.</p>
-              }
-              @case ('maxLength') {
-                <p class="text-sm text-red-400">{{ label() }} is too long.</p>
-              }
-              @case ('max') {
-                <p class="text-sm text-red-400">{{ label() }} is too large.</p>
-              }
-              @case ('min') {
-                <p class="text-sm text-red-400">{{ label() }} is too small.</p>
-              }
-              @case ('required') {
-                <p class="text-sm text-red-400">{{ label() }} is required.</p>
-              }
-              @case ('email') {
-                <p class="text-sm text-red-400">Must be an email.</p>
-              }
-            }
-          }
+      <span class="absolute pl-1">
+        @if (formItem()?.errors !== null && formItem()?.touched) {
+          <p class="text-sm text-red-600">
+            <small>{{ getErrors() }}</small>
+          </p>
         }
       </span>
     </span>
@@ -96,17 +75,26 @@ export class NumberInputComponent implements ControlValueAccessor {
     this.isDisabled.set(isDisabled);
   }
 
-  getErrorKeys() {
-    // Deconstruct, but default to undefined
-    var { errors } = this.formItem() ?? { errors: undefined };
+  getErrors() {
+    const errors = this.formItem()?.errors;
 
-    // Grab the keys that are in the errors to be added to the list of errors displayed
-    if (errors !== null && errors !== undefined) {
-      return Object.keys(errors);
+    const errorList = errors
+      ? Object.entries(errors).map(([_, value]) => value)
+      : [];
+
+    if (errorList.length > 1) {
+      return `${errorList.length} errors have occured`;
+    } else if (errorList.length === 1) {
+      return errorList[0][0];
+    } else {
+      return 'Error';
     }
-
-    return [] as string[];
   }
+
+  onUnfocused() {
+    this.onTouched(true);
+  }
+
   @ViewChild('input')
   input!: ElementRef<HTMLInputElement>;
 
@@ -126,7 +114,7 @@ export class NumberInputComponent implements ControlValueAccessor {
   inputProps = input<Partial<HTMLInputElement>>();
   label = input<string | undefined>(undefined);
 
-  formItem = input<AbstractControl<never, never> | null>();
+  formItem = input<AbstractControl<any, any> | null>();
 
   handleUnfocus = output<string>();
 

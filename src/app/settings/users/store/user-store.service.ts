@@ -1,5 +1,5 @@
 import { CreateUser, Phone } from '@/interfaces/settings/users';
-import { FormHandler, YupFormControls } from '@/validators';
+import { FormHandler, YupFormControls } from '@/common/validators';
 import { UserSchema, UserValidator } from '@/settings/users/validators';
 import { inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';

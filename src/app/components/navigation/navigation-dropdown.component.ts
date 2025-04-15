@@ -9,10 +9,10 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { NavbarService } from '@/components/navigation/navbar.service';
 import { UserInfoService } from '@/services';
-import { DropdownOption } from '@/types/components/navigation/DropdownOption';
 import { DropdownItemComponent } from '@/components/navigation/dropdown-item.component';
 import { NavigationDropdownDirective } from './navigation-dropdown.directive';
 import { PermissionEnum } from '@/entities/role';
+import { DropdownItem } from '@/components/navigation/dropdown-item.types';
 
 @Component({
   selector: 'app-navigation-dropdown',
@@ -38,7 +38,7 @@ export class NavigationDropdownComponent {
   navbarService = inject(NavbarService);
   userInfoService = inject(UserInfoService);
 
-  dropdownOptions = input.required<DropdownOption[]>();
+  dropdownOptions = input.required<DropdownItem[]>();
 
   showArrow = input<boolean>(true);
 

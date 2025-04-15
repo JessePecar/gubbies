@@ -53,12 +53,12 @@ export class RoleValidator implements BaseValidator<RoleSchema> {
             .max(32, 'Role name must not exceed 32 characters'),
           hierarchyTier: yup
             .number()
-            .required()
-            .min(
-              (this.userInfoService.role()?.hierarchyTier ?? 99) + 1, // If user's role is undefined, this will prevent them from creating a role
-              "Cannot create role in current user's tier or higher"
+            .required('A hierarchy tier must be provided')
+            .moreThan(
+              this.userInfoService.role()?.hierarchyTier ?? 99, // If user's role is undefined, this will prevent them from creating a role
+              `Must create role in Tier ${this.userInfoService.role()?.hierarchyTier} or higher`
             )
-            .max(99, 'Hierarchy Tier must be below 99'),
+            .lessThan(100, 'Hierarchy Tier must be below 99'),
           permissions: yup.object().shape(permissionRecord),
         });
 

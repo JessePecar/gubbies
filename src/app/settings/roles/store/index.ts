@@ -1,1 +1,1 @@
-export * from './role-store.service';
+export * from './role.store';

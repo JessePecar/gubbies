@@ -13,7 +13,7 @@ import { Permission } from '@/interfaces/settings/roles';
 @Injectable({
   providedIn: 'root',
 })
-export class RoleStoreService {
+export class RoleStore {
   private readonly roleValidator = inject(RoleValidator);
   private readonly permissionsService = inject(GetPermissionGroupsService);
   private readonly formBuilder = inject(FormBuilder);

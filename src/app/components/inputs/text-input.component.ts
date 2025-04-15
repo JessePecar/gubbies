@@ -21,16 +21,18 @@ import {
       <div class="text-primary flex flex-col">
         @if (inputProps()?.isTextArea) {
           <textarea
+            (blur)="onUnfocused()"
             [id]="label() + '_input'"
-            class="rounded-lg shadow p-2 border-1 border-stone-400 focus:border-primary-green bg-primary outline-none input-field max-h-64"
+            class="rounded-lg p-2 border-1 border-primary-dark focus:border-primary-green bg-primary outline-none input-field max-h-64"
             [value]="value()"
             [required]="inputProps()?.required"
             (change)="handleChange($event)"
             placeholder=" "></textarea>
         } @else {
           <input
+            (blur)="onUnfocused()"
             [id]="label() + '_input'"
-            class="rounded-lg shadow p-2 border-1 border-stone-400 focus:border-primary-green bg-primary outline-none input-field h-8 text-sm"
+            class="rounded-lg p-2 border-1 border-primary-dark focus:border-primary-green bg-primary outline-none input-field h-8 text-sm"
             [type]="inputProps()?.type ?? 'text'"
             [value]="value()"
             [required]="inputProps()?.required"
@@ -46,6 +48,13 @@ import {
           }
         </div>
       </div>
+      <span class="absolute pl-1">
+        @if (formItem()?.errors !== null && formItem()?.touched) {
+          <p class="text-sm text-red-600">
+            <small>{{ getErrors() }}</small>
+          </p>
+        }
+      </span>
     </span>
   `,
   providers: [
@@ -77,28 +86,25 @@ export class TextInputComponent implements ControlValueAccessor {
     this.isDisabled.set(isDisabled);
   }
 
-  getErrorKeys() {
-    // Deconstruct, but default to undefined
-    var { errors } = this.formItem() ?? { errors: undefined };
+  getErrors() {
+    const errors = this.formItem()?.errors;
 
-    // Grab the keys that are in the errors to be added to the list of errors displayed
-    if (errors !== null && errors !== undefined) {
-      return Object.keys(errors);
+    const errorList = errors
+      ? Object.entries(errors).map(([_, value]) => value)
+      : [];
+
+    if (errorList.length > 1) {
+      return `${errorList.length} errors have occured`;
+    } else if (errorList.length === 1) {
+      return errorList[0][0];
+    } else {
+      return 'Error';
     }
-
-    return [] as string[];
   }
 
-  getError(errorKey: string) {
-    // Deconstruct, but default to undefined
-    var { errors } = this.formItem() ?? { errors: undefined };
-
-    // Grab the keys that are in the errors to be added to the list of errors displayed
-    if (errors !== null && errors !== undefined) {
-      return errors[errorKey] ?? '';
-    }
-
-    return '';
+  onUnfocused() {
+    this.onTouched(true);
+    console.log(this.getErrors());
   }
 
   @ViewChild('input')
@@ -120,7 +126,7 @@ export class TextInputComponent implements ControlValueAccessor {
   inputProps = input<Partial<HTMLInputElement> & { isTextArea?: boolean }>();
   label = input<string | undefined>(undefined);
 
-  formItem = input<AbstractControl<never, never> | null>();
+  formItem = input<AbstractControl<any, any> | null>();
 
   handleUnfocus = output<string>();
 

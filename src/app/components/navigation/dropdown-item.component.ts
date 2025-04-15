@@ -1,8 +1,8 @@
 import { UserInfoService } from '@/services';
-import { DropdownOption } from '@/types/components/navigation/DropdownOption';
 import { Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NavigationDropdownDirective } from './navigation-dropdown.directive';
+import { DropdownItem } from '@/components/navigation/dropdown-item.types';
 
 @Component({
   selector: 'app-dropdown-item',
@@ -23,6 +23,6 @@ import { NavigationDropdownDirective } from './navigation-dropdown.directive';
   styles: ``,
 })
 export class DropdownItemComponent {
-  option = input.required<DropdownOption>();
+  option = input.required<DropdownItem>();
   userInfoService = inject(UserInfoService);
 }
