@@ -5,12 +5,11 @@ import {
 } from '@/interfaces/settings/roles';
 import { GetPermissionGroupsService } from '@/settings/roles/requests';
 import { RoleSchema, RoleValidator } from '@/settings/roles/validators';
-import { FormHandler, YupFormControls } from '@/validators';
+import { FormHandler, YupFormControls } from '@/common/validators';
 import { effect, inject, Injectable, signal, untracked } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ObjectSchema } from 'yup';
 import { Permission } from '@/interfaces/settings/roles';
-import { assert } from 'console';
 @Injectable({
   providedIn: 'root',
 })

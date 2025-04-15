@@ -5,9 +5,9 @@ import {
   passwordValidator,
   PhoneSchema,
   PhoneValidator,
-} from '@/validators/shared';
+} from '@/common/validators/shared';
 import * as yup from 'yup';
-import { BaseValidator } from '@/validators';
+import { BaseValidator } from '@/common/validators';
 
 export interface UserInfoSchema {
   userName: string;

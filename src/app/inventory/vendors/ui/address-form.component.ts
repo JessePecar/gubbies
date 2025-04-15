@@ -2,7 +2,11 @@ import { TextInputComponent } from '@/components';
 import { Component, inject } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { VendorStoreService } from '@/inventory/vendors/store';
-import { AddressSchema, FormHandler, YupFormControls } from '@/validators';
+import {
+  AddressSchema,
+  FormHandler,
+  YupFormControls,
+} from '@/common/validators';
 
 @Component({
   selector: 'vendor-address-form',

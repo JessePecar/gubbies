@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as yup from 'yup';
-import { BaseValidator } from '@/validators';
+import { BaseValidator } from '@/common/validators';
 
 export type PhoneSchema =
   | {

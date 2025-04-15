@@ -34,8 +34,8 @@ export class InventoryNavItemComponent {
       permission: PermissionEnum.INVENTORY_COUNTS,
     },
     {
-      linkTitle: 'Inventory List',
-      route: 'inventory/list',
+      linkTitle: 'Items',
+      route: 'inventory/items/list',
       permission: PermissionEnum.INVENTORY,
     },
     {

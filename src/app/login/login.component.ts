@@ -30,12 +30,12 @@ import { ButtonComponent } from '@/components/buttons/button.component';
   ],
   template: `
     <div class="h-full">
-      <div class="flex flex-col items-center justify-center mb-4 h-20 pt-8">
-        <img alt="Gubbies" src="../../assets/Gubbies.PNG" />
+      <div class="flex flex-col items-center justify-center mb-16 h-64 pt-8">
+        <img class="h-64" alt="Gubbies" src="../../assets/logo_primary.png" />
       </div>
-      <div class="flex flex-col justify-center items-center h-3/4 px-20">
+      <div class="flex flex-col justify-center items-center px-20">
         <div class="min-w-84 w-full lg:w-1/3">
-          <card appearance="raised">
+          <card>
             <card-body>
               <div class="px-0 lg:px-10 mb-2 pl-4">
                 <p class="text-[3rem]">Sign In</p>

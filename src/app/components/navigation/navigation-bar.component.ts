@@ -10,11 +10,10 @@ import { InventoryNavItemComponent } from './inventory-nav-item.component';
 import { ReportsNavItemComponent } from './reports-nav-item.component';
 import { PricingNavItemComponent } from './pricing-nav-item.component';
 import { PromotionNavItemComponent } from './promotion-nav-item.component';
-import { ProfileNavItemComponent } from './profile-nav-item.component';
 import { Router } from '@angular/router';
-import { UserInfoService } from '../../services';
+import { UserInfoService } from '@/services';
 import { SettingsNavItemComponent } from './settings-nav-item.component';
-import { ButtonComponent } from '@/components/buttons';
+import { UpperCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-navigation-bar',
@@ -25,6 +24,7 @@ import { ButtonComponent } from '@/components/buttons';
     PricingNavItemComponent,
     PromotionNavItemComponent,
     SettingsNavItemComponent,
+    UpperCasePipe,
   ],
   template: `
     <nav class="bg-primary p-1">
@@ -33,7 +33,7 @@ import { ButtonComponent } from '@/components/buttons';
           class="flex w-full text-lg font-bold items-center justify-center focus:outline-none focus:opacity-80 text-primary"
           href="#"
           aria-label="GubbiesLogo">
-          <h1>Box & Shelf</h1>
+          <h1 class="text-secondary-blue">{{ 'Box & Shelf' | uppercase }}</h1>
         </div>
       </div>
       <div class="h-full p-2 pl-0 mt-4 flex flex-col justify-start">

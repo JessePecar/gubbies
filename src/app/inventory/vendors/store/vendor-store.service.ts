@@ -1,7 +1,7 @@
 import { Address, Phone } from '@/interfaces/settings/users';
-import { YupFormControls } from '@/validators';
+import { YupFormControls } from '@/common/validators';
 import { VendorSchema, VendorValidator } from '@/inventory/vendors/validators';
-import { FormHandler } from '@/validators';
+import { FormHandler } from '@/common/validators';
 import { inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CreateVendor } from '@/inventory/vendors/create/create-vendor.service';

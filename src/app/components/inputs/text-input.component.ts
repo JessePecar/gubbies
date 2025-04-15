@@ -30,7 +30,7 @@ import {
         } @else {
           <input
             [id]="label() + '_input'"
-            class="rounded-lg shadow p-2 border-1 border-stone-400 focus:border-primary-green bg-primary outline-none input-field h-8"
+            class="rounded-lg shadow p-2 border-1 border-stone-400 focus:border-primary-green bg-primary outline-none input-field h-8 text-sm"
             [type]="inputProps()?.type ?? 'text'"
             [value]="value()"
             [required]="inputProps()?.required"
@@ -39,7 +39,7 @@ import {
         }
 
         <div
-          class="input-label pl-4 transition-all duration-100 ease-in order-[-1] flex">
+          class="input-label pl-4 transition-all duration-100 ease-in order-[-1] flex text-sm">
           <label [for]="label() + '_input'">{{ label() }} </label>
           @if (inputProps()?.required) {
             <p class="opacity-50 text-red-700 font-bold pl-1">*</p>

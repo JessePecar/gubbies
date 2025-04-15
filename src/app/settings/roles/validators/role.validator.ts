@@ -7,7 +7,7 @@ import {
   WritableSignal,
 } from '@angular/core';
 import * as yup from 'yup';
-import { BaseValidator, YupFormControls } from '@/validators';
+import { BaseValidator } from '@/common/validators';
 import { UserInfoService } from '@/services';
 import { PermissionGroup } from '@/interfaces/settings/roles';
 import { GetPermissionGroupsService } from '@/settings/roles/requests';
