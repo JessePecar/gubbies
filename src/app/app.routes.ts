@@ -24,7 +24,7 @@ import {
   UserCreateComponent,
   usersGuard,
 } from '@/settings/users';
-import { SettingsComponent, settingsGuard } from '@/settings';
+import { SettingsPage, settingsGuard } from '@/settings';
 import {
   RoleComponent,
   roleGuard,
@@ -93,7 +93,7 @@ export const routes: Routes = [
       },
       {
         path: 'settings',
-        component: SettingsComponent, // Will default to navigating to user's page
+        component: SettingsPage, // Will default to navigating to user's page
         canActivateChild: [settingsGuard],
         children: [
           {

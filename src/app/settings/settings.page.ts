@@ -1,3 +1,4 @@
+/* eslint-disable @angular-eslint/component-class-suffix */
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
@@ -10,4 +11,4 @@ import { RouterOutlet } from '@angular/router';
     </div>
   `,
 })
-export class SettingsComponent {}
+export class SettingsPage {}
