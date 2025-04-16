@@ -1,26 +1,26 @@
-import { User } from '@/interfaces/settings/users';
 import { Injectable } from '@angular/core';
-import { gql, Query } from 'apollo-angular';
+import { gql, Mutation } from 'apollo-angular';
 
 @Injectable({
   providedIn: 'root',
 })
-export class GetUsersService extends Query<{ users: User[] }> {
+export class CreateUserMutation extends Mutation {
   document = gql`
-    query {
-      users {
+    mutation CreateUser($updatedUser: CreateUserInput) {
+      createUser(createUserInput: $updatedUser) {
         id
         firstName
         lastName
         userName
-        emailAddress
         isActive
-        role {
-          name
-        }
+        emailAddress
         primaryPhone {
           rawDigits
           nationalDigits
+        }
+        role {
+          name
+          id
         }
         address {
           address1
@@ -28,6 +28,7 @@ export class GetUsersService extends Query<{ users: User[] }> {
           city
           state
           countryCode
+          postalCode
         }
       }
     }

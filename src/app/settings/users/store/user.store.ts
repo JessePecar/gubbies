@@ -3,12 +3,14 @@ import { FormHandler, YupFormControls } from '@/common/validators';
 import { UserSchema, UserValidator } from '@/settings/users/validators';
 import { inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { GetRolesService } from '@/settings/roles';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserStoreService {
+export class UserStore {
   private readonly userValidator = inject(UserValidator);
+  private readonly getRolesService = inject(GetRolesService);
 
   form: FormGroup<YupFormControls<UserSchema>>;
 
@@ -26,6 +28,10 @@ export class UserStoreService {
     this.form.setValidators(
       FormHandler.validate<UserSchema>(this.userValidator.validator)
     );
+  }
+
+  getRolesForDropdown() {
+    return this.getRolesService.watch().valueChanges;
   }
 
   schemaToCreateObject(user: UserSchema) {

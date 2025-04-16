@@ -5,7 +5,7 @@ import { gql, Query } from 'apollo-angular';
 @Injectable({
   providedIn: 'root',
 })
-export class GetUserService extends Query<{ user: User }> {
+export class GetUserQuery extends Query<{ user: User }> {
   document = gql`
     query GetUsersById($id: ID!) {
       user(id: $id) {

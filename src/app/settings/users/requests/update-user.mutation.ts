@@ -4,7 +4,7 @@ import { gql, Mutation } from 'apollo-angular';
 @Injectable({
   providedIn: 'root',
 })
-export class UpdateUserService extends Mutation {
+export class UpdateUserMutation extends Mutation {
   document = gql`
     mutation UpdateUser($updatedUser: UpdateUserInput) {
       updateUser(updateUserInput: $updatedUser) {

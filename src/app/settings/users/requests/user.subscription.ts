@@ -5,7 +5,7 @@ import { Subscription, gql } from 'apollo-angular';
 @Injectable({
   providedIn: 'root',
 })
-export class UserSubscriptionService extends Subscription<{
+export class UserSubscription extends Subscription<{
   usersChanged: User;
 }> {
   override document = gql`

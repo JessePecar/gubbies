@@ -5,10 +5,7 @@ import {
   BreadcrumbsComponent,
 } from '@/components/navigation/breadcrumbs.component';
 import { Component, inject, signal } from '@angular/core';
-import {
-  UserDetailsService,
-  UserFormGroupNames,
-} from '@/settings/users/details';
+import { UserFormGroupNames } from '@/settings/users/details';
 import {
   AddressFormComponent,
   ContactFormComponent,
@@ -17,6 +14,7 @@ import {
 import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownOption } from '@/components';
 import { UserCreateService } from './user-create.service';
+import { UserStore } from '@/settings/users/store';
 
 @Component({
   selector: 'app-create',
@@ -31,7 +29,7 @@ import { UserCreateService } from './user-create.service';
   ],
   template: `
     <div class="pl-20 h-full overflow-hidden">
-      @if (userDetailService.form; as form) {
+      @if (userStore.form; as form) {
         <form class="h-full" [formGroup]="form" (ngSubmit)="onSubmit()">
           <app-breadcrumbs
             baseIcon="account_circle"
@@ -93,8 +91,8 @@ import { UserCreateService } from './user-create.service';
   styles: ``,
 })
 export class UserCreateComponent {
-  userDetailService = inject(UserDetailsService);
   private readonly userCreateService = inject(UserCreateService);
+  userStore = inject(UserStore);
 
   defaultOptions: BreadcrumbOption<UserFormGroupNames>[] = [
     { text: 'User Information', id: 'info' },
@@ -111,7 +109,7 @@ export class UserCreateComponent {
   roles = signal<DropdownOption[]>([]);
 
   onOptionClicked(id: string | number) {
-    var index = this.defaultOptions.findIndex(opt => opt.id === id);
+    const index = this.defaultOptions.findIndex(opt => opt.id === id);
 
     this.setActiveOptions(index);
   }
@@ -143,25 +141,21 @@ export class UserCreateComponent {
 
   // Submit the user to the database
   onSubmit() {
-    if (
-      this.userDetailService.form !== undefined &&
-      this.userDetailService.form.valid
-    ) {
-      this.userCreateService.createUser(
-        this.userDetailService.form?.value as Record<UserFormGroupNames, any>
+    if (this.userStore.form !== undefined && this.userStore.form.valid) {
+      const createObject = this.userStore.schemaToCreateObject(
+        this.userStore.form.value
       );
+
+      this.userCreateService.createUser(createObject);
     }
   }
 
   constructor() {
     // Populate the form object with a blank user
-    this.userDetailService.populateForm();
 
     // Get available roles
-    this.userDetailService
-      .getRolesForDropdown()
-      .subscribe(({ data: { roles } }) => {
-        this.roles.set(roles);
-      });
+    this.userStore.getRolesForDropdown().subscribe(({ data: { roles } }) => {
+      this.roles.set(roles);
+    });
   }
 }

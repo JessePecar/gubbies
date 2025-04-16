@@ -1,19 +1,19 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { GetUsersService, UserSubscriptionService } from '@/settings/users';
+import { GetUsersQuery, UserSubscription } from '@/settings/users';
 import { User } from '@/interfaces/settings/users';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersListService {
-  private readonly userSubscriptionService = inject(UserSubscriptionService);
-  private readonly getUsersService = inject(GetUsersService);
+  private readonly userSubscription = inject(UserSubscription);
+  private readonly getUsersQuery = inject(GetUsersQuery);
 
   public users = signal<User[]>([]);
   public loading = true;
 
   getUsers() {
-    return this.getUsersService
+    return this.getUsersQuery
       .watch()
       .valueChanges.subscribe(({ data, loading }) => {
         this.users.set(data.users);
@@ -22,7 +22,7 @@ export class UsersListService {
   }
 
   subscribeToChanges() {
-    return this.userSubscriptionService.subscribe().subscribe(({ data }) => {
+    return this.userSubscription.subscribe().subscribe(({ data }) => {
       if (data && data.usersChanged) {
         this.users.update(user => {
           return user.map(u => {

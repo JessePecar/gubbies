@@ -4,7 +4,7 @@ import { FieldMetchValidator } from '@/utilities/FieldMatchValidator';
 import { inject, Injectable, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { GetUserService, UpdateUserService } from '@/settings/users/requests';
+import { GetUserQuery, UpdateUserMutation } from '@/settings/users/requests';
 import { GetRolesService } from '@/settings/roles';
 import { UserSchema } from '@/settings/users/validators';
 
@@ -17,8 +17,8 @@ export class UserDetailsService {
   private readonly formBuilder = inject(FormBuilder);
   private readonly alertService = inject(GlobalAlertService);
 
-  private readonly updateUserService = inject(UpdateUserService);
-  private readonly getUserService = inject(GetUserService);
+  private readonly updateUserMutation = inject(UpdateUserMutation);
+  private readonly getUserQuery = inject(GetUserQuery);
   private readonly getRolesService = inject(GetRolesService);
 
   readonly router = inject(Router);
@@ -33,7 +33,7 @@ export class UserDetailsService {
   }
 
   getUser(id: number) {
-    return this.getUserService.watch({
+    return this.getUserQuery.watch({
       id: id,
     }).valueChanges;
   }
@@ -63,7 +63,7 @@ export class UserDetailsService {
       } as Phone,
     });
 
-    return this.updateUserService
+    return this.updateUserMutation
       .mutate({
         variables: {
           updatedUser: this.currentUser() as UpdateUser,
