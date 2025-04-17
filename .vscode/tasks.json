@@ -22,7 +22,7 @@
     {
       "label": "Start Gubbies UI",
       "type": "shell",
-      "command": "cd ./gubbies | ng serve",
+      "command": "cd ./bns-ui | ng serve",
       "isBackground": true,
       "presentation": {
         "reveal": "always"
@@ -48,7 +48,7 @@
     {
       "label": "Start Gubbies API",
       "type": "shell",
-      "command": "cd ./gubbies/src-api | npm run start",
+      "command": "cd ./bns-api | npm run start",
       "isBackground": true,
       "runOptions": {
         "instanceLimit": 1,
