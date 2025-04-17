@@ -2,9 +2,9 @@ import { Component, inject } from '@angular/core';
 import { TableComponent } from '@components/tables/table.component';
 import { UsersListService } from './users-list.service';
 import { MatIconModule } from '@angular/material/icon';
-import { UserItemComponent } from './user-item.component';
 import { UserInfoService } from '@/services';
 import { Router } from '@angular/router';
+import { UserItemComponent } from '@/settings/users/ui';
 
 @Component({
   selector: 'app-users-list',
@@ -52,5 +52,9 @@ export class UsersListComponent {
       text: 'Add User',
       onClick: this.onCreateUser,
     });
+
+    if (!this.userListService.users().length) {
+      this.userListService.getUsers();
+    }
   }
 }

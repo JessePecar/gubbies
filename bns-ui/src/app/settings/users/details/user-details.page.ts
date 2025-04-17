@@ -1,17 +1,19 @@
-import { Component, inject, input, signal } from '@angular/core';
-import { UserDetailsService, UserFormGroupNames } from './user-details.service';
-import { ActivatedRoute } from '@angular/router';
+import { DropdownOption, ToggleComponent } from '@/components';
+import { ButtonComponent } from '@/components/buttons';
 import { User } from '@/interfaces/settings/users';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { ToggleComponent } from '@/components';
+import {
+  UserDetailsService,
+  UserFormGroupNames,
+} from '@/settings/users/details';
 import {
   AddressFormComponent,
   ContactFormComponent,
   InformationFormComponent,
 } from '@/settings/users/ui';
+import { Component, inject, input, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { DropdownOption } from '@/components/inputs';
-import { ButtonComponent } from '@/components/buttons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-details',
@@ -50,16 +52,20 @@ import { ButtonComponent } from '@/components/buttons';
               buttonType="outline"
               text="Cancel" />
 
-            <app-button buttonType="raised" text="Submit"> </app-button>
+            <app-button
+              (handleClick)="onSubmit()"
+              buttonType="raised"
+              text="Submit">
+            </app-button>
           </div>
         </form>
       }
     </div>
   `,
 })
-export class UserDetailsComponent {
+export class UserDetailsPage {
   userDetailService = inject(UserDetailsService);
-  route = inject(ActivatedRoute);
+  route = inject(Router);
   formBuilder = inject(FormBuilder);
 
   userId = input<number | undefined>();

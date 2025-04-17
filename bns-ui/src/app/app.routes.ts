@@ -17,21 +17,10 @@ import {
   ItemListComponent,
 } from '@/inventory/items';
 import { InventoryComponent } from '@/inventory/inventory.component';
-import {
-  UserComponent,
-  UserDetailsComponent,
-  UsersListComponent,
-  UserCreateComponent,
-  usersGuard,
-} from '@/settings/users';
 import { SettingsPage, settingsGuard } from '@/settings';
-import {
-  RoleComponent,
-  roleGuard,
-  RoleDetailsComponent,
-  RoleListComponent,
-} from '@/settings/roles';
 import { vendorRoutes, VendorsComponent } from '@/inventory/vendors';
+import { usersRoutes } from '@/settings/users';
+import { roleRoutes } from '@/settings/roles';
 
 export const routes: Routes = [
   {
@@ -95,39 +84,7 @@ export const routes: Routes = [
         path: 'settings',
         component: SettingsPage, // Will default to navigating to user's page
         canActivateChild: [settingsGuard],
-        children: [
-          {
-            path: 'users',
-            component: UserComponent,
-            canActivateChild: [usersGuard],
-            children: [
-              { path: 'create', component: UserCreateComponent },
-              {
-                path: 'list',
-                component: UsersListComponent,
-              },
-              {
-                path: 'details',
-                component: UserDetailsComponent,
-              },
-            ],
-          },
-          {
-            path: 'roles',
-            component: RoleComponent,
-            canActivateChild: [roleGuard],
-            children: [
-              {
-                path: 'list',
-                component: RoleListComponent,
-              },
-              {
-                path: 'details',
-                component: RoleDetailsComponent,
-              },
-            ],
-          },
-        ],
+        children: [...usersRoutes, ...roleRoutes],
       },
     ],
   },

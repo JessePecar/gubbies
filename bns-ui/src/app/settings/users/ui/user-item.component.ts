@@ -87,7 +87,7 @@ export class UserItemComponent {
         p => p.permissionId === PermissionEnum.EDIT_USER
       );
 
-      // If perrmission id was found and the user is active, allow for quick deactivation
+      // If permission id was found and the user is active, allow for quick deactivation
       if (permissionIndex && permissionIndex >= 0 && this.user().isActive) {
         this.userContextMenu.push({
           name: 'Deactivate',

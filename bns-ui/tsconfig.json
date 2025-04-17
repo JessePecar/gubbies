@@ -1,5 +1,8 @@
 {
   "compileOnSave": false,
+  "buildOptions": {
+    "verbose": true,
+  },
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "strict": true,
@@ -19,9 +22,15 @@
     "useDefineForClassFields": false,
     "paths": {
       // Will add one path for each shared directory
-      "@/*": ["./src/app/*"],
-      "@interfaces/*": ["./src/app/interfaces/*"],
-      "@components/*": ["./src/app/components/*"],
+      "@/*": [
+        "./src/app/*"
+      ],
+      "@interfaces/*": [
+        "./src/app/interfaces/*"
+      ],
+      "@components/*": [
+        "./src/app/components/*"
+      ],
     },
     "lib": [
       "ES2022",
@@ -34,6 +43,6 @@
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
   }
 }
