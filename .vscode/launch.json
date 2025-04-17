@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Run Gubbies",
       "url": "http://localhost:4200",
-      "webRoot": "${workspaceFolder}/gubbies",
+      "webRoot": "${workspaceFolder}/bns-ui",
       "userDataDir": "${workspaceFolder}/.vscode/chrome",
       "preLaunchTask": "Start",
     },
@@ -18,7 +18,7 @@
       "request": "launch",
       "name": "Attach Gubbies",
       "url": "http://localhost:4200",
-      "webRoot": "${workspaceFolder}/gubbies"
+      "webRoot": "${workspaceFolder}/bns-ui"
     }
   ]
 }
