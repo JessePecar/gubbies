@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { Injectable } from '@angular/core';
 import { RolePermissionInput, UpsertRoleInput } from 'src/graphql.schema';
 import { RepositoryService } from 'src/common/repository';
+import { Injectable } from '@nestjs/common';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class RolesService {
   constructor(private readonly repository: RepositoryService) {}
 

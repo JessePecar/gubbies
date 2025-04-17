@@ -1,18 +1,11 @@
 import { Role } from '@/interfaces/settings/roles';
 import { AuthTokenService } from '@/login/requests';
 import { RoleSubscriptionService } from '@/settings/roles';
-import { UserSubscriptionService } from '@/settings/users';
+import { UserSubscription } from '@/settings/users';
 import { LocalStorageKeys } from '@/utilities';
-import {
-  Injectable,
-  computed,
-  inject,
-  linkedSignal,
-  signal,
-} from '@angular/core';
+import { Injectable, inject, linkedSignal, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@interfaces/settings/users';
-import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +20,7 @@ export class UserInfoService {
   permissions = linkedSignal(() => this.role()?.rolePermissions);
 
   constructor(
-    userSubService: UserSubscriptionService,
+    userSubService: UserSubscription,
     roleSubService: RoleSubscriptionService
   ) {
     userSubService.subscribe().subscribe(({ data }) => {

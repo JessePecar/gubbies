@@ -3,9 +3,34 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "type": "npm",
-      "script": "start",
+      "label": "Start",
+      "dependsOn": [
+        "Start Gubbies UI",
+        "Start Gubbies API"
+      ],
+      "command": "echo running gubbies",
+      "dependsOrder": "parallel",
+      "type": "shell",
       "isBackground": true,
+      "presentation": {
+        "reveal": "always"
+      },
+      "runOptions": {
+        "instanceLimit": 1,
+      }
+    },
+    {
+      "label": "Start Gubbies UI",
+      "type": "shell",
+      "command": "cd ./gubbies | ng serve",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always"
+      },
+      "runOptions": {
+        "instanceLimit": 1,
+        "runOn": "folderOpen"
+      },
       "problemMatcher": {
         "owner": "typescript",
         "pattern": "$tsc",
@@ -15,28 +40,20 @@
             "regexp": "(.*?)"
           },
           "endsPattern": {
-            "regexp": "bundle generation complete"
+            "regexp": "http://localhost:4200/"
           }
         }
       }
     },
     {
-      "type": "npm",
-      "script": "test",
+      "label": "Start Gubbies API",
+      "type": "shell",
+      "command": "cd ./gubbies/src-api | npm run start",
       "isBackground": true,
-      "problemMatcher": {
-        "owner": "typescript",
-        "pattern": "$tsc",
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
-          }
-        }
-      }
+      "runOptions": {
+        "instanceLimit": 1,
+      },
+      "problemMatcher": "$tsc-watch"
     }
   ]
 }
