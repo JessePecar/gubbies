@@ -1,9 +1,9 @@
+import { UsersListComponent } from '@/settings/users/list';
+import { UserDetailsPage } from './details/user-details.page';
 import {
   UserComponent,
   UserCreateComponent,
-  UserDetailsPage,
   usersGuard,
-  UsersListComponent,
 } from '@/settings/users';
 import { Routes } from '@angular/router';
 
@@ -21,6 +21,10 @@ export const usersRoutes: Routes = [
       {
         path: 'details',
         component: UserDetailsPage,
+      },
+      {
+        path: '**',
+        redirectTo: 'list',
       },
     ],
   },

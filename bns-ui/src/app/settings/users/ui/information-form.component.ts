@@ -6,12 +6,13 @@ import {
 import { Component, inject, input } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { UserDetailsService } from '@/settings/users/details';
+import { UserStore } from '@/settings/users/store';
 
 @Component({
   selector: 'information-form',
   imports: [ReactiveFormsModule, TextInputComponent, DropdownComponent],
   template: `
-    <div [formGroup]="userDetailsService.form">
+    <div [formGroup]="userStore.form">
       <form formGroupName="info" class="mb-4">
         <p class="text-lg mb-1">Information</p>
         <div class="grid grid-cols-4 gap-2">
@@ -60,6 +61,6 @@ import { UserDetailsService } from '@/settings/users/details';
 export class InformationFormComponent {
   isCreate = input<boolean>(false);
 
-  userDetailsService = inject(UserDetailsService);
+  userStore = inject(UserStore);
   roles = input.required<DropdownOption[]>();
 }

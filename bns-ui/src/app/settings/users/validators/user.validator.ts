@@ -59,8 +59,14 @@ export class UserValidator implements BaseValidator<UserSchema> {
 
   initialData: UserSchema = {
     info: {
-      name: '',
-      notes: '',
+      userName: '',
+      firstName: '',
+      lastName: '',
+      emailAddress: '',
+      isActive: true,
+      roleId: 0,
+      password: '',
+      passwordConfirm: '',
     },
     address: this.addressValidator.initialData,
     primaryPhone: this.phoneValidator.initialData,

@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TextInputComponent } from '@/components';
-import { UserDetailsService } from '@/settings/users/details';
+import { UserStore } from '@/settings/users/store';
 
 @Component({
   selector: 'address-form',
   imports: [TextInputComponent, ReactiveFormsModule],
-  template: `<div [formGroup]="userDetailsService.form">
+  template: `<div [formGroup]="userStore.form">
     <form formGroupName="address" class="mb-4">
       <p class="text-lg mb-1">User Address</p>
       <div class="grid grid-cols-4 gap-2">
@@ -40,5 +40,5 @@ import { UserDetailsService } from '@/settings/users/details';
   </div>`,
 })
 export class AddressFormComponent {
-  userDetailsService = inject(UserDetailsService);
+  userStore = inject(UserStore);
 }

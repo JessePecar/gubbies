@@ -50,8 +50,8 @@ export class UserItemComponent {
   user = input<User>({} as User);
   router = inject(Router);
 
-  onEditUser = async () => {
-    await this.router.navigate(['settings/users/details'], {
+  onEditUser = () => {
+    this.router.navigate(['settings', 'users', 'details'], {
       queryParams: {
         userId: this.user().id,
       },

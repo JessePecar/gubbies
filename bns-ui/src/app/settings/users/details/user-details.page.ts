@@ -1,10 +1,10 @@
-import { DropdownOption, ToggleComponent } from '@/components';
+import { DropdownOption } from '@/components';
 import { ButtonComponent } from '@/components/buttons';
 import { User } from '@/interfaces/settings/users';
 import {
   UserDetailsService,
   UserFormGroupNames,
-} from '@/settings/users/details';
+} from '@/settings/users/details/user-details.service';
 import {
   AddressFormComponent,
   ContactFormComponent,
@@ -14,17 +14,19 @@ import { Component, inject, input, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { SwitchInputComponent } from '@/components/inputs/switch-input.component';
+import { UserStore } from '@/settings/users/store';
 
 @Component({
   selector: 'app-user-details',
   imports: [
     ReactiveFormsModule,
     ButtonComponent,
-    ToggleComponent,
     AddressFormComponent,
     ContactFormComponent,
     InformationFormComponent,
     MatIconModule,
+    SwitchInputComponent,
   ],
   template: `
     <div
@@ -35,11 +37,11 @@ import { Router } from '@angular/router';
       @if (!userDetailService.isLoading) {
         <form
           class="w-full lg:w-1/2 min-h-96 bg-primary-dark rounded shadow p-4"
-          [formGroup]="userDetailService.form"
+          [formGroup]="userStore.form"
           (ngSubmit)="onSubmit()">
           <div class="py-4 flex justify-end space-x-8">
             <div class="flex justify-center items-center space-x-4">
-              <app-toggle formControlName="isActive" />
+              <app-switch-input formControlName="isActive" />
               <label for="is-active-checkbox">Is Active</label>
             </div>
           </div>
@@ -65,6 +67,7 @@ import { Router } from '@angular/router';
 })
 export class UserDetailsPage {
   userDetailService = inject(UserDetailsService);
+  userStore = inject(UserStore);
   route = inject(Router);
   formBuilder = inject(FormBuilder);
 

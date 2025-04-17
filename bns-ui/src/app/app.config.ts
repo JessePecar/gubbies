@@ -1,10 +1,9 @@
+import { ApplicationConfig, provideAppInitializer } from '@angular/core';
 import {
-  ApplicationConfig,
-  importProvidersFrom,
-  provideAppInitializer,
-  inject,
-} from '@angular/core';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+  provideRouter,
+  withComponentInputBinding,
+  withDebugTracing,
+} from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -17,7 +16,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(),
     provideAppInitializer(initializeApp),
-    provideRouter(routes, withComponentInputBinding()),
+    provideRouter(routes, withComponentInputBinding(), withDebugTracing()),
     provideClientHydration(),
     provideAnimationsAsync(),
     provideApollo(apolloProvider),
