@@ -104,7 +104,6 @@ export class TextInputComponent implements ControlValueAccessor {
 
   onUnfocused() {
     this.onTouched(true);
-    console.log(this.getErrors());
   }
 
   @ViewChild('input')

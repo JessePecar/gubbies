@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as yup from 'yup';
 import { BaseValidator } from '@/common/validators';
+import { Address } from '@/interfaces/settings/users';
 
 export type AddressSchema =
   | {
@@ -26,7 +27,7 @@ export class AddressValidator implements BaseValidator<AddressSchema> {
     address2: yup
       .string()
       .optional()
-      .nonNullable()
+      .nullable()
       .min(0, 'Second Address Line is too short')
       .max(64, 'Second Address Line is too long'),
     city: yup
@@ -61,4 +62,15 @@ export class AddressValidator implements BaseValidator<AddressSchema> {
     countryCode: '',
     postalCode: '',
   };
+
+  convertToSchema(address: Address) {
+    return {
+      address1: address.address1,
+      address2: address.address2,
+      city: address.city,
+      countryCode: address.countryCode,
+      postalCode: address.postalCode,
+      state: address.state,
+    } as AddressSchema;
+  }
 }

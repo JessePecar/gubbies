@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as yup from 'yup';
 import { BaseValidator } from '@/common/validators';
+import { Phone } from '@/interfaces/settings/users';
 
 export type PhoneSchema =
   | {
@@ -22,4 +23,10 @@ export class PhoneValidator implements BaseValidator<PhoneSchema> {
   initialData: PhoneSchema = {
     rawDigits: '',
   };
+
+  convertToSchema(phone: Phone) {
+    return {
+      rawDigits: phone.rawDigits,
+    } as PhoneSchema;
+  }
 }

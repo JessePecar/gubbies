@@ -11,7 +11,7 @@ import { noop } from 'rxjs';
   selector: 'app-switch-input',
   imports: [ReactiveFormsModule],
   template: `
-    <div class="flex space-x-4 p-1">
+    <div class="flex space-x-4 p-1 items-center">
       <label class="switch">
         <input
           class="switch-input"
@@ -20,7 +20,7 @@ import { noop } from 'rxjs';
           type="checkbox" />
         <span class="slider round"></span>
       </label>
-      <p>{{ label() }}</p>
+      <p class="text-sm">{{ label() }}</p>
     </div>
   `,
   styleUrl: './switch-input.component.scss',

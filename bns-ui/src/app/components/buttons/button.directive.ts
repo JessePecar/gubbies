@@ -45,7 +45,7 @@ export class ButtonDirective {
     color: {
       primary: {
         outline:
-          'hoverable text-primary bg-transparent outline-1 outline-gray-200 rounded-lg',
+          'hoverable text-primary bg-transparent outline-1 outline-primary-dark rounded-lg',
         raised:
           'hoverable text-primary disabled:opacity-50 outline-1 bg-primary-green rounded-lg',
         text: 'flex hover:underline text-primary',

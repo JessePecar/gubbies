@@ -10,7 +10,14 @@ import {
   ContactFormComponent,
   InformationFormComponent,
 } from '@/settings/users/ui';
-import { Component, inject, input, signal } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  signal,
+  untracked,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -32,17 +39,16 @@ import { UserStore } from '@/settings/users/store';
     <div
       class="flex flex-col w-full h-full justify-center items-center pr-2 lg: pr-0">
       <div class="flex w-1/2">
-        <p style="font-size: 2rem" class="py-2">Add / Edit User</p>
+        <p style="font-size: 2rem" class="py-2"><strong>Edit User</strong></p>
       </div>
-      @if (!userDetailService.isLoading) {
+      @if (userStore.form) {
         <form
-          class="w-full lg:w-1/2 min-h-96 bg-primary-dark rounded shadow p-4"
+          class="w-full lg:w-1/2 min-h-96 p-4"
           [formGroup]="userStore.form"
           (ngSubmit)="onSubmit()">
           <div class="py-4 flex justify-end space-x-8">
-            <div class="flex justify-center items-center space-x-4">
-              <app-switch-input formControlName="isActive" />
-              <label for="is-active-checkbox">Is Active</label>
+            <div formGroupName="info">
+              <app-switch-input label="Is Active" formControlName="isActive" />
             </div>
           </div>
           <information-form [roles]="roles()" />
@@ -51,11 +57,12 @@ import { UserStore } from '@/settings/users/store';
           <div class="flex justify-end space-x-4">
             <app-button
               (handleClick)="onCancel()"
-              buttonType="outline"
+              buttonType="text"
               text="Cancel" />
 
             <app-button
               (handleClick)="onSubmit()"
+              [disabled]="!userStore.form.valid"
               buttonType="raised"
               text="Submit">
             </app-button>
@@ -71,6 +78,7 @@ export class UserDetailsPage {
   route = inject(Router);
   formBuilder = inject(FormBuilder);
 
+  // This is a route variable that will be required for this page
   userId = input<number | undefined>();
 
   currentUser = signal<User | undefined>(undefined);
@@ -78,32 +86,39 @@ export class UserDetailsPage {
   roles = signal<DropdownOption[]>([]);
 
   constructor() {
-    this.userDetailService.populateForm(this.userId());
+    effect(() => {
+      const userId = this.userId();
 
-    this.userDetailService
-      .getRolesForDropdown()
-      .subscribe(({ data: { roles } }) => {
-        this.roles.set(
-          roles.map(
-            r =>
-              ({
-                id: r.id,
-                name: r.name,
-              }) as DropdownOption
-          )
-        );
+      untracked(() => {
+        if (userId !== undefined) {
+          this.userDetailService
+            .getUser(userId)
+            .subscribe(({ data: { user } }) => {
+              // Convert api object to the schema object for the form
+              const userSchema = this.userStore.convertToSchema(user);
+              // Set the schema object to the form validator, will set the form's values
+              this.userStore.populateForm(userSchema);
+            });
+        }
       });
+    });
+
+    this.userStore.getRolesForDropdown().subscribe(({ data: { roles } }) => {
+      this.roles.set(
+        roles.map(
+          r =>
+            ({
+              id: r.id,
+              name: r.name,
+            }) as DropdownOption
+        )
+      );
+    });
   }
 
   onSubmit() {
-    if (
-      this.userDetailService.form !== undefined &&
-      this.userDetailService.form.valid
-    ) {
-      this.userDetailService.updateUser(
-        this.userDetailService.form?.value as Record<UserFormGroupNames, any>
-      );
-    }
+    console.log('Submitting an update');
+    console.log(this.userStore.form);
   }
 
   onCancel() {

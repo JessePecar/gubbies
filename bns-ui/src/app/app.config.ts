@@ -16,7 +16,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(),
     provideAppInitializer(initializeApp),
-    provideRouter(routes, withComponentInputBinding(), withDebugTracing()),
+    provideRouter(routes, withComponentInputBinding()),
     provideClientHydration(),
     provideAnimationsAsync(),
     provideApollo(apolloProvider),
