@@ -12,21 +12,25 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-vendor-list',
   imports: [TableComponent, VendorItemComponent],
-  template: ` <app-table [toolbarItems]="toolbarItems()">
-    @if (vendorListService.vendors().length > 0) {
-      @for (vendor of vendorListService.vendors(); track $index) {
-        <div
-          class="even:bg-primary-dark odd:border odd:border-stone-400 bg-primary border-stone-300 mb-1 rounded">
-          <!-- <user-item [user]="user" /> -->
-          <vendor-item [vendor]="vendor" />
-        </div>
-      }
-    } @else {
-      <div class="flex w-full justify-center items-cetner">
-        <p>No Vendors found.</p>
-      </div>
-    }
-  </app-table>`,
+  template: `<div class="h-full w-full flex justify-center items-center">
+    <div class="w-3/4">
+      <app-table [toolbarItems]="toolbarItems()">
+        @if (vendorListService.vendors().length > 0) {
+          @for (vendor of vendorListService.vendors(); track $index) {
+            <div
+              class="even:bg-primary-dark odd:border odd:border-stone-400 bg-primary border-stone-300 mb-1 rounded">
+              <!-- <user-item [user]="user" /> -->
+              <vendor-item [vendor]="vendor" />
+            </div>
+          }
+        } @else {
+          <div class="flex w-full justify-center items-cetner">
+            <p>No Vendors found.</p>
+          </div>
+        }
+      </app-table>
+    </div>
+  </div>`,
   styles: ``,
 })
 export class VendorListComponent {

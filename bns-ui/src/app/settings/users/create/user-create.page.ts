@@ -15,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownOption } from '@/components';
 import { UserCreateService } from './user-create.service';
 import { UserStore } from '@/settings/users/store';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create',
@@ -28,7 +29,15 @@ import { UserStore } from '@/settings/users/store';
     ReactiveFormsModule,
   ],
   template: `
-    <div class="pl-20 h-full overflow-hidden">
+    <div class="h-full overflow-hidden">
+      <div class="absolute pt-4">
+        <app-button
+          buttonType="text"
+          color="primary"
+          icon="chevron_left"
+          (handleClick)="onBackClicked()"
+          text="Users List" />
+      </div>
       @if (userStore.form; as form) {
         <form class="h-full" [formGroup]="form" (ngSubmit)="onSubmit()">
           <app-breadcrumbs
@@ -90,8 +99,9 @@ import { UserStore } from '@/settings/users/store';
   `,
   styles: ``,
 })
-export class UserCreateComponent {
+export class UserCreatePage {
   private readonly userCreateService = inject(UserCreateService);
+  private readonly router = inject(Router);
   userStore = inject(UserStore);
 
   defaultOptions: BreadcrumbOption<UserFormGroupNames>[] = [
@@ -157,5 +167,9 @@ export class UserCreateComponent {
     this.userStore.getRolesForDropdown().subscribe(({ data: { roles } }) => {
       this.roles.set(roles);
     });
+  }
+
+  onBackClicked() {
+    this.router.navigate(['settings', 'users', 'list']);
   }
 }

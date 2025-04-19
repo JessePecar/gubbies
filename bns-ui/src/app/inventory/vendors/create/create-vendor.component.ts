@@ -15,9 +15,8 @@ import {
   CreateVendorService,
   VendorFormGroupNames,
 } from './create-vendor.service';
-import { ButtonComponent } from '../../../components/buttons/button.component';
+import { ButtonComponent } from '@/components/buttons/button.component';
 import { Router } from '@angular/router';
-import { VendorDetailsComponent } from '@/inventory/vendors/details/vendor-details.component';
 
 @Component({
   selector: 'app-create-vendor',
@@ -32,10 +31,10 @@ import { VendorDetailsComponent } from '@/inventory/vendors/details/vendor-detai
   ],
   template: `
     <div class="h-full w-full">
-      <div class="absolute pl-10 pt-4">
+      <div class="absolute pt-4">
         <app-button
           buttonType="text"
-          color="secondary"
+          color="primary"
           icon="chevron_left"
           (handleClick)="onBackClicked()"
           text="Vendor List" />

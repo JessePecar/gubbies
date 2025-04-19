@@ -48,7 +48,7 @@ export class ButtonDirective {
           'hoverable text-primary bg-transparent outline-1 outline-primary-dark rounded-lg',
         raised:
           'hoverable text-primary disabled:opacity-50 outline-1 bg-primary-green rounded-lg',
-        text: 'flex hover:underline text-primary',
+        text: 'flex hover:underline text-stone-900 hover:text-primary-green',
         default: 'hoverable flex rounded hover:underline text-primary',
       },
       secondary: {
@@ -56,7 +56,7 @@ export class ButtonDirective {
           'hoverable text-primary bg-transparent outline-1 outline-purple-400 rounded-lg',
         raised:
           'hoverable text-primary disabled:opacity-50 outline-1 bg-stone-200 rounded-lg',
-        text: 'flex hover:underline text-purple-400 text-primary',
+        text: 'flex hover:underline text-stone-900 hover:text-primary-blue',
         default: 'hoverable flex rounded hover:underline text-primary',
       },
     },
