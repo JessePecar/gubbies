@@ -21,7 +21,7 @@ import { UserItemComponent } from '@/settings/users/ui';
               </div>
             }
           } @else {
-            <div class="flex w-full justify-center items-cetner">
+            <div class="flex w-full justify-center items-center">
               <p>No users found.</p>
             </div>
           }

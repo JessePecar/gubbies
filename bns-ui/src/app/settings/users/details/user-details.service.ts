@@ -3,7 +3,6 @@ import { Address, Phone, UpdateUser, User } from '@/interfaces/settings/users';
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { GetUserQuery, UpdateUserMutation } from '@/settings/users/requests';
-import { GetRolesService } from '@/settings/roles';
 import { UserSchema } from '@/settings/users/validators';
 
 export type UserFormGroupNames = 'info' | 'address' | 'primaryPhone';
@@ -16,7 +15,6 @@ export class UserDetailsService {
 
   private readonly updateUserMutation = inject(UpdateUserMutation);
   private readonly getUserQuery = inject(GetUserQuery);
-  private readonly getRolesService = inject(GetRolesService);
 
   readonly router = inject(Router);
 

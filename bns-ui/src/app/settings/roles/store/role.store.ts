@@ -1,5 +1,6 @@
 import {
   PermissionGroup,
+  Role,
   RolePermissionUpdate,
   UpdateRole,
 } from '@/interfaces/settings/roles';
@@ -77,5 +78,24 @@ export class RoleStore {
       name: role.name,
       rolePermissions: rolePermissions,
     } as UpdateRole;
+  }
+
+  objectToSchema(role: Role) {
+    const permissions = this.permissions();
+    const rolePermissions: Record<string, boolean> = {};
+
+    permissions.forEach(permission => {
+      console.log(role.rolePermissions);
+
+      rolePermissions[permission.name] = role.rolePermissions.some(
+        rp => rp.permissionId === permission.id
+      );
+    });
+
+    return {
+      hierarchyTier: role.hierarchyTier,
+      name: role.name,
+      permissions: rolePermissions,
+    } as RoleSchema;
   }
 }

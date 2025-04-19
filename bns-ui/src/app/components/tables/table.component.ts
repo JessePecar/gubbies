@@ -29,8 +29,8 @@ export type ToolbarItem = {
             </app-button>
           }
         </div>
-        <div class="h-3/4 rounded-lg overflow-auto">
-          <div class="w-full h-full p-1 min-h-96">
+        <div class="h-3/4 rounded-lg">
+          <div class="w-full h-full p-1 min-h-96 overflow-y-auto">
             <ng-content />
           </div>
         </div>

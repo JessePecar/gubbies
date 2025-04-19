@@ -13,10 +13,7 @@ export class GetRoleService extends Query<{ role: Role }> {
         name
         hierarchyTier
         rolePermissions {
-          permission {
-            id
-            name
-          }
+          permissionId
         }
       }
     }

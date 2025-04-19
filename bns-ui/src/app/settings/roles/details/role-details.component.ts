@@ -1,5 +1,12 @@
 import { NumberInputComponent, TextInputComponent } from '@/components';
-import { Component, inject, input, signal } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  signal,
+  untracked,
+} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RoleDetailsService } from './role-details.service';
 import { Permission, Role } from '@/interfaces/settings/roles';
@@ -25,20 +32,19 @@ import { SwitchInputComponent } from '@/components/inputs/switch-input.component
   ],
   template: `
     @if (isLoading() === false) {
-      <div
-        class="flex flex-col w-full h-full justify-center items-center max-h-1/2">
-        <div class="flex w-1/2">
+      <div class="w-full h-full p-4">
+        <div class="flex justify-start">
           <p style="font-size: 2rem" class="py-2">Add / Edit Role</p>
         </div>
         @if (
           roleStore.form.get('name') && roleStore.form.get('hierarchyTier')
         ) {
           <form
-            class="flex flex-col justify-between w-1/2 min-h-96 p-4"
+            class="w-1/2 p-4"
             [formGroup]="roleStore.form"
             (ngSubmit)="onSubmit()">
             <p class="text-lg my-4">Information</p>
-            <div class="grid grid-cols-3 gap-4">
+            <div class="grid grid-cols-3 gap-4 mb-4">
               <app-text-input
                 label="Name"
                 formControlName="name"
@@ -56,7 +62,9 @@ import { SwitchInputComponent } from '@/components/inputs/switch-input.component
             ) {
               <app-table class="max-h-96">
                 <p header class="text-lg">Permissions</p>
-                <div formArrayName="permissions" class="w-full text-sm">
+                <div
+                  formArrayName="permissions"
+                  class="w-full text-sm overflow-y-scroll max-h-96">
                   @for (group of groups; track $index) {
                     <div>
                       <div class="p-4 w-full border-b border-primary-dark">
@@ -75,7 +83,7 @@ import { SwitchInputComponent } from '@/components/inputs/switch-input.component
               </app-table>
             }
 
-            <div class="flex justify-end space-x-4 h-10">
+            <div class="flex justify-end space-x-4 h-10 my-4">
               <app-button
                 (handleClick)="onCancel()"
                 buttonType="text"
@@ -139,25 +147,33 @@ export class RoleDetailsComponent {
   }
 
   constructor() {
-    if (!this.roleId()) {
-      this.getApplicationPermissions();
-    }
+    effect(() => {
+      const roleId = this.roleId();
 
-    this.roleDetailsService
-      .getRole(this.roleId())
-      ?.subscribe(({ data: { role } }) => {
-        this.role.set(role);
+      untracked(() => {
+        if (roleId) {
+          this.roleDetailsService
+            .getRole(this.roleId())
+            ?.subscribe(({ data: { role } }) => {
+              // Once the role is received, we will build out the form
+              this.role.set(role);
 
-        this.getApplicationPermissions();
+              const roleSchema = this.roleStore.objectToSchema(role);
+              this.roleStore.populateForm(roleSchema);
+              console.log(roleSchema);
+              this.isLoading.set(false);
+            });
+        } else {
+          this.isLoading.set(false);
+        }
       });
-  }
+    });
 
-  getApplicationPermissions() {
-    this.isLoading.set(false);
+    if (!this.roleId()) {
+    }
   }
 
   onSubmit() {
-    console.log(this.roleStore.form);
     if (this.roleStore.form && this.roleStore.form.valid) {
       const formValue = this.roleStore.schemaToCreateObject(
         this.roleStore.form.value as RoleSchema,

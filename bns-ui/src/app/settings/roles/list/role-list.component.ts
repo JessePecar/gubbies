@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   template: ` <div class="h-3/4 flex justify-center items-center">
     <div class="w-3/4 max-h-1/2">
       <app-table [toolbarItems]="toolbarItems">
-        <div class="h-full overflow-y-auto">
+        <div class="h-full">
           @if (roleListService.roles(); as roles) {
             @for (tier of roles; track tier.tierId) {
               <div class="mb-1 px-1">
