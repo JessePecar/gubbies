@@ -48,7 +48,7 @@ export class VendorListComponent {
         // TODO: Update to new Vendor specific permission
         if (
           permissions &&
-          permissions.some(p => p.permissionId === PermissionEnum.EDIT_ITEM)
+          permissions.some(p => p.permissionId === PermissionEnum.EDIT_VENDOR)
         ) {
           this.toolbarItems.set([
             {
