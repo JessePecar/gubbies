@@ -21,6 +21,7 @@ import { SettingsPage, settingsGuard } from '@/settings';
 import { vendorRoutes, VendorsComponent } from '@/inventory/vendors';
 import { usersRoutes } from '@/settings/users';
 import { roleRoutes } from '@/settings/roles';
+import { CategoriesPage, categoriesRoutes } from '@/inventory/categories';
 
 export const routes: Routes = [
   {
@@ -77,6 +78,11 @@ export const routes: Routes = [
             path: 'vendors',
             component: VendorsComponent,
             children: vendorRoutes,
+          },
+          {
+            path: 'categories',
+            component: CategoriesPage,
+            children: categoriesRoutes,
           },
         ],
       },
