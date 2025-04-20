@@ -1,17 +1,18 @@
 type Query {
   categories: [Category]
-  category(id: ID!): Category
-  subCategories(categoryId: ID!): [SubCategory]
-  families(subCategoryId: ID!): [Family]
+  category(code: String!): Category
+  subcategories(categoryCode: String!): [Subcategory]
+  families(subcategoryCode: String!): [Family]
 }
 
 type Mutation {
-  createCategory(createCategoryInput: CreateCategoryInput): Category
-  createSubCategory(createSubCategoryInput: CreateSubCategoryInput): SubCategory
-  createFamily(createFamilyInput: CreateFamilyInput): Family
+  upsertCategory(createCategoryInput: CreateCategoryInput): Category 
+  upsertSubcategory(createSubcategoryInput: CreateSubcategoryInput): Subcategory 
+  upsertFamily(createFamilyInput: CreateFamilyInput): Family 
 }
 
 type Subscription {
+  categoriesChanged: Category
 }
 
 input CreateCategoryInput {
@@ -19,7 +20,7 @@ input CreateCategoryInput {
   name: String!
 }
 
-input CreateSubCategoryInput {
+input CreateSubcategoryInput {
   code: String!
   name: String! 
   categoryCode: String!
@@ -28,7 +29,7 @@ input CreateSubCategoryInput {
 input CreateFamilyInput {
   code: String!
   name: String!
-  subCategoryCode: String!
+  subcategoryCode: String!
 }
 
 ## TODO: I will want to have some specific flags and info on the cateogories for determining what will happen to items connected
@@ -38,10 +39,10 @@ type Category {
   name: String
   
   items: [Item]
-  subCategories: [SubCategory]
+  subcategories: [Subcategory]
 }
 
-type SubCategory {
+type Subcategory {
   code: String!
   categoryCode: String!
   name: String
@@ -54,8 +55,8 @@ type SubCategory {
 type Family {
   code: String!
   name: String
-  subCategoryCode: String!
+  subcategoryCode: String!
 
-  subCategory: SubCategory
+  subcategory: Subcategory
   items: [Item]
 }
