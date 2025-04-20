@@ -18,4 +18,6 @@ export enum PermissionEnum {
   CREATE_ITEM = 17,
   EDIT_VENDOR = 18,
   CREATE_VENDOR = 19,
+  EDIT_CATEGORY = 20,
+  CREATE_CATEGORY = 21,
 }
