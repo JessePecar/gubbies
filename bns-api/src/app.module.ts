@@ -6,6 +6,7 @@ import { ItemsModule, VendorsModule } from 'src/inventory';
 import { ConfigModule } from '@nestjs/config';
 import { RepositoryModule, RepositoryService } from 'src/common/repository';
 import { SharedModule } from 'src/common/service';
+import { CategoriesModule } from 'src/inventory/categories/categories.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { SharedModule } from 'src/common/service';
     UsersModule,
     AuthModule,
     VendorsModule,
+    CategoriesModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

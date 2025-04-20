@@ -67,33 +67,6 @@ type AdjustmentItems {
   item: Item     
 }
 
-type Category {
-  code: String!
-  name: String
-  
-  items: [Item]
-  subCategories: [SubCategory]
-}
-
-type SubCategory {
-  code: String!
-  categoryCode: String!
-  name: String
-
-  category: Category!
-  items: [Item]
-  families: [Family]
-}
-
-type Family {
-  code: String!
-  name: String
-  subCategoryCode: String!
-
-  subCategory: SubCategory
-  items: [Item]
-}
-
 type Adjustment {
   id: Int! 
   createDate: String
