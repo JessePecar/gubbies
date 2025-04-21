@@ -1,11 +1,10 @@
-import { createCipheriv, createDecipheriv, randomBytes, scrypt } from 'crypto';
+import { scrypt } from 'crypto';
 import { promisify } from 'util';
 
 import * as bcrypt from 'bcrypt';
 export class AuthUtil {
   private readonly algorithm = 'aes-256-cbc';
 
-  private readonly iv = process.env.IV_KEY ?? '';
   private readonly passKey = process.env.ENCRYPT_KEY ?? '';
 
   private async getEncryptionKey() {
