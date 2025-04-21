@@ -8,3 +8,4 @@
 .dist/**
 .vscode/**
 bns-api/.env.development
+bns-api/prisma/bns.db
