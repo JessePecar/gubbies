@@ -121,4 +121,14 @@ export const permissionSeed = [
     name: 'CREATE_VENDOR',
     permissionGroupId: 2,
   },
+  {
+    id: 20,
+    name: 'EDIT_CATEGORY',
+    permissionGroupId: 2,
+  },
+  {
+    id: 21,
+    name: 'CREATE_CATEGORY',
+    permissionGroupId: 2,
+  },
 ];

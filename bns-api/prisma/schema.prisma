@@ -33,11 +33,11 @@ model Categories {
   name String?
 
   items         Items[]
-  subCategories SubCategory[]
+  subcategories Subcategory[]
 }
 
 // Sub Categories could have Families
-model SubCategory {
+model Subcategory {
   code         String  @id
   categoryCode String
   name         String?
@@ -50,10 +50,10 @@ model SubCategory {
 // A family is under a Sub Category that relates branded items together for promotions 
 model Family {
   code            String  @id
-  subCategoryCode String
+  subcategoryCode String
   name            String?
 
-  subCategory SubCategory @relation(fields: [subCategoryCode], references: [code])
+  subcategory Subcategory @relation(fields: [subcategoryCode], references: [code])
   items       Items[]
 }
 
@@ -94,7 +94,7 @@ model Items {
   id                    Int     @id @default(autoincrement())
   name                  String
   categoryCode          String
-  subCategoryCode       String?
+  subcategoryCode       String?
   fieldCode             String?
   quantityOnHand        String
   basePrice             Decimal
@@ -107,7 +107,7 @@ model Items {
 
   adjustmentItems AdjustmentItems[]
   category        Categories        @relation(fields: [categoryCode], references: [code])
-  subCategory     SubCategory?      @relation(fields: [subCategoryCode], references: [code])
+  subcategory     Subcategory?      @relation(fields: [subcategoryCode], references: [code])
   family          Family?           @relation(fields: [fieldCode], references: [code])
   itemVendors     ItemVendor[]
 }

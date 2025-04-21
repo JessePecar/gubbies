@@ -25,32 +25,9 @@ export enum PermissionName {
     EDIT_ROLE = "EDIT_ROLE",
     CREATE_ROLE = "CREATE_ROLE",
     EDIT_ITEM = "EDIT_ITEM",
-    CREATE_ITEM = "CREATE_ITEM"
-}
-
-export class CreateItemInput {
-    id: number;
-    name: string;
-    categoryCode: string;
-    quantityOnHand?: Nullable<string>;
-    basePrice: number;
-    currentPrice?: Nullable<number>;
-    isActive: boolean;
-    retirementStatus: number;
-    reorderQuantity?: Nullable<number>;
-    unitOfMeasurementType: number;
-    vendors?: Nullable<Nullable<CreateItemVendorInput>[]>;
-}
-
-export class UpsertRoleInput {
-    id?: Nullable<number>;
-    name: string;
-    hierarchyTier: number;
-    rolePermissions?: Nullable<Nullable<RolePermissionInput>[]>;
-}
-
-export class RolePermissionInput {
-    permissionId: number;
+    CREATE_ITEM = "CREATE_ITEM",
+    EDIT_VENDOR = "EDIT_VENDOR",
+    CREATE_VENDOR = "CREATE_VENDOR"
 }
 
 export class ReadRequest {
@@ -68,6 +45,17 @@ export class FilterOption {
 export class SortOption {
     field?: Nullable<string>;
     option?: Nullable<SortOption>;
+}
+
+export class UpsertRoleInput {
+    id?: Nullable<number>;
+    name: string;
+    hierarchyTier: number;
+    rolePermissions?: Nullable<Nullable<RolePermissionInput>[]>;
+}
+
+export class RolePermissionInput {
+    permissionId: number;
 }
 
 export class CreateRoleInput {
@@ -135,6 +123,37 @@ export class UpdateAddressInput {
     postalCode: number;
 }
 
+export class CreateCategoryInput {
+    code: string;
+    name: string;
+}
+
+export class CreateSubcategoryInput {
+    code: string;
+    name: string;
+    categoryCode: string;
+}
+
+export class CreateFamilyInput {
+    code: string;
+    name: string;
+    subcategoryCode: string;
+}
+
+export class CreateItemInput {
+    id: number;
+    name: string;
+    categoryCode: string;
+    quantityOnHand?: Nullable<string>;
+    basePrice: number;
+    currentPrice?: Nullable<number>;
+    isActive: boolean;
+    retirementStatus: number;
+    reorderQuantity?: Nullable<number>;
+    unitOfMeasurementType: number;
+    vendors?: Nullable<Nullable<CreateItemVendorInput>[]>;
+}
+
 export class CreateVendorInput {
     name: string;
     notes: string;
@@ -184,10 +203,6 @@ export abstract class IQuery {
 
     abstract auth(token?: Nullable<string>): Nullable<User> | Promise<Nullable<User>>;
 
-    abstract items(request: ReadRequest): Nullable<Nullable<Item>[]> | Promise<Nullable<Nullable<Item>[]>>;
-
-    abstract item(id: string): Nullable<Item> | Promise<Nullable<Item>>;
-
     abstract roles(): Nullable<Nullable<Role>[]> | Promise<Nullable<Nullable<Role>[]>>;
 
     abstract role(id: number): Nullable<Role> | Promise<Nullable<Role>>;
@@ -196,9 +211,23 @@ export abstract class IQuery {
 
     abstract permissions(): Nullable<Nullable<Permission>[]> | Promise<Nullable<Nullable<Permission>[]>>;
 
+    abstract permissionGroups(): Nullable<Nullable<PermissionGroup>[]> | Promise<Nullable<Nullable<PermissionGroup>[]>>;
+
     abstract users(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
 
     abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract categories(): Nullable<Nullable<Category>[]> | Promise<Nullable<Nullable<Category>[]>>;
+
+    abstract category(code: string): Nullable<Category> | Promise<Nullable<Category>>;
+
+    abstract subcategories(categoryCode: string): Nullable<Nullable<Subcategory>[]> | Promise<Nullable<Nullable<Subcategory>[]>>;
+
+    abstract families(subcategoryCode: string): Nullable<Nullable<Family>[]> | Promise<Nullable<Nullable<Family>[]>>;
+
+    abstract items(request: ReadRequest): Nullable<Nullable<Item>[]> | Promise<Nullable<Nullable<Item>[]>>;
+
+    abstract item(id: string): Nullable<Item> | Promise<Nullable<Item>>;
 
     abstract vendors(): Nullable<Nullable<Vendor>[]> | Promise<Nullable<Nullable<Vendor>[]>>;
 
@@ -211,8 +240,6 @@ export class AuthResponse {
 }
 
 export abstract class IMutation {
-    abstract createItem(createItemInput?: Nullable<CreateItemInput>): Nullable<Item> | Promise<Nullable<Item>>;
-
     abstract upsertRole(upsertRoleInput?: Nullable<UpsertRoleInput>): Nullable<Role> | Promise<Nullable<Role>>;
 
     abstract createUser(createUserInput?: Nullable<CreateUserInput>): Nullable<User> | Promise<Nullable<User>>;
@@ -221,75 +248,29 @@ export abstract class IMutation {
 
     abstract createRole(createRoleInput?: Nullable<CreateRoleInput>): Nullable<Role> | Promise<Nullable<Role>>;
 
+    abstract upsertCategory(createCategoryInput?: Nullable<CreateCategoryInput>): Nullable<Category> | Promise<Nullable<Category>>;
+
+    abstract upsertSubcategory(createSubcategoryInput?: Nullable<CreateSubcategoryInput>): Nullable<Subcategory> | Promise<Nullable<Subcategory>>;
+
+    abstract upsertFamily(createFamilyInput?: Nullable<CreateFamilyInput>): Nullable<Family> | Promise<Nullable<Family>>;
+
+    abstract createItem(createItemInput?: Nullable<CreateItemInput>): Nullable<Item> | Promise<Nullable<Item>>;
+
     abstract createVendor(createVendorInput?: Nullable<CreateVendorInput>): Nullable<Vendor> | Promise<Nullable<Vendor>>;
 
     abstract updateVendor(updateVendorInput?: Nullable<UpdateVendorInput>): Nullable<Vendor> | Promise<Nullable<Vendor>>;
 }
 
 export abstract class ISubscription {
-    abstract itemChanged(id: string): Nullable<Item> | Promise<Nullable<Item>>;
-
-    abstract itemsChanged(): Nullable<Item> | Promise<Nullable<Item>>;
-
     abstract roleUpdated(): Nullable<Role> | Promise<Nullable<Role>>;
 
     abstract usersChanged(): Nullable<User> | Promise<Nullable<User>>;
-}
 
-export class Item implements BaseItem {
-    id: number;
-    name: string;
-    categoryCode: string;
-    quantityOnHand?: Nullable<string>;
-    basePrice: number;
-    currentPrice?: Nullable<number>;
-    isActive: boolean;
-    retirementStatus: number;
-    reorderQuantity?: Nullable<number>;
-    unitOfMeasurementType: number;
-    adjustmentItems?: Nullable<Nullable<AdjustmentItems>[]>;
-    category?: Nullable<Category>;
-    subCategory?: Nullable<SubCategory>;
-    family?: Nullable<Family>;
-}
+    abstract categoriesChanged(): Nullable<Category> | Promise<Nullable<Category>>;
 
-export class AdjustmentItems {
-    adjustmentId: number;
-    itemId: number;
-    adjustment?: Nullable<Adjustment>;
-    item?: Nullable<Item>;
-}
+    abstract itemChanged(id: string): Nullable<Item> | Promise<Nullable<Item>>;
 
-export class Category {
-    code: string;
-    name?: Nullable<string>;
-    items?: Nullable<Nullable<Item>[]>;
-    subCategories?: Nullable<Nullable<SubCategory>[]>;
-}
-
-export class SubCategory {
-    code: string;
-    categoryCode: string;
-    name?: Nullable<string>;
-    category: Category;
-    items?: Nullable<Nullable<Item>[]>;
-    families?: Nullable<Nullable<Family>[]>;
-}
-
-export class Family {
-    code: string;
-    name?: Nullable<string>;
-    subCategoryCode: string;
-    subCategory?: Nullable<SubCategory>;
-    items?: Nullable<Nullable<Item>[]>;
-}
-
-export class Adjustment {
-    id: number;
-    createDate?: Nullable<string>;
-    status: number;
-    completeDate?: Nullable<string>;
-    adjustmentItems?: Nullable<Nullable<AdjustmentItems>[]>;
+    abstract itemsChanged(): Nullable<Item> | Promise<Nullable<Item>>;
 }
 
 export class Role {
@@ -304,6 +285,12 @@ export class RolePermission {
     permissionId: number;
     permission: Permission;
     role: Role;
+}
+
+export class PermissionGroup {
+    id: number;
+    name: string;
+    permissions?: Nullable<Nullable<Permission>[]>;
 }
 
 export class Permission {
@@ -347,6 +334,62 @@ export class Address {
     countryCode: string;
     postalCode: number;
     user?: Nullable<User>;
+}
+
+export class Category {
+    code: string;
+    name?: Nullable<string>;
+    items?: Nullable<Nullable<Item>[]>;
+    subcategories?: Nullable<Nullable<Subcategory>[]>;
+}
+
+export class Subcategory {
+    code: string;
+    categoryCode: string;
+    name?: Nullable<string>;
+    category: Category;
+    items?: Nullable<Nullable<Item>[]>;
+    families?: Nullable<Nullable<Family>[]>;
+}
+
+export class Family {
+    code: string;
+    name?: Nullable<string>;
+    subcategoryCode: string;
+    subcategory?: Nullable<Subcategory>;
+    items?: Nullable<Nullable<Item>[]>;
+}
+
+export class Item implements BaseItem {
+    id: number;
+    name: string;
+    categoryCode: string;
+    quantityOnHand?: Nullable<string>;
+    basePrice: number;
+    currentPrice?: Nullable<number>;
+    isActive: boolean;
+    retirementStatus: number;
+    reorderQuantity?: Nullable<number>;
+    unitOfMeasurementType: number;
+    adjustmentItems?: Nullable<Nullable<AdjustmentItems>[]>;
+    category?: Nullable<Category>;
+    subcategory?: Nullable<Subcategory>;
+    family?: Nullable<Family>;
+}
+
+export class AdjustmentItems {
+    adjustmentId: number;
+    itemId: number;
+    adjustment?: Nullable<Adjustment>;
+    item?: Nullable<Item>;
+}
+
+export class Adjustment {
+    id: number;
+    createDate?: Nullable<string>;
+    status: number;
+    completeDate?: Nullable<string>;
+    adjustmentItems?: Nullable<Nullable<AdjustmentItems>[]>;
 }
 
 export class Vendor {

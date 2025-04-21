@@ -1,0 +1,62 @@
+type Query {
+  categories: [Category]
+  category(code: String!): Category
+  subcategories(categoryCode: String!): [Subcategory]
+  families(subcategoryCode: String!): [Family]
+}
+
+type Mutation {
+  upsertCategory(createCategoryInput: CreateCategoryInput): Category 
+  upsertSubcategory(createSubcategoryInput: CreateSubcategoryInput): Subcategory 
+  upsertFamily(createFamilyInput: CreateFamilyInput): Family 
+}
+
+type Subscription {
+  categoriesChanged: Category
+}
+
+input CreateCategoryInput {
+  code: String!
+  name: String!
+}
+
+input CreateSubcategoryInput {
+  code: String!
+  name: String! 
+  categoryCode: String!
+}
+
+input CreateFamilyInput {
+  code: String!
+  name: String!
+  subcategoryCode: String!
+}
+
+## TODO: I will want to have some specific flags and info on the cateogories for determining what will happen to items connected
+## EXAMPLE: Shelf Location, CanTransfer, CanPromote, CanPriceChange, etc (Maybe default vendor for family and subcat)
+type Category {
+  code: String!
+  name: String
+  
+  items: [Item]
+  subcategories: [Subcategory]
+}
+
+type Subcategory {
+  code: String!
+  categoryCode: String!
+  name: String
+
+  category: Category!
+  items: [Item]
+  families: [Family]
+}
+
+type Family {
+  code: String!
+  name: String
+  subcategoryCode: String!
+
+  subcategory: Subcategory
+  items: [Item]
+}
