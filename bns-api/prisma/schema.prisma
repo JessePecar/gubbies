@@ -32,6 +32,9 @@ model Categories {
   code String  @id
   name String?
 
+  // Can create promotions at a category level
+  canPromote Boolean @default(false)
+
   items         Items[]
   subcategories Subcategory[]
 }
@@ -41,6 +44,8 @@ model Subcategory {
   code         String  @id
   categoryCode String
   name         String?
+  // Can create promotions at a subcategory level
+  canPromote   Boolean @default(false)
 
   category Categories @relation(fields: [categoryCode], references: [code])
   items    Items[]
@@ -52,9 +57,28 @@ model Family {
   code            String  @id
   subcategoryCode String
   name            String?
+  locationId      Int?
+  // Can create promotion at the family level
+  canPromote      Boolean @default(false)
 
-  subcategory Subcategory @relation(fields: [subcategoryCode], references: [code])
+  subcategory Subcategory    @relation(fields: [subcategoryCode], references: [code])
   items       Items[]
+  location    ShelfLocation? @relation(fields: [locationId], references: [id])
+}
+
+// Example Location 9R - Top Middle
+model ShelfLocation {
+  id      Int       @id @default(autoincrement())
+  aisle   Int
+  side    ShelfSide
+  section String // Not sure what type section should be, going to have it show up as a string
+  
+  families  Family[]
+}
+
+enum ShelfSide {
+  RIGHT
+  LEFT
 }
 
 model Vendor {
