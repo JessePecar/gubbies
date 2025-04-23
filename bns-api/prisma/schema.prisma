@@ -72,7 +72,7 @@ model ShelfLocation {
   aisle   Int
   side    ShelfSide
   section String // Not sure what type section should be, going to have it show up as a string
-  
+
   families  Family[]
 }
 

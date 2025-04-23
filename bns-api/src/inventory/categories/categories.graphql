@@ -18,18 +18,29 @@ type Subscription {
 input CreateCategoryInput {
   code: String!
   name: String!
+  canPromote: Boolean
 }
 
 input CreateSubcategoryInput {
   code: String!
   name: String! 
+  canPromote: Boolean
   categoryCode: String!
 }
 
 input CreateFamilyInput {
   code: String!
   name: String!
+  canPromote: Boolean
   subcategoryCode: String!
+  location: CreateShelfLocation
+}
+
+input CreateShelfLocation {
+  id: Int!
+  aisle: Int!
+  side: ShelfSide!
+  section: String
 }
 
 ## TODO: I will want to have some specific flags and info on the cateogories for determining what will happen to items connected
@@ -57,6 +68,18 @@ type Family {
   name: String
   subcategoryCode: String!
 
+  location: ShelfLocation
   subcategory: Subcategory
   items: [Item]
+}
+
+type ShelfLocation {
+  id: Int!
+  aisle: Int
+  side: ShelfSide
+  section: String
+}
+
+enum ShelfSide {
+  RIGHT, LEFT
 }

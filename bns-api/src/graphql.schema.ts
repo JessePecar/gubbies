@@ -27,47 +27,54 @@ export enum PermissionName {
     EDIT_ITEM = "EDIT_ITEM",
     CREATE_ITEM = "CREATE_ITEM",
     EDIT_VENDOR = "EDIT_VENDOR",
-    CREATE_VENDOR = "CREATE_VENDOR"
+    CREATE_VENDOR = "CREATE_VENDOR",
+    EDIT_CATEGORY = "EDIT_CATEGORY",
+    CREATE_CATEGORY = "CREATE_CATEGORY"
 }
 
-export class ReadRequest {
+export enum ShelfSide {
+    RIGHT = "RIGHT",
+    LEFT = "LEFT"
+}
+
+export interface ReadRequest {
     limit?: Nullable<number>;
     offset?: Nullable<number>;
     filters?: Nullable<FilterOption[]>;
     sort?: Nullable<SortOption[]>;
 }
 
-export class FilterOption {
+export interface FilterOption {
     field: string;
     value: JSON;
 }
 
-export class SortOption {
+export interface SortOption {
     field?: Nullable<string>;
     option?: Nullable<SortOption>;
 }
 
-export class UpsertRoleInput {
+export interface UpsertRoleInput {
     id?: Nullable<number>;
     name: string;
     hierarchyTier: number;
     rolePermissions?: Nullable<Nullable<RolePermissionInput>[]>;
 }
 
-export class RolePermissionInput {
+export interface RolePermissionInput {
     permissionId: number;
 }
 
-export class CreateRoleInput {
+export interface CreateRoleInput {
     name: string;
     rolePermissions?: Nullable<Nullable<CreateRolePermission>[]>;
 }
 
-export class CreateRolePermission {
+export interface CreateRolePermission {
     permissionId: number;
 }
 
-export class CreateUserInput {
+export interface CreateUserInput {
     firstName?: Nullable<string>;
     lastName?: Nullable<string>;
     roleId: number;
@@ -79,7 +86,7 @@ export class CreateUserInput {
     password?: Nullable<string>;
 }
 
-export class UpdateUserInput {
+export interface UpdateUserInput {
     id: number;
     firstName?: Nullable<string>;
     lastName?: Nullable<string>;
@@ -93,18 +100,18 @@ export class UpdateUserInput {
     address?: Nullable<UpdateAddressInput>;
 }
 
-export class CreatePhoneInput {
+export interface CreatePhoneInput {
     rawDigits: string;
     nationalDigits: string;
 }
 
-export class UpdatePhoneInput {
+export interface UpdatePhoneInput {
     id: number;
     rawDigits: string;
     nationalDigits: string;
 }
 
-export class CreateAddressInput {
+export interface CreateAddressInput {
     address1: string;
     address2?: Nullable<string>;
     state: string;
@@ -113,7 +120,7 @@ export class CreateAddressInput {
     postalCode: number;
 }
 
-export class UpdateAddressInput {
+export interface UpdateAddressInput {
     id: number;
     address1: string;
     address2?: Nullable<string>;
@@ -123,24 +130,35 @@ export class UpdateAddressInput {
     postalCode: number;
 }
 
-export class CreateCategoryInput {
+export interface CreateCategoryInput {
     code: string;
     name: string;
+    canPromote?: Nullable<boolean>;
 }
 
-export class CreateSubcategoryInput {
+export interface CreateSubcategoryInput {
     code: string;
     name: string;
+    canPromote?: Nullable<boolean>;
     categoryCode: string;
 }
 
-export class CreateFamilyInput {
+export interface CreateFamilyInput {
     code: string;
     name: string;
+    canPromote?: Nullable<boolean>;
     subcategoryCode: string;
+    location?: Nullable<CreateShelfLocation>;
 }
 
-export class CreateItemInput {
+export interface CreateShelfLocation {
+    id: number;
+    aisle: number;
+    side: ShelfSide;
+    section?: Nullable<string>;
+}
+
+export interface CreateItemInput {
     id: number;
     name: string;
     categoryCode: string;
@@ -154,7 +172,7 @@ export class CreateItemInput {
     vendors?: Nullable<Nullable<CreateItemVendorInput>[]>;
 }
 
-export class CreateVendorInput {
+export interface CreateVendorInput {
     name: string;
     notes: string;
     primaryPhone?: Nullable<CreatePhoneInput>;
@@ -162,7 +180,7 @@ export class CreateVendorInput {
     address?: Nullable<CreateAddressInput>;
 }
 
-export class UpdateVendorInput {
+export interface UpdateVendorInput {
     id: string;
     name: string;
     notes: string;
@@ -174,7 +192,7 @@ export class UpdateVendorInput {
     address?: Nullable<UpdateAddressInput>;
 }
 
-export class CreateItemVendorInput {
+export interface CreateItemVendorInput {
     vendorId: string;
     vendorItemId?: Nullable<string>;
     cost?: Nullable<number>;
@@ -198,112 +216,83 @@ export interface BaseItem {
     unitOfMeasurementType: number;
 }
 
-export abstract class IQuery {
-    abstract login(username?: Nullable<string>, password?: Nullable<string>): Nullable<AuthResponse> | Promise<Nullable<AuthResponse>>;
-
-    abstract auth(token?: Nullable<string>): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract roles(): Nullable<Nullable<Role>[]> | Promise<Nullable<Nullable<Role>[]>>;
-
-    abstract role(id: number): Nullable<Role> | Promise<Nullable<Role>>;
-
-    abstract roleTiers(): Nullable<Nullable<RoleTiers>[]> | Promise<Nullable<Nullable<RoleTiers>[]>>;
-
-    abstract permissions(): Nullable<Nullable<Permission>[]> | Promise<Nullable<Nullable<Permission>[]>>;
-
-    abstract permissionGroups(): Nullable<Nullable<PermissionGroup>[]> | Promise<Nullable<Nullable<PermissionGroup>[]>>;
-
-    abstract users(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
-
-    abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract categories(): Nullable<Nullable<Category>[]> | Promise<Nullable<Nullable<Category>[]>>;
-
-    abstract category(code: string): Nullable<Category> | Promise<Nullable<Category>>;
-
-    abstract subcategories(categoryCode: string): Nullable<Nullable<Subcategory>[]> | Promise<Nullable<Nullable<Subcategory>[]>>;
-
-    abstract families(subcategoryCode: string): Nullable<Nullable<Family>[]> | Promise<Nullable<Nullable<Family>[]>>;
-
-    abstract items(request: ReadRequest): Nullable<Nullable<Item>[]> | Promise<Nullable<Nullable<Item>[]>>;
-
-    abstract item(id: string): Nullable<Item> | Promise<Nullable<Item>>;
-
-    abstract vendors(): Nullable<Nullable<Vendor>[]> | Promise<Nullable<Nullable<Vendor>[]>>;
-
-    abstract vendor(id: string): Nullable<Vendor> | Promise<Nullable<Vendor>>;
+export interface IQuery {
+    login(username?: Nullable<string>, password?: Nullable<string>): Nullable<AuthResponse> | Promise<Nullable<AuthResponse>>;
+    auth(token?: Nullable<string>): Nullable<User> | Promise<Nullable<User>>;
+    roles(): Nullable<Nullable<Role>[]> | Promise<Nullable<Nullable<Role>[]>>;
+    role(id: number): Nullable<Role> | Promise<Nullable<Role>>;
+    roleTiers(): Nullable<Nullable<RoleTiers>[]> | Promise<Nullable<Nullable<RoleTiers>[]>>;
+    permissions(): Nullable<Nullable<Permission>[]> | Promise<Nullable<Nullable<Permission>[]>>;
+    permissionGroups(): Nullable<Nullable<PermissionGroup>[]> | Promise<Nullable<Nullable<PermissionGroup>[]>>;
+    users(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
+    user(id: string): Nullable<User> | Promise<Nullable<User>>;
+    categories(): Nullable<Nullable<Category>[]> | Promise<Nullable<Nullable<Category>[]>>;
+    category(code: string): Nullable<Category> | Promise<Nullable<Category>>;
+    subcategories(categoryCode: string): Nullable<Nullable<Subcategory>[]> | Promise<Nullable<Nullable<Subcategory>[]>>;
+    families(subcategoryCode: string): Nullable<Nullable<Family>[]> | Promise<Nullable<Nullable<Family>[]>>;
+    items(request: ReadRequest): Nullable<Nullable<Item>[]> | Promise<Nullable<Nullable<Item>[]>>;
+    item(id: string): Nullable<Item> | Promise<Nullable<Item>>;
+    vendors(): Nullable<Nullable<Vendor>[]> | Promise<Nullable<Nullable<Vendor>[]>>;
+    vendor(id: string): Nullable<Vendor> | Promise<Nullable<Vendor>>;
 }
 
-export class AuthResponse {
+export interface AuthResponse {
     accessToken: string;
     user: User;
 }
 
-export abstract class IMutation {
-    abstract upsertRole(upsertRoleInput?: Nullable<UpsertRoleInput>): Nullable<Role> | Promise<Nullable<Role>>;
-
-    abstract createUser(createUserInput?: Nullable<CreateUserInput>): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract updateUser(updateUserInput?: Nullable<UpdateUserInput>): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract createRole(createRoleInput?: Nullable<CreateRoleInput>): Nullable<Role> | Promise<Nullable<Role>>;
-
-    abstract upsertCategory(createCategoryInput?: Nullable<CreateCategoryInput>): Nullable<Category> | Promise<Nullable<Category>>;
-
-    abstract upsertSubcategory(createSubcategoryInput?: Nullable<CreateSubcategoryInput>): Nullable<Subcategory> | Promise<Nullable<Subcategory>>;
-
-    abstract upsertFamily(createFamilyInput?: Nullable<CreateFamilyInput>): Nullable<Family> | Promise<Nullable<Family>>;
-
-    abstract createItem(createItemInput?: Nullable<CreateItemInput>): Nullable<Item> | Promise<Nullable<Item>>;
-
-    abstract createVendor(createVendorInput?: Nullable<CreateVendorInput>): Nullable<Vendor> | Promise<Nullable<Vendor>>;
-
-    abstract updateVendor(updateVendorInput?: Nullable<UpdateVendorInput>): Nullable<Vendor> | Promise<Nullable<Vendor>>;
+export interface IMutation {
+    upsertRole(upsertRoleInput?: Nullable<UpsertRoleInput>): Nullable<Role> | Promise<Nullable<Role>>;
+    createUser(createUserInput?: Nullable<CreateUserInput>): Nullable<User> | Promise<Nullable<User>>;
+    updateUser(updateUserInput?: Nullable<UpdateUserInput>): Nullable<User> | Promise<Nullable<User>>;
+    createRole(createRoleInput?: Nullable<CreateRoleInput>): Nullable<Role> | Promise<Nullable<Role>>;
+    upsertCategory(createCategoryInput?: Nullable<CreateCategoryInput>): Nullable<Category> | Promise<Nullable<Category>>;
+    upsertSubcategory(createSubcategoryInput?: Nullable<CreateSubcategoryInput>): Nullable<Subcategory> | Promise<Nullable<Subcategory>>;
+    upsertFamily(createFamilyInput?: Nullable<CreateFamilyInput>): Nullable<Family> | Promise<Nullable<Family>>;
+    createItem(createItemInput?: Nullable<CreateItemInput>): Nullable<Item> | Promise<Nullable<Item>>;
+    createVendor(createVendorInput?: Nullable<CreateVendorInput>): Nullable<Vendor> | Promise<Nullable<Vendor>>;
+    updateVendor(updateVendorInput?: Nullable<UpdateVendorInput>): Nullable<Vendor> | Promise<Nullable<Vendor>>;
 }
 
-export abstract class ISubscription {
-    abstract roleUpdated(): Nullable<Role> | Promise<Nullable<Role>>;
-
-    abstract usersChanged(): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract categoriesChanged(): Nullable<Category> | Promise<Nullable<Category>>;
-
-    abstract itemChanged(id: string): Nullable<Item> | Promise<Nullable<Item>>;
-
-    abstract itemsChanged(): Nullable<Item> | Promise<Nullable<Item>>;
+export interface ISubscription {
+    roleUpdated(): Nullable<Role> | Promise<Nullable<Role>>;
+    usersChanged(): Nullable<User> | Promise<Nullable<User>>;
+    categoriesChanged(): Nullable<Category> | Promise<Nullable<Category>>;
+    itemChanged(id: string): Nullable<Item> | Promise<Nullable<Item>>;
+    itemsChanged(): Nullable<Item> | Promise<Nullable<Item>>;
 }
 
-export class Role {
+export interface Role {
     id: number;
     name: string;
     hierarchyTier: number;
     rolePermissions?: Nullable<Nullable<RolePermission>[]>;
 }
 
-export class RolePermission {
+export interface RolePermission {
     roleId: number;
     permissionId: number;
     permission: Permission;
     role: Role;
 }
 
-export class PermissionGroup {
+export interface PermissionGroup {
     id: number;
     name: string;
     permissions?: Nullable<Nullable<Permission>[]>;
 }
 
-export class Permission {
+export interface Permission {
     id: number;
     name: PermissionName;
     rolePermissions?: Nullable<Nullable<RolePermission>[]>;
 }
 
-export class RoleTiers {
+export interface RoleTiers {
     tierNumber: number;
 }
 
-export class User {
+export interface User {
     id: number;
     firstName?: Nullable<string>;
     lastName?: Nullable<string>;
@@ -318,14 +307,14 @@ export class User {
     address?: Nullable<Address>;
 }
 
-export class Phone {
+export interface Phone {
     id: number;
     rawDigits?: Nullable<string>;
     nationalDigits?: Nullable<string>;
     users?: Nullable<Nullable<User>[]>;
 }
 
-export class Address {
+export interface Address {
     id: number;
     address1: string;
     address2?: Nullable<string>;
@@ -336,14 +325,14 @@ export class Address {
     user?: Nullable<User>;
 }
 
-export class Category {
+export interface Category {
     code: string;
     name?: Nullable<string>;
     items?: Nullable<Nullable<Item>[]>;
     subcategories?: Nullable<Nullable<Subcategory>[]>;
 }
 
-export class Subcategory {
+export interface Subcategory {
     code: string;
     categoryCode: string;
     name?: Nullable<string>;
@@ -352,15 +341,23 @@ export class Subcategory {
     families?: Nullable<Nullable<Family>[]>;
 }
 
-export class Family {
+export interface Family {
     code: string;
     name?: Nullable<string>;
     subcategoryCode: string;
+    location?: Nullable<ShelfLocation>;
     subcategory?: Nullable<Subcategory>;
     items?: Nullable<Nullable<Item>[]>;
 }
 
-export class Item implements BaseItem {
+export interface ShelfLocation {
+    id: number;
+    aisle?: Nullable<number>;
+    side?: Nullable<ShelfSide>;
+    section?: Nullable<string>;
+}
+
+export interface Item extends BaseItem {
     id: number;
     name: string;
     categoryCode: string;
@@ -377,14 +374,14 @@ export class Item implements BaseItem {
     family?: Nullable<Family>;
 }
 
-export class AdjustmentItems {
+export interface AdjustmentItems {
     adjustmentId: number;
     itemId: number;
     adjustment?: Nullable<Adjustment>;
     item?: Nullable<Item>;
 }
 
-export class Adjustment {
+export interface Adjustment {
     id: number;
     createDate?: Nullable<string>;
     status: number;
@@ -392,7 +389,7 @@ export class Adjustment {
     adjustmentItems?: Nullable<Nullable<AdjustmentItems>[]>;
 }
 
-export class Vendor {
+export interface Vendor {
     id: number;
     name?: Nullable<string>;
     notes?: Nullable<string>;
@@ -404,7 +401,7 @@ export class Vendor {
     address?: Nullable<Address>;
 }
 
-export class ItemVendor {
+export interface ItemVendor {
     itemId: string;
     vendorId: string;
     vendorItemId?: Nullable<string>;

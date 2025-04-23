@@ -3,6 +3,7 @@ import { RepositoryService } from 'src/common/repository';
 import {
   CreateCategoryInput,
   CreateFamilyInput,
+  CreateShelfLocation,
   CreateSubcategoryInput,
 } from 'src/graphql.schema';
 
@@ -60,7 +61,10 @@ export class CategoriesService {
       where: {
         code: upsertCategory.code,
       },
-      create: upsertCategory,
+      create: {
+        ...upsertCategory,
+        canPromote: upsertCategory.canPromote ?? undefined,
+      },
       update: {
         name: upsertCategory.name,
       },
@@ -72,7 +76,10 @@ export class CategoriesService {
       where: {
         code: upsertSubcategory.code,
       },
-      create: upsertSubcategory,
+      create: {
+        ...upsertSubcategory,
+        canPromote: upsertSubcategory.canPromote ?? undefined,
+      },
       update: {
         name: upsertSubcategory.name,
         categoryCode: upsertSubcategory.categoryCode, // Not sure if this is something I want to be able to do
@@ -80,12 +87,33 @@ export class CategoriesService {
     });
   }
 
+  async upsertLocation(upsertLocation: CreateShelfLocation) {
+    if (upsertLocation.id === 0) {
+      return await this.repository.shelfLocation.create({
+        data: {
+          aisle: upsertLocation.aisle,
+          section: upsertLocation.section ?? '',
+          side: upsertLocation.side,
+        },
+      });
+    }
+  }
+
   async upsertFamily(upsertFamily: CreateFamilyInput) {
-    return this.repository.family.upsert({
+    if (upsertFamily.location) {
+      await this.upsertLocation(upsertFamily.location);
+    }
+
+    return await this.repository.family.upsert({
       where: {
         code: upsertFamily.code,
       },
-      create: upsertFamily,
+      create: {
+        code: upsertFamily.code,
+        canPromote: upsertFamily.canPromote ?? false,
+        name: upsertFamily.name,
+        subcategoryCode: upsertFamily.subcategoryCode,
+      },
       update: {
         name: upsertFamily.name,
         subcategoryCode: upsertFamily.subcategoryCode, // Not sure if this is something I want to be able to do
