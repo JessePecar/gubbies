@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { Category } from '@/inventory/categories/interfaces';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-category-item',
   imports: [],
   template: `
-    <p>
-      category-item works!
-    </p>
+    <div>
+      <p>{{ category().name }}</p>
+    </div>
   `,
-  styles: ``
+  styles: ``,
 })
 export class CategoryItemComponent {
-
+  category = input.required<Category>();
 }

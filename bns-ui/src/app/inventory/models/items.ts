@@ -1,7 +1,9 @@
+import {
+  Category,
+  Family,
+  Subcategory,
+} from '@/inventory/categories/interfaces';
 import { AdjustmentItems } from '../adjustments/models/adjustmentItems';
-import { Category } from './category';
-import { Family } from './family';
-import { SubCategory } from './subCategory';
 import { UnitOfMeasurementType } from './unitOfMeasurementType';
 
 export class Item {
@@ -17,6 +19,6 @@ export class Item {
   unitOfMeasurementType!: UnitOfMeasurementType; // Enum
   adjustmentItems!: AdjustmentItems[];
   category!: Category;
-  subCategory?: SubCategory;
+  subcategory?: Subcategory;
   family?: Family;
 }
