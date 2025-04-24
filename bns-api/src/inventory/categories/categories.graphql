@@ -48,6 +48,7 @@ input CreateShelfLocation {
 type Category {
   code: String!
   name: String
+  canPromote: Boolean
   
   items: [Item]
   subcategories: [Subcategory]
@@ -57,6 +58,7 @@ type Subcategory {
   code: String!
   categoryCode: String!
   name: String
+  canPromote: Boolean
 
   category: Category!
   items: [Item]
@@ -67,6 +69,7 @@ type Family {
   code: String!
   name: String
   subcategoryCode: String!
+  canPromote: Boolean
 
   location: ShelfLocation
   subcategory: Subcategory
