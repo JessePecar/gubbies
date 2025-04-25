@@ -6,6 +6,7 @@ export type CategorySchema =
   | {
       name: string;
       code: string;
+      canPromote: boolean;
     }
   | yup.AnyObject;
 
@@ -24,10 +25,12 @@ export class CategoryValidator implements BaseValidator<CategorySchema> {
       .required('Category code must be provided')
       .min(4, 'Category code is too short')
       .max(8, 'Category code is too long'),
+    canPromote: yup.boolean(),
   });
 
   initialData: CategorySchema = {
     name: '',
     code: '',
+    canPromote: false,
   };
 }
