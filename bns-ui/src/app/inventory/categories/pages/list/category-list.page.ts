@@ -3,14 +3,30 @@ import { PermissionEnum } from '@/entities/role';
 import { CategoryListService } from '@/inventory/categories/pages/list/category-list.service';
 import { UserInfoService } from '@/services';
 import { Component, effect, inject, signal, untracked } from '@angular/core';
+import { CategoryItemComponent } from '@/inventory/categories/ui/';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-category-list',
-  imports: [TableComponent],
+  imports: [TableComponent, CategoryItemComponent],
   template: `
     <div class="h-full w-full flex justify-center items-center">
       <div class="w-3/4">
-        <app-table [toolbarItems]="toolbarItems()"></app-table>
+        <app-table [toolbarItems]="toolbarItems()">
+          <div class="grid grid-cols-4">
+            <div class="flex items-center h-full">
+              <p>Category Code</p>
+            </div>
+            <div class="flex items-center h-full">
+              <p>Category Name</p>
+            </div>
+          </div>
+          @if (categoryListService.categories(); as categories) {
+            @for (category of categories; track $index) {
+              <category-item [category]="category" />
+            }
+          }
+        </app-table>
       </div>
     </div>
   `,
@@ -19,10 +35,12 @@ import { Component, effect, inject, signal, untracked } from '@angular/core';
 export class CategoryListPage {
   userInfoService = inject(UserInfoService);
   categoryListService = inject(CategoryListService);
+  router = inject(Router);
 
   toolbarItems = signal<ToolbarItem[]>([]);
 
   constructor() {
+    this.categoryListService.loadCategories();
     effect(() => {
       const permissions = this.userInfoService.permissions();
 
@@ -36,7 +54,7 @@ export class CategoryListPage {
           this.toolbarItems.set([
             {
               icon: 'add',
-              onClick: this.onAddCategory,
+              onClick: async () => this.onAddCategory(),
               text: 'Add Category',
             },
           ]);
@@ -47,5 +65,7 @@ export class CategoryListPage {
     });
   }
 
-  onAddCategory() {}
+  async onAddCategory() {
+    await this.router.navigate(['inventory', 'categories', 'create']);
+  }
 }

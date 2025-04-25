@@ -1,8 +1,7 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NavigationDropdownComponent } from './navigation-dropdown.component';
 import { UserInfoService } from '@/services';
 import { PermissionEnum } from '@/entities/role';
-import { NavigationDropdownDirective } from './navigation-dropdown.directive';
 
 @Component({
   selector: 'app-inventory-nav-item',
@@ -41,6 +40,11 @@ export class InventoryNavItemComponent {
     {
       linkTitle: 'Vendors',
       route: 'inventory/vendors/list',
+      permission: PermissionEnum.INVENTORY,
+    },
+    {
+      linkTitle: 'Categories',
+      route: 'inventory/categories/list',
       permission: PermissionEnum.INVENTORY,
     },
   ];

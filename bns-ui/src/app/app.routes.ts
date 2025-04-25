@@ -3,25 +3,10 @@ import { HomeComponent } from '@/pages/home.component';
 import { LoginComponent } from '@/login/login.component';
 import { authenticatedGuard, loginGuard } from '@/guards';
 import { NavigationComponent } from '@/components/navigation';
-import { inventoryGuard } from '@/guards/inventory/inventory.guard';
-import { CountsComponent } from '@/pages/inventory/counts.component';
-import {
-  AdjustmentsComponent,
-  AdjustmentFormComponent,
-  adjustmentsGuard,
-  AdjustmentsListComponent,
-} from '@/inventory/adjustments';
-import {
-  ItemCreateComponent,
-  ItemDetailsComponent,
-  ItemListComponent,
-} from '@/inventory/items';
-import { InventoryComponent } from '@/inventory/inventory.component';
 import { SettingsPage, settingsGuard } from '@/settings';
-import { vendorRoutes, VendorsComponent } from '@/inventory/vendors';
 import { usersRoutes } from '@/settings/users';
 import { roleRoutes } from '@/settings/roles';
-import { CategoriesPage, categoriesRoutes } from '@/inventory/categories';
+import { inventoryRoutes } from '@/inventory';
 
 export const routes: Routes = [
   {
@@ -34,58 +19,7 @@ export const routes: Routes = [
         component: HomeComponent,
         canActivate: [authenticatedGuard],
       },
-      {
-        path: 'inventory',
-        component: InventoryComponent,
-        canActivateChild: [inventoryGuard],
-        children: [
-          {
-            path: 'list',
-            component: ItemListComponent,
-            canActivate: [],
-          },
-          {
-            path: 'details',
-            component: ItemDetailsComponent,
-            canActivate: [],
-          },
-          {
-            path: 'create',
-            component: ItemCreateComponent,
-            canActivate: [], //TODO: Add the item create guard
-          },
-          {
-            path: 'adjustments',
-            component: AdjustmentsComponent,
-            canActivate: [adjustmentsGuard],
-            children: [
-              {
-                path: '',
-                component: AdjustmentsListComponent,
-              },
-              {
-                path: 'create',
-                component: AdjustmentFormComponent,
-              },
-            ],
-          },
-          {
-            path: 'counts',
-            component: CountsComponent,
-            canActivate: [],
-          },
-          {
-            path: 'vendors',
-            component: VendorsComponent,
-            children: vendorRoutes,
-          },
-          {
-            path: 'categories',
-            component: CategoriesPage,
-            children: categoriesRoutes,
-          },
-        ],
-      },
+      ...inventoryRoutes,
       {
         path: 'settings',
         component: SettingsPage, // Will default to navigating to user's page

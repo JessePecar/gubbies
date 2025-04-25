@@ -36,9 +36,15 @@ export class VendorsService {
   async upsertVendorsChildren(vendor: UpdateVendorInput | CreateVendorInput) {
     const isUpdate = vendor instanceof UpdateVendorInput;
 
-    let address = { id: isUpdate ? vendor.addressId : 1 };
-    let primaryPhone = { id: isUpdate ? vendor.primaryPhoneId : 1 };
-    let secondaryPhone = { id: isUpdate ? vendor.secondaryPhoneId : 1 };
+    let address = {
+      id: isUpdate ? (vendor as UpdateVendorInput).addressId : 1,
+    };
+    let primaryPhone = {
+      id: isUpdate ? (vendor as UpdateVendorInput).primaryPhoneId : 1,
+    };
+    let secondaryPhone = {
+      id: isUpdate ? (vendor as UpdateVendorInput).secondaryPhoneId : 1,
+    };
 
     if (vendor.address) {
       address = await this.sharedService.updateAddress(vendor.address);

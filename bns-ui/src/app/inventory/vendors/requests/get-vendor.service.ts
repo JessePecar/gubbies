@@ -7,8 +7,8 @@ import { Vendor } from '@/inventory/vendors/store';
 })
 export class GetVendorService extends Query<{ vendor: Vendor }> {
   document = gql`
-    query {
-      vendors {
+    query GetVendor($id: Int!) {
+      vendor(id: $id) {
         id
         name
         notes

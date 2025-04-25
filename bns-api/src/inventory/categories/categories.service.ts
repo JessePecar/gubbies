@@ -20,13 +20,13 @@ export class CategoriesService {
   };
 
   async getCategories() {
-    return this.repository.categories.findMany({
+    return await this.repository.categories.findMany({
       include: this.defaultIncludes,
     });
   }
 
   async getCategoryByCode(code: string) {
-    return this.repository.categories.findFirst({
+    return await this.repository.categories.findFirst({
       where: {
         code: {
           equals: code,
@@ -37,7 +37,7 @@ export class CategoriesService {
   }
 
   async getSubcategories(categoryCode: string) {
-    return this.repository.subcategory.findMany({
+    return await this.repository.subcategory.findMany({
       where: {
         categoryCode: {
           equals: categoryCode,
@@ -47,7 +47,7 @@ export class CategoriesService {
   }
 
   async getFamilies(subcategoryCode: string) {
-    return this.repository.family.findMany({
+    return await this.repository.family.findMany({
       where: {
         subcategoryCode: {
           equals: subcategoryCode,
@@ -57,7 +57,7 @@ export class CategoriesService {
   }
 
   async upsertCategory(upsertCategory: CreateCategoryInput) {
-    return this.repository.categories.upsert({
+    const newCategory = await this.repository.categories.upsert({
       where: {
         code: upsertCategory.code,
       },
@@ -69,10 +69,12 @@ export class CategoriesService {
         name: upsertCategory.name,
       },
     });
+
+    return newCategory;
   }
 
   async upsertSubcategory(upsertSubcategory: CreateSubcategoryInput) {
-    return this.repository.subcategory.upsert({
+    return await this.repository.subcategory.upsert({
       where: {
         code: upsertSubcategory.code,
       },

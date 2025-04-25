@@ -16,7 +16,7 @@ export class ItemsService {
   private readonly defaultInclude = {
     category: {
       include: {
-        subCategories: {
+        subcategories: {
           include: {
             families: {
               select: this.subCatFamSelect,

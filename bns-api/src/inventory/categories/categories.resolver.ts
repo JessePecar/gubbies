@@ -1,36 +1,62 @@
-import { Args, Resolver } from '@nestjs/graphql';
-import { CreateCategoryInput, CreateFamilyInput, CreateSubcategoryInput } from 'src/graphql.schema';
+import { UseGuards } from '@nestjs/common';
+import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
+import { AppAuthGuard } from 'src/common/guards';
+import {
+  CreateCategoryInput,
+  CreateFamilyInput,
+  CreateSubcategoryInput,
+} from 'src/graphql.schema';
 import { CategoriesService } from 'src/inventory/categories/categories.service';
 
 @Resolver('Categories')
 export class CategoriesResolver {
   constructor(private readonly categoriesService: CategoriesService) {}
 
+  @UseGuards(AppAuthGuard)
+  @Query('categories')
   async getCategories() {
-    return this.categoriesService.getCategories();
+    return await this.categoriesService.getCategories();
   }
 
+  @UseGuards(AppAuthGuard)
+  @Query('category')
   async getCategoryByCode(@Args('code') code: string) {
-    return this.categoriesService.getCategoryByCode(code);
+    return await this.categoriesService.getCategoryByCode(code);
   }
 
+  @UseGuards(AppAuthGuard)
+  @Query('subcategories')
   async getSubcategories(@Args('categoryCode') categoryCode: string) {
-    return this.categoriesService.getSubcategories(categoryCode);
+    return await this.categoriesService.getSubcategories(categoryCode);
   }
 
+  @UseGuards(AppAuthGuard)
+  @Query('families')
   async getFamilies(@Args('subcategoryCode') subcategoryCode: string) {
-    return this.categoriesService.getFamilies(subcategoryCode);
+    return await this.categoriesService.getFamilies(subcategoryCode);
   }
 
-  async upsertCategory(@Args('upsertCategory') upsertCategory: CreateCategoryInput) {
-    return this.categoriesService.upsertCategory(upsertCategory);
+  @UseGuards(AppAuthGuard)
+  @Mutation('upsertCategory')
+  async upsertCategory(
+    @Args('createCategoryInput') upsertCategory: CreateCategoryInput,
+  ) {
+    return await this.categoriesService.upsertCategory(upsertCategory);
   }
 
-  async upsertSubcategory(@Args('upsertSubcategory') upsertSubcategory: CreateSubcategoryInput) {
-    return this.categoriesService.upsertSubcategory(upsertSubcategory);
+  @UseGuards(AppAuthGuard)
+  @Mutation('upsertSubcategory')
+  async upsertSubcategory(
+    @Args('createSubcategoryInput') upsertSubcategory: CreateSubcategoryInput,
+  ) {
+    return await this.categoriesService.upsertSubcategory(upsertSubcategory);
   }
 
-  async upsertFamily(@Args('upsertFamily') upsertFamily: CreateFamilyInput) {
-    return this.categoriesService.upsertFamily(upsertFamily);
+  @UseGuards(AppAuthGuard)
+  @Mutation('upsertFamily')
+  async upsertFamily(
+    @Args('createFamilyInput') upsertFamily: CreateFamilyInput,
+  ) {
+    return await this.categoriesService.upsertFamily(upsertFamily);
   }
 }
