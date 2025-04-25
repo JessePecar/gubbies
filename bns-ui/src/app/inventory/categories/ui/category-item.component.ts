@@ -14,7 +14,8 @@ import { Component, input } from '@angular/core';
       </div>
       <div>
         @if (category().canPromote) {
-          <p class="rounded-full bg-primary-green text-white px-4 py-2">
+          <p
+            class="rounded-full text-center bg-primary-green text-white py-2 w-32">
             Can Promote
           </p>
         }
