@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import * as yup from 'yup';
 import { BaseValidator } from '@/common/validators';
+import { SubcategoryQuery } from '@/inventory/categories/requests';
 
 export type SubcategorySchema =
   | {
@@ -14,6 +15,7 @@ export type SubcategorySchema =
   providedIn: 'root',
 })
 export class SubcategoryValidator implements BaseValidator<SubcategorySchema> {
+  subcategoryQuery = inject(SubcategoryQuery);
   validator = yup.object().shape({
     name: yup
       .string()
@@ -33,4 +35,18 @@ export class SubcategoryValidator implements BaseValidator<SubcategorySchema> {
     code: '',
     canPromote: false,
   };
+
+  async validateCode(value: string, callback: (isCodeValid: boolean) => void) {
+    return this.subcategoryQuery
+      .fetch({
+        code: value,
+      })
+      .subscribe(({ data: { subcategory }, errors }) => {
+        if (subcategory === undefined || subcategory === null || errors) {
+          callback(true);
+        } else {
+          callback(false);
+        }
+      });
+  }
 }
