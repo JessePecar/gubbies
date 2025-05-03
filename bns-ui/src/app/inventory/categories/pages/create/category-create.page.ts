@@ -36,7 +36,7 @@ import { CategoryCreateService } from '@/inventory/categories/pages/create/categ
                 label="Can Create Category Promotion" />
             </div>
           </div>
-
+          
           <div class="w-full flex justify-end space-x-4 pt-4">
             <app-button
               text="Cancel"

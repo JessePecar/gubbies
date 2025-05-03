@@ -11,11 +11,19 @@ import {
 export class CategoriesService {
   constructor(private readonly repository: RepositoryService) {}
 
+  private readonly familyIncludes = {
+    location: true,
+  }
+
+  private readonly subcategoryIncludes = {
+    families: {
+      include: this.familyIncludes,
+    },
+  };
+
   private readonly defaultIncludes = {
     subcategories: {
-      include: {
-        families: true,
-      },
+      include: this.subcategoryIncludes,
     },
   };
 
@@ -46,6 +54,17 @@ export class CategoriesService {
     });
   }
 
+  async getSubcategoryByCode(code: string) {
+    return await this.repository.subcategory.findFirst({
+      where: {
+        code: {
+          equals: code,
+        },
+      },
+      include: this.subcategoryIncludes,
+    });
+  }
+
   async getFamilies(subcategoryCode: string) {
     return await this.repository.family.findMany({
       where: {
@@ -53,6 +72,17 @@ export class CategoriesService {
           equals: subcategoryCode,
         },
       },
+    });
+  }
+  
+  async getFamilyByCode(code: string) {
+    return await this.repository.family.findFirst({
+      where: {
+        code: {
+          equals: code,
+        },
+      },
+      include: this.familyIncludes,
     });
   }
 

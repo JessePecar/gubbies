@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-create-subcategory',
-  imports: [],
+  imports: [ReactiveFormsModule],
   template: `
-    <p>
-      create-subcategory works!
-    </p>
+    <div>
+      <form></form>
+    </div>
   `,
-  styles: ``
+  styles: ``,
 })
 export class CreateSubcategoryComponent {
-
+  
 }

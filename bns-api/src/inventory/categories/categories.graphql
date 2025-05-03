@@ -2,7 +2,9 @@ type Query {
   categories: [Category]
   category(code: String!): Category
   subcategories(categoryCode: String!): [Subcategory]
+  subcategory(code: String!): Subcategory
   families(subcategoryCode: String!): [Family]
+  family(code: String!): Family
 }
 
 type Mutation {
