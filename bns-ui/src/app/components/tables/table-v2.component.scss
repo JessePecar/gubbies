@@ -1,0 +1,18 @@
+thead th:not(:first-child) {
+  // width: 8rem;
+}
+
+thead th:last-child.expand {
+  width: 4rem;
+}
+
+th {
+  text-align: start;
+  padding-left: 1rem;
+}
+
+table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  width: max(32rem, 100%);
+}

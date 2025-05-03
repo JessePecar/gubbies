@@ -1,4 +1,4 @@
-import { TableComponent, ToolbarItem } from '@/components/tables';
+import { TableComponentV2, ToolbarItem } from '@/components/tables';
 import { PermissionEnum } from '@/entities/role';
 import { CategoryListService } from '@/inventory/categories/pages/list/category-list.service';
 import { UserInfoService } from '@/services';
@@ -8,25 +8,15 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-category-list',
-  imports: [TableComponent, CategoryItemComponent],
+  imports: [TableComponentV2, CategoryItemComponent],
   template: `
-    <div class="h-full w-full flex justify-center items-center">
+    <div class="h-full w-full flex justify-center pt-20">
       <div class="w-3/4">
-        <app-table [toolbarItems]="toolbarItems()">
-          <div class="grid grid-cols-4">
-            <div class="flex items-center h-full">
-              <p>Category Code</p>
-            </div>
-            <div class="flex items-center h-full">
-              <p>Category Name</p>
-            </div>
-          </div>
-          @if (categoryListService.categories(); as categories) {
-            @for (category of categories; track $index) {
-              <category-item [category]="category" />
-            }
-          }
-        </app-table>
+        <app-table-v2
+          [useExpand]="true"
+          [columns]="categoryListService.columnDefinitions"
+          [items]="categoryListService.categories()">
+        </app-table-v2>
       </div>
     </div>
   `,
@@ -35,6 +25,7 @@ import { Router } from '@angular/router';
 export class CategoryListPage {
   userInfoService = inject(UserInfoService);
   categoryListService = inject(CategoryListService);
+
   router = inject(Router);
 
   toolbarItems = signal<ToolbarItem[]>([]);
