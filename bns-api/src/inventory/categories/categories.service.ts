@@ -13,7 +13,7 @@ export class CategoriesService {
 
   private readonly familyIncludes = {
     location: true,
-  }
+  };
 
   private readonly subcategoryIncludes = {
     families: {
@@ -27,9 +27,12 @@ export class CategoriesService {
     },
   };
 
+  // Get all the categories in the list, do not include children, just the count
   async getCategories() {
     return await this.repository.categories.findMany({
-      include: this.defaultIncludes,
+      include: {
+        subcategories: true,
+      },
     });
   }
 
@@ -41,6 +44,14 @@ export class CategoriesService {
         },
       },
       include: this.defaultIncludes,
+    });
+  }
+
+  async getAllSubcategories() {
+    return await this.repository.subcategory.findMany({
+      include: {
+        families: true,
+      },
     });
   }
 
@@ -65,6 +76,14 @@ export class CategoriesService {
     });
   }
 
+  async getAllFamilies() {
+    return await this.repository.family.findMany({
+      include: {
+        location: true,
+      },
+    });
+  }
+
   async getFamilies(subcategoryCode: string) {
     return await this.repository.family.findMany({
       where: {
@@ -74,7 +93,7 @@ export class CategoriesService {
       },
     });
   }
-  
+
   async getFamilyByCode(code: string) {
     return await this.repository.family.findFirst({
       where: {

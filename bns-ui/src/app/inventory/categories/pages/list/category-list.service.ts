@@ -1,4 +1,3 @@
-import { ColumnDefinitions } from '@/components/tables';
 import { Category } from '@/inventory/categories/interfaces';
 import { CategoriesQuery } from '@/inventory/categories/requests';
 import { inject, Injectable, signal } from '@angular/core';
@@ -11,21 +10,6 @@ export class CategoryListService {
 
   categories = signal<Category[]>([]);
   isLoading = signal<boolean>(true);
-
-  columnDefinitions: ColumnDefinitions<Category> = [
-    {
-      name: 'code',
-      title: 'Category Code',
-    },
-    {
-      name: 'name',
-      title: 'Name',
-    },
-    {
-      name: 'canPromote',
-      title: 'Can Promote',
-    },
-  ];
 
   loadCategories() {
     this.isLoading.set(true);

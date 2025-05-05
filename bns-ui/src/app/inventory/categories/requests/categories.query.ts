@@ -12,21 +12,9 @@ export class CategoriesQuery extends Query<{ categories: Category[] }> {
         code
         name
         canPromote
+        canTransfer
         subcategories {
           code
-          name
-          canPromote
-          families {
-            code
-            name
-            canPromote
-            location {
-              id
-              aisle
-              side
-              section
-            }
-          }
         }
       }
     }

@@ -2,8 +2,10 @@ type Query {
   categories: [Category]
   category(code: String!): Category
   subcategories(categoryCode: String!): [Subcategory]
+  subcategories: [Subcategory]
   subcategory(code: String!): Subcategory
   families(subcategoryCode: String!): [Family]
+  families: [Family]
   family(code: String!): Family
 }
 
@@ -45,12 +47,13 @@ input CreateShelfLocation {
   section: String
 }
 
-## TODO: I will want to have some specific flags and info on the cateogories for determining what will happen to items connected
+## TODO: I will want to have some specific flags and info on the categories for determining what will happen to items connected
 ## EXAMPLE: Shelf Location, CanTransfer, CanPromote, CanPriceChange, etc (Maybe default vendor for family and subcat)
 type Category {
   code: String!
   name: String
   canPromote: Boolean
+  canTransfer: Boolean
   
   items: [Item]
   subcategories: [Subcategory]
@@ -61,6 +64,7 @@ type Subcategory {
   categoryCode: String!
   name: String
   canPromote: Boolean
+  canTransfer: Boolean
 
   category: Category!
   items: [Item]
@@ -72,6 +76,8 @@ type Family {
   name: String
   subcategoryCode: String!
   canPromote: Boolean
+  canTransfer: Boolean
+  canPriceChange: Boolean
 
   location: ShelfLocation
   subcategory: Subcategory

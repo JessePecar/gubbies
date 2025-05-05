@@ -1,25 +1,35 @@
-import { TabComponent } from '@/components/tab/tab.component';
+import { Component, inject, input } from '@angular/core';
 import {
-  Component,
-  ContentChildren,
-  effect,
-  QueryList,
-  signal,
-  untracked,
-} from '@angular/core';
+  ActivatedRoute,
+  Router,
+  RouterLink,
+  RouterOutlet,
+} from '@angular/router';
+
+interface TabInfo {
+  path: string;
+  title: string;
+}
 
 @Component({
   selector: 'app-tab-container',
-  imports: [],
+  imports: [RouterOutlet, RouterLink],
   template: `
     <ul class="tab-titles">
       @for (tab of tabs(); track $index) {
-        <li [class.active]="tab.isActive()" (click)="onTabSelect(tab)">
-          {{ tab.title() }}
+        <li
+          class="rounded-t p-3 py-2"
+          [routerLink]="tab.path"
+          [relativeTo]="route.parent"
+          [class.active]="isActive(tab.path)"
+          routerLinkActive="active">
+          {{ tab.title }}
         </li>
       }
     </ul>
-    <ng-content></ng-content>
+    <div class="tab-view-container">
+      <router-outlet />
+    </div>
   `,
   styles: `
     .tab-titles {
@@ -29,47 +39,24 @@ import {
       cursor: pointer;
     }
     .tab-titles li {
-      padding: 10px 20px;
       border: 1px solid var(--color-primary-dark);
       margin-right: 4px;
     }
-    .tab-titles li.active {
-      background-color: var(--color-primary-green);
+    .active {
+      background-color: var(--color-primary-blue);
       color: var(--color-primary);
+    }
+    .tab-view-container {
+      height: calc(75vh - 40px);
     }
   `,
 })
 export class TabContainerComponent {
-  @ContentChildren(TabComponent) tabQuery!: QueryList<TabComponent>;
-  tabs = signal<TabComponent[]>([]);
+  tabs = input<TabInfo[]>([]);
+  route = inject(ActivatedRoute);
+  router = inject(Router);
 
-  constructor() {
-    effect(() => {
-      const tabQuery = this.tabQuery;
-
-      untracked(() => {
-        // Set the signal and the current active tab
-        const tabs = tabQuery.toArray();
-        if (!tabs.some(tab => tab.isActive())) {
-          tabs[0].isActive.set(true);
-        }
-
-        this.tabs.set(tabs);
-      });
-    });
-  }
-
-  onTabSelect(tabComponent: TabComponent) {
-    this.tabs.update(tab => {
-      tab.map(t => {
-        t.isActive.set(false);
-
-        return t;
-      });
-
-      return tab;
-    });
-
-    tabComponent.isActive.set(true);
+  isActive(path: string) {
+    return this.router.url.endsWith(`/${path}`);
   }
 }

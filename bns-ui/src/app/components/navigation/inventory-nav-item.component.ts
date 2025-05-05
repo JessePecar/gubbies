@@ -44,7 +44,7 @@ export class InventoryNavItemComponent {
     },
     {
       linkTitle: 'Categories',
-      route: 'inventory/categories/list',
+      route: 'inventory/categories/category-list',
       permission: PermissionEnum.INVENTORY,
     },
   ];
