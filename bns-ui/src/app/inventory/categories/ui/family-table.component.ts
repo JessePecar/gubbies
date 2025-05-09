@@ -14,6 +14,7 @@ import { FamilyItemComponent } from './family-item.component';
     @if (categoryListService.families(); as families) {
       @for (family of families; track $index) {
         <family-item [family]="family" />
+        <hr class="border-primary-dark" />
       }
     }
   </app-table>`,

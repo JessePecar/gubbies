@@ -9,15 +9,13 @@ import { MatIconModule } from '@angular/material/icon';
     <div class="grid grid-cols-4 p-2">
       <div class="flex flex-col justify-center h-full space-2">
         <p>
-          <strong>{{ category().code }}</strong>
-        </p>
-        <p>
-          <small>{{ category().name }} </small>
+          <strong>({{ category().code }}) </strong>
+          <span>{{ category().name }} </span>
         </p>
       </div>
       <div class="flex justify-around items-center h-full">
         <div class="flex flex-col items-center">
-          <p>Can Promote</p>
+          <small class="mb-2">Can Promote</small>
           <span
             [class]="
               category().canPromote
@@ -31,7 +29,7 @@ import { MatIconModule } from '@angular/material/icon';
           </span>
         </div>
         <div class="flex flex-col items-center">
-          <p>Can Transfer</p>
+          <small class="mb-2">Can Transfer</small>
           <span
             [class]="
               category().canTransfer
@@ -46,7 +44,7 @@ import { MatIconModule } from '@angular/material/icon';
         </div>
       </div>
       <div class="flex flex-col items-center">
-        <p>Subcategories</p>
+        <small class="mb-2">Subcategories</small>
         @if (category().subcategories.length) {
           <p>{{ category().subcategories.length }}</p>
         } @else {

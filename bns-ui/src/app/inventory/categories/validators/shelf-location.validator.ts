@@ -33,7 +33,7 @@ export class ShelfLocationValidator
 
   initialData: ShelfLocationSchema = {
     aisle: undefined,
-    section: ShelfSide.RIGHT,
-    side: '',
+    side: ShelfSide.RIGHT,
+    section: '',
   };
 }

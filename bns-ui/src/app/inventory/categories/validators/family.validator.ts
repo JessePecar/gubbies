@@ -5,6 +5,7 @@ import {
   ShelfLocationSchema,
   ShelfLocationValidator,
 } from '@/inventory/categories/validators/shelf-location.validator';
+import { FamilyQuery } from '@/inventory/categories/requests';
 
 export type FamilySchema =
   | {
@@ -13,6 +14,7 @@ export type FamilySchema =
       canPromote: boolean;
       canTransfer: boolean;
       canPriceChange: boolean;
+      subcategoryCode: string;
       location: ShelfLocationSchema;
     }
   | yup.AnyObject;
@@ -22,6 +24,7 @@ export type FamilySchema =
 })
 export class FamilyValidator implements BaseValidator<FamilySchema> {
   shelfLocationValidator = inject(ShelfLocationValidator);
+  familyQuery = inject(FamilyQuery);
 
   validator = yup.object().shape({
     name: yup
@@ -34,6 +37,7 @@ export class FamilyValidator implements BaseValidator<FamilySchema> {
       .required('Family code must be provided')
       .min(4, 'Family code is too short')
       .max(8, 'Family code is too long'),
+    subcategoryCode: yup.string().required(),
     canPromote: yup.boolean(),
     canPriceChange: yup.boolean(),
     canTransfer: yup.boolean(),
@@ -46,6 +50,21 @@ export class FamilyValidator implements BaseValidator<FamilySchema> {
     canPromote: false,
     canPriceChange: false,
     canTransfer: false,
+    subcategoryCode: '',
     location: this.shelfLocationValidator.initialData,
   };
+
+  async validateCode(value: string, callback: (isCodeValid: boolean) => void) {
+    return this.familyQuery
+      .fetch({
+        code: value,
+      })
+      .subscribe(({ data: { family }, errors }) => {
+        if (family === undefined || family === null || errors) {
+          callback(true);
+        } else {
+          callback(false);
+        }
+      });
+  }
 }

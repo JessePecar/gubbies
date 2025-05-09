@@ -5,20 +5,15 @@ import { gql, Query } from 'apollo-angular';
 @Injectable({
   providedIn: 'root',
 })
-export class AllFamiliesQuery extends Query<{
-  families: Family[];
-}> {
+export class FamilyQuery extends Query<{ family: Family }> {
   override document = gql`
-    query {
-      families {
+    query GetFamily($code: String!) {
+      family(code: $code) {
         code
         name
         canPromote
         canTransfer
         canPriceChange
-        subcategory {
-          name
-        }
         location {
           id
           aisle

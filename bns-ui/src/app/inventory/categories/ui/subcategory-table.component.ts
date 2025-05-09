@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
       @if (categoryListService.subcategories(); as subcategories) {
         @for (subcategory of subcategories; track $index) {
           <subcategory-item [subcategory]="subcategory" />
+          <hr class="border-primary-dark" />
         }
       }
     </app-table>

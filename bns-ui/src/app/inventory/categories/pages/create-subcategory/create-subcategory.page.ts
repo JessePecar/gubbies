@@ -26,18 +26,23 @@ import {
           <form class="w-1/2" [formGroup]="form">
             <h1 class="text-xl"><strong>Create Subcategory</strong></h1>
             <div class="grid grid-cols-3 gap-4 pt-4">
-              <!-- Category code -->
+              <!-- Subcategory code -->
               <div>
-                <app-text-input formControlName="code" label="Category Code" />
+                <app-text-input
+                  formControlName="code"
+                  label="Subcategory Code" />
               </div>
-              <!-- Category name -->
+              <!-- Subcategory name -->
               <div>
-                <app-text-input formControlName="name" label="Category Name" />
+                <app-text-input
+                  formControlName="name"
+                  label="Subcategory Name" />
               </div>
               <!-- Parent category -->
               <div>
                 <!-- <p></p> -->
                 <app-dropdown
+                  [isRequired]="true"
                   label="Category"
                   formControlName="categoryCode"
                   [options]="categoryOptions()">
@@ -47,12 +52,12 @@ import {
               <div class="flex items-end col-span-3 space-x-6">
                 <app-switch-input
                   formControlName="canPromote"
-                  label="Can Create Category Promotion" />
+                  label="Can create subcategory level promotion" />
 
                 <app-switch-input
                   title="Will default subcategory and families ability to transfer to the category when setting the category"
                   formControlName="canTransfer"
-                  label="Can transfer items in the category" />
+                  label="Can transfer items assigned to subcategory" />
               </div>
             </div>
 

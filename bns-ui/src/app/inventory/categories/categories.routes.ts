@@ -8,6 +8,7 @@ import {
 } from '@/inventory/categories/ui';
 import { CreatePage } from '@/inventory/categories/pages/create';
 import { CreateSubcategoryPage } from '@/inventory/categories/pages/create-subcategory';
+import { CreateFamilyPage } from '@/inventory/categories/pages/create-family';
 
 export const categoriesRoutes: Routes = [
   {
@@ -24,7 +25,7 @@ export const categoriesRoutes: Routes = [
       },
       {
         path: 'family',
-        component: CategoryCreatePage,
+        component: CreateFamilyPage,
       },
       {
         path: '**',

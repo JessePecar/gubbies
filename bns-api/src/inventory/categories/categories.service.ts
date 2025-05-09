@@ -81,6 +81,7 @@ export class CategoriesService {
     return await this.repository.family.findMany({
       include: {
         location: true,
+        subcategory: true,
       },
     });
   }
@@ -151,11 +152,23 @@ export class CategoriesService {
         },
       });
     }
+
+    return await this.repository.shelfLocation.update({
+      where: {
+        id: upsertLocation.id,
+      },
+      data: {
+        aisle: upsertLocation.aisle,
+        section: upsertLocation.section ?? '',
+        side: upsertLocation.side,
+      },
+    });
   }
 
   async upsertFamily(upsertFamily: CreateFamilyInput) {
-    if (upsertFamily.location) {
-      await this.upsertLocation(upsertFamily.location);
+    let location;
+    if (!!upsertFamily.location) {
+      location = await this.upsertLocation(upsertFamily.location);
     }
 
     return await this.repository.family.upsert({
@@ -167,6 +180,7 @@ export class CategoriesService {
         canPromote: upsertFamily.canPromote ?? false,
         canTransfer: upsertFamily.canTransfer ?? false,
         canPriceChange: upsertFamily.canPriceChange ?? false,
+        locationId: location.id, // If creating, we will have had a new location object created
         name: upsertFamily.name,
         subcategoryCode: upsertFamily.subcategoryCode,
       },

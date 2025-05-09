@@ -1,44 +1,55 @@
 import { GlobalAlertService } from '@/components/alert';
-import { Category } from '@/inventory/categories/interfaces';
+import { ShelfSide, Subcategory } from '@/inventory/categories/interfaces';
 import { CategoryListService } from '@/inventory/categories/pages/list';
 import {
-  CategoriesQuery,
-  CreateSubcategoryMutation,
+  AllSubcategoriesQuery,
+  CreateFamilyMutation,
 } from '@/inventory/categories/requests';
-import { SubcategoryStore } from '@/inventory/categories/store/subcategory.store';
+import { FamilyStore } from '@/inventory/categories/store';
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CreateSubcategoryService {
-  categoriesQuery = inject(CategoriesQuery);
-  createSubcategoryMutation = inject(CreateSubcategoryMutation);
-  subcategoryStore = inject(SubcategoryStore);
+export class CreateFamilyService {
+  subcategoriesQuery = inject(AllSubcategoriesQuery);
+  createFamilyMutation = inject(CreateFamilyMutation);
+  familyStore = inject(FamilyStore);
   alertService = inject(GlobalAlertService);
   router = inject(Router);
 
   categoryListService = inject(CategoryListService);
 
-  categories = signal<Category[]>([]);
+  subcategories = signal<Subcategory[]>([]);
 
   constructor() {
-    this.categoriesQuery.fetch().subscribe(({ data: { categories } }) => {
-      this.categories.set(categories);
+    this.subcategoriesQuery.fetch().subscribe(({ data: { subcategories } }) => {
+      this.subcategories.set(subcategories);
     });
   }
 
   onSubmit() {
-    const formValue = this.subcategoryStore.form.value;
+    const formValue = this.familyStore.form.value;
 
-    if (this.subcategoryStore.form.valid) {
-      this.subcategoryStore.onSubmit((isCodeValid: boolean) => {
+    if (this.familyStore.form.valid) {
+      this.familyStore.onSubmit((isCodeValid: boolean) => {
         if (isCodeValid) {
-          this.createSubcategoryMutation
+          this.createFamilyMutation
             .mutate(
               {
-                createSubcategoryInput: formValue,
+                createFamilyInput: {
+                  ...formValue,
+                  location: {
+                    id: 0,
+                    aisle: +formValue.location.aisle,
+                    side:
+                      formValue.location.side === ShelfSide.RIGHT
+                        ? 'RIGHT'
+                        : 'LEFT',
+                    section: formValue.location.section,
+                  },
+                },
               },
               {
                 errorPolicy: 'all',
@@ -53,9 +64,9 @@ export class CreateSubcategoryService {
                   2000
                 );
 
-                this.categoryListService.subcategories.update(cat => [
-                  ...cat,
-                  data.upsertSubcategory,
+                this.categoryListService.families.update(fam => [
+                  ...fam,
+                  data.upsertFamily,
                 ]);
 
                 this.router.navigate(['inventory', 'categories', 'list']);
@@ -68,7 +79,7 @@ export class CreateSubcategoryService {
         } else {
           this.alertService.addAlert(
             'error',
-            'Subcategory Code already exists',
+            'Family Code already exists',
             2000
           );
         }

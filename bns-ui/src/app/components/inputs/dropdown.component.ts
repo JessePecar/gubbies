@@ -24,8 +24,11 @@ export interface DropdownOption {
   selector: 'app-dropdown',
   imports: [MatIconModule, MatRippleModule, ReactiveFormsModule],
   template: `
-    <div class="mb-[2px] pl-2 mt-[-2px] text-sm">
+    <div class="mb-[2px] pl-2 mt-[-2px] text-sm flex space-x-1">
       <p>{{ label() }}</p>
+      @if (isRequired()) {
+        <p class="opacity-50 text-red-700 font-bold pl-1">*</p>
+      }
     </div>
     <div #dropdown class="dropdown " tabindex="1">
       <i class="db2" tabindex="1"></i>
@@ -70,6 +73,7 @@ export class DropdownComponent implements ControlValueAccessor {
 
   options = input.required<DropdownOption[] | null>();
   label = input<string | undefined>(undefined);
+  isRequired = input<boolean>(false);
 
   handleUnfocus = output<string>();
 

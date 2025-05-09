@@ -7,15 +7,19 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [MatIconModule],
   template: `
     <div class="grid grid-cols-4 p-2">
-      <div class="flex items-center h-full">
-        <p>{{ family().code }}</p>
-      </div>
-      <div class="flex items-center h-full">
-        <p>{{ family().name }}</p>
+      <div class="flex flex-col justify-center h-full space-2">
+        <p>
+          <strong>({{ family().code }}) </strong>
+          <span>{{ family().name }} </span>
+        </p>
+        <small
+          >Subcategory:
+          <span class="italic">{{ family().subcategory.name }}</span></small
+        >
       </div>
       <div class="col-span-2 flex justify-around items-center h-full">
         <div class="flex flex-col items-center">
-          <p>Can Promote</p>
+          <small class="mb-2">Can Promote</small>
           <span
             [class]="
               family().canPromote
@@ -29,7 +33,7 @@ import { MatIconModule } from '@angular/material/icon';
           </span>
         </div>
         <div class="flex flex-col items-center">
-          <p>Can Transfer</p>
+          <small class="mb-2">Can Transfer</small>
           <span
             [class]="
               family().canTransfer
@@ -43,7 +47,7 @@ import { MatIconModule } from '@angular/material/icon';
           </span>
         </div>
         <div class="flex flex-col items-center">
-          <p>Can Change Price</p>
+          <small class="mb-2">Can Change Price</small>
           <span
             [class]="
               family().canPriceChange
@@ -56,6 +60,14 @@ import { MatIconModule } from '@angular/material/icon';
               " />
           </span>
         </div>
+      </div>
+      <div class="flex flex-col items-center">
+        <small class="mb-3">Aisle/Side/Section</small>
+        @if (family().location; as location) {
+          <p class="text-sm">
+            {{ location.aisle }} / {{ location.side }} / {{ location.section }}
+          </p>
+        }
       </div>
     </div>
   `,
