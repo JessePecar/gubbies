@@ -14,14 +14,6 @@ import { Router } from '@angular/router';
   imports: [TableComponent, CategoryItemComponent],
   template: `
     <app-table [toolbarItems]="toolbarItems()">
-      <div class="grid grid-cols-4">
-        <div class="flex items-center h-full">
-          <p>Category Code</p>
-        </div>
-        <div class="flex items-center h-full">
-          <p>Category Name</p>
-        </div>
-      </div>
       @if (categoryListService.categories(); as categories) {
         @for (category of categories; track $index) {
           <category-item [category]="category" />

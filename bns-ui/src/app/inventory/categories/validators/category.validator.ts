@@ -8,6 +8,7 @@ export type CategorySchema =
       name: string;
       code: string;
       canPromote: boolean;
+      canTransfer: boolean;
     }
   | yup.AnyObject;
 
@@ -29,12 +30,14 @@ export class CategoryValidator implements BaseValidator<CategorySchema> {
       .min(4, 'Category code is too short')
       .max(8, 'Category code is too long'),
     canPromote: yup.boolean(),
+    canTransfer: yup.boolean(),
   });
 
   initialData: CategorySchema = {
     name: '',
     code: '',
     canPromote: false,
+    canTransfer: false,
   };
 
   async validateCode(value: string, callback: (isCodeValid: boolean) => void) {

@@ -8,6 +8,8 @@ export type SubcategorySchema =
       name: string;
       code: string;
       canPromote: boolean;
+      canTransfer: boolean;
+      categoryCode: string;
     }
   | yup.AnyObject;
 
@@ -27,13 +29,17 @@ export class SubcategoryValidator implements BaseValidator<SubcategorySchema> {
       .required('Subcategory code must be provided')
       .min(4, 'Subcategory code is too short')
       .max(8, 'Subcategory code is too long'),
+    categoryCode: yup.string().required('A category must be selected'),
     canPromote: yup.boolean(),
+    canTransfer: yup.boolean(),
   });
 
   initialData: SubcategorySchema = {
     name: '',
     code: '',
+    categoryCode: '',
     canPromote: false,
+    canTransfer: false,
   };
 
   async validateCode(value: string, callback: (isCodeValid: boolean) => void) {

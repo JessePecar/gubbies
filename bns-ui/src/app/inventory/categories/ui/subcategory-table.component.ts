@@ -11,14 +11,6 @@ import { Router } from '@angular/router';
   imports: [TableComponent, SubcategoryItemComponent],
   template: `
     <app-table [toolbarItems]="toolbarItems()">
-      <div class="grid grid-cols-4">
-        <div class="flex items-center h-full">
-          <p>Category Code</p>
-        </div>
-        <div class="flex items-center h-full">
-          <p>Category Name</p>
-        </div>
-      </div>
       @if (categoryListService.subcategories(); as subcategories) {
         @for (subcategory of subcategories; track $index) {
           <subcategory-item [subcategory]="subcategory" />
@@ -62,6 +54,11 @@ export class SubcategoryTableComponent {
   }
 
   async onAddSubcategory() {
-    await this.router.navigate(['inventory', 'categories', 'create']);
+    await this.router.navigate([
+      'inventory',
+      'categories',
+      'create',
+      'subcategory',
+    ]);
   }
 }

@@ -5,7 +5,7 @@ import { TextInputComponent } from '@/components/inputs/text-input.component';
 import { SwitchInputComponent } from '@/components/inputs/switch-input.component';
 import { ButtonComponent } from '../../../../components/buttons/button.component';
 import { Router } from '@angular/router';
-import { CategoryCreateService } from '@/inventory/categories/pages/create/category-create.service';
+import { CategoryCreateService } from '@/inventory/categories/pages/create-category/category-create.service';
 
 @Component({
   selector: 'app-category-create',
@@ -34,9 +34,13 @@ import { CategoryCreateService } from '@/inventory/categories/pages/create/categ
               <app-switch-input
                 formControlName="canPromote"
                 label="Can Create Category Promotion" />
+              <app-switch-input
+                title="Will default subcategory and families ability to transfer to the category when setting the category"
+                formControlName="canTransfer"
+                label="Can transfer items in the category" />
             </div>
           </div>
-          
+
           <div class="w-full flex justify-end space-x-4 pt-4">
             <app-button
               text="Cancel"

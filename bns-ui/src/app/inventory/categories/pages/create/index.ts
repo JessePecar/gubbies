@@ -1,2 +1,1 @@
-export * from './category-create.page';
-export * from './category-create.service';
+export * from './create.page';
