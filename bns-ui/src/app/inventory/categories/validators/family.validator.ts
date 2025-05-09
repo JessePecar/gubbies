@@ -11,6 +11,8 @@ export type FamilySchema =
       name: string;
       code: string;
       canPromote: boolean;
+      canTransfer: boolean;
+      canPriceChange: boolean;
       location: ShelfLocationSchema;
     }
   | yup.AnyObject;
@@ -33,6 +35,8 @@ export class FamilyValidator implements BaseValidator<FamilySchema> {
       .min(4, 'Family code is too short')
       .max(8, 'Family code is too long'),
     canPromote: yup.boolean(),
+    canPriceChange: yup.boolean(),
+    canTransfer: yup.boolean(),
     location: this.shelfLocationValidator.validator,
   });
 
@@ -40,6 +44,8 @@ export class FamilyValidator implements BaseValidator<FamilySchema> {
     name: '',
     code: '',
     canPromote: false,
+    canPriceChange: false,
+    canTransfer: false,
     location: this.shelfLocationValidator.initialData,
   };
 }
