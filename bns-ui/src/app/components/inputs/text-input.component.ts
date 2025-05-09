@@ -18,7 +18,7 @@ import {
   imports: [],
   template: `
     <span>
-      <div class="text-primary flex flex-col">
+      <div class="text-stone-800 flex flex-col">
         @if (inputProps()?.isTextArea) {
           <textarea
             (blur)="onUnfocused()"

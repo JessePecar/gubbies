@@ -18,7 +18,7 @@ import {
   imports: [],
   template: `
     <span>
-      <div class="text-primary flex flex-col">
+      <div class="text-stone-800 flex flex-col">
         <input
           (blur)="onUnfocused()"
           [id]="label() + '_input'"

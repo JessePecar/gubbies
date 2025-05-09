@@ -22,11 +22,11 @@ export class PromotionNavItemComponent {
   dropdownOptions = [
     {
       linkTitle: 'Active Promotions',
-      route: '',
+      route: '/active-promotion',
     },
     {
       linkTitle: 'Manage Promotions',
-      route: '',
+      route: '/manage-promotion',
     },
   ];
 }

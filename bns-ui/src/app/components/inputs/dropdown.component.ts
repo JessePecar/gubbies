@@ -40,7 +40,7 @@ export interface DropdownOption {
         {{ getSelectedOption() ?? '--' }}
         <mat-icon fontIcon="arrow_drop_down" />
       </a>
-      <div class="dropdown-content bg-primary text-primary shadow-lg">
+      <div class="dropdown-content bg-primary text-stone-800 shadow-lg">
         @for (option of options(); track $index) {
           <a
             matRipple

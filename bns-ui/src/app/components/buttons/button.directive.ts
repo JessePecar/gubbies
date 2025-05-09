@@ -45,19 +45,19 @@ export class ButtonDirective {
     color: {
       primary: {
         outline:
-          'hoverable text-primary bg-transparent outline-1 outline-primary-dark rounded-lg',
+          'hoverable text-stone-800 bg-transparent outline-1 outline-primary-dark rounded-lg',
         raised:
-          'hoverable text-primary disabled:opacity-50 outline-1 bg-primary-green rounded-lg',
+          'hoverable text-stone-800 disabled:opacity-50 outline-1 bg-primary-green rounded-lg',
         text: 'flex hover:underline text-stone-900 hover:text-primary-green',
-        default: 'hoverable flex rounded hover:underline text-primary',
+        default: 'hoverable flex rounded hover:underline text-stone-800',
       },
       secondary: {
         outline:
-          'hoverable text-primary bg-transparent outline-1 outline-purple-400 rounded-lg',
+          'hoverable text-stone-800 bg-transparent outline-1 outline-purple-400 rounded-lg',
         raised:
-          'hoverable text-primary disabled:opacity-50 outline-1 bg-stone-200 rounded-lg',
+          'hoverable text-stone-800 disabled:opacity-50 outline-1 bg-stone-200 rounded-lg',
         text: 'flex hover:underline text-stone-900 hover:text-primary-blue',
-        default: 'hoverable flex rounded hover:underline text-primary',
+        default: 'hoverable flex rounded hover:underline text-stone-800',
       },
     },
     content: {

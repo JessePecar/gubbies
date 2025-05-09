@@ -30,7 +30,7 @@ import { UpperCasePipe } from '@angular/common';
     <nav class="bg-primary p-1">
       <div class="flex justify-between pr-4 pb-1">
         <div
-          class="flex w-full text-lg font-bold items-center justify-center focus:outline-none focus:opacity-80 text-primary"
+          class="flex w-full text-lg font-bold items-center justify-center focus:outline-none focus:opacity-80 text-stone-800"
           href="#"
           aria-label="GubbiesLogo">
           <h1 class="text-secondary-blue">{{ 'Box & Shelf' | uppercase }}</h1>

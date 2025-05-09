@@ -12,10 +12,10 @@ import { MatRippleModule } from '@angular/material/core';
         matRipple
         [matRippleCentered]="true"
         matRippleColor="#44444444"
-        class="dropbtn text-primary flex items-center p-1 rounded">
+        class="dropbtn text-stone-800 flex items-center p-1 rounded">
         <mat-icon [fontIcon]="contextIcon()" />
       </a>
-      <div class="dropdown-content bg-primary-dark text-primary shadow-lg">
+      <div class="dropdown-content bg-primary-dark text-stone-800 shadow-lg">
         @for (option of options(); track $index) {
           <a
             matRipple

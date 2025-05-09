@@ -3,6 +3,7 @@ import {
   ActivatedRoute,
   Router,
   RouterLink,
+  RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
 
@@ -13,7 +14,7 @@ interface TabInfo {
 
 @Component({
   selector: 'app-tab-container',
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
   template: `
     <ul class="tab-titles">
       @for (tab of tabs(); track $index) {
@@ -22,7 +23,7 @@ interface TabInfo {
           [routerLink]="tab.path"
           [relativeTo]="route.parent"
           [class.active]="isActive(tab.path)"
-          routerLinkActive="active">
+          routerLinkActive="bg-primary-green text-primary">
           {{ tab.title }}
         </li>
       }
@@ -41,10 +42,6 @@ interface TabInfo {
     .tab-titles li {
       border: 1px solid var(--color-primary-dark);
       margin-right: 4px;
-    }
-    .active {
-      background-color: var(--color-primary-blue);
-      color: var(--color-primary);
     }
     .tab-view-container {
       height: calc(75vh - 40px);
