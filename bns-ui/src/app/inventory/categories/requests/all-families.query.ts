@@ -1,22 +1,31 @@
-import { Subcategory } from '@/inventory/categories/interfaces';
+import { Family, Subcategory } from '@/inventory/categories/interfaces';
 import { Injectable } from '@angular/core';
 import { gql, Query } from 'apollo-angular';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AllSubcategoriesQuery extends Query<{
-  subcategories: Subcategory[];
+export class AllFamiliesQuery extends Query<{
+  families: Family[];
 }> {
   override document = gql`
-    query families {
-      code
-      name
-      canPromote
-      canTransfer
-      canPriceChange
-      subcategory {
+    query {
+      families {
+        code
         name
+        canPromote
+        canTransfer
+        canPriceChange
+        subcategory {
+          code
+          name
+        }
+        location {
+          id
+          aisle
+          side
+          section
+        }
       }
     }
   `;

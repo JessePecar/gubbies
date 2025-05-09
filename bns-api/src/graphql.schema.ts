@@ -134,12 +134,14 @@ export class CreateCategoryInput {
     code: string;
     name: string;
     canPromote?: Nullable<boolean>;
+    canTransfer?: Nullable<boolean>;
 }
 
 export class CreateSubcategoryInput {
     code: string;
     name: string;
     canPromote?: Nullable<boolean>;
+    canTransfer?: Nullable<boolean>;
     categoryCode: string;
 }
 
@@ -147,6 +149,8 @@ export class CreateFamilyInput {
     code: string;
     name: string;
     canPromote?: Nullable<boolean>;
+    canTransfer?: Nullable<boolean>;
+    canPriceChange?: Nullable<boolean>;
     subcategoryCode: string;
     location?: Nullable<CreateShelfLocation>;
 }
@@ -239,11 +243,15 @@ export abstract class IQuery {
 
     abstract category(code: string): Nullable<Category> | Promise<Nullable<Category>>;
 
-    abstract subcategories(categoryCode: string): Nullable<Nullable<Subcategory>[]> | Promise<Nullable<Nullable<Subcategory>[]>>;
+    abstract categorySubcategories(categoryCode: string): Nullable<Nullable<Subcategory>[]> | Promise<Nullable<Nullable<Subcategory>[]>>;
+
+    abstract subcategories(): Nullable<Nullable<Subcategory>[]> | Promise<Nullable<Nullable<Subcategory>[]>>;
 
     abstract subcategory(code: string): Nullable<Subcategory> | Promise<Nullable<Subcategory>>;
 
-    abstract families(subcategoryCode: string): Nullable<Nullable<Family>[]> | Promise<Nullable<Nullable<Family>[]>>;
+    abstract subcategoryFamilies(subcategoryCode: string): Nullable<Nullable<Family>[]> | Promise<Nullable<Nullable<Family>[]>>;
+
+    abstract families(): Nullable<Nullable<Family>[]> | Promise<Nullable<Nullable<Family>[]>>;
 
     abstract family(code: string): Nullable<Family> | Promise<Nullable<Family>>;
 

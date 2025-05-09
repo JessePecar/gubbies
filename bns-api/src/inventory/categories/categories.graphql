@@ -1,10 +1,10 @@
 type Query {
   categories: [Category]
   category(code: String!): Category
-  subcategories(categoryCode: String!): [Subcategory]
+  categorySubcategories(categoryCode: String!): [Subcategory]
   subcategories: [Subcategory]
   subcategory(code: String!): Subcategory
-  families(subcategoryCode: String!): [Family]
+  subcategoryFamilies(subcategoryCode: String!): [Family]
   families: [Family]
   family(code: String!): Family
 }
@@ -23,12 +23,14 @@ input CreateCategoryInput {
   code: String!
   name: String!
   canPromote: Boolean
+  canTransfer: Boolean
 }
 
 input CreateSubcategoryInput {
   code: String!
   name: String! 
   canPromote: Boolean
+  canTransfer: Boolean
   categoryCode: String!
 }
 
@@ -36,6 +38,8 @@ input CreateFamilyInput {
   code: String!
   name: String!
   canPromote: Boolean
+  canTransfer: Boolean
+  canPriceChange: Boolean
   subcategoryCode: String!
   location: CreateShelfLocation
 }

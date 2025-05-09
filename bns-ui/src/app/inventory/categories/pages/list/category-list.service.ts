@@ -7,7 +7,9 @@ import {
   AllSubcategoriesQuery,
   CategoriesQuery,
 } from '@/inventory/categories/requests';
+import { AllFamiliesQuery } from '@/inventory/categories/requests/all-families.query';
 import { inject, Injectable, signal } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +17,7 @@ import { inject, Injectable, signal } from '@angular/core';
 export class CategoryListService {
   categoriesQuery = inject(CategoriesQuery);
   allSubcategoriesQuery = inject(AllSubcategoriesQuery);
-  familiesQuery = inject(CategoriesQuery);
+  familiesQuery = inject(AllFamiliesQuery);
 
   categories = signal<Category[]>([]);
   subcategories = signal<Subcategory[]>([]);
@@ -25,25 +27,32 @@ export class CategoryListService {
 
   loadCategories() {
     this.isLoading.set(true);
+
     this.categoriesQuery
-      .fetch()
-      .subscribe(({ data: { categories }, loading }) => {
+      .watch()
+      .valueChanges.subscribe(({ data: { categories }, loading }) => {
         this.isLoading.set(loading);
         this.categories.set(categories);
       });
+  }
+
+  loadFamilies() {
+    this.isLoading.set(true);
+
+    this.familiesQuery.fetch().subscribe(({ data: { families }, loading }) => {
+      this.isLoading.set(loading);
+      this.families.set(families);
+    });
+  }
+
+  loadSubcategories() {
+    this.isLoading.set(true);
 
     this.allSubcategoriesQuery
       .fetch()
       .subscribe(({ data: { subcategories }, loading }) => {
         this.isLoading.set(loading);
         this.subcategories.set(subcategories);
-      });
-
-    this.categoriesQuery
-      .fetch()
-      .subscribe(({ data: { categories }, loading }) => {
-        this.isLoading.set(loading);
-        this.categories.set(categories);
       });
   }
 }

@@ -6,29 +6,52 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'category-item',
   imports: [MatIconModule],
   template: `
-    <div class="grid grid-cols-5 p-2">
+    <div class="grid grid-cols-4 p-2">
       <div class="flex flex-col justify-center h-full space-2">
-        <p>{{ category().code }}</p>
-        <p>{{ category().name }}</p>
+        <p>
+          <strong>{{ category().code }}</strong>
+        </p>
+        <p>
+          <small>{{ category().name }} </small>
+        </p>
       </div>
-      <div class="flex flex-col items-center h-full">
-        <p>Can Promote</p>
-        <mat-icon
-          class="text-primary-green"
-          [fontIcon]="
-            category().canPromote ? 'disabled_by_default' : 'priority'
-          " />
+      <div class="flex justify-around items-center h-full">
+        <div class="flex flex-col items-center">
+          <p>Can Promote</p>
+          <span
+            [class]="
+              category().canPromote
+                ? 'text-primary-green'
+                : 'text-red-400 brightness-75'
+            ">
+            <mat-icon
+              [fontIcon]="
+                category().canPromote ? 'check_box' : 'disabled_by_default'
+              " />
+          </span>
+        </div>
+        <div class="flex flex-col items-center">
+          <p>Can Transfer</p>
+          <span
+            [class]="
+              category().canTransfer
+                ? 'text-primary-green'
+                : 'text-red-400 brightness-75'
+            ">
+            <mat-icon
+              [fontIcon]="
+                category().canTransfer ? 'check_box' : 'disabled_by_default'
+              " />
+          </span>
+        </div>
       </div>
-      <div class="flex flex-col items-center h-full">
-        <p>Can Transfer</p>
-        <mat-icon
-          class="text-primary-green"
-          [fontIcon]="
-            category().canTransfer ? 'disabled_by_default' : 'priority'
-          " />
-      </div>
-      <div>
-        <p>Subcategories: {{ category().subcategoryCount }}</p>
+      <div class="flex flex-col items-center">
+        <p>Subcategories</p>
+        @if (category().subcategories.length) {
+          <p>{{ category().subcategories.length }}</p>
+        } @else {
+          <p>0</p>
+        }
       </div>
       <div>
         <!-- Add the context menu for editing (we will need to add a special process for delete, so we won't allow delete for now) -->

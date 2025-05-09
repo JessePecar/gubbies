@@ -28,7 +28,7 @@ export class SubcategoryTableComponent {
   toolbarItems = signal<ToolbarItem[]>([]);
 
   constructor() {
-    this.categoryListService.loadCategories();
+    this.categoryListService.loadSubcategories();
     effect(() => {
       const permissions = this.userInfoService.permissions();
 

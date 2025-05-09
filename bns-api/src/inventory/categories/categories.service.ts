@@ -51,6 +51,7 @@ export class CategoriesService {
     return await this.repository.subcategory.findMany({
       include: {
         families: true,
+        category: true,
       },
     });
   }
@@ -113,6 +114,7 @@ export class CategoriesService {
       create: {
         ...upsertCategory,
         canPromote: upsertCategory.canPromote ?? undefined,
+        canTransfer: upsertCategory.canTransfer ?? undefined,
       },
       update: {
         name: upsertCategory.name,
@@ -130,6 +132,7 @@ export class CategoriesService {
       create: {
         ...upsertSubcategory,
         canPromote: upsertSubcategory.canPromote ?? undefined,
+        canTransfer: upsertSubcategory.canTransfer ?? undefined,
       },
       update: {
         name: upsertSubcategory.name,
@@ -162,6 +165,8 @@ export class CategoriesService {
       create: {
         code: upsertFamily.code,
         canPromote: upsertFamily.canPromote ?? false,
+        canTransfer: upsertFamily.canTransfer ?? false,
+        canPriceChange: upsertFamily.canPriceChange ?? false,
         name: upsertFamily.name,
         subcategoryCode: upsertFamily.subcategoryCode,
       },

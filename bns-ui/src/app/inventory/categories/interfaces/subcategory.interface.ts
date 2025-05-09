@@ -14,7 +14,6 @@ export class Subcategory {
   canPromote: boolean;
   canTransfer: boolean;
   families: Family[];
-  familyCount: number;
 
   constructor(subcategory: ISubcategory) {
     this.name = subcategory.name;
@@ -22,6 +21,5 @@ export class Subcategory {
     this.canPromote = subcategory.canPromote;
     this.canTransfer = subcategory.canTransfer;
     this.families = subcategory.families;
-    this.familyCount = subcategory.families?.length ?? 0;
   }
 }

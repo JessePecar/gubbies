@@ -1,26 +1,29 @@
 import { GlobalAlertService } from '@/components/alert';
+import { Category } from '@/inventory/categories/interfaces';
 import { CategoryListService } from '@/inventory/categories/pages/list';
-import { CategoriesQuery } from '@/inventory/categories/requests';
-import { CreateCategoryMutation } from '@/inventory/categories/requests/create-category.mutation';
-import { CategoryStore } from '@/inventory/categories/store';
+import {
+  CategoriesQuery,
+  CreateSubcategoryMutation,
+} from '@/inventory/categories/requests';
+import { SubcategoryStore } from '@/inventory/categories/store/subcategory.store';
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CategoryCreateService {
+export class CreateSubcategoryService {
   categoriesQuery = inject(CategoriesQuery);
-  createCategoryMutation = inject(CreateCategoryMutation);
-  categoryStore = inject(CategoryStore);
+  createSubcategoryMutation = inject(CreateSubcategoryMutation);
+  categoryStore = inject(SubcategoryStore);
   alertService = inject(GlobalAlertService);
   router = inject(Router);
 
   categoryListService = inject(CategoryListService);
 
-  categories = signal<any[]>([]);
+  categories = signal<Category[]>([]);
 
-  getCategories() {
+  constructor() {
     this.categoriesQuery.fetch().subscribe(({ data: { categories } }) => {
       this.categories.set(categories);
     });
@@ -32,10 +35,10 @@ export class CategoryCreateService {
     if (this.categoryStore.form.valid) {
       this.categoryStore.onSubmit((isCodeValid: boolean) => {
         if (isCodeValid) {
-          this.createCategoryMutation
+          this.createSubcategoryMutation
             .mutate(
               {
-                createCategoryInput: formValue,
+                createSubcategoryInput: formValue,
               },
               {
                 errorPolicy: 'all',
@@ -50,12 +53,10 @@ export class CategoryCreateService {
                   2000
                 );
 
-                this.categoryListService.categories.update(cat => [
+                this.categoryListService.subcategories.update(cat => [
                   ...cat,
-                  data.upsertCategory,
+                  data.upsertSubcategory,
                 ]);
-
-                console.log(this.categoryListService.categories());
 
                 this.router.navigate(['inventory', 'categories', 'list']);
               } else {
@@ -73,9 +74,5 @@ export class CategoryCreateService {
         }
       });
     }
-  }
-
-  constructor() {
-    this.getCategories();
   }
 }

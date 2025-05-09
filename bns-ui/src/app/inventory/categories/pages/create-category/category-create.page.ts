@@ -34,6 +34,8 @@ import { CategoryCreateService } from '@/inventory/categories/pages/create-categ
               <app-switch-input
                 formControlName="canPromote"
                 label="Can Create Category Promotion" />
+            </div>
+            <div class="flex items-end">
               <app-switch-input
                 title="Will default subcategory and families ability to transfer to the category when setting the category"
                 formControlName="canTransfer"

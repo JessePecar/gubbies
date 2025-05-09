@@ -16,7 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { noop } from 'rxjs';
 
 export interface DropdownOption {
-  id: number;
+  id: number | string;
   name: string;
 }
 
@@ -66,7 +66,7 @@ export class DropdownComponent implements ControlValueAccessor {
   dropdown!: ElementRef<HTMLDivElement>;
 
   isDisabled = signal<boolean>(false);
-  value = signal<number | null>(null);
+  value = signal<number | string | null>(null);
 
   options = input.required<DropdownOption[] | null>();
   label = input<string | undefined>(undefined);
@@ -82,7 +82,7 @@ export class DropdownComponent implements ControlValueAccessor {
     this.dropdown.nativeElement.blur();
   }
 
-  onChange: (value: number | null) => void = noop;
+  onChange: (value: number | string | null) => void = noop;
   onTouched: (touched: boolean) => void = noop;
 
   getSelectedOption() {
@@ -94,11 +94,11 @@ export class DropdownComponent implements ControlValueAccessor {
   //
   // Implementing ControlValueAccessor
   //
-  writeValue(value: number | null): void {
+  writeValue(value: number | string | null): void {
     this.value.set(value);
   }
 
-  registerOnChange(onChange: (value: number | null) => void): void {
+  registerOnChange(onChange: (value: number | string | null) => void): void {
     this.onChange = onChange;
   }
 

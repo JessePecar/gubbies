@@ -11,7 +11,7 @@ import { noop } from 'rxjs';
   selector: 'app-switch-input',
   imports: [ReactiveFormsModule],
   template: `
-    <div class="flex space-x-4 p-1 items-center">
+    <div class="flex space-x-4 p-1 items-center min-w-8">
       <label class="switch">
         <input
           class="switch-input"

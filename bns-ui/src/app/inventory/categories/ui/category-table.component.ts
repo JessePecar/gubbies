@@ -1,4 +1,14 @@
-import { Component, effect, inject, signal, untracked } from '@angular/core';
+import {
+  afterRender,
+  Component,
+  effect,
+  ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+  untracked,
+} from '@angular/core';
 import {
   TableComponent,
   ToolbarItem,
@@ -17,21 +27,23 @@ import { Router } from '@angular/router';
       @if (categoryListService.categories(); as categories) {
         @for (category of categories; track $index) {
           <category-item [category]="category" />
+          <hr class="border-primary-dark" />
         }
       }
     </app-table>
   `,
   styles: ``,
 })
-export class CategoryTableComponent {
+export class CategoryTableComponent implements OnInit, OnDestroy {
   userInfoService = inject(UserInfoService);
   categoryListService = inject(CategoryListService);
   router = inject(Router);
 
   toolbarItems = signal<ToolbarItem[]>([]);
 
-  constructor() {
+  constructor(private elementRef: ElementRef) {
     this.categoryListService.loadCategories();
+
     effect(() => {
       const permissions = this.userInfoService.permissions();
 
@@ -54,6 +66,14 @@ export class CategoryTableComponent {
         }
       });
     });
+  }
+
+  ngOnInit(): void {
+    this.categoryListService.loadCategories();
+  }
+
+  ngOnDestroy(): void {
+    this.elementRef.nativeElement.remove();
   }
 
   async onAddCategory() {

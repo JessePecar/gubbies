@@ -13,7 +13,7 @@ export type ToolbarItem = {
   imports: [ButtonComponent, MatIcon],
   template: `
     <div class="flex justify-center items-center w-full h-full pr-2 lg:p-0">
-      <div class="h-3/4 w-full">
+      <div class="h-full w-full">
         <div
           class="min-h-10 p-1 flex justify-between shadow-md mb-2 rounded-t-lg">
           <div>
@@ -29,7 +29,7 @@ export type ToolbarItem = {
             </app-button>
           }
         </div>
-        <div class="h-3/4 rounded-lg">
+        <div class="h-full rounded-lg">
           <div class="w-full h-full p-1 min-h-96 overflow-y-auto">
             <ng-content />
           </div>

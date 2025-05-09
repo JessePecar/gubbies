@@ -7,30 +7,51 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [MatIconModule],
   template: `
     <div class="grid grid-cols-4 p-2">
-      <div class="flex items-center h-full">
-        <p>{{ subcategory().code }}</p>
+      <div class="flex flex-col justify-center h-full space-2">
+        <p>
+          <strong>{{ subcategory().code }}</strong>
+        </p>
+        <p>
+          <small>{{ subcategory().name }} </small>
+        </p>
       </div>
-      <div class="flex items-center h-full">
-        <p>{{ subcategory().name }}</p>
+      <div class="flex justify-around items-center h-full">
+        <div class="flex flex-col items-center">
+          <p>Can Promote</p>
+          <span
+            [class]="
+              subcategory().canPromote
+                ? 'text-primary-green'
+                : 'text-red-400 brightness-75'
+            ">
+            <mat-icon
+              [fontIcon]="
+                subcategory().canPromote ? 'check_box' : 'disabled_by_default'
+              " />
+          </span>
+        </div>
+        <div class="flex flex-col items-center">
+          <p>Can Transfer</p>
+          <span
+            [class]="
+              subcategory().canTransfer
+                ? 'text-primary-green'
+                : 'text-red-400 brightness-75'
+            ">
+            <mat-icon
+              [fontIcon]="
+                subcategory().canTransfer ? 'check_box' : 'disabled_by_default'
+              " />
+          </span>
+        </div>
       </div>
-      <div class="flex flex-col items-center h-full">
-        <p>Can Promote</p>
-        <mat-icon
-          class="text-primary-green"
-          [fontIcon]="
-            subcategory().canPromote ? 'disabled_by_default' : 'priority'
-          " />
-      </div>
-      <div class="flex flex-col items-center h-full">
-        <p>Can Transfer</p>
-        <mat-icon
-          class="text-primary-green"
-          [fontIcon]="
-            subcategory().canTransfer ? 'disabled_by_default' : 'priority'
-          " />
-      </div>
-      <div>
-        <p>Families: {{ subcategory().familyCount }}</p>
+      <div class="flex flex-col items-center">
+        <p>Families</p>
+        @if (subcategory().families.length) {
+          <p>{{ subcategory().families.length }}</p>
+        } @else {
+          <p>0</p>
+        }
       </div>
     </div>
   `,

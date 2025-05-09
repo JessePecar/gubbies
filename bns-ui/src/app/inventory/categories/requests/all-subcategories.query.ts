@@ -9,16 +9,18 @@ export class AllSubcategoriesQuery extends Query<{
   subcategories: Subcategory[];
 }> {
   override document = gql`
-    query subcategories {
-      code
-      name
-      canPromote
-      canTransfer
-      category {
-        name
-      }
-      families {
+    query {
+      subcategories {
         code
+        name
+        canPromote
+        canTransfer
+        category {
+          name
+        }
+        families {
+          code
+        }
       }
     }
   `;

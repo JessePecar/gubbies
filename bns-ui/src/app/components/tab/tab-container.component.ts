@@ -27,7 +27,7 @@ interface TabInfo {
         </li>
       }
     </ul>
-    <div class="tab-view-container">
+    <div class="tab-view-container shadow-inset p-2">
       <router-outlet />
     </div>
   `,

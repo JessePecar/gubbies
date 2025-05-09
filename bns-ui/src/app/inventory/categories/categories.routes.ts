@@ -7,6 +7,7 @@ import {
   FamilyTableComponent,
 } from '@/inventory/categories/ui';
 import { CreatePage } from '@/inventory/categories/pages/create';
+import { CreateSubcategoryPage } from '@/inventory/categories/pages/create-subcategory';
 
 export const categoriesRoutes: Routes = [
   {
@@ -14,20 +15,20 @@ export const categoriesRoutes: Routes = [
     component: CreatePage,
     children: [
       {
-        path: '',
-        redirectTo: 'category',
-      },
-      {
         path: 'category',
         component: CategoryCreatePage,
       },
       {
         path: 'subcategory',
-        component: CategoryCreatePage,
+        component: CreateSubcategoryPage,
       },
       {
         path: 'family',
         component: CategoryCreatePage,
+      },
+      {
+        path: '**',
+        redirectTo: 'category',
       },
     ],
   },
@@ -55,6 +56,10 @@ export const categoriesRoutes: Routes = [
         data: {
           title: 'Families',
         },
+      },
+      {
+        path: '**',
+        redirectTo: 'category-list',
       },
     ],
   },

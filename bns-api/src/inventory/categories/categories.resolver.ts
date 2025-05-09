@@ -25,7 +25,7 @@ export class CategoriesResolver {
   }
 
   @UseGuards(AppAuthGuard)
-  @Query('subcategories')
+  @Query('categorySubcategories')
   async getSubcategories(@Args('categoryCode') categoryCode: string) {
     return await this.categoriesService.getSubcategories(categoryCode);
   }
@@ -49,7 +49,7 @@ export class CategoriesResolver {
   }
 
   @UseGuards(AppAuthGuard)
-  @Query('families')
+  @Query('subcategoryFamilies')
   async getFamilies(@Args('subcategoryCode') subcategoryCode: string) {
     return await this.categoriesService.getFamilies(subcategoryCode);
   }

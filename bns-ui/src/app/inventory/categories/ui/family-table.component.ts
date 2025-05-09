@@ -27,7 +27,7 @@ export class FamilyTableComponent {
   toolbarItems = signal<ToolbarItem[]>([]);
 
   constructor() {
-    this.categoryListService.loadCategories();
+    this.categoryListService.loadFamilies();
     effect(() => {
       const permissions = this.userInfoService.permissions();
 

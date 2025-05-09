@@ -13,29 +13,49 @@ import { MatIconModule } from '@angular/material/icon';
       <div class="flex items-center h-full">
         <p>{{ family().name }}</p>
       </div>
-      <div class="flex flex-col items-center h-full">
-        <p>Can Promote</p>
-        <mat-icon
-          class="text-primary-green"
-          [fontIcon]="
-            family().canPromote ? 'disabled_by_default' : 'priority'
-          " />
-      </div>
-      <div class="flex flex-col items-center h-full">
-        <p>Can Transfer</p>
-        <mat-icon
-          class="text-primary-green"
-          [fontIcon]="
-            family().canTransfer ? 'disabled_by_default' : 'priority'
-          " />
-      </div>
-      <div class="flex flex-col items-center h-full">
-        <p>Can Change Price</p>
-        <mat-icon
-          class="text-primary-green"
-          [fontIcon]="
-            family().canPriceChange ? 'disabled_by_default' : 'priority'
-          " />
+      <div class="col-span-2 flex justify-around items-center h-full">
+        <div class="flex flex-col items-center">
+          <p>Can Promote</p>
+          <span
+            [class]="
+              family().canPromote
+                ? 'text-primary-green'
+                : 'text-red-400 brightness-75'
+            ">
+            <mat-icon
+              [fontIcon]="
+                family().canPromote ? 'check_box' : 'disabled_by_default'
+              " />
+          </span>
+        </div>
+        <div class="flex flex-col items-center">
+          <p>Can Transfer</p>
+          <span
+            [class]="
+              family().canTransfer
+                ? 'text-primary-green'
+                : 'text-red-400 brightness-75'
+            ">
+            <mat-icon
+              [fontIcon]="
+                family().canTransfer ? 'check_box' : 'disabled_by_default'
+              " />
+          </span>
+        </div>
+        <div class="flex flex-col items-center">
+          <p>Can Change Price</p>
+          <span
+            [class]="
+              family().canPriceChange
+                ? 'text-primary-green'
+                : 'text-red-400 brightness-75'
+            ">
+            <mat-icon
+              [fontIcon]="
+                family().canPriceChange ? 'check_box' : 'disabled_by_default'
+              " />
+          </span>
+        </div>
       </div>
     </div>
   `,
