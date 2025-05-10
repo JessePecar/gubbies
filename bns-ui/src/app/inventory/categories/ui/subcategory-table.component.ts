@@ -21,7 +21,7 @@ import { TextInputComponent } from '@/components';
   imports: [TableComponent, SubcategoryItemComponent, TextInputComponent],
   template: `
     <app-table [toolbarItems]="toolbarItems()">
-      <div header>
+      <div class="w-64" header>
         <app-text-input
           [inputProps]="{ placeholder: 'Search' }"
           (onChange)="onSearchChange($event)" />
