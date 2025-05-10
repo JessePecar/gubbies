@@ -28,7 +28,7 @@ interface TabInfo {
         </li>
       }
     </ul>
-    <div class="tab-view-container shadow-inset p-2">
+    <div class="view-container shadow-inset p-2 rounded-b rounded-tr">
       <router-outlet />
     </div>
   `,
@@ -40,11 +40,16 @@ interface TabInfo {
       cursor: pointer;
     }
     .tab-titles li {
-      border: 1px solid var(--color-primary-dark);
+      border: 1px solid var(--color-primary-green);
       margin-right: 4px;
+      &:hover {
+        background: var(--color-primary-green-opaque);
+      }
     }
-    .tab-view-container {
-      height: calc(75vh - 40px);
+    .active {
+      &:hover {
+        background: var(--color-primary-green) !important;
+      }
     }
   `,
 })
