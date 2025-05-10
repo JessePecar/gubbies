@@ -1,6 +1,7 @@
 import {
   afterRender,
   Component,
+  computed,
   effect,
   ElementRef,
   inject,
@@ -18,13 +19,21 @@ import { CategoryItemComponent } from './category-item.component';
 import { UserInfoService } from '@/services';
 import { PermissionEnum } from '@/entities/role';
 import { Router } from '@angular/router';
+import { TextInputComponent } from '@/components/inputs/text-input.component';
+import { Category } from '@/inventory/categories/interfaces';
+import { SearchComponentBase } from '@/components/core';
 
 @Component({
   selector: 'app-category-table',
-  imports: [TableComponent, CategoryItemComponent],
+  imports: [TableComponent, CategoryItemComponent, TextInputComponent],
   template: `
     <app-table [toolbarItems]="toolbarItems()">
-      @if (categoryListService.categories(); as categories) {
+      <div header>
+        <app-text-input
+          [inputProps]="{ placeholder: 'Search' }"
+          (onChange)="onSearchChange($event)" />
+      </div>
+      @if (computedCategories().visibleCategories(); as categories) {
         @for (category of categories; track $index) {
           <category-item [category]="category" />
           <hr class="border-primary-dark" />
@@ -34,14 +43,36 @@ import { Router } from '@angular/router';
   `,
   styles: ``,
 })
-export class CategoryTableComponent implements OnInit, OnDestroy {
+export class CategoryTableComponent
+  extends SearchComponentBase
+  implements OnInit, OnDestroy
+{
   userInfoService = inject(UserInfoService);
   categoryListService = inject(CategoryListService);
   router = inject(Router);
 
   toolbarItems = signal<ToolbarItem[]>([]);
 
+  computedCategories = computed(() => ({
+    categories: this.categoryListService.categories(),
+    searchText: this.searchText(),
+    visibleCategories: signal<Category[]>(
+      this.searchText() !== null
+        ? this.categoryListService
+            .categories()
+            .filter(
+              cat =>
+                cat.name
+                  .toUpperCase()
+                  .includes(this.searchText()!.toUpperCase()) ||
+                cat.code.includes(this.searchText()!)
+            )
+        : this.categoryListService.categories()
+    ),
+  }));
+
   constructor(private elementRef: ElementRef) {
+    super();
     this.categoryListService.loadCategories();
 
     effect(() => {

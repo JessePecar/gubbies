@@ -36,8 +36,8 @@ import {
             [type]="inputProps()?.type ?? 'text'"
             [value]="value()"
             [required]="inputProps()?.required"
-            (change)="handleChange($event)"
-            placeholder=" " />
+            (keyup)="handleChange($event)"
+            [placeholder]="inputProps()?.placeholder ?? ' '" />
         }
 
         <div
@@ -75,7 +75,7 @@ export class TextInputComponent implements ControlValueAccessor {
   }
 
   registerOnChange(onChange: (value: string | number | null) => void): void {
-    this.onChange = onChange;
+    this.onChange.emit = onChange;
   }
 
   registerOnTouched(onTouched: (touched: boolean) => void): void {
@@ -114,9 +114,7 @@ export class TextInputComponent implements ControlValueAccessor {
 
   touched = signal<boolean>(false);
 
-  onChange = (_value: string | number | null) => {
-    // On Change
-  };
+  onChange = output<string | null | number>();
 
   onTouched = (touched: boolean) => {
     this.touched.set(touched);
@@ -132,6 +130,6 @@ export class TextInputComponent implements ControlValueAccessor {
   handleChange(event: Event) {
     const inputElement = event.currentTarget as HTMLInputElement;
     const inputValue = inputElement.value;
-    this.onChange(inputValue);
+    this.onChange.emit(inputValue);
   }
 }
