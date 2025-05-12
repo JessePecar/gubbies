@@ -1,12 +1,12 @@
 import { Component, effect, inject, signal, untracked } from '@angular/core';
 import { ItemListService } from './item-list.service';
-import { Item } from '@/inventory/models/items';
+import { Item } from '@/inventory/items/interfaces/items';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { TableComponent, ToolbarItem } from '@components/tables';
-import { ItemComponent } from './item.component';
 import { UserInfoService } from '@/services';
 import { PermissionEnum } from '@/entities/role';
+import { ItemComponent } from '@/inventory/items/ui/item.component';
 
 @Component({
   selector: 'app-item-list',
@@ -19,7 +19,7 @@ import { PermissionEnum } from '@/entities/role';
     </app-table>
   `,
 })
-export class ItemListComponent {
+export class ItemListPage {
   userInfoService = inject(UserInfoService);
 
   items = signal<Item[] | undefined>(undefined);

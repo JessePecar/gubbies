@@ -1,6 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Item } from '../../models/items';
 import { HttpClient } from '@angular/common/http';
 import { GetItemsService } from '@/inventory/items';
 
@@ -8,7 +6,6 @@ import { GetItemsService } from '@/inventory/items';
   providedIn: 'root',
 })
 export class ItemListService {
-
   private readonly getItemsService = inject(GetItemsService);
 
   private readonly httpClient = inject(HttpClient);

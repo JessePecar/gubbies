@@ -1,4 +1,4 @@
-import { Item } from '@/inventory/models/items';
+import { Item } from '@/inventory/items/interfaces/items';
 import { Injectable } from '@angular/core';
 import { Query, gql } from 'apollo-angular';
 

@@ -2,8 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { ButtonComponent } from '@/components/buttons';
 import { TextInputComponent } from '@/components';
 import { Router } from '@angular/router';
-import { AdjustmentFormService } from './adjustmentForm.service';
-import { Item } from '@/inventory/models/items';
+import { AdjustmentFormService } from './create-adjustment.service';
+import { Item } from '@/inventory/items/interfaces/items';
 
 @Component({
   selector: 'app-adjustments-form',
@@ -56,7 +56,7 @@ import { Item } from '@/inventory/models/items';
     </div>
   `,
 })
-export class AdjustmentFormComponent {
+export class CreateAdjustmentPage {
   router = inject(Router);
   adjustmentFormService = inject(AdjustmentFormService);
 

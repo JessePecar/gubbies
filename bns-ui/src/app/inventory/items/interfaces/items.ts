@@ -3,8 +3,8 @@ import {
   Family,
   Subcategory,
 } from '@/inventory/categories/interfaces';
-import { AdjustmentItems } from '../adjustments/models/adjustmentItems';
-import { UnitOfMeasurementType } from './unitOfMeasurementType';
+import { AdjustmentItems } from '@/inventory/adjustments/interfaces/adjustmentItems';
+import { UnitOfMeasurementType } from '@/inventory/items/interfaces/unitOfMeasurementType';
 
 export class Item {
   id!: number;

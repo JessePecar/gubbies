@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { AdjustmentsListService } from './adjustmentsList.service';
+import { AdjustmentsListService } from './adjustment-list.service';
 import { ButtonComponent } from '@/components/buttons';
 import { Router } from '@angular/router';
 
@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
     } `,
   styles: ``,
 })
-export class AdjustmentsListComponent {
+export class AdjustmentsListPage {
   adjustmentService = inject(AdjustmentsListService);
   router = inject(Router);
 

@@ -1,6 +1,6 @@
 import { ContextButtonComponent } from '@/components/buttons';
-import { Item } from '@/inventory/models/items';
-import { UnitOfMeasurementType } from '@/inventory/models/unitOfMeasurementType';
+import { Item } from '@/inventory/items/interfaces/items';
+import { UnitOfMeasurementType } from '@/inventory/items/interfaces/unitOfMeasurementType';
 import { Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 

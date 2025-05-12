@@ -1,4 +1,4 @@
-import { Item } from '../../models/items';
+import { Item } from '../../items/interfaces/items';
 import { Adjustment } from './adjustment';
 
 export class AdjustmentItems {

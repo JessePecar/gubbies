@@ -1,4 +1,4 @@
-import { Item } from '@/inventory/models/items';
+import { Item } from '@/inventory/items/interfaces/items';
 import { inject, Injectable } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 
