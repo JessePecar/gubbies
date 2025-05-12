@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-item-create',
+  selector: 'app-items',
   imports: [],
   template: `
     <p>
-      item-create works!
+      items works!
     </p>
   `,
   styles: ``
 })
-export class ItemCreateComponent {
+export class ItemsPage {
 
 }

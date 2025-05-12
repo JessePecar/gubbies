@@ -7,7 +7,6 @@ import { SettingsPage, settingsGuard } from '@/settings';
 import { usersRoutes } from '@/settings/users';
 import { roleRoutes } from '@/settings/roles';
 import { inventoryRoutes } from '@/inventory';
-import { adjustmentRoutes } from '@/inventory/adjustments';
 
 export const routes: Routes = [
   {
@@ -27,7 +26,6 @@ export const routes: Routes = [
         canActivateChild: [settingsGuard],
         children: [...usersRoutes, ...roleRoutes],
       },
-      ...adjustmentRoutes,
     ],
   },
   { path: 'login', canActivate: [loginGuard], component: LoginComponent },

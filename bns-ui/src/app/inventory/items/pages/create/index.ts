@@ -1,2 +1,2 @@
-export * from './item-create.component';
+export * from './item-create.page';
 export * from './item-create.service';
