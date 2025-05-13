@@ -3,6 +3,7 @@ import {
   ItemListPage,
   ItemCreatePage,
   ItemDetailsPage,
+  itemCreateRoutes,
 } from '@/inventory/items/pages';
 import { Routes } from '@angular/router';
 
@@ -19,6 +20,7 @@ export const itemRoutes: Routes = [
       {
         path: 'create',
         component: ItemCreatePage,
+        children: itemCreateRoutes,
       },
       {
         path: 'details',

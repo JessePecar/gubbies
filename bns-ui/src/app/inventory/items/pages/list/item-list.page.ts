@@ -11,13 +11,15 @@ import { ItemComponent } from '@/inventory/items/ui/item.component';
 @Component({
   selector: 'app-item-list',
   imports: [MatIconModule, ItemComponent, TableComponent],
-  template: `
-    <app-table [toolbarItems]="toolbarItems()">
-      @for (item of items(); track $index) {
-        <item [item]="item" />
-      }
-    </app-table>
-  `,
+  template: `<div class="h-full w-full flex justify-center items-center">
+    <div class="w-3/4 view-container">
+      <app-table [toolbarItems]="toolbarItems()">
+        @for (item of items(); track $index) {
+          <item [item]="item" />
+        }
+      </app-table>
+    </div>
+  </div> `,
 })
 export class ItemListPage {
   userInfoService = inject(UserInfoService);
@@ -41,7 +43,11 @@ export class ItemListPage {
 
         if (permissionIndex && permissionIndex >= 0) {
           this.toolbarItems.set([
-            { icon: 'add', text: 'Add Item', onClick: this.onCreateItem },
+            {
+              icon: 'add',
+              text: 'Add Item',
+              onClick: () => this.onCreateItem(),
+            },
           ]);
         }
       });
@@ -49,7 +55,6 @@ export class ItemListPage {
   }
 
   onCreateItem = async () => {
-    console.log('Creating item');
-    await this.router.navigate(['inventory/create']);
+    await this.router.navigate(['inventory', 'items', 'create']);
   };
 }

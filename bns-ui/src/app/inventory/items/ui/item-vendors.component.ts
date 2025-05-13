@@ -1,10 +1,11 @@
 import { CardModule } from '@/components/card';
+import { ItemStoreService } from '@/inventory/items/store';
+import { FooterButtonsComponent } from '@/inventory/items/ui/footer-buttons.component';
 import { Component, inject } from '@angular/core';
-import { ItemStoreService } from './item-store.service';
 
 @Component({
   selector: 'app-item-vendors',
-  imports: [CardModule],
+  imports: [CardModule, FooterButtonsComponent],
   template: `
     <card>
       <card-header>
@@ -14,6 +15,9 @@ import { ItemStoreService } from './item-store.service';
         <!-- Form fields for item vendor information -->
         <!-- TODO: Add the vendor work flow that can be updated/added here -->
       </card-body>
+      <card-footer>
+        <footer-buttons [canSubmit]="true" nextStep="pricing" />
+      </card-footer>
     </card>
   `,
   styles: ``,
