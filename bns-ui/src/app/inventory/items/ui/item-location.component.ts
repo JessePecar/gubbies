@@ -1,6 +1,6 @@
 import { ButtonComponent } from '@/components/buttons';
 import { CardModule } from '@/components/card';
-import { ItemStoreService } from '@/inventory/items/store';
+import { ItemStore } from '@/inventory/items/store';
 import { Component, inject } from '@angular/core';
 
 @Component({
@@ -32,7 +32,7 @@ import { Component, inject } from '@angular/core';
   styles: ``,
 })
 export class ItemLocationComponent {
-  itemStore = inject(ItemStoreService);
+  itemStore = inject(ItemStore);
 
   onCancel() {}
   onSubmit() {}

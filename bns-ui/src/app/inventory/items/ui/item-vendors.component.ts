@@ -1,5 +1,5 @@
 import { CardModule } from '@/components/card';
-import { ItemStoreService } from '@/inventory/items/store';
+import { ItemStore } from '@/inventory/items/store';
 import { FooterButtonsComponent } from '@/inventory/items/ui/footer-buttons.component';
 import { Component, inject } from '@angular/core';
 
@@ -23,5 +23,5 @@ import { Component, inject } from '@angular/core';
   styles: ``,
 })
 export class ItemVendorsComponent {
-  itemStore = inject(ItemStoreService);
+  itemStore = inject(ItemStore);
 }

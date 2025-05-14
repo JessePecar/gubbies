@@ -125,11 +125,9 @@ model Items {
   subcategoryCode       String?
   fieldCode             String?
   quantityOnHand        String
-  basePrice             Decimal
-  currentPrice          Decimal
   isActive              Boolean
   retirementStatus      Int
-  reorderQuantity       Decimal
+  reorderQuantity       Decimal // This will take the lowest cost/primary vendor's reorder point
   unitOfMeasurementType Int
   vendorId              Int
 
@@ -138,6 +136,39 @@ model Items {
   subcategory     Subcategory?      @relation(fields: [subcategoryCode], references: [code])
   family          Family?           @relation(fields: [fieldCode], references: [code])
   itemVendors     ItemVendor[]
+  prices          Price[]
+}
+
+// Base - Price of an item that will always be used or used to compare for savings
+// Promotion - Price of an item when inside of a promotion, this is used for conditional pricing based on the promotion it is associated with (Promotions don't require a promotion price)
+// Override - Price to be used instead of Base Price when not in a promotion
+// This is designed so that Promotions are the most important part, and if a user wants to change a promoted item's price, they will need to remove promotion 
+// Override prices are designed to be automatically turned off with certain conditions being met, determined by the user.
+// Promotion > Override > Base
+model PriceType {
+  id   Int    @id
+  name String
+
+  Price Price[]
+}
+
+model Price {
+  id     Int     @id @default(autoincrement())
+  itemId Int
+  price  Decimal
+
+  // Lookup table to hold Base, Promotion, Override
+  priceTypeId Int
+
+  // Override price fields
+  isTimedOverride Boolean? // Will override expire on a date/time
+  expirationDate  DateTime? // When the override will expire (if found to be expired, we will fire and forget to remove the record)
+
+  isQuantityOverride Boolean? // Will the override expire when quantity number is met
+  expirationQuantity Int // The QoH that will make the override void (if found to be expired, we will fire and forget to remove the record)
+
+  item      Items     @relation(fields: [itemId], references: [id])
+  priceType PriceType @relation(fields: [priceTypeId], references: [id])
 }
 
 model Permissions {

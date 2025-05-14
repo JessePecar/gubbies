@@ -75,7 +75,7 @@ export class DropdownComponent implements ControlValueAccessor {
   label = input<string | undefined>(undefined);
   isRequired = input<boolean>(false);
 
-  handleUnfocus = output<string>();
+  handleUnfocus = output<number | string | null>();
 
   handleChange(selectedOption: DropdownOption) {
     const inputValue = selectedOption.id;
@@ -84,6 +84,7 @@ export class DropdownComponent implements ControlValueAccessor {
     this.writeValue(inputValue);
     // Closes the dropdown
     this.dropdown.nativeElement.blur();
+    this.handleUnfocus.emit(this.value());
   }
 
   onChange: (value: number | string | null) => void = noop;

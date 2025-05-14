@@ -3,7 +3,7 @@ import {
   CategorySchema,
   CategoryValidator,
 } from '@/inventory/categories/validators';
-import { effect, inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Injectable({
