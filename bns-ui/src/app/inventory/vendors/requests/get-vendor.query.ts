@@ -5,20 +5,25 @@ import { Vendor } from '@/inventory/vendors/store';
 @Injectable({
   providedIn: 'root',
 })
-export class GetVendorsService extends Query<{ vendors: Vendor[] }> {
+export class GetVendorQuery extends Query<{ vendor: Vendor }> {
   document = gql`
-    query {
-      vendors {
+    query GetVendor($id: Int!) {
+      vendor(id: $id) {
         id
         name
         notes
         primaryPhone {
+          id
+          rawDigits
           nationalDigits
         }
         secondaryPhone {
+          id
+          rawDigits
           nationalDigits
         }
         address {
+          id
           address1
           address2
           city

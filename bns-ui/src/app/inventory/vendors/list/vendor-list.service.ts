@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { GetVendorsService } from '@/inventory/vendors/requests';
+import { GetVendorsQuery } from '@/inventory/vendors/requests';
 import { Vendor } from '@/inventory/vendors/store';
 import { GlobalAlertService } from '@/components/alert';
 import { handleResponse } from '@/utilities/GraphQLResponseHandler';
@@ -9,12 +9,12 @@ import { handleResponse } from '@/utilities/GraphQLResponseHandler';
 })
 export class VendorListService {
   alertService = inject(GlobalAlertService);
-  getVendorsService = inject(GetVendorsService);
+  getVendorsQuery = inject(GetVendorsQuery);
 
   vendors = signal<Vendor[]>([]);
 
   constructor() {
-    this.getVendorsService
+    this.getVendorsQuery
       .watch()
       .valueChanges.subscribe(({ data: { vendors }, error, errors }) => {
         return handleResponse(

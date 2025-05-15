@@ -1,6 +1,6 @@
 import { VendorSchema } from '@/inventory/vendors/validators';
 import { inject, Injectable } from '@angular/core';
-import { CreateVendorService as CreateVendorMutation } from '@/inventory/vendors/requests';
+import { CreateVendorMutation } from '@/inventory/vendors/requests';
 import { Phone, Address } from '@/interfaces/settings/users';
 import { GlobalAlertService } from '@/components/alert';
 import { Router } from '@angular/router';
@@ -21,7 +21,7 @@ export type CreateVendor = {
   providedIn: 'root',
 })
 export class CreateVendorService {
-  private readonly createVendorService = inject(CreateVendorMutation);
+  private readonly createVendorMutation = inject(CreateVendorMutation);
   private readonly vendorStore = inject(VendorStoreService);
   private readonly alertService = inject(GlobalAlertService);
   private readonly router = inject(Router);
@@ -31,7 +31,7 @@ export class CreateVendorService {
     const newVendor = this.vendorStore.schemaToCreateObject(vendor);
 
     // Submit to the API in a mutation
-    this.createVendorService
+    this.createVendorMutation
       .mutate({
         createVendor: newVendor,
       })
