@@ -1,7 +1,6 @@
-import { Component, effect, inject, signal, untracked } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ItemStore } from '@/inventory/items/store';
 import { CardModule } from '@/components/card';
-import { ButtonComponent } from '@/components/buttons';
 import { Router } from '@angular/router';
 import { FooterButtonsComponent } from '@/inventory/items/ui/footer-buttons.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -26,7 +25,6 @@ import {
   selector: 'app-item-information',
   imports: [
     CardModule,
-    ButtonComponent,
     TextInputComponent,
     NumberInputComponent,
     SwitchInputComponent,
@@ -77,7 +75,9 @@ import {
         </form>
       </card-body>
       <card-footer>
-        <footer-buttons [canSubmit]="itemStore.form.valid" nextStep="vendor" />
+        <footer-buttons
+          [canSubmit]="itemStore.form.get('info')?.valid ?? false"
+          nextStep="vendor" />
       </card-footer>
     </card>
   `,

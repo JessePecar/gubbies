@@ -19,7 +19,12 @@ export class PriceValidator implements BaseValidator<PriceSchema> {
     price: yup
       .number()
       .required('The price is required')
-      .min(0.01, 'The item price must be at least 1 cent'), //TODO: Determine if we want to allow 0 priced items
+      .min(0.01, 'The item price must be at least 1 cent') //TODO: Determine if we want to allow 0 priced items
+      .test(
+        'decimal-check',
+        'Price must be a valid monetary amount',
+        value => !!`${value}`.match(/^\d+(\.\d{0,2})?$/)
+      ),
     createOverridePrice: yup.boolean(),
     expirationType: yup
       .number()
