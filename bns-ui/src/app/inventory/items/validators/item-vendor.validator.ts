@@ -49,5 +49,6 @@ export class ItemVendorValidator implements BaseValidator<ItemVendorSchema> {
     isPreferredVendor: false,
     isAutoReplenish: true,
     canReturn: true,
+    reorderQuantity: undefined,
   };
 }

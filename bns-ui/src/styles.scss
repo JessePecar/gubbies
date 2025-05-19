@@ -62,6 +62,11 @@ $primary: rgb(223, 226, 229);
 
 @utility view-container {
   height: calc(75vh - 40px);
+  max-height: calc(75vh - 40px);
+}
+
+html {
+  background-image: var(--color-primary);
 }
 
 html,

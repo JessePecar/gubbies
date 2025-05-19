@@ -1,5 +1,6 @@
 import {
   AbstractControl,
+  FormArray,
   FormControl,
   FormGroup,
   ValidationErrors,
@@ -10,7 +11,7 @@ import * as yup from 'yup';
 type AnyObject = { [key: string]: any };
 
 export type YupFormControls<TSchema> = {
-  [P in keyof TSchema]: FormControl<TSchema[P]> | FormGroup;
+  [P in keyof TSchema]: FormControl<TSchema[P]> | FormGroup | FormArray;
 };
 
 export class FormHandler {
@@ -21,7 +22,11 @@ export class FormHandler {
     const formControls: YupFormControls<TSchema> =
       {} as YupFormControls<TSchema>;
     for (const [key, value] of Object.entries(formFields)) {
-      if (formFields[key] instanceof Object) {
+      if (formFields[key] instanceof Array) {
+        formControls[key as keyof TSchema] = new FormArray([
+          this.formControls((formFields[key] as Array<any>)[0]),
+        ]);
+      } else if (formFields[key] instanceof Object) {
         formControls[key as keyof TSchema] = this.formControls(formFields[key]);
       } else {
         formControls[key as keyof TSchema] = new FormControl(value);
