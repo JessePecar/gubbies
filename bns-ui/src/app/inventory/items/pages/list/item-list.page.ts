@@ -1,6 +1,6 @@
 import { Component, effect, inject, signal, untracked } from '@angular/core';
 import { ItemListService } from './item-list.service';
-import { Item } from '@/inventory/items/interfaces/items';
+import { Item } from '@/interfaces';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { TableComponent, ToolbarItem } from '@components/tables';

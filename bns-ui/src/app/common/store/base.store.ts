@@ -10,6 +10,7 @@ export abstract class BaseStore<
   TSchema extends yup.AnyObject,
   TValidator extends BaseValidator<TSchema>,
   TDataObject extends Object,
+  TCreateObject extends Object,
 > {
   form!: FormGroup<YupFormControls<TSchema>>;
 
@@ -27,5 +28,8 @@ export abstract class BaseStore<
       FormHandler.validate<TSchema>(this.validator.validator)
     );
   }
-  abstract schemaToCreateObject(formData: TSchema): TDataObject;
+
+  abstract schemaToCreateObject(formData: TSchema): TCreateObject;
+
+  abstract dataObjectToSchema(data: TDataObject): TSchema;
 }

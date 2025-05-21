@@ -3,7 +3,7 @@ import { ButtonComponent } from '@/components/buttons';
 import { TextInputComponent } from '@/components';
 import { Router } from '@angular/router';
 import { AdjustmentFormService } from './create-adjustment.service';
-import { Item } from '@/inventory/items/interfaces/items';
+import { Item } from '@/interfaces';
 
 @Component({
   selector: 'app-adjustments-form',
@@ -42,7 +42,7 @@ import { Item } from '@/inventory/items/interfaces/items';
               <tbody class="mt-2 divide-y divide-stone-700">
                 @for (item of items(); track $index) {
                   <tr class="even:bg-primary-dark">
-                    <td class="p-2">{{ item.category.name }}</td>
+                    <td class="p-2">{{ item.category?.name }}</td>
                     <td class="p-2">{{ item.name }}</td>
                     <td class="p-2">{{ item.quantityOnHand }}</td>
                     <td class="p-2">{{ item.unitOfMeasurementType }}</td>

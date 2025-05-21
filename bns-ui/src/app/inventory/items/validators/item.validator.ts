@@ -12,30 +12,30 @@ import {
   ShelfLocationValidator,
 } from '@/inventory/categories/validators';
 
-export type ItemInfoSchema =
-  | {
-      name: string;
-      quantityOnHand: string;
-      isActive: boolean;
+export interface BaseItemInfoSchema {
+  name: string;
+  quantityOnHand: string;
+  isActive: boolean;
 
-      // Dropdown values
-      retirementStatus: number; // Enum
-      unitOfMeasurementType: number; // Enum
-      categoryCode?: string;
-      subcategoryCode?: string;
-      familyCode?: string;
-    }
-  | yup.AnyObject;
+  // Dropdown values
+  retirementStatus: number; // Enum
+  unitOfMeasurementType: number; // Enum
+  categoryCode?: string;
+  subcategoryCode?: string;
+  familyCode?: string;
+}
 
-export type ItemSchema =
-  | {
-      // object Validators
-      info: ItemInfoSchema;
-      price: PriceSchema;
-      location: ShelfLocationSchema;
-      vendors: ItemVendorSchema[];
-    }
-  | yup.AnyObject;
+export type ItemInfoSchema = BaseItemInfoSchema | yup.AnyObject;
+
+export interface BaseItemSchema {
+  // object Validators
+  info: ItemInfoSchema;
+  price: PriceSchema;
+  location: ShelfLocationSchema;
+  vendors: ItemVendorSchema[];
+}
+
+export type ItemSchema = BaseItemSchema | yup.AnyObject;
 
 @Injectable({
   providedIn: 'root',
