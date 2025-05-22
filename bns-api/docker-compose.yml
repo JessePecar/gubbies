@@ -1,0 +1,61 @@
+# version: '3.5'
+services:
+  
+  db:
+    image: postgres
+    restart: unless-stopped
+    # command: >
+    #   sh -c "chmod 0750 /var/lib/postgresql/data"
+    environment:
+      - POSTGRES_PASSWORD=postgres # This is temporary and will be managed differently in the future
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=bns
+    container_name: bns-db
+    volumes:
+      - bnsdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+  bns-migration: 
+    depends_on:
+      - db
+    build: 
+      context: .
+    volumes:
+      - ./src:/app/src
+    command: >
+      sh -c "npm install &&
+             npx prisma generate && 
+             npx prisma migrate db dev &&
+             npx prisma db seed"
+  
+  bns-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PORT=${PORT}
+    ports:
+      - '3000:3000'
+    depends_on:
+      - bns-migration
+    links: 
+      - db
+    volumes:
+      - ./src:/app/src
+
+  db-admin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: bns-db-admin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+    ports:
+      - '5050:80'
+    depends_on:
+      - db
+
+volumes: 
+  bnsdata:
+    external: true
