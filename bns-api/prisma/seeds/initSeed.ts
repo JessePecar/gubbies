@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 import { PrismaClient } from '@prisma/client';
-import { AuthUtil } from '../../src/utilities';
+import { AuthUtil } from './authUtils';
 import { resetPassword as runReset } from './resetPasswords';
 import { permissionGroupSeed, permissionSeed } from './data';
 const client = new PrismaClient();
