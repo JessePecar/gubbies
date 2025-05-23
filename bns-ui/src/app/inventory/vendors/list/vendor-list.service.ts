@@ -15,8 +15,10 @@ export class VendorListService {
 
   constructor() {
     this.getVendorsQuery
-      .watch()
-      .valueChanges.subscribe(({ data: { vendors }, error, errors }) => {
+      .fetch(undefined, {
+        fetchPolicy: 'network-only',
+      })
+      .subscribe(({ data: { vendors }, error, errors }) => {
         return handleResponse(
           this.alertService,
           () => {
