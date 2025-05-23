@@ -32,14 +32,12 @@ services:
     build:
       context: bns-api
       dockerfile: Dockerfile
-    environment:
-      - PORT=${PORT}
     ports:
       - "3000:3000"
     links: 
       - db
-    volumes:
-      - ./src:/app/src
+    expose: 
+      - "80"    
 
   bns-ui:
     container_name: bns-ui

@@ -24,7 +24,7 @@ import { CategoriesModule } from 'src/inventory/categories/categories.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
-      path: '',
+      path: '/api',
       subscriptions: {
         'graphql-ws': true,
       },

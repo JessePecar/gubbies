@@ -7,7 +7,7 @@ import { createClient } from 'graphql-ws';
 import { Kind, OperationTypeNode } from 'graphql';
 import { GetAccessToken } from './utilities';
 
-const uri = '://localhost:3000';
+const uri = '://localhost:3000/api';
 
 export const apolloProvider = () => {
   const httpLink = inject(HttpLink);
@@ -18,7 +18,7 @@ export const apolloProvider = () => {
     operation.setContext(({ headers = {} }) => ({
       headers: {
         ...headers,
-        authorization: `Bearer ${token} || null`,
+        authorization: `Bearer ${token || null}`,
       },
     }));
 
