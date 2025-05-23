@@ -2,17 +2,16 @@
 services:
   
   db:
-    image: postgres
+    image: mcr.microsoft.com/mssql/server:2022-latest
     restart: unless-stopped
     environment:
-      - POSTGRES_PASSWORD=postgres # This is temporary and will be managed differently in the future
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=bns
+      - ACCEPT_EULA=Y 
+      - MSSQL_SA_PASSWORD=J92P1Y0j4T # This is temporary and will be managed differently in the future
     container_name: bns-db
     volumes:
       - bnsdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "1401:1433"
 
   bns-migration: 
     container_name: bns-migration
@@ -23,6 +22,7 @@ services:
       - ./src:/app/src
     command: >
       sh -c "npm install &&
+             npx prisma db pull &&
              npx prisma generate && 
              npx prisma migrate dev &&
              npx prisma db seed"
@@ -36,24 +36,10 @@ services:
       - PORT=${PORT}
     ports:
       - "3000:3000"
-    depends_on:
-      - bns-migration
     links: 
       - db
     volumes:
       - ./src:/app/src
-
-  db-admin:
-    image: dpage/pgadmin4
-    restart: always
-    container_name: bns-db-admin
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
-    ports:
-      - '5050:80'
-    depends_on:
-      - db
 
   bns-ui:
     container_name: bns-ui

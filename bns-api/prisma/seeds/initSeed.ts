@@ -30,7 +30,6 @@ async function main() {
           id: pgs.id,
         },
         create: {
-          id: pgs.id,
           name: pgs.name,
         },
         update: {
@@ -54,7 +53,6 @@ async function main() {
           id: ps.id,
         },
         create: {
-          id: ps.id,
           name: ps.name,
           permissionGroupId: ps.permissionGroupId,
         },

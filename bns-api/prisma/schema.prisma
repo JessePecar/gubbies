@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlserver"
   url      = env("DATABASE_URL")
 }
 
@@ -72,17 +72,12 @@ model Family {
 
 // Example Location 9R - Top Middle
 model ShelfLocation {
-  id      Int       @id @default(autoincrement())
+  id      Int    @id @default(autoincrement())
   aisle   Int
-  side    ShelfSide
+  side    String
   section String // Not sure what type section should be, going to have it show up as a string
 
   families Family[]
-}
-
-enum ShelfSide {
-  RIGHT
-  LEFT
 }
 
 model Vendor {
@@ -95,8 +90,8 @@ model Vendor {
   secondaryPhoneId Int?
   addressId        Int?
 
-  primaryPhone   Phone?       @relation(name: "primaryPhone", fields: [primaryPhoneId], references: [id])
-  secondaryPhone Phone?       @relation(name: "secondaryPhone", fields: [secondaryPhoneId], references: [id])
+  primaryPhone   Phone?       @relation(name: "primaryPhone", fields: [primaryPhoneId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  secondaryPhone Phone?       @relation(name: "secondaryPhone", fields: [secondaryPhoneId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   address        Address?     @relation(fields: [addressId], references: [id])
   itemVendors    ItemVendor[]
 }
@@ -132,9 +127,9 @@ model Items {
   vendorId              Int
 
   adjustmentItems AdjustmentItems[]
-  category        Categories        @relation(fields: [categoryCode], references: [code])
-  subcategory     Subcategory?      @relation(fields: [subcategoryCode], references: [code])
-  family          Family?           @relation(fields: [fieldCode], references: [code])
+  category        Categories        @relation(fields: [categoryCode], references: [code], onDelete: NoAction, onUpdate: NoAction)
+  subcategory     Subcategory?      @relation(fields: [subcategoryCode], references: [code], onDelete: NoAction, onUpdate: NoAction)
+  family          Family?           @relation(fields: [fieldCode], references: [code], onDelete: NoAction, onUpdate: NoAction)
   itemVendors     ItemVendor[]
   prices          Price[]
 }
