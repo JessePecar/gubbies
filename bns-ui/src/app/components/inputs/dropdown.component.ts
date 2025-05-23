@@ -36,7 +36,7 @@ export interface DropdownOption {
         matRipple
         [matRippleCentered]="true"
         matRippleColor="#44444444"
-        class="dropbtn w-full flex items-center justify-between p-1 h-8 w-full rounded-lg border border-primary-dark bg-primary pl-4">
+        class="dropbtn w-full flex items-center justify-between p-1 h-8 w-full rounded-lg border border-primary-dark bg-primary pl-4 text-sm">
         {{ getSelectedOption() ?? '--' }}
         <mat-icon fontIcon="arrow_drop_down" />
       </a>
