@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { TabContainerComponent, TabComponent } from '@/components/tab';
+import { TabContainerComponent } from '@/components/tab';
 
 @Component({
   selector: 'app-category-list',
-  imports: [TabContainerComponent, TabComponent],
+  imports: [TabContainerComponent],
   template: `
     <div class="h-full w-full flex justify-center items-center">
       <div class="w-3/4">

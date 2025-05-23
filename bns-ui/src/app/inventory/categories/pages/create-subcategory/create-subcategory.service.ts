@@ -58,7 +58,11 @@ export class CreateSubcategoryService {
                   data.upsertSubcategory,
                 ]);
 
-                this.router.navigate(['inventory', 'categories', 'list']);
+                this.router.navigate([
+                  'inventory',
+                  'categories',
+                  'subcategory-list',
+                ]);
               } else {
                 errors?.forEach(err => {
                   this.alertService.addAlert('error', err.message, 2000);

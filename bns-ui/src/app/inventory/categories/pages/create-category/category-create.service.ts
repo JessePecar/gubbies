@@ -50,8 +50,8 @@ export class CategoryCreateService {
                   2000
                 );
 
-                this.categoryListService.categories.update(cat => [
-                  ...cat,
+                this.categoryListService.categories.set([
+                  ...this.categoryListService.categories(),
                   data.upsertCategory,
                 ]);
 

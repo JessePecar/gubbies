@@ -26,11 +26,15 @@ export class CategoryListService {
   isLoading = signal<boolean>(true);
 
   loadCategories() {
+    console.log('Loading categories');
     this.isLoading.set(true);
 
     this.categoriesQuery
-      .watch()
-      .valueChanges.subscribe(({ data: { categories }, loading }) => {
+      .fetch(undefined, {
+        fetchPolicy: 'network-only',
+        pollInterval: 0,
+      })
+      .subscribe(({ data: { categories }, loading }) => {
         this.isLoading.set(loading);
         this.categories.set(categories);
       });
@@ -39,17 +43,25 @@ export class CategoryListService {
   loadFamilies() {
     this.isLoading.set(true);
 
-    this.familiesQuery.fetch().subscribe(({ data: { families }, loading }) => {
-      this.isLoading.set(loading);
-      this.families.set(families);
-    });
+    this.familiesQuery
+      .fetch(undefined, {
+        fetchPolicy: 'network-only',
+        pollInterval: 0,
+      })
+      .subscribe(({ data: { families }, loading }) => {
+        this.isLoading.set(loading);
+        this.families.set(families);
+      });
   }
 
   loadSubcategories() {
     this.isLoading.set(true);
 
     this.allSubcategoriesQuery
-      .fetch()
+      .fetch(undefined, {
+        fetchPolicy: 'network-only',
+        pollInterval: 0,
+      })
       .subscribe(({ data: { subcategories }, loading }) => {
         this.isLoading.set(loading);
         this.subcategories.set(subcategories);

@@ -45,7 +45,7 @@ import { MatIconModule } from '@angular/material/icon';
       </div>
       <div class="flex flex-col items-center">
         <small class="mb-2">Subcategories</small>
-        @if (category().subcategories.length) {
+        @if (!!category().subcategories && category().subcategories.length) {
           <p>{{ category().subcategories.length }}</p>
         } @else {
           <p>0</p>
