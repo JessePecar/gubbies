@@ -18,7 +18,7 @@ export class ItemsResolver {
   }
 
   @UseGuards(AppAuthGuard)
-  @Query('items')
+  @Query('itemsRequest')
   async getItemsFromRequest(@Args('request') request: ReadRequest) {
     return this.itemsService.getItemsFromRequest(request);
   }

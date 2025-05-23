@@ -1,6 +1,6 @@
 type Query {
   items: [Item]
-  items(request: ReadRequest!): [Item]
+  itemsRequest(request: ReadRequest!): [Item]
   item(id: ID!): Item
 }
 

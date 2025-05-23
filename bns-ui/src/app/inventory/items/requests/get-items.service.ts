@@ -18,7 +18,7 @@ export class GetItemsService extends Query<{ items: Item[] }> {
         category {
           name
         }
-        subCategory {
+        subcategory {
           name
         }
         family {

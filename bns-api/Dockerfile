@@ -7,8 +7,13 @@ WORKDIR /app
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
 
+COPY tsconfig.json ./
+
+# Copy the .env and .env.development files
+COPY .env.development ./.env
+
 # Copy the prisma files into the directory
-COPY prisma ./
+COPY prisma ./prisma
 
 # Install app dependencies
 RUN npm install
@@ -17,10 +22,7 @@ RUN npm install
 RUN npx prisma generate
 
 # Bundle app source
-COPY . .
-
-# Copy the .env and .env.development files
-COPY .env ./
+COPY src ./src
 
 # Expose the application port
 

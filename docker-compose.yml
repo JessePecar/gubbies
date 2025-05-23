@@ -29,6 +29,8 @@ services:
   
   bns-api:
     container_name: bns-api
+    # env_file:
+    #   - bns-api/.env.development
     build:
       context: bns-api
       dockerfile: Dockerfile
