@@ -40,24 +40,18 @@ interface TabInfo {
       cursor: pointer;
     }
     .tab-titles li {
-      border: 2px solid transparent;
+      border: 1px solid transparent;
       background:
-        linear-gradient(--color-primary --color-primary) padding-box,
+        linear-gradient(var(--color-primary), var(--color-primary)) padding-box,
         linear-gradient(
-            var(--color-primary-green-opaque) var(--color-primary-green)
+            var(--color-primary-green-opaque),
+            var(--color-primary-green-opaque),
+            var(--color-primary)
           )
           border-box;
       margin-right: 4px;
       &:hover {
-        background:
-          linear-gradient(
-              --color-primary-green-opaque --color-primary-green-opaque
-            )
-            padding-box,
-          linear-gradient(
-              var(--color-primary-green-opaque) var(--color-primary-green)
-            )
-            border-box;
+        background: var(--color-primary-green-opaque);
       }
     }
     .active {
