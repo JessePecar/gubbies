@@ -23,7 +23,7 @@ interface TabInfo {
           [routerLink]="tab.path"
           [relativeTo]="route.parent"
           [class.active]="isActive(tab.path)"
-          routerLinkActive="bg-primary-green text-primary">
+          routerLinkActive="active text-primary">
           {{ tab.title }}
         </li>
       }
@@ -40,13 +40,32 @@ interface TabInfo {
       cursor: pointer;
     }
     .tab-titles li {
-      border: 1px solid var(--color-primary-green);
+      border: 2px solid transparent;
+      background:
+        linear-gradient(--color-primary --color-primary) padding-box,
+        linear-gradient(
+            var(--color-primary-green-opaque) var(--color-primary-green)
+          )
+          border-box;
       margin-right: 4px;
       &:hover {
-        background: var(--color-primary-green-opaque);
+        background:
+          linear-gradient(
+              --color-primary-green-opaque --color-primary-green-opaque
+            )
+            padding-box,
+          linear-gradient(
+              var(--color-primary-green-opaque) var(--color-primary-green)
+            )
+            border-box;
       }
     }
     .active {
+      background: linear-gradient(
+        var(--color-primary-green),
+        var(--color-secondary-green)
+      ) !important;
+
       &:hover {
         background: var(--color-primary-green) !important;
       }

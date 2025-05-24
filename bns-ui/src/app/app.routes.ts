@@ -7,6 +7,7 @@ import { SettingsPage, settingsGuard } from '@/settings';
 import { usersRoutes } from '@/settings/users';
 import { roleRoutes } from '@/settings/roles';
 import { inventoryRoutes } from '@/inventory';
+import { storeRoutes } from '@/settings/store';
 
 export const routes: Routes = [
   {
@@ -24,7 +25,7 @@ export const routes: Routes = [
         path: 'settings',
         component: SettingsPage, // Will default to navigating to user's page
         canActivateChild: [settingsGuard],
-        children: [...usersRoutes, ...roleRoutes],
+        children: [...usersRoutes, ...roleRoutes, ...storeRoutes],
       },
     ],
   },
