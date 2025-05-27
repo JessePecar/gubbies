@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
   template: `
     <div class="h-full w-full flex justify-center items-center">
       <div class="w-3/4">
-        <app-tab-container [tabs]="tabs" />
+        <app-tab-container [useParent]="false" [tabs]="tabs" />
       </div>
     </div>
   `,
@@ -15,7 +15,7 @@ import { Component } from '@angular/core';
 })
 export class StorePage {
   tabs = [
-    { path: 'store-settings', title: 'Store' },
+    { path: 'settings', title: 'Store' },
     { path: 'adjustment-settings', title: 'Adjustment' },
     { path: 'promotion-settings', title: 'Promotion' },
   ];

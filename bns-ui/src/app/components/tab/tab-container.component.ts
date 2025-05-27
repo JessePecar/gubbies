@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, effect, inject, input, untracked } from '@angular/core';
 import {
   ActivatedRoute,
   Router,
@@ -21,7 +21,7 @@ interface TabInfo {
         <li
           class="rounded-t p-3 py-2"
           [routerLink]="tab.path"
-          [relativeTo]="route.parent"
+          [relativeTo]="getRelativeLink()"
           [class.active]="isActive(tab.path)"
           routerLinkActive="active text-primary">
           {{ tab.title }}
@@ -68,10 +68,32 @@ interface TabInfo {
 })
 export class TabContainerComponent {
   tabs = input<TabInfo[]>([]);
+  useParent = input<boolean>(false);
+
   route = inject(ActivatedRoute);
   router = inject(Router);
 
+  getRelativeLink() {
+    if (!this.useParent()) {
+      return this.route;
+    }
+    return this.route.parent;
+  }
+
   isActive(path: string) {
     return this.router.url.endsWith(`/${path}`);
+  }
+
+  constructor() {
+    // On initialization of the tabs, will check if we are on tab, if not, we will navigate to the first tab in the list
+    effect(() => {
+      const tabs = this.tabs();
+
+      untracked(() => {
+        if (!tabs.some(tab => this.router.url.endsWith(tab.path))) {
+          this.router.navigate([`${this.router.url}/${tabs[0].path}`]);
+        }
+      });
+    });
   }
 }

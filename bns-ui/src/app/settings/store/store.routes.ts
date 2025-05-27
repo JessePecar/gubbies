@@ -8,11 +8,12 @@ import { Routes } from '@angular/router';
 
 export const storeRoutes: Routes = [
   {
-    path: '',
+    path: 'store',
+    title: 'Store Settings',
     component: StorePage,
     children: [
       {
-        path: 'store-settings',
+        path: 'settings',
         component: StoreSettingsComponent,
       },
       {

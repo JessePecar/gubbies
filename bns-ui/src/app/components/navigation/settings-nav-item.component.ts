@@ -26,5 +26,9 @@ export class SettingsNavItemComponent {
       linkTitle: 'Roles',
       route: '/settings/roles/list',
     },
+    {
+      linkTitle: 'Settings',
+      route: '/settings/store',
+    },
   ];
 }
