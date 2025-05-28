@@ -78,6 +78,7 @@ services:
        - "80"   
 
   # endregion
+  
   bns-ui:
     container_name: bns-ui
     build: bns-ui
