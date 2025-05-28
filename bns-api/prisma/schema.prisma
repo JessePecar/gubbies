@@ -120,6 +120,7 @@ model Items {
   subcategoryCode       String?
   fieldCode             String?
   quantityOnHand        String
+  isHazardous           Boolean
   isActive              Boolean
   retirementStatus      Int
   reorderQuantity       Decimal // This will take the lowest cost/primary vendor's reorder point
@@ -208,7 +209,7 @@ model Users {
   firstName      String?
   lastName       String?
   roleId         Int
-  primaryPhoneId Int?
+  primaryPhoneId Int?    @unique
   addressId      Int?    @unique
   userName       String?
   password       String?
@@ -228,6 +229,7 @@ model Phone {
   users           Users[]
   primaryVendor   Vendor[] @relation(name: "primaryPhone")
   secondaryVendor Vendor[] @relation(name: "secondaryPhone")
+  store           Store?
 }
 
 model Address {
@@ -241,4 +243,77 @@ model Address {
 
   user    Users?
   vendors Vendor[]
+  store   Store?
+}
+
+model Chain {
+  id Int @id @unique @default(autoincrement())
+
+  // Chain level permissions
+
+  stores Store[]
+
+  adjustmentReason  AdjustmentReason[]
+  adjustmentSetting AdjustmentSetting[]
+}
+
+// If the chain has multiple different types of stores, we will want to differentiate them here
+// Store types will be set in the chain settings and we can have reasons hidden based on type 
+model StoreType {
+  code  String  @id @unique
+  name  String
+  store Store[]
+}
+
+model Store {
+  id       Int    @id @unique @default(autoincrement())
+  name     String
+  typeCode String
+
+  // Store integration information to external services
+
+  phoneId   Int @unique
+  addressId Int @unique
+  chainId   Int
+
+  address   Address   @relation(fields: [addressId], references: [id])
+  phone     Phone     @relation(fields: [phoneId], references: [id])
+  chain     Chain[]
+  storeType StoreType @relation(fields: [typeCode], references: [code])
+}
+
+// Seeded table that we will pull into the UI for a dropdown
+model AdjustmentRuleModel {
+  id        Int    @id
+  modelName String
+}
+
+// Seeded table that we will pull into the UI for a dropdown
+// this will hold whether or not it's equal, greater than, etc
+model Comparitor {
+  code String @id
+  name String
+}
+
+// This is how the customer will determine what items can do what with adjustments
+model AdjustmentSetting {
+  id      Int @id @default(autoincrement())
+  chainId Int
+
+  comparisonModel String //Example: Store
+
+  // Rule Builder fields
+  reasonId Int
+
+  reason AdjustmentReason @relation(fields: [reasonId], references: [id])
+  chain  Chain            @relation(fields: [chainId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model AdjustmentReason {
+  id      Int    @id @unique @default(autoincrement())
+  chainId Int
+  name    String
+
+  adjustmentSettings AdjustmentSetting[]
+  chain              Chain               @relation(fields: [chainId], references: [id])
 }
