@@ -11,5 +11,5 @@ definitionsFactory.generate({
 definitionsFactory.generate({
   typePaths: ['./src/**/*.graphql'],
   path: join(process.cwd(), '../bns-ui/src/app/interfaces/graphql.schema.ts'),
-  outputAs: 'class',
+  outputAs: 'interface',
 });
