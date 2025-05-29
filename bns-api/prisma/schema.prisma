@@ -167,61 +167,10 @@ model Price {
   priceType PriceType @relation(fields: [priceTypeId], references: [id])
 }
 
-model Permissions {
-  id                Int               @id @default(autoincrement())
-  name              String?
-  permissionGroupId Int?
-  rolePermissions   RolePermissions[]
-  PermissionGroup   PermissionGroup?  @relation(fields: [permissionGroupId], references: [id])
-}
-
-model PermissionGroup {
-  id          Int           @id @default(autoincrement())
-  name        String
-  permissions Permissions[]
-}
-
-model Roles {
-  id              Int               @id @default(autoincrement())
-  name            String
-  hierarchyTier   Int               @default(1)
-  rolePermissions RolePermissions[]
-  users           Users[]
-}
-
-model RolePermissions {
-  roleId       Int
-  role         Roles       @relation(fields: [roleId], references: [id])
-  permissionId Int
-  permission   Permissions @relation(fields: [permissionId], references: [id])
-
-  @@id([roleId, permissionId])
-}
-
 model SequelizeMeta {
   name String @id
 
   @@ignore
-}
-
-model Users {
-  id               Int     @id @default(autoincrement())
-  firstName        String?
-  lastName         String?
-  roleId           Int
-  primaryPhoneId   Int?    @unique
-  addressId        Int?    @unique
-  userName         String?
-  password         String?
-  isActive         Boolean @default(true)
-  emailAddress     String?
-  // If the role is operating the app in an enterprise capacity
-  // Enterprise mode will make changes to all stores, this will probably have to be a separate app that they are changed to 
-  isEnterpriseMode Boolean @default(false)
-
-  role         Roles    @relation(fields: [roleId], references: [id])
-  primaryPhone Phone?   @relation(fields: [primaryPhoneId], references: [id])
-  address      Address? @relation(fields: [addressId], references: [id])
 }
 
 model Phone {
@@ -229,11 +178,8 @@ model Phone {
   rawDigits      String
   nationalDigits String
 
-  users            Users[]
-  primaryVendors   Vendor[]    @relation(name: "primaryPhone")
-  secondaryVendors Vendor[]    @relation(name: "secondaryPhone")
-  store            Store?
-  departments      Department?
+  primaryVendors   Vendor[] @relation(name: "primaryPhone")
+  secondaryVendors Vendor[] @relation(name: "secondaryPhone")
 }
 
 model Address {
@@ -245,69 +191,7 @@ model Address {
   countryCode String
   postalCode  Int
 
-  user    Users?
   vendors Vendor[]
-  store   Store?
-}
-
-model Chain {
-  id Int @id @unique @default(autoincrement())
-
-  // Chain level permissions
-
-  stores Store[]
-
-  adjustmentReason  AdjustmentReason[]
-  adjustmentSetting AdjustmentSetting[]
-}
-
-// If the chain has multiple different types of stores, we will want to differentiate them here
-// Store types will be set in the chain settings and we can have reasons hidden based on type 
-model StoreType {
-  code  String  @id @unique
-  name  String
-  store Store[]
-}
-
-model Store {
-  id        Int     @id @unique @default(autoincrement())
-  name      String
-  typeCode  String
-  isDeleted Boolean
-  isActive  Boolean
-
-  // Store integration information to external services
-
-  phoneId   Int @unique
-  addressId Int @unique
-  chainId   Int
-
-  address          Address           @relation(fields: [addressId], references: [id])
-  phone            Phone             @relation(fields: [phoneId], references: [id])
-  storeType        StoreType         @relation(fields: [typeCode], references: [code])
-  chain            Chain[]
-  storeDepartments StoreDepartment[]
-}
-
-model Department {
-  code String @id
-  name String
-
-  // Department related flags / information
-  phoneId Int @unique
-
-  phone            Phone             @relation(fields: [phoneId], references: [id])
-  storeDepartments StoreDepartment[]
-}
-
-model StoreDepartment {
-  departmentCode String
-  storeId        Int
-
-  department Department @relation(fields: [departmentCode], references: [code], onDelete: Cascade, onUpdate: NoAction)
-  store      Store      @relation(fields: [storeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@id([departmentCode, storeId])
 }
 
 // Seeded table that we will pull into the UI for a dropdown
@@ -342,7 +226,6 @@ model AdjustmentSetting {
   reasonId Int
 
   reason     AdjustmentReason @relation(fields: [reasonId], references: [id])
-  chain      Chain            @relation(fields: [chainId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   comparitor Comparitor       @relation(fields: [comparitorCode], references: [code])
 }
 
@@ -352,5 +235,4 @@ model AdjustmentReason {
   name    String
 
   adjustmentSettings AdjustmentSetting[]
-  chain              Chain               @relation(fields: [chainId], references: [id])
 }

@@ -13,6 +13,30 @@ services:
     ports:
       - "1401:1433"
 
+  auth-db: 
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y 
+      - MSSQL_SA_PASSWORD=J92P1Y0j4T # This is temporary and will be managed differently in the future
+    container_name: auth-db
+    volumes:
+      - bnsdata:/var/lib/postgresql/data
+    ports:
+      - "1402:1433"
+
+  pos-db: 
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y 
+      - MSSQL_SA_PASSWORD=J92P1Y0j4T # This is temporary and will be managed differently in the future
+    container_name: pos-db
+    volumes:
+      - bnsdata:/var/lib/postgresql/data
+    ports:
+      - "1403:1433"
+
   bns-migration: 
     container_name: bns-migration
     depends_on:
@@ -78,7 +102,7 @@ services:
        - "80"   
 
   # endregion
-  
+
   bns-ui:
     container_name: bns-ui
     build: bns-ui
