@@ -1,0 +1,38 @@
+// Seeded table that we will pull into the UI for a dropdown
+// this will hold whether or not it's equal, greater than, etc
+model Comparitor {
+  code               String              @id
+  name               String
+  adjustmentSettings AdjustmentSetting[]
+}
+
+// This is how the customer will determine what items can do what with adjustments
+// This is an Admin/Enterprise mode only setting to be changed
+model AdjustmentSetting {
+  id      Int @id @default(autoincrement())
+  chainId Int
+
+  comparitorCode String
+  value          String
+
+  // Rule Builder fields
+  reasonId Int
+
+  reason     AdjustmentReason @relation(fields: [reasonId], references: [id])
+  comparitor Comparitor       @relation(fields: [comparitorCode], references: [code])
+}
+
+model AdjustmentReason {
+  id      Int    @id @unique @default(autoincrement())
+  chainId Int
+  name    String
+
+  adjustmentSettings AdjustmentSetting[]
+}
+
+model ItemAdjustmentReason {
+  reasonId Int
+  itemId   Int
+
+  @@id([reasonId, itemId])
+}
