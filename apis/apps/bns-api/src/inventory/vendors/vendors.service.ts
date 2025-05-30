@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CreateVendorInput, UpdateVendorInput } from '@bns/graphql.schema';
-import { RepositoryService } from '@bns/common/repository';
-import { SharedService } from '@bns/common/service';
+import { BnsClientService } from '@core/repository';
+import { SharedService } from '@core/service';
 
 @Injectable()
 export class VendorsService {
   constructor(
-    private repository: RepositoryService,
-    private sharedService: SharedService,
+    private repository: BnsClientService,
+    private sharedService: SharedService<BnsClientService>,
   ) {}
 
   defaultIncludes = {

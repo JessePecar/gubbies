@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from '@bns/bns-db-client-types';
+import { PrismaClient } from '@auth/auth-db-client-types';
 
 // The onModuleInit is optional — if you leave it out, Prisma will connect lazily on its first call to the database.
 @Injectable()

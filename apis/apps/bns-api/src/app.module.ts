@@ -4,13 +4,11 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UsersModule, RolesModule, AuthModule } from '@bns/core';
 import { ItemsModule, VendorsModule, CategoriesModule } from '@bns/inventory';
 import { ConfigModule } from '@nestjs/config';
-import { RepositoryModule, RepositoryService } from '@bns/common/repository';
-import { SharedModule } from '@bns/common/service';
+import { RepositoryModule, BnsClientService } from '@core/repository';
 
 @Module({
   imports: [
     RepositoryModule,
-    SharedModule,
     RolesModule,
     ItemsModule,
     UsersModule,
@@ -29,6 +27,6 @@ import { SharedModule } from '@bns/common/service';
       },
     }),
   ],
-  providers: [RepositoryService],
+  providers: [BnsClientService],
 })
 export class AppModule {}

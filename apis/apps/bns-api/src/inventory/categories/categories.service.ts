@@ -1,5 +1,5 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
-import { RepositoryService } from '@bns/common/repository';
+import { Injectable } from '@nestjs/common';
+import { BnsClientService } from '@core/repository';
 import {
   CreateCategoryInput,
   CreateFamilyInput,
@@ -9,7 +9,7 @@ import {
 
 @Injectable()
 export class CategoriesService {
-  constructor(private readonly repository: RepositoryService) {}
+  constructor(private readonly repository: BnsClientService) {}
 
   private readonly familyIncludes = {
     location: true,

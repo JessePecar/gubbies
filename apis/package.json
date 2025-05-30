@@ -1,5 +1,5 @@
 {
-  "name": "gubbies-api",
+  "name": "bns-api",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -12,13 +12,13 @@
     "generate": "ts-node generate-typings.ts",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/apps/gubbies-api/main",
+    "start:prod": "node dist/apps/bns-api/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/gubbies-api/test/jest-e2e.json",
+    "test:e2e": "jest --config ./apps/bns-api/test/jest-e2e.json",
     "prisma:generate": "npx prisma generate --schema ./prisma-bns-db && npx prisma generate --schema ./prisma-ar-db/schema && npx prisma generate --schema ./prisma-auth-db/schema && npx prisma generate --schema ./prisma-pos-db/schema",
     "prisma:ls": "ls"
   },

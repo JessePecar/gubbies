@@ -1,10 +1,10 @@
 import { RolesService } from './roles.service';
 import { RolesResolver } from './roles.resolver';
-import { RepositoryModule, RepositoryService } from '@bns/common/repository';
+import { RepositoryModule, BnsClientService } from '@core/repository';
 import { Module } from '@nestjs/common';
 
 @Module({
   imports: [RepositoryModule],
-  providers: [RolesService, RolesResolver, RepositoryService],
+  providers: [RolesService, RolesResolver, BnsClientService],
 })
 export class RolesModule {}

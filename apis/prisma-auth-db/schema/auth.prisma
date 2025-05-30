@@ -35,8 +35,8 @@ model Store {
   addressId Int @unique
   chainId   Int
 
-  address          AuthAddress       @relation(fields: [addressId], references: [id])
-  phone            AuthPhone         @relation(fields: [phoneId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  address          Address           @relation(fields: [addressId], references: [id])
+  phone            Phone             @relation(fields: [phoneId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   storeType        StoreType         @relation(fields: [typeCode], references: [code])
   chain            Chain[]
   storeDepartments StoreDepartment[]
@@ -49,7 +49,7 @@ model Department {
   // Department related flags / information
   phoneId Int @unique
 
-  phone            AuthPhone         @relation(fields: [phoneId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  phone            Phone             @relation(fields: [phoneId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   storeDepartments StoreDepartment[]
 }
 
@@ -63,7 +63,7 @@ model StoreDepartment {
   @@id([departmentCode, storeId])
 }
 
-model AuthPhone {
+model Phone {
   id             Int    @id @default(autoincrement())
   rawDigits      String
   nationalDigits String
@@ -73,7 +73,7 @@ model AuthPhone {
   departments Department?
 }
 
-model AuthAddress {
+model Address {
   id          Int     @id @unique @default(autoincrement())
   address1    String
   address2    String?
@@ -102,10 +102,10 @@ model User {
   // Enterprise mode will make changes to all stores, this will probably have to be a separate app that they are changed to 
   isEnterpriseMode Boolean @default(false)
 
-  role         Role         @relation(fields: [roleId], references: [id])
-  primaryPhone AuthPhone?   @relation(fields: [primaryPhoneId], references: [id])
-  address      AuthAddress? @relation(fields: [addressId], references: [id])
-  application  Application  @relation(fields: [applicationId], references: [id])
+  role         Role        @relation(fields: [roleId], references: [id])
+  primaryPhone Phone?      @relation(fields: [primaryPhoneId], references: [id])
+  address      Address?    @relation(fields: [addressId], references: [id])
+  application  Application @relation(fields: [applicationId], references: [id])
 }
 
 model Permission {

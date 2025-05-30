@@ -1,4 +1,4 @@
-import { RepositoryModule, RepositoryService } from '@bns/common/repository';
+import { RepositoryModule, BnsClientService } from '@core/repository';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
 import { Module } from '@nestjs/common';
@@ -18,7 +18,7 @@ import { JwtStrategy } from '@core/strategy';
       // TODO: Update this to have a shorter lifespan and have a refresh token returned as well with a longer lifespan
     }),
   ],
-  providers: [AuthService, AuthResolver, RepositoryService, JwtStrategy],
+  providers: [AuthService, AuthResolver, BnsClientService, JwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

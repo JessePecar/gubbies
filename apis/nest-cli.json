@@ -1,11 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/gubbies-api/src",
+  "sourceRoot": "apps/bns-api/src",
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/gubbies-api/tsconfig.app.json"
+    "tsConfigPath": "apps/bns-api/tsconfig.app.json"
   },
   "generateOptions": {
     "spec": false

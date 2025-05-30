@@ -11,9 +11,11 @@ import {
   ApplicationService,
   ApplicationModule,
 } from './application';
+import { RepositoryModule, AuthClientService } from '@core/repository';
 
 @Module({
   imports: [
+    RepositoryModule,
     ChainModule,
     StoreModule,
     RoleModule,
@@ -38,6 +40,7 @@ import {
     UserService,
     AuthService,
     ApplicationService,
+    AuthClientService,
   ],
 })
 export class AppModule {}

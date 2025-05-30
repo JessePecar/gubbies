@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { RepositoryService } from '@bns/common/repository';
+import { BnsClientService } from '@core/repository';
 import { ReadRequest } from '@bns/graphql.schema';
 
 @Injectable()
 export class ItemsService {
-  constructor(private repository: RepositoryService) {}
+  constructor(private repository: BnsClientService) {}
 
   // Based on structure, this will pull the code/name from each cat, subcat and fam
   private readonly subCatFamSelect = {

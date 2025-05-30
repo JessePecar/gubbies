@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "declaration": false,
-    "outDir": "../../dist/apps/bns-api"
+    "outDir": "../../dist/apps/auth-api"
   },
   "include": [
     "src/**/*"
