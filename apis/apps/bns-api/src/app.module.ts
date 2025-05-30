@@ -1,18 +1,14 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { UsersModule, RolesModule, AuthModule } from '@bns/core';
 import { ItemsModule, VendorsModule, CategoriesModule } from '@bns/inventory';
 import { ConfigModule } from '@nestjs/config';
-import { RepositoryModule, BnsClientService } from '@core/repository';
+import { BnsRepositoryModule } from '@core/repository';
 
 @Module({
   imports: [
-    RepositoryModule,
-    RolesModule,
+    BnsRepositoryModule,
     ItemsModule,
-    UsersModule,
-    AuthModule,
     VendorsModule,
     CategoriesModule,
     ConfigModule.forRoot({
@@ -27,6 +23,6 @@ import { RepositoryModule, BnsClientService } from '@core/repository';
       },
     }),
   ],
-  providers: [BnsClientService],
+  providers: [],
 })
 export class AppModule {}

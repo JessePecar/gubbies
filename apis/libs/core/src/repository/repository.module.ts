@@ -8,13 +8,28 @@ import {
 
 @Module({
   imports: [],
-  exports: [],
-  providers: [
-    AuthClientService,
-    BnsClientService,
-    ArClientService,
-    PosClientService,
-  ],
-  controllers: [],
+  exports: [BnsClientService],
+  providers: [BnsClientService],
 })
-export class RepositoryModule {}
+export class BnsRepositoryModule {}
+
+@Module({
+  imports: [],
+  exports: [AuthClientService],
+  providers: [AuthClientService],
+})
+export class AuthRepositoryModule {}
+
+@Module({
+  imports: [],
+  exports: [ArClientService],
+  providers: [ArClientService],
+})
+export class ArRepositoryModule {}
+
+@Module({
+  imports: [],
+  exports: [PosClientService],
+  providers: [PosClientService],
+})
+export class PosRepositoryModule {}

@@ -1,16 +1,19 @@
 import { AuthClientService } from '@core/repository';
-import { SharedService } from '@core/service';
 import { AuthUtil } from '@core/utilities';
 import { Injectable } from '@nestjs/common';
-import { UpdateUserInput, CreateUserInput } from '@bns/graphql.schema';
+import {
+  UpdateUserInput,
+  CreateUserInput,
+  UpdatePhoneInput,
+  CreatePhoneInput,
+  UpdateAddressInput,
+  CreateAddressInput,
+} from '@bns/graphql.schema';
 
 @Injectable()
 export class UserService {
   authUtil = new AuthUtil();
-  constructor(
-    private repository: AuthClientService,
-    private sharedService: SharedService<AuthClientService>,
-  ) {}
+  constructor(private repository: AuthClientService) {}
 
   private readonly defaultInclude = {
     role: {
@@ -97,20 +100,15 @@ export class UserService {
     });
   }
 
-  private async updateAddress(user: UpdateUserInput | CreateUserInput) {
-    const { address } = user;
-    return await this.sharedService.updateAddress(address);
-  }
-
   private async updatePrimaryPhone(user: UpdateUserInput | CreateUserInput) {
     const { primaryPhone } = user;
-    return await this.sharedService.updatePhone(primaryPhone);
+    return await this.updatePhone(primaryPhone);
   }
 
   async updateUser(user: UpdateUserInput) {
     // Update the address and primary phone at the same time
     const [address, primaryPhone] = await Promise.all([
-      this.updateAddress(user),
+      this.updateAddress(user.address),
       this.updatePrimaryPhone(user),
     ]);
     // Update the user information
@@ -149,7 +147,7 @@ export class UserService {
     );
     // Update the address and primary phone at the same time
     const [address, primaryPhone] = await Promise.all([
-      this.updateAddress(user),
+      this.updateAddress(user.address),
       this.updatePrimaryPhone(user),
     ]);
     // Update the user information
@@ -167,5 +165,105 @@ export class UserService {
       },
       include: this.defaultInclude,
     });
+  }
+
+  async updateAddress(
+    address?: UpdateAddressInput | CreateAddressInput | null,
+  ) {
+    if (address !== null && address !== undefined) {
+      // If we are using the update user input, then we will perform an upsert
+      const dataObject = {
+        create: {
+          address1: address.address1,
+          city: address.city,
+          countryCode: address.countryCode,
+          state: address.state,
+          address2: address.address2,
+          postalCode: address.postalCode,
+        },
+        update: {
+          address1: address.address1,
+          city: address.city,
+          countryCode: address.countryCode,
+          state: address.state,
+          address2: address.address2,
+          postalCode: address.postalCode,
+        },
+      };
+
+      if (address instanceof UpdateAddressInput) {
+        const updateObject = {
+          where: {
+            id: address.id,
+          },
+          ...dataObject,
+        };
+
+        return await this.repository.address.upsert(updateObject);
+      }
+      // If we are using the create user input, then we will perform a create
+      else {
+        return await this.repository.address.create({
+          data: dataObject.create,
+        });
+      }
+    }
+    // If the address is null or undefined, then create a blank address
+    else {
+      const createObject = {
+        address1: '',
+        city: '',
+        countryCode: 'US',
+        state: '',
+        address2: undefined,
+        postalCode: 0,
+      };
+
+      return await this.repository.address.create({
+        data: createObject,
+      });
+    }
+  }
+
+  async updatePhone(phone?: UpdatePhoneInput | CreatePhoneInput | null) {
+    if (phone !== null && phone !== undefined) {
+      const dataObject = {
+        create: {
+          nationalDigits: phone.nationalDigits,
+          rawDigits: phone.rawDigits,
+        },
+        update: {
+          nationalDigits: phone.nationalDigits,
+          rawDigits: phone.rawDigits,
+        },
+      };
+
+      // If user is an update user input, then run an upsert
+      if (phone instanceof UpdatePhoneInput) {
+        const updateObject = {
+          ...dataObject,
+          where: {
+            id: phone.id,
+          },
+        };
+        return await this.repository.phone.upsert(updateObject);
+      }
+      // If user is create user input, then run a create
+      else {
+        return await this.repository.phone.create({
+          data: dataObject.create,
+        });
+      }
+    } else {
+      // Create a default object that holds empty strings since the admin user doesn't have a phone attached :)
+      const createObject = {
+        data: {
+          nationalDigits: '',
+          rawDigits: '',
+        },
+      };
+
+      return await this.repository.phone.create(createObject);
+    }
   }
 }

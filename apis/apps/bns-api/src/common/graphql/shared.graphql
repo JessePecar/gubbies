@@ -25,3 +25,52 @@ input SortOption {
   field: String
   option: SortOption
 }
+
+input CreatePhoneInput {
+  rawDigits: String!
+  nationalDigits: String!
+}
+
+input UpdatePhoneInput {
+  id: Int!
+
+  rawDigits: String!
+  nationalDigits: String!
+}
+
+input CreateAddressInput {
+  address1: String!
+  address2: String
+  state: String!
+  city: String!
+  countryCode: String!
+  postalCode: Int!
+}
+
+input UpdateAddressInput {
+  id: Int!
+
+  address1: String!
+  address2: String
+  state: String!
+  city: String!
+  countryCode: String!
+  postalCode: Int!
+}
+
+
+type Phone {
+  id: Int!
+  rawDigits: String
+  nationalDigits: String
+}
+
+type Address {
+  id: Int!
+  address1: String!
+  address2: String
+  state: String!
+  city: String!
+  countryCode: String!
+  postalCode: Int!
+}
