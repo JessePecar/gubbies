@@ -7,6 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Application {
+  id     Int    @id @default(autoincrement())
+  name   String
+  domain String
+
+  users User[]
+}
+
 model Chain {
   id Int @id @unique @default(autoincrement())
 
@@ -98,13 +106,15 @@ model User {
   password         String?
   isActive         Boolean @default(true)
   emailAddress     String?
+  applicationId    Int     @default(0)
   // If the role is operating the app in an enterprise capacity
   // Enterprise mode will make changes to all stores, this will probably have to be a separate app that they are changed to 
   isEnterpriseMode Boolean @default(false)
 
-  role         Role     @relation(fields: [roleId], references: [id])
-  primaryPhone Phone?   @relation(fields: [primaryPhoneId], references: [id])
-  address      Address? @relation(fields: [addressId], references: [id])
+  role         Role        @relation(fields: [roleId], references: [id])
+  primaryPhone Phone?      @relation(fields: [primaryPhoneId], references: [id])
+  address      Address?    @relation(fields: [addressId], references: [id])
+  application  Application @relation(fields: [applicationId], references: [id])
 }
 
 model Permission {
