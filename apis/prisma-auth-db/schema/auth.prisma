@@ -38,7 +38,7 @@ model Store {
   address          Address           @relation(fields: [addressId], references: [id])
   phone            Phone             @relation(fields: [phoneId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   storeType        StoreType         @relation(fields: [typeCode], references: [code])
-  chain            Chain[]
+  chain            Chain             @relation(fields: [chainId], references: [id])
   storeDepartments StoreDepartment[]
 }
 
