@@ -13,6 +13,18 @@ services:
     ports:
       - "1401:1433"
 
+  ar-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y 
+      - MSSQL_SA_PASSWORD=J92P1Y0j4T # This is temporary and will be managed differently in the future
+    container_name: ar-db
+    volumes:
+      - bnsdata:/var/lib/postgresql/data
+    ports:
+      - "1404:1433"
+      
   auth-db: 
     image: mcr.microsoft.com/mssql/server:2022-latest
     restart: unless-stopped
