@@ -1,6 +1,8 @@
 # version: '3.5'
 services:
-  
+
+  # region DBs
+
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     restart: unless-stopped
@@ -48,6 +50,8 @@ services:
       - bnsdata:/var/lib/postgresql/data
     ports:
       - "1403:1433"
+
+  # endregion
 
   bns-migration: 
     container_name: bns-migration
