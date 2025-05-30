@@ -1,0 +1,206 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("BNS_DATABASE_URL")
+}
+
+model AdjustmentItems {
+  adjustmentId Int
+  itemId       Int
+
+  adjustment Adjustments @relation(fields: [adjustmentId], references: [id])
+  item       Items       @relation(fields: [itemId], references: [id])
+
+  @@id([adjustmentId, itemId])
+}
+
+model Adjustments {
+  id           Int       @id @default(autoincrement())
+  createDate   DateTime?
+  status       Int
+  completeDate DateTime?
+
+  adjustmentItems AdjustmentItems[]
+}
+
+// Promotions could be created on the Sub Category (rare) or Family level (common), but never Category level
+// Categories could have Sub Categories 
+model Categories {
+  code String  @id
+  name String?
+
+  // Can create promotions at a category level
+  canPromote  Boolean @default(false)
+  canTransfer Boolean @default(true)
+
+  items         Items[]
+  subcategories Subcategory[]
+}
+
+// Sub Categories could have Families
+model Subcategory {
+  code         String  @id
+  categoryCode String
+  name         String?
+  // Can create promotions at a subcategory level
+  canPromote   Boolean @default(false)
+  canTransfer  Boolean @default(true)
+
+  category Categories @relation(fields: [categoryCode], references: [code])
+  items    Items[]
+  families Family[]
+}
+
+// A family is under a Sub Category that relates branded items together for promotions 
+model Family {
+  code            String  @id
+  subcategoryCode String
+  name            String?
+  locationId      Int?
+  // Can create promotion at the family level
+  canPromote      Boolean @default(false)
+  canTransfer     Boolean @default(true)
+  canPriceChange  Boolean @default(true)
+
+  subcategory Subcategory    @relation(fields: [subcategoryCode], references: [code])
+  items       Items[]
+  location    ShelfLocation? @relation(fields: [locationId], references: [id])
+}
+
+// Example Location 9R - Top Middle
+model ShelfLocation {
+  id      Int    @id @default(autoincrement())
+  aisle   Int
+  side    String
+  section String // Not sure what type section should be, going to have it show up as a string
+
+  families Family[]
+}
+
+model Vendor {
+  id   Int    @id @default(autoincrement())
+  name String
+  note String
+
+  primaryPhoneId   Int?
+  // Secondary phone for the vendor, users may want two phones to contact vendor (business and point of contact)
+  secondaryPhoneId Int?
+  addressId        Int?
+
+  primaryPhone   Phone?       @relation(name: "primaryPhone", fields: [primaryPhoneId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  secondaryPhone Phone?       @relation(name: "secondaryPhone", fields: [secondaryPhoneId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  address        Address?     @relation(fields: [addressId], references: [id])
+  itemVendors    ItemVendor[]
+}
+
+model ItemVendor {
+  itemId            Int
+  vendorId          Int
+  vendorItemId      String // This is the vendor's item id in their system
+  cost              Decimal
+  canReturn         Boolean @default(true)
+  isAutoReplenish   Boolean @default(true)
+  isPreferredVendor Boolean @default(false) // If item has no preferred vendor, will use lowest cost
+  canPromote        Boolean @default(false)
+  reorderQuantity   Decimal @default(0)
+
+  item   Items  @relation(fields: [itemId], references: [id])
+  vendor Vendor @relation(fields: [vendorId], references: [id])
+
+  @@id([vendorId, itemId])
+}
+
+model Items {
+  id                    Int     @id @default(autoincrement())
+  name                  String
+  categoryCode          String
+  subcategoryCode       String?
+  fieldCode             String?
+  quantityOnHand        String
+  isHazardous           Boolean
+  isActive              Boolean
+  retirementStatus      Int
+  reorderQuantity       Decimal // This will take the lowest cost/primary vendor's reorder point
+  unitOfMeasurementType Int
+  vendorId              Int
+
+  adjustmentItems AdjustmentItems[]
+  category        Categories        @relation(fields: [categoryCode], references: [code], onDelete: NoAction, onUpdate: NoAction)
+  subcategory     Subcategory?      @relation(fields: [subcategoryCode], references: [code], onDelete: NoAction, onUpdate: NoAction)
+  family          Family?           @relation(fields: [fieldCode], references: [code], onDelete: NoAction, onUpdate: NoAction)
+  itemVendors     ItemVendor[]
+  prices          Price[]
+}
+
+// Base - Price of an item that will always be used or used to compare for savings
+// Promotion - Price of an item when inside of a promotion, this is used for conditional pricing based on the promotion it is associated with (Promotions don't require a promotion price)
+// Override - Price to be used instead of Base Price when not in a promotion
+// This is designed so that Promotions are the most important part, and if a user wants to change a promoted item's price, they will need to remove promotion 
+// Override prices are designed to be automatically turned off with certain conditions being met, determined by the user.
+// Promotion > Override > Base
+model PriceType {
+  id   Int    @id
+  name String
+
+  Price Price[]
+}
+
+model Price {
+  id     Int     @id @default(autoincrement())
+  itemId Int
+  price  Decimal
+
+  // Lookup table to hold Base, Promotion, Override
+  priceTypeId Int
+
+  // Override price fields
+  isTimedOverride Boolean? // Will override expire on a date/time
+  expirationDate  DateTime? // When the override will expire (if found to be expired, we will fire and forget to remove the record)
+
+  isQuantityOverride Boolean? // Will the override expire when quantity number is met
+  expirationQuantity Int // The QoH that will make the override void (if found to be expired, we will fire and forget to remove the record)
+
+  item      Items     @relation(fields: [itemId], references: [id])
+  priceType PriceType @relation(fields: [priceTypeId], references: [id])
+}
+
+model SequelizeMeta {
+  name String @id
+
+  @@ignore
+}
+
+model Phone {
+  id             Int    @id @default(autoincrement())
+  rawDigits      String
+  nationalDigits String
+
+  primaryVendors   Vendor[] @relation(name: "primaryPhone")
+  secondaryVendors Vendor[] @relation(name: "secondaryPhone")
+}
+
+model Address {
+  id          Int     @id @unique @default(autoincrement())
+  address1    String
+  address2    String?
+  state       String
+  city        String
+  countryCode String
+  postalCode  Int
+
+  vendors Vendor[]
+}
+
+// Seeded table that we will pull into the UI for a dropdown
+model AdjustmentRuleModel {
+  id        Int    @id
+  modelName String
+
+  parentModelId Int
+
+  parentModel    AdjustmentRuleModel   @relation(name: "adjustment-rule-hierarchy", fields: [parentModelId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  childrenModels AdjustmentRuleModel[] @relation(name: "adjustment-rule-hierarchy")
+}

@@ -72,7 +72,7 @@ services:
   bns-api:
     container_name: bns-api
     build:
-      context: bns-api
+      context: apis/bns-api
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
@@ -84,7 +84,7 @@ services:
   ar-api: 
     container_name: ar-api
     build:
-      context: ar-api
+      context: apis/ar-api
       dockerfile: Dockerfile
     ports:
       - "3001:3001"
@@ -96,7 +96,7 @@ services:
   pos-api: 
     container_name: pos-api
     build:
-      context: pos-api
+      context: apis/pos-api
       dockerfile: Dockerfile
     ports:
       - "3002:3002"
@@ -108,7 +108,7 @@ services:
   auth-api: 
     container_name: auth-api
     build:
-      context: auth-api
+      context: apis/auth-api
       dockerfile: Dockerfile
     ports:
       - "3002:3002"

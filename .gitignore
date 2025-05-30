@@ -9,3 +9,5 @@
 .vscode/**
 **/.env.development
 **/.env.**
+apis/.env
+apis/.env.template
