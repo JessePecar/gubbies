@@ -1,0 +1,10 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../../apps/bns-api/src/bns-db-client-types"
+  previewFeatures = ["prismaSchemaFolder"]
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("BNS_DATABASE_URL")
+}

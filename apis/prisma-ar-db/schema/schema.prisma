@@ -1,0 +1,10 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../../apps/ar-api/src/ar-db-client-types"
+  previewFeatures = ["prismaSchemaFolder"]
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("AR_DATABASE_URL")
+}

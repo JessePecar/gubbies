@@ -1,10 +1,12 @@
-generator client {
-  provider = "prisma-client-js"
-}
+// Seeded table that we will pull into the UI for a dropdown
+model AdjustmentRuleModel {
+  id        Int    @id
+  modelName String
 
-datasource db {
-  provider = "sqlserver"
-  url      = env("AR_DATABASE_URL")
+  parentModelId Int
+
+  parentModel    AdjustmentRuleModel   @relation(name: "adjustment-rule-hierarchy", fields: [parentModelId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  childrenModels AdjustmentRuleModel[] @relation(name: "adjustment-rule-hierarchy")
 }
 
 // Seeded table that we will pull into the UI for a dropdown

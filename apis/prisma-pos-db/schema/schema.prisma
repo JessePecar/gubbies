@@ -1,0 +1,10 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../../apps/pos-api/src/pos-db-client-types"
+  previewFeatures = ["prismaSchemaFolder"]
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("POS_DATABASE_URL")
+}

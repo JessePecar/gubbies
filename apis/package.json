@@ -18,7 +18,9 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/gubbies-api/test/jest-e2e.json"
+    "test:e2e": "jest --config ./apps/gubbies-api/test/jest-e2e.json",
+    "prisma:generate": "npx prisma generate --schema ./prisma-bns-db && npx prisma generate --schema ./prisma-ar-db/schema && npx prisma generate --schema ./prisma-auth-db/schema && npx prisma generate --schema ./prisma-pos-db/schema",
+    "prisma:ls": "ls"
   },
   "prisma": {
     "seed": "ts-node prisma/seeds/initSeed.ts"

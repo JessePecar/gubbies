@@ -1,0 +1,10 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../../apps/auth-api/src/auth-db-client-types"
+  previewFeatures = ["prismaSchemaFolder"]
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("AUTH_DATABASE_URL")
+}
