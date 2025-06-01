@@ -2,6 +2,9 @@ model Application {
   id     Int    @id @default(autoincrement())
   name   String
   domain String
+  // Access Code is a guid that will identify the application calling this api
+  // This is passed in the header and if not provided, or invalid, we will return `419: Invalid Application Origin`
+  accessCode String 
 
   users User[]
 }
