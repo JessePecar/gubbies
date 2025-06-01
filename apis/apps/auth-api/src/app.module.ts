@@ -11,11 +11,11 @@ import {
   ApplicationService,
   ApplicationModule,
 } from './application';
-import { RepositoryModule, AuthClientService } from '@core/repository';
+import { AuthRepositoryModule, AuthClientService } from '@core/repository';
 
 @Module({
   imports: [
-    RepositoryModule,
+    AuthRepositoryModule,
     ChainModule,
     StoreModule,
     RoleModule,
