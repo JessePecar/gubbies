@@ -1,19 +1,17 @@
 import { AuthClientService } from '@core/repository';
 import { AuthUtil } from '@core/utilities';
-import { Injectable } from '@nestjs/common';
-import {
-  UpdateUserInput,
-  CreateUserInput,
-  UpdatePhoneInput,
-  CreatePhoneInput,
-  UpdateAddressInput,
-  CreateAddressInput,
-} from '@bns/graphql.schema';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { AuthService } from '@auth/auth';
+import { CreateUser, UpdateUser, User } from '@auth/user';
+import { Address, Phone } from '@core/interfaces';
 
 @Injectable()
 export class UserService {
   authUtil = new AuthUtil();
-  constructor(private repository: AuthClientService) {}
+  constructor(
+    private repository: AuthClientService,
+    private authService: AuthService,
+  ) {}
 
   private readonly defaultInclude = {
     role: {
@@ -100,38 +98,34 @@ export class UserService {
     });
   }
 
-  private async updatePrimaryPhone(user: UpdateUserInput | CreateUserInput) {
+  private async updatePrimaryPhone(user: User) {
     const { primaryPhone } = user;
     return await this.updatePhone(primaryPhone);
   }
 
-  async updateUser(user: UpdateUserInput) {
+  async updateUser(user: UpdateUser) {
+    // If the user's id provided is null, we should throw an exception that the request was bad
+    if (user.id === null) {
+      throw new BadRequestException(
+        'Cannot update user without an existing id',
+      );
+    }
+
     // Update the address and primary phone at the same time
     const [address, primaryPhone] = await Promise.all([
       this.updateAddress(user.address),
       this.updatePrimaryPhone(user),
     ]);
+
     // Update the user information
-    return await this.repository.user.upsert({
+    const updatedUser = await this.repository.user.update({
       where: {
         id: user.id,
       },
-      update: {
+      data: {
         emailAddress: user.emailAddress,
         firstName: user.firstName,
         lastName: user.lastName,
-        userName: user.userName,
-        isActive: user.isActive ?? true,
-        addressId: address?.id,
-        primaryPhoneId: primaryPhone.id,
-        roleId: user.roleId, // Change if the role Id is different
-      },
-      create: {
-        emailAddress: user.emailAddress,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        userName: user.userName,
-        password: await this.authUtil.hashPassword('password'),
         isActive: user.isActive ?? true,
         addressId: address?.id,
         primaryPhoneId: primaryPhone.id,
@@ -139,25 +133,27 @@ export class UserService {
       },
       include: this.defaultInclude,
     });
+
+    if (updatedUser) {
+      await this.authService.updateUserClaims(user);
+    }
+
+    return updatedUser;
   }
 
-  async createUser(user: CreateUserInput) {
-    const encryptedPassword = await this.authUtil.hashPassword(
-      user.password ?? 'password',
-    );
+  async createUser(user: CreateUser) {
     // Update the address and primary phone at the same time
     const [address, primaryPhone] = await Promise.all([
       this.updateAddress(user.address),
       this.updatePrimaryPhone(user),
     ]);
-    // Update the user information
-    return await this.repository.user.create({
+
+    // Create the user information
+    const newUser = await this.repository.user.create({
       data: {
         emailAddress: user.emailAddress,
         firstName: user.firstName,
         lastName: user.lastName,
-        userName: user.userName,
-        password: encryptedPassword,
         isActive: true,
         addressId: address?.id,
         primaryPhoneId: primaryPhone.id,
@@ -165,11 +161,18 @@ export class UserService {
       },
       include: this.defaultInclude,
     });
+
+    // Create the Auth Info
+    await this.authService.createAuthUser(
+      newUser as UpdateUser,
+      user.username,
+      user.password,
+    );
+
+    return newUser;
   }
 
-  async updateAddress(
-    address?: UpdateAddressInput | CreateAddressInput | null,
-  ) {
+  async updateAddress(address?: Address | null) {
     if (address !== null && address !== undefined) {
       // If we are using the update user input, then we will perform an upsert
       const dataObject = {
@@ -191,7 +194,7 @@ export class UserService {
         },
       };
 
-      if (address instanceof UpdateAddressInput) {
+      if (address.id !== null) {
         const updateObject = {
           where: {
             id: address.id,
@@ -225,7 +228,7 @@ export class UserService {
     }
   }
 
-  async updatePhone(phone?: UpdatePhoneInput | CreatePhoneInput | null) {
+  async updatePhone(phone?: Phone | null) {
     if (phone !== null && phone !== undefined) {
       const dataObject = {
         create: {
@@ -239,7 +242,7 @@ export class UserService {
       };
 
       // If user is an update user input, then run an upsert
-      if (phone instanceof UpdatePhoneInput) {
+      if (phone.id !== null) {
         const updateObject = {
           ...dataObject,
           where: {

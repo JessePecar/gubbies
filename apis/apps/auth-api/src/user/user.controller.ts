@@ -1,12 +1,10 @@
 import { UserService } from '@auth/user/user.service';
-import { CreateUserInput, UpdateUserInput } from '@bns/graphql.schema';
 import { User } from '@core/decorators';
+import { CreateUser, UpdateUser } from '@auth/user';
 import {
   Controller,
   Get,
   Param,
-  Request,
-  Req,
   Post,
   Body,
   Put,
@@ -30,12 +28,12 @@ export class UserController {
   }
 
   @Post()
-  async createUser(@Body() user: CreateUserInput) {
+  async createUser(@Body() user: CreateUser) {
     return await this.userService.createUser(user);
   }
 
   @Put()
-  async updateUser(@Body() user: UpdateUserInput) {
+  async updateUser(@Body() user: UpdateUser) {
     return await this.userService.updateUser(user);
   }
 
