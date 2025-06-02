@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthUtil } from '@core/utilities';
 import { AuthClientService } from '@core/repository';
-import { AuthClaimKeys, AuthClaims } from '@auth/auth';
+import { AuthClaimKeys, AuthClaims, AuthRequest, UserClaim } from '@auth/auth';
 import { UpdateUser } from '@auth/user';
 
 @Injectable()
@@ -49,14 +49,16 @@ export class AuthService {
   };
 
   // Auth User will return the claims for a  user once they are logged in, we will never return the user object, just the claims
-  async authUser(username: string, password: string) {
+  async authUser(authRequest: AuthRequest) {
     // Encrypting the password
-    const encryptedPassword = await this.authUtil.hashPassword(password);
+    const encryptedPassword = await this.authUtil.hashPassword(
+      authRequest.password,
+    );
 
     const userLogin = await this.repository.userLogin.findFirst({
       where: {
         username: {
-          equals: username,
+          equals: authRequest.username,
         },
       },
       select: {
@@ -88,7 +90,7 @@ export class AuthService {
     }
 
     // This will need to change to be returning the claims
-    const userClaims = await this.repository.userClaim.findMany({
+    const userClaims: UserClaim[] = await this.repository.userClaim.findMany({
       where: {
         userId: {
           equals: +decodedToken.userId,

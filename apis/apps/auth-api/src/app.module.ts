@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ChainModule, ChainController, ChainService } from './chain';
 import { StoreModule, StoreController, StoreService } from './store';
 import { RoleModule, RoleController, RoleService } from './role';
@@ -12,6 +10,9 @@ import {
   ApplicationModule,
 } from './application';
 import { AuthRepositoryModule, AuthClientService } from '@core/repository';
+import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthConstants } from '@core/constants';
 
 @Module({
   imports: [
@@ -22,9 +23,16 @@ import { AuthRepositoryModule, AuthClientService } from '@core/repository';
     UserModule,
     AuthModule,
     ApplicationModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    JwtModule.register({
+      global: true,
+      secret: AuthConstants.secret,
+      signOptions: { expiresIn: '14d' },
+    }),
   ],
   controllers: [
-    AppController,
     StoreController,
     ChainController,
     UserController,
@@ -33,7 +41,6 @@ import { AuthRepositoryModule, AuthClientService } from '@core/repository';
     ApplicationController,
   ],
   providers: [
-    AppService,
     ChainService,
     StoreService,
     RoleService,

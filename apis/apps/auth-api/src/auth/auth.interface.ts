@@ -1,4 +1,4 @@
-import { S } from 'graphql-ws/dist/common-DY-PBNYy';
+import { IsNotEmpty } from 'class-validator';
 
 // The token's claims when it is being encoded or decoded
 export interface AuthClaims {
@@ -22,4 +22,16 @@ export interface UserClaim {
   code: string; // This is the binding for AuthClaimKeys.key
   userId: number;
   value: string;
+}
+
+export class AuthRequest {
+  @IsNotEmpty({
+    message: 'Username must be provided when logging in',
+  })
+  username: string;
+
+  @IsNotEmpty({
+    message: 'Password must be provided when logging in',
+  })
+  password: string;
 }
