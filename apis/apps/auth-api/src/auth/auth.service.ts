@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { RepositoryService } from '@auth/core/repository';
 import { AuthUtil } from '@core/utilities';
+import { AuthClientService } from '@core/repository';
 
 export type AuthModel = {
   sub: number;
@@ -12,7 +12,7 @@ export type AuthModel = {
 export class AuthService {
   private authUtil = new AuthUtil();
   constructor(
-    private repository: RepositoryService,
+    private repository: AuthClientService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -55,18 +55,26 @@ export class AuthService {
     // Encrypting the password
     const encryptedPassword = await this.authUtil.hashPassword(password);
 
-    const user = await this.repository.user.findFirst({
+    const userLogin = await this.repository.userLogin.findFirst({
       where: {
-        userName: {
+        username: {
           equals: username,
         },
       },
-      include: this.defaultInclude,
+      select: {
+        password: true,
+        user: {
+          include: {
+            userClaims: true,
+          },
+        },
+      },
     });
 
-    if (user && user.password === encryptedPassword) {
-      user.password = '';
-      return user;
+    if (userLogin && userLogin.password === encryptedPassword) {
+      userLogin.password = '';
+
+      return userLogin.user[0].userClaims;
     }
 
     return undefined;

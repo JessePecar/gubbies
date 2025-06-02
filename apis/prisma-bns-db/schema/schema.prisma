@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  output          = "../../apps/bns-api/src/bns-db-client-types"
+  output          = "../../libs/core/src/bns-db-client-types"
   previewFeatures = ["prismaSchemaFolder"]
 }
 

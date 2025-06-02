@@ -27,8 +27,8 @@ COPY src ./src
 # Expose the application port
 
 # ENV PORT=80
-EXPOSE 3001
+EXPOSE 3004
 
 # Command to run the application
 # CMD ["node", "dist/src/main"]
-CMD ["npm", "run", "start"]
+CMD ["nest", "start"]

@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  output          = "../../apps/auth-api/src/auth-db-client-types"
+  output          = "../../libs/core/src/auth-db-client-types"
   previewFeatures = ["prismaSchemaFolder"]
 }
 

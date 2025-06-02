@@ -1,10 +1,10 @@
 model Application {
-  id     Int    @id @default(autoincrement())
-  name   String
-  domain String
+  id         Int    @id @default(autoincrement())
+  name       String
+  domain     String
   // Access Code is a guid that will identify the application calling this api
   // This is passed in the header and if not provided, or invalid, we will return `419: Invalid Application Origin`
-  accessCode String 
+  accessCode String
 
   users User[]
 }
@@ -96,8 +96,6 @@ model User {
   roleId           Int
   primaryPhoneId   Int?    @unique
   addressId        Int?    @unique
-  userName         String?
-  password         String?
   isActive         Boolean @default(true)
   emailAddress     String?
   applicationId    Int     @default(0)
@@ -109,6 +107,38 @@ model User {
   primaryPhone Phone?      @relation(fields: [primaryPhoneId], references: [id])
   address      Address?    @relation(fields: [addressId], references: [id])
   application  Application @relation(fields: [applicationId], references: [id])
+  userLogin    UserLogin   @relation(fields: [id], references: [userId])
+  userClaims   UserClaim[]
+}
+
+// TODO: Determine if we need to have a composite key for user login if a user could have multiple logins for different applications
+model UserLogin {
+  username String @unique
+  password String
+  userId   Int    @id @unique
+  // applicationId Int
+
+  user User[]
+  // application Application @relation(fields: [applicationId], references: [id])
+
+  //@@id([userId, applicationId]) 
+}
+
+model UserClaim {
+  code   String
+  userId Int
+  value  String
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@id([code, userId])
+}
+
+model PasswordChange {
+  username   String
+  token      String   @id
+  // applicationId Int
+  expiration DateTime
 }
 
 model Permission {

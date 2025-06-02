@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  output          = "../../apps/ar-api/src/ar-db-client-types"
+  output          = "../../libs/core/src/ar-db-client-types"
   previewFeatures = ["prismaSchemaFolder"]
 }
 

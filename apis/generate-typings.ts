@@ -9,7 +9,7 @@ definitionsFactory.generate({
 });
 
 definitionsFactory.generate({
-  typePaths: ['./src/**/*.graphql'],
+  typePaths: ['./apps/bns-api/src/**/*.graphql'],
   path: join(process.cwd(), '../bns-ui/src/app/interfaces/graphql.schema.ts'),
   outputAs: 'interface',
 });

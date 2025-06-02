@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  output          = "../../apps/pos-api/src/pos-db-client-types"
+  output          = "../../libs/core/src/pos-db-client-types"
   previewFeatures = ["prismaSchemaFolder"]
 }
 

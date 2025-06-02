@@ -1,8 +1,8 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaClient as BnsClient } from '@bns/bns-db-client-types';
-import { PrismaClient as AuthClient } from '@auth/auth-db-client-types';
-import { PrismaClient as ArClient } from '@ar/ar-db-client-types';
-import { PrismaClient as PosClient } from '@pos/pos-db-client-types';
+import { PrismaClient as BnsClient } from '@core/bns-db-client-types';
+import { PrismaClient as AuthClient } from '@core/auth-db-client-types';
+import { PrismaClient as ArClient } from '@core/ar-db-client-types';
+import { PrismaClient as PosClient } from '@core/pos-db-client-types';
 
 // The onModuleInit is optional — if you leave it out, Prisma will connect lazily on its first call to the database.
 @Injectable()
