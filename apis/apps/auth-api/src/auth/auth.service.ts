@@ -1,12 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthUtil } from '@core/utilities';
 import { AuthClientService } from '@core/repository';
-
-export type AuthModel = {
-  sub: number;
-  roleId: number;
-};
+import { AuthClaimKeys, AuthClaims } from '@auth/auth';
 
 @Injectable()
 export class AuthService {
@@ -51,6 +47,7 @@ export class AuthService {
     },
   };
 
+  // Auth User will return the claims for a  user once they are logged in, we will never return the user object, just the claims
   async authUser(username: string, password: string) {
     // Encrypting the password
     const encryptedPassword = await this.authUtil.hashPassword(password);
@@ -81,23 +78,33 @@ export class AuthService {
   }
 
   async verifyUser(token: string) {
-    const decodedToken = this.jwtService.decode<AuthModel>(token);
+    const decodedToken = this.jwtService.decode<AuthClaims>(token);
 
-    const user = await this.repository.user.findFirst({
+    if (decodedToken.userId === undefined) {
+      throw new UnauthorizedException(
+        'User is not authorized for the application',
+      );
+    }
+
+    // This will need to change to be returning the claims
+    const userClaims = await this.repository.userClaim.findMany({
       where: {
-        AND: {
-          id: {
-            equals: decodedToken.sub,
-          },
-          roleId: {
-            equals: decodedToken.roleId,
-          },
+        userId: {
+          equals: +decodedToken.userId,
         },
       },
-      include: this.defaultInclude,
     });
 
-    return user;
+    // We are validating the content of the token, we will do a loop check to ensure the claims in the token are equal to that of the database
+    if (
+      userClaims.some((uc) => uc.value !== decodedToken[AuthClaimKeys[uc.code]])
+    ) {
+      throw new UnauthorizedException(
+        'User is not authorized for the application, see administrator for details',
+      );
+    }
+
+    return userClaims;
   }
 
   async authTokenInfo(userId: number, roleId: number) {
