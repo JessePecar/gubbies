@@ -2,7 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthUtil } from '@core/utilities';
 import { AuthClientService } from '@core/repository';
-import { AuthClaimKeys, AuthClaims } from '@auth/auth';
+import { AuthClaimKeys, AuthClaims, UserClaim } from '@auth/auth';
+import { User } from '@auth/user';
 
 @Injectable()
 export class AuthService {
@@ -107,21 +108,26 @@ export class AuthService {
     return userClaims;
   }
 
-  async authTokenInfo(userId: number, roleId: number) {
-    const user = await this.repository.user.findFirst({
-      where: {
-        AND: {
-          id: {
-            equals: userId,
-          },
-          roleId: {
-            equals: roleId,
+  async updateUserClaims(user: User) {
+    const upsertTasks = Object.entries(AuthClaimKeys).map(([key, value]) => {
+      return this.repository.userClaim.upsert({
+        where: {
+          code_userId: {
+            code: key,
+            userId: user.id,
           },
         },
-      },
-      include: this.defaultInclude,
+        create: {
+          code: key,
+          userId: user.id,
+          value: `${user[value]}`,
+        },
+        update: {
+          value: `${user[value]}`,
+        },
+      });
     });
 
-    return user;
+    return await Promise.all(upsertTasks);
   }
 }
