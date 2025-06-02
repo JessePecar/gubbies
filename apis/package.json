@@ -23,7 +23,7 @@
     "prisma:migrate": "npx prisma migrate dev --schema ./prisma-bns-db && npx prisma migrate dev --schema ./prisma-ar-db/schema && npx prisma migrate dev --schema ./prisma-auth-db/schema && npx prisma migrate dev --schema ./prisma-pos-db/schema"
   },
   "prisma": {
-    "seed_fake_news": "ts-node prisma/seeds/initSeed.ts"
+    "seed_fake_news": "ts-node prisma-auth-db/seeds/initSeed.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.11.3",

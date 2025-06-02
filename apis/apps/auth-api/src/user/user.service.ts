@@ -148,28 +148,45 @@ export class UserService {
       this.updatePrimaryPhone(user),
     ]);
 
-    // Create the user information
-    const newUser = await this.repository.user.create({
-      data: {
-        emailAddress: user.emailAddress,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        isActive: true,
-        addressId: address?.id,
-        primaryPhoneId: primaryPhone.id,
-        roleId: user.roleId, // Change if the role Id is different
-      },
-      include: this.defaultInclude,
-    });
+    try {
+      // Create the user information
+      const newUser = await this.repository.user.create({
+        data: {
+          applicationId: user.applicationId,
+          emailAddress: user.emailAddress,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          isActive: true,
+          addressId: address?.id,
+          primaryPhoneId: primaryPhone.id,
+          roleId: user.roleId, // Change if the role Id is different
+        },
+        include: this.defaultInclude,
+      });
 
-    // Create the Auth Info
-    await this.authService.createAuthUser(
-      newUser as UpdateUser,
-      user.username,
-      user.password,
-    );
+      // Create the Auth Info
+      await this.authService.createAuthUser(
+        newUser as UpdateUser,
+        user.username,
+        user.password,
+      );
 
-    return newUser;
+      return newUser;
+    } catch (err) {
+      await this.repository.address.delete({
+        where: {
+          id: address.id,
+        },
+      });
+
+      await this.repository.phone.delete({
+        where: {
+          id: primaryPhone.id,
+        },
+      });
+
+      throw err;
+    }
   }
 
   async updateAddress(address?: Address | null) {

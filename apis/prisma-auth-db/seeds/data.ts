@@ -1,3 +1,10 @@
+export const roles = [
+  {
+    name: 'Administrator',
+    hierarchyTier: 1,
+  },
+];
+
 export const permissionGroupSeed = [
   {
     id: 1,

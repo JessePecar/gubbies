@@ -107,7 +107,7 @@ model User {
   primaryPhone Phone?      @relation(fields: [primaryPhoneId], references: [id])
   address      Address?    @relation(fields: [addressId], references: [id])
   application  Application @relation(fields: [applicationId], references: [id])
-  userLogin    UserLogin   @relation(fields: [id], references: [userId])
+  userLogin    UserLogin[]
   userClaims   UserClaim[]
 }
 
@@ -115,10 +115,10 @@ model User {
 model UserLogin {
   username String @unique
   password String
-  userId   Int    @id @unique
+  userId   Int    @unique
   // applicationId Int
 
-  user User[]
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   // application Application @relation(fields: [applicationId], references: [id])
 
   //@@id([userId, applicationId]) 

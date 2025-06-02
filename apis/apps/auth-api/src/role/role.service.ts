@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+import { permissionGroupSeed, permissionSeed, roleSeed } from '@auth/seed';
 import { RolePermissionInput, UpsertRoleInput } from '@bns/graphql.schema';
 import { AuthClientService } from '@core/repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 
 @Injectable()
-export class RoleService {
+export class RoleService implements OnApplicationBootstrap {
   constructor(private readonly repository: AuthClientService) {}
 
   async getRoles() {
@@ -172,5 +173,46 @@ export class RoleService {
     );
 
     return await this.getRole(upsertRole.id ?? -1);
+  }
+
+  async onApplicationBootstrap() {
+    // Check if permission group
+    let permissionGroups = await this.repository.permissionGroup.findMany();
+    if (!!!permissionGroups.length) {
+      await this.repository.permissionGroup.createMany({
+        data: permissionGroupSeed,
+      });
+
+      permissionGroups = await this.repository.permissionGroup.findMany();
+    }
+
+    let permissions = await this.repository.permission.findMany();
+    if (!!!permissions.length) {
+      await this.repository.permission.createMany({
+        data: permissionSeed.map((ps) => ({
+          name: ps.name,
+          permissionGroupId: permissionGroups.find(
+            (pg) => pg.name === ps.permissionGroupName,
+          )!.id,
+        })),
+      });
+
+      permissions = await this.repository.permission.findMany();
+    }
+
+    if (!!!(await this.repository.role.findMany()).length) {
+      // Add Role
+      const role = await this.repository.role.create({
+        data: roleSeed,
+      });
+
+      // Add Role Permissions
+      await this.repository.rolePermission.createMany({
+        data: permissions.map((perm) => ({
+          roleId: role.id,
+          permissionId: perm.id,
+        })),
+      });
+    }
   }
 }
