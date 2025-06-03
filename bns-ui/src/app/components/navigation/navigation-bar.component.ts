@@ -1,18 +1,14 @@
-import {
-  Component,
-  ElementRef,
-  OnInit,
-  signal,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { InventoryNavItemComponent } from './inventory-nav-item.component';
-import { ReportsNavItemComponent } from './reports-nav-item.component';
-import { PricingNavItemComponent } from './pricing-nav-item.component';
-import { PromotionNavItemComponent } from './promotion-nav-item.component';
+import {
+  InventoryNavItemComponent,
+  ReportsNavItemComponent,
+  PricingNavItemComponent,
+  PromotionNavItemComponent,
+  SettingsNavItemComponent,
+} from './nav-dropdowns';
 import { Router } from '@angular/router';
 import { UserInfoService } from '@/services';
-import { SettingsNavItemComponent } from './settings-nav-item.component';
 import { UpperCasePipe } from '@angular/common';
 
 @Component({
