@@ -29,7 +29,7 @@ export class DropdownItemDirective {
 
   constructor() {
     effect(() => {
-      var userInfo = this.userInfoService.userInfo();
+      var _ = this.userInfoService.userInfo();
 
       untracked(() => {
         this.checkAccess();
