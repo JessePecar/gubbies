@@ -2,9 +2,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { permissionGroupSeed, permissionSeed, roleSeed } from '@auth/seed';
-import { RolePermissionInput, UpsertRoleInput } from '@bns/graphql.schema';
 import { AuthClientService } from '@core/repository';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
+import { Role, RolePermission } from '@auth/role';
 
 @Injectable()
 export class RoleService implements OnApplicationBootstrap {
@@ -55,14 +55,6 @@ export class RoleService implements OnApplicationBootstrap {
     ).map((role) => ({
       tierNumber: role.hierarchyTier,
     }));
-  }
-
-  async seedPermissions() {
-    const permissions = await this.getPermissions();
-
-    if (permissions.length > 0) return;
-
-    throw new Error('Permission Seeding has not been run');
   }
 
   async getPermissions() {
@@ -141,7 +133,7 @@ export class RoleService implements OnApplicationBootstrap {
     }
   }
 
-  async upsertRole(upsertRole: UpsertRoleInput) {
+  async upsertRole(upsertRole: Role) {
     const role = await this.repository.role.upsert({
       where: {
         id: upsertRole.id === null || upsertRole.id === 0 ? -1 : upsertRole.id,
@@ -168,7 +160,7 @@ export class RoleService implements OnApplicationBootstrap {
     });
 
     await this.mergeRolePermissions(
-      (upsertRole.rolePermissions ?? []) as RolePermissionInput[],
+      (upsertRole.rolePermissions ?? []) as RolePermission[],
       role.id ?? -1,
     );
 
