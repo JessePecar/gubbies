@@ -6,7 +6,7 @@ import {
   CardFooterComponent,
 } from '@/core/components/card';
 import { UserInfoService } from '@/core/services/user';
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormGroup,
@@ -16,6 +16,7 @@ import {
 import { MatRippleModule } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { LoginService } from './login.service';
+import { E } from '@angular/material/error-options.d-CGdTZUYk';
 
 @Component({
   selector: 'login',
@@ -108,6 +109,9 @@ export class LoginComponent {
   loginService = inject(LoginService);
   router = inject(Router);
 
+  redirectUrl = input('');
+  applicationId = input('');
+
   form: FormGroup = inject(FormBuilder).group({
     username: [
       '',
@@ -141,6 +145,15 @@ export class LoginComponent {
         this.showErrorMessage = true;
       } else {
         // Redirect to the correct application
+
+        if (this.redirectUrl() && this.applicationId()) {
+          // Check and set the user's application to the redirect url's applicaiton
+          // If everything is all good, redirect to redirectUrl()/callback?token=${token}
+          // Else, we have two options, go to their assigned id, or give an error message
+        } else {
+          // Get the claims then the user's application
+          // redirect to redirectUrl/callback/token=${token}
+        }
       }
     });
   }

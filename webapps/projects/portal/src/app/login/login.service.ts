@@ -17,4 +17,8 @@ export class LoginService {
       password,
     });
   }
+
+  getRedirectLink(applicationId: string) {
+    
+  }
 }
