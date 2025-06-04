@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'tailwindcss';
+
+$hoverable: rgb(0 0 0/20%);
+$primary-dark: rgb(180, 183, 186);
+$primary: rgb(223, 226, 229);
+
+@theme {
+  --font-display: 'Satoshi', 'sans-serif';
+  --color-primary: rgb(223, 226, 229);
+  --color-primary-dark: rgb(180, 183, 186);
+  --color-primary-green: rgb(106, 150, 136);
+  --color-secondary-green: rgb(106 150 136 / 75%);
+  --color-primary-green-opaque: rgb(106 150 136 / 10%);
+  --color-primary-blue: rgb(67, 112, 161);
+  --color-primary-blue-opaque: rgb(67 112 161 / 10%);
+  --color-secondary-blue: rgb(12, 52, 79);
+}

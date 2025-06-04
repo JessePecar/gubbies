@@ -20,13 +20,14 @@ export class AuthController {
 
   @Post()
   async authUser(@Body() authRequest: AuthRequest) {
-    const userClaims = this.authService.authUser(authRequest);
+    const userClaims = await this.authService.authUser(authRequest);
 
     if (userClaims === undefined) {
       return new UnauthorizedException();
     }
 
     // Generate token
+    return 'Some goofy ass token';
   }
 
   @Get()

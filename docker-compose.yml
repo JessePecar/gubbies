@@ -36,8 +36,8 @@ services:
   bns-api:
     container_name: bns-api
     build:
-      context: apis/bns-api
-      dockerfile: Dockerfile
+      context: apis
+      dockerfile: bns.Dockerfile
     ports:
       - "3000:3000"
     links: 
@@ -55,7 +55,7 @@ services:
     links: 
       - db
     expose: 
-       - "80"   
+      - "80"   
 
   pos-api: 
     container_name: pos-api
@@ -67,19 +67,19 @@ services:
     links: 
       - db
     expose: 
-       - "80"   
+      - "80"   
 
   auth-api: 
     container_name: auth-api
     build:
-      context: apis/auth-api
-      dockerfile: Dockerfile
+      context: apis
+      dockerfile: auth.Dockerfile
     ports:
       - "3002:3002"
     links: 
       - db
     expose: 
-       - "80"   
+      - "80"   
 
   # endregion
 

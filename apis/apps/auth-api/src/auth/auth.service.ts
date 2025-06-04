@@ -122,7 +122,8 @@ export class AuthService {
         create: {
           code: key,
           userId: user.id,
-          value: `${user[value]}`,
+          // Because we are giving a user object for user claims, user id is bound to id
+          value: key === 'USER_ID' ? `${user.id}` : `${user[value]}`,
         },
         update: {
           value: `${user[value]}`,

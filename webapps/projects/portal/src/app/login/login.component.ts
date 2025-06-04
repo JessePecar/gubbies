@@ -114,11 +114,11 @@ export class LoginComponent {
 
   form: FormGroup = inject(FormBuilder).group({
     username: [
-      '',
+      'admin',
       [Validators.required, Validators.maxLength(12), Validators.minLength(3)],
     ],
     password: [
-      '',
+      'password',
       [Validators.required, Validators.maxLength(12), Validators.minLength(3)],
     ],
   });
@@ -152,7 +152,25 @@ export class LoginComponent {
           // Else, we have two options, go to their assigned id, or give an error message
         } else {
           // Get the claims then the user's application
-          // redirect to redirectUrl/callback/token=${token}
+          this.loginService.getUserClaims(token).subscribe(claims => {
+            // redirect to redirectUrl/callback/token=${token}
+            if (claims.applicationId) {
+              return this.loginService
+                .getRedirectLink(claims.applicationId)
+                .subscribe(application => {
+                  if (application) {
+                    window.location.href = `${application.domain}/login-callback?token=${token}`;
+                    return;
+                  }
+
+                  this.showErrorMessage = true;
+                  return;
+                });
+            }
+
+            this.showErrorMessage = true;
+            return;
+          });
         }
       }
     });

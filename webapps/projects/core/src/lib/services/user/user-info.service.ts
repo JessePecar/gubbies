@@ -1,6 +1,6 @@
 import { Role } from '@/models/auth/role';
 import { LocalStorageKeys } from '@/core/constants';
-import { Injectable, inject, linkedSignal, signal } from '@angular/core';
+import { Injectable, linkedSignal, signal } from '@angular/core';
 import { User } from '@/models/auth/user';
 
 @Injectable({

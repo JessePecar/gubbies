@@ -11,6 +11,12 @@
       ],
       "@/models/*": [
         "./projects/models/src/lib/*"
+      ],
+      "@/portal:env/*": [
+        "./projects/portal/src/environments/*"
+      ],
+      "@/portal/*": [
+        "./projects/portal/src/app/*"
       ]
     },
     "outDir": "./dist/out-tsc",

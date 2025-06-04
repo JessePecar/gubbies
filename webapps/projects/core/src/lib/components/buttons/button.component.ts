@@ -2,12 +2,16 @@ import { Component, input, output } from '@angular/core';
 import { ButtonDirective } from './button.directive';
 import { ButtonColor, ButtonContent, ButtonType } from './button.types';
 import { MatIconModule } from '@angular/material/icon';
+import { MatRippleModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-button',
-  imports: [ButtonDirective, MatIconModule],
+  imports: [ButtonDirective, MatIconModule, MatRippleModule],
   template: `
     <button
+      matRipple
+      [matRippleCentered]="true"
+      matRippleColor="#CCCCCC44"
       button
       [variant]="buttonType()"
       [color]="color()"

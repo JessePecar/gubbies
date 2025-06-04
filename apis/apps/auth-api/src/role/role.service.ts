@@ -70,12 +70,10 @@ export class RoleService implements OnApplicationBootstrap {
   }
 
   async mergeRolePermissions(
-    rolePermissionInput: RolePermissionInput[],
+    rolePermissionInput: RolePermission[],
     roleId: number,
   ) {
     if (roleId === -1) return;
-
-    await this.seedPermissions();
 
     const permissionIds = rolePermissionInput.map((rpi) => rpi.permissionId);
 

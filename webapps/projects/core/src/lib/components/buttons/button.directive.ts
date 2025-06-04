@@ -41,7 +41,7 @@ export class ButtonDirective {
   }
 
   private readonly buttonType: ButtonStyle = {
-    base: 'disabled:opacity-50 disabled:cursor-default flex px-2',
+    base: 'disabled:opacity-50 cursor-pointer disabled:cursor-default flex px-2 mat-ripple',
     color: {
       primary: {
         outline:
