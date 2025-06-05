@@ -10,20 +10,34 @@ export class ApplicationService implements OnApplicationBootstrap {
     return await this.repository.application.findFirst({
       where: {
         id: {
-          equals: id,
+          equals: +id,
         },
       },
     });
   }
 
   async updateUsersApplication(id: number, userId: number) {
-    await this.repository.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        applicationId: id,
-      },
+    this.repository.$transaction(async (transaction) => {
+      await transaction.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          applicationId: id,
+        },
+      });
+
+      await transaction.userClaim.update({
+        where: {
+          code_userId: {
+            code: 'APPLICATION_ID',
+            userId: userId,
+          },
+        },
+        data: {
+          value: `${id}`,
+        },
+      });
     });
   }
 

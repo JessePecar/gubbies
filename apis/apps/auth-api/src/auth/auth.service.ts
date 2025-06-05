@@ -72,9 +72,7 @@ export class AuthService {
     });
 
     if (userLogin && userLogin.password === encryptedPassword) {
-      userLogin.password = '';
-
-      return userLogin.user[0].userClaims;
+      return userLogin.user.userClaims;
     }
 
     return undefined;

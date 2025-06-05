@@ -138,14 +138,13 @@ export class LoginComponent {
     // Grab the value of the form for compare
     const { username, password } = this.form.value;
 
-    this.loginService.login(username, password).subscribe(token => {
+    this.loginService.login(username, password).subscribe(({ token }) => {
       // TODO: Setup the process to save the token and then attach on outgoing requests
       if (token === undefined || token === null) {
         // Show the error message if the login was not found (the login information does not exist)
         this.showErrorMessage = true;
       } else {
         // Redirect to the correct application
-
         if (this.redirectUrl() && this.applicationId()) {
           // Check and set the user's application to the redirect url's applicaiton
           // If everything is all good, redirect to redirectUrl()/callback?token=${token}

@@ -9,11 +9,11 @@ export class ApplicationController {
     return await this.applicationService.getApplication(id);
   }
 
-  @Put('confirm')
+  @Put('updateUsersApplication')
   async updateUsersApplication(
     @Query('id') id: number,
     @Query('userId') userId: number,
   ) {
-    return await this.updateUsersApplication(id, userId);
+    return await this.applicationService.updateUsersApplication(id, userId);
   }
 }

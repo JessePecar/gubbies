@@ -83,6 +83,8 @@ services:
 
   # endregion
 
+  # region UIs
+  
   bns-ui:
     container_name: bns-ui
     build: bns-ui
@@ -90,6 +92,16 @@ services:
       - "80:80"
     depends_on:
       - bns-api
+
+  portal-ui:
+    container_name: portal-ui
+    build:
+      context: webapps
+      dockerfile: portal.Dockerfile
+    ports:
+      - "4201:4201"  
+
+  # endregion
 
   bns-mq:
     container_name: bns-mq
