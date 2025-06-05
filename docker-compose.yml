@@ -48,8 +48,8 @@ services:
   ar-api: 
     container_name: ar-api
     build:
-      context: apis/ar-api
-      dockerfile: Dockerfile
+      context: apis
+      dockerfile: ar.Dockerfile
     ports:
       - "3001:3001"
     links: 
@@ -60,8 +60,8 @@ services:
   pos-api: 
     container_name: pos-api
     build:
-      context: apis/pos-api
-      dockerfile: Dockerfile
+      context: apis
+      dockerfile: pos.Dockerfile
     ports:
       - "3004:3004"
     links: 
