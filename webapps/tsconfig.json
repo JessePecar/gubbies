@@ -17,6 +17,15 @@
       ],
       "@/portal/*": [
         "./projects/portal/src/app/*"
+      ],
+      "@/bns-ui/*": [
+        "./projects/bns-ui/src/app/*"
+      ],
+      "@/inventory/*": [
+        "./projects/bns-ui/src/app/inventory/*"
+      ],
+      "@/settings/*": [
+        "./projects/bns-ui/src/app/settings/*"
       ]
     },
     "outDir": "./dist/out-tsc",

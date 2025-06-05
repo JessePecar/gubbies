@@ -1,0 +1,109 @@
+import { computed, inject, Injectable, signal } from '@angular/core';
+import {
+  AddressSchema,
+  AddressValidator,
+  passwordValidator,
+  PhoneSchema,
+  PhoneValidator,
+} from '@/core/validators/shared';
+import * as yup from 'yup';
+import { BaseValidator } from '@/core/validators';
+
+export interface UserInfoSchema {
+  userName: string;
+  firstName: string;
+  lastName: string;
+  emailAddress: string;
+  isActive: boolean;
+  roleId: number;
+  password: string;
+  passwordConfirm: string;
+}
+
+export type UserSchema =
+  | {
+      info: UserInfoSchema;
+      address: AddressSchema;
+      primaryPhone: PhoneSchema;
+    }
+  | yup.AnyObject;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UserValidator implements BaseValidator<UserSchema> {
+  private readonly addressValidator = inject(AddressValidator);
+  private readonly phoneValidator = inject(PhoneValidator);
+
+  isEdit = signal<boolean>(false);
+
+  userValidator = computed(() => ({
+    isEdit: this.isEdit(),
+    validator: yup.object().shape({
+      info: yup.object().shape({
+        userName: yup.string().required().min(3).max(12),
+        firstName: yup.string().required().min(3).max(32),
+        lastName: yup.string().required().min(3).max(32),
+        emailAddress: yup.string().required().email(),
+        isActive: yup.boolean(),
+        roleId: yup.number(),
+        password: yup
+          .string()
+          .nullable()
+          .when(([values], schema) => {
+            if (this.isEdit()) {
+              return schema;
+            } else {
+              return passwordValidator.required().nonNullable();
+            }
+          }),
+        passwordConfirm: yup.string().when('password', password => {
+          return yup
+            .string()
+            .required()
+            .equals(password, 'Passwords should match');
+        }),
+      }),
+      address: this.addressValidator.validator,
+      primaryPhone: this.phoneValidator.validator,
+      secondaryPhone: this.phoneValidator.validator,
+    }),
+  }));
+
+  validator = yup.object().shape({
+    info: yup.object().shape({
+      userName: yup.string().required().min(3).max(12),
+      firstName: yup.string().required().min(3).max(32),
+      lastName: yup.string().required().min(3).max(32),
+      emailAddress: yup.string().required().email(),
+      isActive: yup.boolean(),
+      roleId: yup.number(),
+      password: passwordValidator,
+      passwordConfirm: yup.string().when('password', password => {
+        return yup
+          .string()
+          .required()
+          .equals(password, 'Passwords should match');
+      }),
+    }),
+    address: this.addressValidator.validator,
+    primaryPhone: this.phoneValidator.validator,
+    secondaryPhone: this.phoneValidator.validator,
+  });
+
+  initialData: UserSchema = {
+    info: {
+      userName: '',
+      firstName: '',
+      lastName: '',
+      emailAddress: '',
+      isActive: true,
+      roleId: 0,
+      password: '',
+      passwordConfirm: '',
+    },
+    address: this.addressValidator.initialData,
+    primaryPhone: this.phoneValidator.initialData,
+    secondaryPhone: this.phoneValidator.initialData,
+  };
+}
