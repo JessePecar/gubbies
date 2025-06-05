@@ -4,6 +4,26 @@ import { PrismaClient as AuthClient } from '@core/auth-db-client-types';
 import { PrismaClient as ArClient } from '@core/ar-db-client-types';
 import { PrismaClient as PosClient } from '@core/pos-db-client-types';
 
+export type BnsClientTransaction = Omit<
+  BnsClient,
+  '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+>;
+
+export type AuthClientTransaction = Omit<
+  AuthClient,
+  '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+>;
+
+export type ArClientTransaction = Omit<
+  ArClient,
+  '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+>;
+
+export type PosClientTransaction = Omit<
+  PosClient,
+  '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+>;
+
 // The onModuleInit is optional — if you leave it out, Prisma will connect lazily on its first call to the database.
 @Injectable()
 export class BnsClientService extends BnsClient implements OnModuleInit {

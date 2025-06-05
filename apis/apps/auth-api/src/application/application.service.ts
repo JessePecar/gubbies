@@ -6,6 +6,27 @@ import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 export class ApplicationService implements OnApplicationBootstrap {
   constructor(private readonly repository: AuthClientService) {}
 
+  async getApplication(id: number) {
+    return await this.repository.application.findFirst({
+      where: {
+        id: {
+          equals: id,
+        },
+      },
+    });
+  }
+
+  async updateUsersApplication(id: number, userId: number) {
+    await this.repository.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        applicationId: id,
+      },
+    });
+  }
+
   async onApplicationBootstrap() {
     const upsertTask = applicationSeed.map((app) => {
       return this.repository.application.upsert({

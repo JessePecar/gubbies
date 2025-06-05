@@ -1,4 +1,4 @@
-import { AuthClientService } from '@core/repository';
+import { AuthClientService, AuthClientTransaction } from '@core/repository';
 import { AuthUtil } from '@core/utilities';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { AuthService } from '@auth/auth';
@@ -98,9 +98,12 @@ export class UserService {
     });
   }
 
-  private async updatePrimaryPhone(user: User) {
+  private async updatePrimaryPhone(
+    transaction: AuthClientTransaction,
+    user: User,
+  ) {
     const { primaryPhone } = user;
-    return await this.updatePhone(primaryPhone);
+    return await this.updatePhone(transaction, primaryPhone);
   }
 
   async updateUser(user: UpdateUser) {
@@ -111,46 +114,48 @@ export class UserService {
       );
     }
 
-    // Update the address and primary phone at the same time
-    const [address, primaryPhone] = await Promise.all([
-      this.updateAddress(user.address),
-      this.updatePrimaryPhone(user),
-    ]);
+    return await this.repository.$transaction(async (transaction) => {
+      // Update the address and primary phone at the same time
+      const [address, primaryPhone] = await Promise.all([
+        this.updateAddress(transaction, user.address),
+        this.updatePrimaryPhone(transaction, user),
+      ]);
 
-    // Update the user information
-    const updatedUser = await this.repository.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        emailAddress: user.emailAddress,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        isActive: user.isActive ?? true,
-        addressId: address?.id,
-        primaryPhoneId: primaryPhone.id,
-        roleId: user.roleId, // Change if the role Id is different
-      },
-      include: this.defaultInclude,
+      // Update the user information
+      const updatedUser = await transaction.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          emailAddress: user.emailAddress,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          isActive: user.isActive ?? true,
+          addressId: address?.id,
+          primaryPhoneId: primaryPhone.id,
+          roleId: user.roleId, // Change if the role Id is different
+        },
+        include: this.defaultInclude,
+      });
+
+      if (updatedUser) {
+        await this.authService.updateUserClaims(user, transaction);
+      }
+
+      return updatedUser;
     });
-
-    if (updatedUser) {
-      await this.authService.updateUserClaims(user);
-    }
-
-    return updatedUser;
   }
 
   async createUser(user: CreateUser) {
     // Update the address and primary phone at the same time
-    const [address, primaryPhone] = await Promise.all([
-      this.updateAddress(user.address),
-      this.updatePrimaryPhone(user),
-    ]);
+    this.repository.$transaction(async (transaction) => {
+      const [address, primaryPhone] = await Promise.all([
+        this.updateAddress(transaction, user.address),
+        this.updatePrimaryPhone(transaction, user),
+      ]);
 
-    try {
       // Create the user information
-      const newUser = await this.repository.user.create({
+      const newUser = await transaction.user.create({
         data: {
           applicationId: user.applicationId,
           emailAddress: user.emailAddress,
@@ -169,27 +174,17 @@ export class UserService {
         newUser as UpdateUser,
         user.username,
         user.password,
+        transaction
       );
 
       return newUser;
-    } catch (err) {
-      await this.repository.address.delete({
-        where: {
-          id: address.id,
-        },
-      });
-
-      await this.repository.phone.delete({
-        where: {
-          id: primaryPhone.id,
-        },
-      });
-
-      throw err;
-    }
+    });
   }
 
-  async updateAddress(address?: Address | null) {
+  async updateAddress(
+    transaction: AuthClientTransaction,
+    address?: Address | null,
+  ) {
     if (address !== null && address !== undefined) {
       // If we are using the update user input, then we will perform an upsert
       const dataObject = {
@@ -223,7 +218,7 @@ export class UserService {
       }
       // If we are using the create user input, then we will perform a create
       else {
-        return await this.repository.address.create({
+        return await transaction.address.create({
           data: dataObject.create,
         });
       }
@@ -239,13 +234,13 @@ export class UserService {
         postalCode: 0,
       };
 
-      return await this.repository.address.create({
+      return await transaction.address.create({
         data: createObject,
       });
     }
   }
 
-  async updatePhone(phone?: Phone | null) {
+  async updatePhone(transaction: AuthClientTransaction, phone?: Phone | null) {
     if (phone !== null && phone !== undefined) {
       const dataObject = {
         create: {
@@ -266,11 +261,11 @@ export class UserService {
             id: phone.id,
           },
         };
-        return await this.repository.phone.upsert(updateObject);
+        return await transaction.phone.upsert(updateObject);
       }
       // If user is create user input, then run a create
       else {
-        return await this.repository.phone.create({
+        return await transaction.phone.create({
           data: dataObject.create,
         });
       }
@@ -283,7 +278,7 @@ export class UserService {
         },
       };
 
-      return await this.repository.phone.create(createObject);
+      return await transaction.phone.create(createObject);
     }
   }
 }

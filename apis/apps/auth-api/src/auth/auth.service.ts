@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthUtil } from '@core/utilities';
-import { AuthClientService } from '@core/repository';
+import { AuthClientService, AuthClientTransaction } from '@core/repository';
 import { AuthClaimKeys, AuthClaims, AuthRequest, UserClaim } from '@auth/auth';
 import { UpdateUser } from '@auth/user';
 
@@ -110,9 +110,12 @@ export class AuthService {
     return userClaims;
   }
 
-  async updateUserClaims(user: UpdateUser) {
+  async updateUserClaims(
+    user: UpdateUser,
+    transaction?: AuthClientTransaction,
+  ) {
     const upsertTasks = Object.entries(AuthClaimKeys).map(([key, value]) => {
-      return this.repository.userClaim.upsert({
+      return (transaction ?? this.repository).userClaim.upsert({
         where: {
           code_userId: {
             code: key,
@@ -134,12 +137,17 @@ export class AuthService {
     return await Promise.all(upsertTasks);
   }
 
-  async createAuthUser(user: UpdateUser, username: string, password: string) {
+  async createAuthUser(
+    user: UpdateUser,
+    username: string,
+    password: string,
+    transaction?: AuthClientTransaction,
+  ) {
     const encryptedPassword = await this.authUtil.hashPassword(
       password ?? 'password',
     );
 
-    await this.repository.userLogin.create({
+    await (transaction ?? this.repository).userLogin.create({
       data: {
         password: encryptedPassword,
         userId: user.id,
