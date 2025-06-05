@@ -13,10 +13,11 @@ import {
   Post,
   UnauthorizedException,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private jwtService: JwtService) {}
 
   @Post()
   async authUser(@Body() authRequest: AuthRequest) {
@@ -27,7 +28,7 @@ export class AuthController {
     }
 
     // Generate token
-    return 'Some goofy ass token';
+    return await this.jwtService.signAsync(userClaims /** TODO: Setup the token options **/)
   }
 
   @Get()
