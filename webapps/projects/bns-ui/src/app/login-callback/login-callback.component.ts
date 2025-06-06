@@ -19,15 +19,12 @@ export class LoginCallbackComponent {
       const token = this.token();
       untracked(() => {
         if (token) {
+          console.log('Token was found');
           // TODO: Grab the user claims from the token and then grab the
           // user information after that dynamically
 
           this.userInfoService.setUser(token);
         }
-
-        console.error(
-          'TOKEN WAS NOT PASSED ALONG, YOU SHOULD BE VERY CONCERNED'
-        );
       });
     });
   }

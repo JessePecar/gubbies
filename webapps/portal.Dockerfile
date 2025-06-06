@@ -1,5 +1,5 @@
 # Use Node image to build Angular
-FROM node:18 AS builder
+FROM node:24 AS builder
 
 WORKDIR /app
 COPY package*.json ./
@@ -9,13 +9,14 @@ COPY tsconfig.json ./
 COPY .postcssrc.json ./
 
 RUN npm install
+RUN npm install -g @angular/cli
 RUN npm i lightningcss-linux-x64-gnu @tailwindcss/oxide-linux-x64-gnu sass-embedded-linux-x64
 
 COPY projects/core ./projects/core
 COPY projects/models ./projects/models
 COPY projects/portal ./projects/portal
 
-RUN npm run build portal
+RUN ng build portal --configuration production
 
 FROM nginx:1.28.0
 

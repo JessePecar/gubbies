@@ -1,5 +1,5 @@
 # Use Node image to build Angular
-FROM node:18 AS builder
+FROM node:24 AS builder
 
 WORKDIR /app
 COPY package*.json ./
@@ -9,13 +9,14 @@ COPY tsconfig.json ./
 COPY .postcssrc.json ./
 
 RUN npm install
+RUN npm install -g @angular/cli
 RUN npm i lightningcss-linux-x64-gnu @tailwindcss/oxide-linux-x64-gnu sass-embedded-linux-x64
 
 COPY projects/core ./projects/core
 COPY projects/models ./projects/models
 COPY projects/bns-ui ./projects/bns-ui
 
-RUN npm run build bns-ui
+RUN ng build bns-ui
 
 FROM nginx:1.28.0
 

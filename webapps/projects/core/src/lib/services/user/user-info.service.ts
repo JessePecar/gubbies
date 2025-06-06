@@ -1,8 +1,19 @@
 import { Role } from '@/models/auth/role';
 import { LocalStorageKeys } from '@/core/constants';
-import { inject, Injectable, linkedSignal, signal } from '@angular/core';
+import {
+  effect,
+  inject,
+  Injectable,
+  linkedSignal,
+  signal,
+  untracked,
+} from '@angular/core';
 import { User } from '@/models/auth/user';
-import { AuthControllerService } from '@/core/requests/auth';
+import {
+  AuthControllerService,
+  RoleControllerService,
+  UserControllerService,
+} from '@/core/requests/auth';
 import { AuthClaims } from '@/models/auth';
 
 @Injectable({
@@ -16,7 +27,28 @@ export class UserInfoService {
   public permissions = linkedSignal(() => this.role()?.rolePermissions);
 
   private readonly authController = inject(AuthControllerService);
+  private readonly userController = inject(UserControllerService);
+  private readonly roleController = inject(RoleControllerService);
   constructor() {
+    effect(() => {
+      const userClaims = this.userClaims();
+      untracked(() => {
+        if (userClaims) {
+          // Get the User from the auth db
+          if (userClaims.userId)
+            this.userController.getUser(userClaims.userId).subscribe(user => {
+              this.userInfo.set(user);
+            });
+
+          // Get the role from the auth db
+          if (userClaims.roleId)
+            this.roleController.getRole(userClaims.roleId).subscribe(role => {
+              this.role.set(role);
+            });
+        }
+      });
+    });
+
     // roleSubService: RoleSubscriptionService // userSubService: UserSubscription,
     // userSubService.subscribe().subscribe(({ data }) => {
     //   if (
@@ -64,6 +96,10 @@ export class UserInfoService {
       this.userClaims.set(undefined);
     }
   }
+
+  private getUser(userId: string) {}
+
+  private getRole(roleId: string) {}
 
   async getStoredToken() {
     const token = localStorage.getItem(LocalStorageKeys.access_token);

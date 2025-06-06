@@ -33,7 +33,7 @@ export class RoleService implements OnApplicationBootstrap {
       },
       where: {
         id: {
-          equals: id,
+          equals: +id,
         },
       },
     });

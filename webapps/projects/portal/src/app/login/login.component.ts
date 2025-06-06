@@ -16,6 +16,7 @@ import {
 import { MatRippleModule } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { LoginService } from './login.service';
+import { environment } from '@/portal:env/environment';
 
 @Component({
   selector: 'login',
@@ -131,6 +132,8 @@ export class LoginComponent {
         this.showErrorMessage = false;
       }
     });
+
+    console.log(environment);
   }
 
   async onSubmit() {

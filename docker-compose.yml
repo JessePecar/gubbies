@@ -40,7 +40,7 @@ services:
       dockerfile: bns.Dockerfile
     ports:
       - "3000:3000"
-    links: 
+    depends_on: 
       - db
     expose: 
       - "80"    
@@ -76,7 +76,7 @@ services:
       dockerfile: auth.Dockerfile
     ports:
       - "3002:3002"
-    links: 
+    depends_on: 
       - db
     expose: 
       - "80"   
@@ -103,7 +103,7 @@ services:
       dockerfile: portal.Dockerfile
     ports:
       - "4201:4201"
-    depends_on:
+    links:
       - auth-api  
 
   # endregion

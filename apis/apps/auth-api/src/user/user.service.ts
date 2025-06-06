@@ -92,7 +92,7 @@ export class UserService {
       },
       where: {
         id: {
-          equals: id,
+          equals: +id,
         },
       },
     });
@@ -174,7 +174,7 @@ export class UserService {
         newUser as UpdateUser,
         user.username,
         user.password,
-        transaction
+        transaction,
       );
 
       return newUser;
