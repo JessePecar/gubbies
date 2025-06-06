@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { UserInfoService } from '@/core/services/user';
-import { Router, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { NavigationBarComponent } from '@/bns-ui/components/navigation/navigation-bar.component';
 import { ProfileNavItemComponent } from '@/bns-ui/components/navigation/profile-nav-item.component';
 import { ButtonComponent } from '@/core/components/buttons';
@@ -36,10 +36,9 @@ import { MatIconModule } from '@angular/material/icon';
   styles: ``,
 })
 export class NavigationComponent {
-  userService = inject(UserInfoService);
-  router = inject(Router);
+  // userService = inject(UserInfoService);
 
   logout() {
-    this.userService.setUser(undefined);
+    // this.userService.setUser(undefined);
   }
 }

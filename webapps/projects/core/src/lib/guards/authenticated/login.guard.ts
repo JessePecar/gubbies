@@ -5,7 +5,7 @@ import { CanActivateFn, Router } from '@angular/router';
 export const loginGuard: CanActivateFn = () => {
   const userInfoService = inject(UserInfoService);
   if (userInfoService.userClaims()) {
-    inject(Router).navigate(['']);
+    inject(Router).navigate(['home']);
     return false;
   }
 

@@ -39,7 +39,7 @@ services:
       context: apis
       dockerfile: bns.Dockerfile
     ports:
-      - "3000:3000"
+      - "3000:80"
     depends_on: 
       - db
     expose: 
@@ -51,7 +51,7 @@ services:
       context: apis
       dockerfile: ar.Dockerfile
     ports:
-      - "3001:3001"
+      - "3001:80"
     links: 
       - db
     expose: 
@@ -63,7 +63,7 @@ services:
       context: apis
       dockerfile: pos.Dockerfile
     ports:
-      - "3004:3004"
+      - "3004:80"
     links: 
       - db
     expose: 
@@ -75,7 +75,7 @@ services:
       context: apis
       dockerfile: auth.Dockerfile
     ports:
-      - "3002:3002"
+      - "3002:80"
     depends_on: 
       - db
     expose: 

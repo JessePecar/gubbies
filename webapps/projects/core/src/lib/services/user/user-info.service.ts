@@ -29,22 +29,17 @@ export class UserInfoService {
   private readonly authController = inject(AuthControllerService);
   private readonly userController = inject(UserControllerService);
   private readonly roleController = inject(RoleControllerService);
+
   constructor() {
     effect(() => {
       const userClaims = this.userClaims();
       untracked(() => {
         if (userClaims) {
           // Get the User from the auth db
-          if (userClaims.userId)
-            this.userController.getUser(userClaims.userId).subscribe(user => {
-              this.userInfo.set(user);
-            });
+          if (userClaims.userId) this.getUser(userClaims.userId);
 
           // Get the role from the auth db
-          if (userClaims.roleId)
-            this.roleController.getRole(userClaims.roleId).subscribe(role => {
-              this.role.set(role);
-            });
+          if (userClaims.roleId) this.getRole(userClaims.roleId);
         }
       });
     });
@@ -78,12 +73,10 @@ export class UserInfoService {
 
   setUser(token: string | undefined) {
     if (token) {
-      this.authController.validate(token).subscribe(authClaims => {
+      return this.authController.validate(token).subscribe(authClaims => {
         if (authClaims) {
           // Token is valid, we can now get all the user information if we want to grab them
           this.userClaims.set(authClaims);
-
-          // TODO: Call the user and role controller for the user and role objects
 
           // Set the token info
           localStorage.setItem(LocalStorageKeys.access_token, token);
@@ -94,12 +87,21 @@ export class UserInfoService {
       });
     } else {
       this.userClaims.set(undefined);
+      return undefined;
     }
   }
 
-  private getUser(userId: string) {}
+  private getUser(userId: string) {
+    this.userController.getUser(userId).subscribe(user => {
+      this.userInfo.set(user);
+    });
+  }
 
-  private getRole(roleId: string) {}
+  private getRole(roleId: string) {
+    this.roleController.getRole(roleId).subscribe(role => {
+      this.role.set(role);
+    });
+  }
 
   async getStoredToken() {
     const token = localStorage.getItem(LocalStorageKeys.access_token);

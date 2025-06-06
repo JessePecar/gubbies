@@ -17,15 +17,10 @@ export class LoginService {
     return this.httpClient.post<{
       token: string;
     }>(
-      `${environment.authApi}/auth`,
+      `${environment.authApi}/auth`, // This will translate to 'auth-api/auth'
       {
         username,
         password,
-      },
-      {
-        headers: {
-          'Allow-Origin': `http://${window.location.host}`,
-        },
       }
     );
   }
@@ -34,19 +29,13 @@ export class LoginService {
     return this.httpClient.get<AuthClaims>(`${environment.authApi}/auth`, {
       headers: {
         Authorization: `Bearer ${token}`,
-        origin: window.location.hostname,
       },
     });
   }
 
   getRedirectLink(applicationId: string) {
     return this.httpClient.get<Application>(
-      `${environment.authApi}/application?id=${applicationId}`,
-      {
-        headers: {
-          origin: window.location.hostname,
-        },
-      }
+      `${environment.authApi}/application?id=${applicationId}`
     );
   }
 }

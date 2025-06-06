@@ -17,7 +17,7 @@ export const routes: Routes = [
     canActivateChild: [authenticatedGuard],
     children: [
       {
-        path: '',
+        path: 'home',
         component: HomeComponent,
         canActivate: [authenticatedGuard],
       },
