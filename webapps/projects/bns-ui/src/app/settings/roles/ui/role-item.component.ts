@@ -15,7 +15,7 @@ import { UserInfoService } from '@/core/services/user';
         <p class="pt-1">{{ role().name }}</p>
       </div>
       <div class="flex items-center">
-        <p class="text-sm">{{ role().rolePermissions.length }} Permissions</p>
+        <p class="text-sm">{{ role().rolePermissions?.length }} Permissions</p>
       </div>
       <div class="w-full flex justify-between items-center">
         <p>Tier {{ role().hierarchyTier }}</p>

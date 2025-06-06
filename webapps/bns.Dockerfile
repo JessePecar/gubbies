@@ -13,9 +13,9 @@ RUN npm i lightningcss-linux-x64-gnu @tailwindcss/oxide-linux-x64-gnu sass-embed
 
 COPY projects/core ./projects/core
 COPY projects/models ./projects/models
-COPY projects/portal ./projects/portal
+COPY projects/bns-ui ./projects/bns-ui
 
-RUN npm run build portal
+RUN npm run build bns-ui
 
 FROM nginx:1.28.0
 
@@ -23,9 +23,9 @@ FROM nginx:1.28.0
 RUN rm -rf /usr/share/nginx/html/
 
 # Copy build files from Builder Image
-COPY --from=builder /app/dist/portal/browser /usr/share/nginx/html/
+COPY --from=builder /app/dist/bns-ui/browser /usr/share/nginx/html/
 
 # Copy NGINX config to
-COPY projects/portal/nginx.conf /etc/nginx/conf.d/default.conf
+COPY projects/bns-ui/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80

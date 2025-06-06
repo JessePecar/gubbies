@@ -7,5 +7,5 @@ export async function initializeApp() {
 }
 
 async function loadFromLoader() {
-  return await inject(UserInfoService).getStoredToken();
+  // return await inject(UserInfoService).getStoredToken();
 }

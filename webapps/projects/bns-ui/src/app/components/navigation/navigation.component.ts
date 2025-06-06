@@ -40,7 +40,6 @@ export class NavigationComponent {
   router = inject(Router);
 
   logout() {
-    this.userService.setUser(undefined, undefined);
-    this.router.navigate(['login']);
+    this.userService.setUser(undefined);
   }
 }

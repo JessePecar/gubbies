@@ -34,48 +34,9 @@ import { Router } from '@angular/router';
           (handleClick)="onBackClicked()"
           text="Vendor List" />
       </div>
-      <app-breadcrumbs baseIcon="local_shipping">
-        <form [formGroup]="vendorStore.form">
-          <card>
-            <card-body>
-              <div class="p-4">
-                @switch (selectedOption()) {
-                  @case ('info') {
-                    <vendor-information-form />
-                  }
-                  @case ('address') {
-                    <vendor-address-form />
-                  }
-                  @case ('phone') {
-                    <vendor-phone-form />
-                  }
-                }
-              </div>
-            </card-body>
-          </card>
-
-          <div class="py-2 flex justify-end">
-            @switch (selectedOption()) {
-              @case ('phone') {
-                <!-- Submit button -->
-                <app-button
-                  buttonType="raised"
-                  [disabled]="!vendorStore.form.valid"
-                  text="Submit"
-                  (handleClick)="onSubmit()" />
-              }
-              @default {
-                <!-- Next button -->
-                <app-button
-                  buttonType="raised"
-                  text="Continue"
-                  [disabled]="!vendorStore.form.get(selectedOption())?.valid"
-                  (handleClick)="onMoveToNext()" />
-              }
-            }
-          </div>
-        </form>
-      </app-breadcrumbs>
+      <app-breadcrumbs
+        baseIcon="local_shipping"
+        [baseRoute]="[]"></app-breadcrumbs>
     </div>
   `,
   styles: ``,

@@ -1,11 +1,13 @@
+import { UserInfoService } from '@/core/services/user';
 import { inject } from '@angular/core';
-import { CanActivateChildFn, Router } from '@angular/router';
-import { UserInfoService } from '../../services/user-info.service';
+import { CanActivateChildFn } from '@angular/router';
 
 export const authenticatedGuard: CanActivateChildFn = () => {
   const userInfoService = inject(UserInfoService);
-  if (userInfoService.userInfo() === undefined) {
-    inject(Router).navigate(['login']);
+  if (userInfoService.userClaims() === undefined) {
+    // Navigate to portal
+    const redirectUri = encodeURIComponent('http://localhost:4200');
+    window.location.href = `http://localhost:4201?redirectUrl=${redirectUri}&applicationId=2`;
   }
 
   return true;

@@ -19,7 +19,7 @@ import { PermissionEnum } from '@/core/types/role';
           <p>{{ user().firstName }}</p>
           <p>{{ user().lastName }}</p>
         </div>
-        <p class="text-sm pl-8">{{ user().role.name }}</p>
+        <p class="text-sm pl-8">{{ user().role?.name }}</p>
       </div>
       <div>
         <div class="flex space-x-2 flex-wrap">

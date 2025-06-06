@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authenticatedGuard } from '@/core/guards';
+import { authenticatedGuard, loginGuard } from '@/core/guards';
 import { NavigationComponent } from '@/bns-ui/components/navigation';
 import { SettingsPage } from '@/settings/settings.page';
 import { settingsGuard } from '@/settings/settings.guard';
@@ -8,6 +8,7 @@ import { roleRoutes } from '@/settings/roles';
 import { inventoryRoutes } from '@/inventory/inventory.routes';
 import { storeRoutes } from '@/settings/store';
 import { HomeComponent } from '@/bns-ui/home.component';
+import { LoginCallbackComponent } from '@/bns-ui/login-callback';
 
 export const routes: Routes = [
   {
@@ -28,5 +29,10 @@ export const routes: Routes = [
         children: [...usersRoutes, ...roleRoutes, ...storeRoutes],
       },
     ],
+  },
+  {
+    path: 'login-callback',
+    component: LoginCallbackComponent,
+    canActivate: [loginGuard],
   },
 ];

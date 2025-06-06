@@ -17,19 +17,19 @@ services:
 
   # endregion
 
-  bns-migration: 
-    container_name: bns-migration
-    depends_on:
-      - db
-    build: bns-api
-    volumes:
-      - ./src:/app/src
-    command: >
-      sh -c "npm install &&
-             npx prisma db pull &&
-             npx prisma generate && 
-             npx prisma migrate dev &&
-             npx prisma db seed"
+  # bns-migration: 
+  #   container_name: bns-migration
+  #   depends_on:
+  #     - db
+  #   build: bns-api
+  #   volumes:
+  #     - ./src:/app/src
+  #   command: >
+  #     sh -c "npm install &&
+  #            npx prisma db pull &&
+  #            npx prisma generate && 
+  #            npx prisma migrate dev &&
+  #            npx prisma db seed"
   
   # region APIs
 
@@ -87,11 +87,14 @@ services:
   
   bns-ui:
     container_name: bns-ui
-    build: bns-ui
+    build:
+      context: webapps
+      dockerfile: bns.Dockerfile
     ports:
-      - "80:80"
+      - "4200:4200"
     depends_on:
       - bns-api
+      - auth-api
 
   portal-ui:
     container_name: portal-ui
@@ -99,7 +102,9 @@ services:
       context: webapps
       dockerfile: portal.Dockerfile
     ports:
-      - "4201:4201"  
+      - "4201:4201"
+    depends_on:
+      - auth-api  
 
   # endregion
 

@@ -2,7 +2,6 @@ import { ButtonComponent } from '@/core/components/buttons';
 import { CardComponent } from '@/core/components/card/card.component';
 import { BreadcrumbsComponent } from '@/core/components/navigation/breadcrumbs';
 import { Component, inject, signal } from '@angular/core';
-import { UserFormGroupNames } from '@/settings/users/details';
 import {
   AddressFormComponent,
   ContactFormComponent,
@@ -37,58 +36,8 @@ import { Router } from '@angular/router';
       </div>
       @if (userStore.form; as form) {
         <form class="h-full" [formGroup]="form" (ngSubmit)="onSubmit()">
-          <app-breadcrumbs
-            baseIcon="account_circle"
-            (onOptionClicked)="onOptionClicked($event)"
-            [breadcrumbOptions]="activeOptions()"
-            [selectedContent]="selectedOption()">
-            @switch (selectedOption()) {
-              <!-- The user information form that will hold the their name and role -->
-              @case ('info') {
-                <card>
-                  <div class="p-4">
-                    <information-form [isCreate]="true" [roles]="roles()" />
-                  </div>
-                </card>
-              }
-              @case ('address') {
-                <!-- The user address form that will hold their address info -->
-                <card>
-                  <div class="p-4">
-                    <address-form />
-                  </div>
-                </card>
-              }
-              <!-- The user contact information that will hold their phone(s) -->
-              @case ('primaryPhone') {
-                <card>
-                  <div class="p-4">
-                    <contact-form />
-                  </div>
-                </card>
-              }
-            }
-
-            <div class="py-2 flex justify-end">
-              @switch (selectedOption()) {
-                @case ('primaryPhone') {
-                  <!-- Submit button -->
-                  <app-button
-                    buttonType="raised"
-                    [disabled]="!form.valid"
-                    text="Submit"
-                    (handleClick)="onSubmit()" />
-                }
-                @default {
-                  <!-- Next button -->
-                  <app-button
-                    buttonType="raised"
-                    text="Continue"
-                    [disabled]="!form.get(selectedOption())?.valid"
-                    (handleClick)="onMoveToNext()" />
-                }
-              }
-            </div>
+          <app-breadcrumbs baseIcon="account_circle" [baseRoute]="[]">
+            <div class="py-2 flex justify-end"></div>
           </app-breadcrumbs>
         </form>
       }

@@ -115,7 +115,7 @@ export const applicationSeed = [
   {
     id: 1,
     name: 'PORTAL_UI',
-    domain: 'http://localhost:4200',
+    domain: 'http://localhost:4201',
     accessCode: 'dd41d292-14b7-4bf1-a7dc-4f75603f290b',
   },
   {
@@ -127,7 +127,7 @@ export const applicationSeed = [
   {
     id: 3,
     name: 'BNS_ADMIN',
-    domain: 'http://localhost:4200',
+    domain: 'http://localhost:4203',
     accessCode: 'bec80e09-0bda-4b8b-a1fb-0eeba750824e',
   },
   {
