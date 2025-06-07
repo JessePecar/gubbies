@@ -1,4 +1,5 @@
 import { BaseController } from '@/core/requests';
+import { ApiSettingsService } from '@/core/requests/api-settings.service';
 import { User } from '@/models/auth/user';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
@@ -8,12 +9,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class UserControllerService extends BaseController {
-  readonly api = 'http://localhost:3002/user';
+  readonly apiSetting = inject(ApiSettingsService);
   readonly httpClient = inject(HttpClient);
 
   public getUser(userId: string): Observable<User> {
     return this.httpClient.get<User>(
-      `${this.api}/${userId}`,
+      `${this.apiSetting.authApi()}/${userId}`,
       super.defaultHeader()
     );
   }

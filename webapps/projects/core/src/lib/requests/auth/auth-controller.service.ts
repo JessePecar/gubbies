@@ -1,3 +1,4 @@
+import { ApiSettingsService } from '@/core/requests/api-settings.service';
 import { BaseController } from '@/core/requests/base-controller.service';
 import { AuthClaims } from '@/models/auth';
 import { HttpClient } from '@angular/common/http';
@@ -8,14 +9,21 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthControllerService extends BaseController {
-  readonly api = 'http://localhost:3002/auth';
+  readonly apiSetting = inject(ApiSettingsService);
   readonly httpClient = inject(HttpClient);
 
   public validate(token: string): Observable<AuthClaims> {
-    return this.httpClient.get<AuthClaims>(this.api, {
+    return this.httpClient.get<AuthClaims>(this.apiSetting.authApi(), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+    });
+  }
+
+  public authUser(username: string, password: string): Observable<string> {
+    return this.httpClient.post<string>(this.apiSetting.authApi(), {
+      username,
+      password,
     });
   }
 }

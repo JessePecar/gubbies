@@ -15,6 +15,9 @@
       "@/portal:env/*": [
         "./projects/portal/src/environments/*"
       ],
+      "@/bns:env/*": [
+        "./projects/bns-ui/src/environments/*"
+      ],
       "@/portal/*": [
         "./projects/portal/src/app/*"
       ],
