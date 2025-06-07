@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { permissionGroupSeed, permissionSeed, roleSeed } from '@auth/seed';
-import { AuthClientService } from '@core/repository';
+import { AuthClientService, AuthClientTransaction } from '@core/repository';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { Role, RolePermission } from '@auth/role';
 
@@ -72,6 +72,7 @@ export class RoleService implements OnApplicationBootstrap {
   async mergeRolePermissions(
     rolePermissionInput: RolePermission[],
     roleId: number,
+    transaction: AuthClientTransaction
   ) {
     if (roleId === -1) return;
 
@@ -107,7 +108,7 @@ export class RoleService implements OnApplicationBootstrap {
     });
 
     if (deletePerms) {
-      await this.repository.rolePermission.deleteMany({
+      await transaction.rolePermission.deleteMany({
         where: {
           AND: {
             roleId: roleId,
@@ -120,7 +121,7 @@ export class RoleService implements OnApplicationBootstrap {
     }
 
     if (createPerms) {
-      await this.repository.rolePermission.createMany({
+      await transaction.rolePermission.createMany({
         data: createPerms.map((cp) => {
           return {
             permissionId: cp,
@@ -132,37 +133,41 @@ export class RoleService implements OnApplicationBootstrap {
   }
 
   async upsertRole(upsertRole: Role) {
-    const role = await this.repository.role.upsert({
-      where: {
-        id: upsertRole.id === null || upsertRole.id === 0 ? -1 : upsertRole.id,
-      },
-      update: {
-        hierarchyTier: upsertRole.hierarchyTier,
-        name: upsertRole.name,
-      },
-      create: {
-        id:
-          upsertRole.id === null || upsertRole.id === 0
-            ? undefined
-            : upsertRole.id, // If role id is null, or 0, auto generate
-        hierarchyTier: upsertRole.hierarchyTier,
-        name: upsertRole.name,
-      },
-      include: {
-        rolePermissions: {
-          include: {
-            permission: true,
+    await this.repository.$transaction(async (transaction) => {
+      const role = await transaction.role.upsert({
+        where: {
+          id:
+            upsertRole.id === null || upsertRole.id === 0 ? -1 : upsertRole.id,
+        },
+        update: {
+          hierarchyTier: upsertRole.hierarchyTier,
+          name: upsertRole.name,
+        },
+        create: {
+          id:
+            upsertRole.id === null || upsertRole.id === 0
+              ? undefined
+              : upsertRole.id, // If role id is null, or 0, auto generate
+          hierarchyTier: upsertRole.hierarchyTier,
+          name: upsertRole.name,
+        },
+        include: {
+          rolePermissions: {
+            include: {
+              permission: true,
+            },
           },
         },
-      },
+      });
+
+      await this.mergeRolePermissions(
+        (upsertRole.rolePermissions ?? []) as RolePermission[],
+        role.id ?? -1,
+        transaction
+      );
+
+      return await this.getRole(role.id ?? -1);
     });
-
-    await this.mergeRolePermissions(
-      (upsertRole.rolePermissions ?? []) as RolePermission[],
-      role.id ?? -1,
-    );
-
-    return await this.getRole(upsertRole.id ?? -1);
   }
 
   async onApplicationBootstrap() {

@@ -13,7 +13,7 @@ export class AuthControllerService extends BaseController {
   readonly httpClient = inject(HttpClient);
 
   public validate(token: string): Observable<AuthClaims> {
-    return this.httpClient.get<AuthClaims>(this.apiSetting.authApi(), {
+    return this.httpClient.get<AuthClaims>(`${this.apiSetting.authApi()}/auth`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -21,7 +21,7 @@ export class AuthControllerService extends BaseController {
   }
 
   public authUser(username: string, password: string): Observable<string> {
-    return this.httpClient.post<string>(this.apiSetting.authApi(), {
+    return this.httpClient.post<string>(`${this.apiSetting.authApi()}/auth`, {
       username,
       password,
     });

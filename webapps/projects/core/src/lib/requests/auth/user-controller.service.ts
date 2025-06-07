@@ -14,7 +14,7 @@ export class UserControllerService extends BaseController {
 
   public getUser(userId: string): Observable<User> {
     return this.httpClient.get<User>(
-      `${this.apiSetting.authApi()}/${userId}`,
+      `${this.apiSetting.authApi()}/user/${userId}`,
       super.defaultHeader()
     );
   }
