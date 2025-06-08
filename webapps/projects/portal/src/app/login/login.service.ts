@@ -8,7 +8,6 @@ import { environment } from '@/portal:env/environment';
   providedIn: 'root',
 })
 export class LoginService {
-  // apiKey = process.env?.['API_KEY'];
   httpClient = inject(HttpClient);
   constructor() {}
 

@@ -35,6 +35,8 @@ services:
 
   bns-api:
     container_name: bns-api
+    environment:
+      - PORT=3000
     build:
       context: apis
       dockerfile: bns.Dockerfile
@@ -47,6 +49,8 @@ services:
 
   ar-api: 
     container_name: ar-api
+    environment:
+      - PORT=3001
     build:
       context: apis
       dockerfile: ar.Dockerfile
@@ -57,26 +61,30 @@ services:
     expose: 
       - "80"   
 
-  pos-api: 
-    container_name: pos-api
-    build:
-      context: apis
-      dockerfile: pos.Dockerfile
-    ports:
-      - "3004:80"
-    links: 
-      - db
-    expose: 
-      - "80"   
-
   auth-api: 
     container_name: auth-api
+    environment:
+      - PORT=3002
     build:
       context: apis
       dockerfile: auth.Dockerfile
     ports:
       - "3002:80"
     depends_on: 
+      - db
+    expose: 
+      - "80" 
+
+  pos-api: 
+    container_name: pos-api
+    environment:
+      - PORT=3003
+    build:
+      context: apis
+      dockerfile: pos.Dockerfile
+    ports:
+      - "3003:80"
+    links: 
       - db
     expose: 
       - "80"   

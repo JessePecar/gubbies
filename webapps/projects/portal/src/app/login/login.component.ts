@@ -5,7 +5,6 @@ import {
   CardBodyComponent,
   CardFooterComponent,
 } from '@/core/components/card';
-import { UserInfoService } from '@/bns-ui/common/services';
 import { Component, inject, input } from '@angular/core';
 import {
   ReactiveFormsModule,
@@ -105,7 +104,6 @@ import { environment } from '@/portal:env/environment';
   `,
 })
 export class LoginComponent {
-  userInfoService = inject(UserInfoService);
   loginService = inject(LoginService);
   router = inject(Router);
 
