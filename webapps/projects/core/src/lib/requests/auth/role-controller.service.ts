@@ -59,4 +59,12 @@ export class RoleControllerService extends BaseController {
       super.defaultHeader()
     );
   }
+  
+  public updateRole(role: Role): Observable<Role> {
+    return this.httpClient.put<Role>(
+      `${this.apiSetting.authApi()}/role`,
+      role,
+      super.defaultHeader()
+    );
+  }
 }

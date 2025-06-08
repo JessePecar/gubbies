@@ -18,4 +18,33 @@ export class UserControllerService extends BaseController {
       super.defaultHeader()
     );
   }
+
+  public getUsers(): Observable<User[]> {
+    return this.httpClient.get<User[]>(
+      `${this.apiSetting.authApi()}/user`,
+      super.defaultHeader()
+    );
+  }
+
+  public createUser(user: User): Observable<User> {
+    return this.httpClient.post<User>(
+      `${this.apiSetting.authApi()}/user`,
+      user,
+      super.defaultHeader()
+    );
+  }
+
+  public updateUser(user: User): Observable<User> {
+    return this.httpClient.put<User>(
+      `${this.apiSetting.authApi()}/user`,
+      user,
+      super.defaultHeader()
+    );
+  }
+
+  public deleteUser(userId: string): Observable<void> {
+    return this.httpClient.delete<void>(
+      `${this.apiSetting.authApi()}/user?userId=${userId}`
+    )
+  }
 }

@@ -9,6 +9,7 @@ import {
   Body,
   Put,
   Delete,
+  Query,
 } from '@nestjs/common';
 
 @Controller('user')
@@ -39,7 +40,7 @@ export class UserController {
 
   // Guard
   @Delete()
-  async deleteUser(@Param() userId: number) {
+  async deleteUser(@Query('userId') userId: number) {
     // return await this.userService.deleteUser(userId);
   }
 }
