@@ -8,7 +8,7 @@ import {
   SettingsNavItemComponent,
 } from './nav-dropdowns';
 import { Router } from '@angular/router';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { UpperCasePipe } from '@angular/common';
 
 @Component({

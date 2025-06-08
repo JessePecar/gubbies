@@ -4,7 +4,7 @@ import { UsersListService } from './users-list.service';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { UserItemComponent } from '@/settings/users/ui';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 
 @Component({
   selector: 'app-users-list',

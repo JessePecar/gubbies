@@ -16,7 +16,7 @@ import { RoleStore } from '@/settings/roles/store';
 import { RoleSchema, RoleValidator } from '@/settings/roles/validators';
 import { TableComponent } from '@/core/components/tables/table.component';
 import { SwitchInputComponent } from '@/core/components/inputs/switch-input.component';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 
 //TODO: Move a lot of the logic for fetching into the service
 

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { NavigationDropdownComponent } from './navigation-dropdown.component';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { PermissionEnum } from '@/core/types/role';
 
 @Component({

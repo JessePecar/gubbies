@@ -1,4 +1,4 @@
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { Component, effect, inject, input, untracked } from '@angular/core';
 import { Router } from '@angular/router';
 

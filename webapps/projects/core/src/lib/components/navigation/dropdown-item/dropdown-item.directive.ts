@@ -1,6 +1,6 @@
 import { PermissionEnum } from '@/core/types/role';
 import { User } from '@/models/auth/user';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import {
   Directive,
   effect,

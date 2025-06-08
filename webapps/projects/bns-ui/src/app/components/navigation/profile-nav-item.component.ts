@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({

@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { TableComponent, ToolbarItem } from '@/core/components/tables';
 import { ItemComponent } from '@/inventory/items/ui/item.component';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { Item } from '@/models/bns';
 import { PermissionEnum } from '@/core/types/role';
 

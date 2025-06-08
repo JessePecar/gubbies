@@ -3,7 +3,7 @@ import { Component, inject, input, OnInit } from '@angular/core';
 import { ContextButtonComponent } from '@/core/components/buttons';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 
 @Component({
   selector: 'role-item',

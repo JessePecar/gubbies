@@ -4,7 +4,7 @@ import { getLocationLine } from '@/bns-ui/utilities';
 import { Component, inject, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { User } from '@/models/auth/user';
 import { PermissionEnum } from '@/core/types/role';
 

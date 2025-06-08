@@ -5,7 +5,7 @@ import {
   CardBodyComponent,
   CardFooterComponent,
 } from '@/core/components/card';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { Component, inject, input } from '@angular/core';
 import {
   ReactiveFormsModule,

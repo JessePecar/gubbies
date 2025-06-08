@@ -6,7 +6,7 @@ import {
 } from '@/core/components/tables/table.component';
 import { VendorItemComponent } from '@/inventory/vendors/ui/vendor-item.component';
 import { Router } from '@angular/router';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { PermissionEnum } from '@/core/types/role';
 
 @Component({

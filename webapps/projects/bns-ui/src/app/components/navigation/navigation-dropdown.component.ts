@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { NavbarService } from '@/bns-ui/components/navigation/navbar.service';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { NavigationDropdownDirective } from './navigation-dropdown.directive';
 import { PermissionEnum } from '@/core/types/role';
 import {

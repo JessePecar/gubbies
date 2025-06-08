@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import { BaseValidator } from '@/core/validators';
 import { PermissionGroup } from '@/models/auth/role';
 import { GetPermissionGroupsService } from '@/settings/roles/requests';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 
 export type RoleSchema =
   | {

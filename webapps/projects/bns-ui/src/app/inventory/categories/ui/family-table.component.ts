@@ -14,7 +14,7 @@ import { FamilyItemComponent } from './family-item.component';
 import { TextInputComponent } from '@/core/components';
 import { SearchComponentBase } from '@/core/components/core';
 import { Family } from '@/inventory/categories/interfaces';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { PermissionEnum } from '@/core/types/role';
 
 @Component({

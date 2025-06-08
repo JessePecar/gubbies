@@ -1,4 +1,4 @@
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 

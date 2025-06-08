@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateChildFn } from '@angular/router';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { PermissionEnum } from '@/core/types/role';
 
 export const adjustmentsGuard: CanActivateChildFn = (route, state) => {

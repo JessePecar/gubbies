@@ -1,4 +1,4 @@
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { inject } from '@angular/core';
 import { CanActivateChildFn } from '@angular/router';
 

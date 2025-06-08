@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { SearchComponentBase } from '@/core/components/core';
 import { Subcategory } from '@/inventory/categories/interfaces';
 import { TextInputComponent } from '@/core/components';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { PermissionEnum } from '@/core/types/role';
 
 @Component({

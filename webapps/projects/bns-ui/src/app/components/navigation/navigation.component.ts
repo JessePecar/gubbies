@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { RouterOutlet } from '@angular/router';
 import { NavigationBarComponent } from '@/bns-ui/components/navigation/navigation-bar.component';
 import { ProfileNavItemComponent } from '@/bns-ui/components/navigation/profile-nav-item.component';

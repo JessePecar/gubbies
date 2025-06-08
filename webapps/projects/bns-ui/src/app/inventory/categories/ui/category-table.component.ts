@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
 import { TextInputComponent } from '@/core/components/inputs';
 import { Category } from '@/inventory/categories/interfaces';
 import { SearchComponentBase } from '@/core/components/core';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { PermissionEnum } from '@/core/types/role';
 
 @Component({

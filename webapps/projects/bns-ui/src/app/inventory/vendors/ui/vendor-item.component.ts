@@ -10,7 +10,7 @@ import {
 import { ContextButtonComponent } from '@/core/components/buttons';
 import { Router } from '@angular/router';
 import { getLocationLine } from '@/bns-ui/utilities';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 import { PermissionEnum } from '@/core/types/role';
 
 @Component({

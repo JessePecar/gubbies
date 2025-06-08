@@ -3,7 +3,7 @@ import { RoleListService } from './role-list.service';
 import { TableComponent } from '@/core/components/tables/table.component';
 import { RoleItemComponent } from '@/settings/roles/ui';
 import { Router } from '@angular/router';
-import { UserInfoService } from '@/core/services/user';
+import { UserInfoService } from '@/bns-ui/common/services';
 
 @Component({
   selector: 'app-role-list',
