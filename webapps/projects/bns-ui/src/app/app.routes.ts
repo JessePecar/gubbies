@@ -38,6 +38,6 @@ export const routes: Routes = [
   {
     path: 'login-callback',
     component: LoginCallbackComponent,
-    canActivate: [loginGuard],
+    // canActivate: [loginGuard],
   },
 ];
