@@ -9,6 +9,18 @@
       "inlineTemplate": true,
       "skipTests": true,
       "flat": true
+    },
+    "@schematics/angular:service": {
+      "skipTests": true,
+      "flat": true
+    },
+    "@schematics/angular:directive": {
+      "skipTests": true,
+      "flat": true
+    },
+    "@schematics/angular:guard": {
+      "skipTests": true,
+      "flat": true
     }
   },
   "projects": {
