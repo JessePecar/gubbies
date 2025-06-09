@@ -202,10 +202,8 @@
             "tsConfig": "projects/bns-ui/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/bns-ui/public"
-              }
+              "projects/bns-ui/src/favicon.ico",
+              "projects/bns-ui/src/assets"
             ],
             "styles": ["projects/bns-ui/src/styles.scss"],
             "scripts": []

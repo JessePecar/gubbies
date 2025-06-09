@@ -7,7 +7,7 @@ import { DropdownItem } from './dropdown-item.types';
   imports: [RouterLink, RouterLinkActive],
   template: `
     @if (option(); as option) {
-      <ng-template navDropdown>
+      <div>
         <div class="w-full mt-1">
           <a
             [routerLink]="option.route"
@@ -16,7 +16,7 @@ import { DropdownItem } from './dropdown-item.types';
             >{{ option.linkTitle }}</a
           >
         </div>
-      </ng-template>
+      </div>
     }
   `,
   styles: ``,

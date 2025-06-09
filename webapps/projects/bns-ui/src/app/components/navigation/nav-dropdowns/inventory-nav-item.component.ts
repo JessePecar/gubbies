@@ -10,7 +10,7 @@ import { PermissionEnum } from '@/core/types/role';
       dropdownName="inventory"
       [dropdownOptions]="dropdownOptions"
       [dropdownPermission]="inventoryPermission">
-      <p menuItem>Inventory</p>
+      <p>Inventory</p>
     </app-navigation-dropdown>
   `,
   styles: ``,

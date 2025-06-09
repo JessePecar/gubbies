@@ -73,7 +73,7 @@ export class UserInfoService {
 
   setUser(token: string | undefined) {
     if (token) {
-      return this.authController.validate(token).subscribe(authClaims => {
+      return this.authController.validate(token)?.subscribe(authClaims => {
         if (authClaims) {
           // Token is valid, we can now get all the user information if we want to grab them
           this.userClaims.set(authClaims);
@@ -92,13 +92,13 @@ export class UserInfoService {
   }
 
   private getUser(userId: string) {
-    this.userController.getUser(userId).subscribe(user => {
+    this.userController.getUser(userId)?.subscribe(user => {
       this.userInfo.set(user);
     });
   }
 
   private getRole(roleId: string) {
-    this.roleController.getRole(roleId).subscribe(role => {
+    this.roleController.getRole(roleId)?.subscribe(role => {
       this.role.set(role);
     });
   }
@@ -107,7 +107,7 @@ export class UserInfoService {
     const token = localStorage.getItem(LocalStorageKeys.access_token);
     if (token) {
       // If token exists, we will go to the api and get the user
-      this.authController.validate(token).subscribe(authClaims => {
+      this.authController.validate(token)?.subscribe(authClaims => {
         if (authClaims) {
           // Token is valid, we can now get all the user information if we want to grab them
           this.userClaims.set(authClaims);

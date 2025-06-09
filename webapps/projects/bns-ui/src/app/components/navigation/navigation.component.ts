@@ -36,9 +36,9 @@ import { MatIconModule } from '@angular/material/icon';
   styles: ``,
 })
 export class NavigationComponent {
-  // userService = inject(UserInfoService);
-
   logout() {
+    // const redirectUrl = encodingUrl("http://localhost:4200")
+    // window.location.href = `http://localhost:4201/logout?redirectUrl=${redirectUrl}`;
     // this.userService.setUser(undefined);
   }
 }

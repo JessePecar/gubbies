@@ -11,17 +11,21 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class RoleControllerService extends BaseController {
   readonly apiSetting = inject(ApiSettingsService);
   readonly httpClient = inject(HttpClient);
 
-  public getRole(roleId: string): Observable<Role> {
-    return this.httpClient.get<Role>(
-      `${this.apiSetting.authApi()}/role/${roleId}`,
-      super.defaultHeader()
-    );
+  public getRole(roleId: string): Observable<Role> | undefined {
+    if (this.apiSetting.authApi()) {
+      return this.httpClient.get<Role>(
+        `${this.apiSetting.authApi()}/role/${roleId}`,
+        super.defaultHeader()
+      );
+    }
+
+    return undefined;
   }
 
   public getRoles(): Observable<Role[]> {

@@ -36,13 +36,13 @@ import { UpperCasePipe } from '@angular/common';
         <div class="space-y-4 flex flex-col overflow-y-auto overflow-x-hidden">
           <app-inventory-nav-item />
 
-          <app-reports-nav-item />
+          <!-- <app-reports-nav-item />
 
           <app-pricing-nav-item />
 
           <app-promotion-nav-item />
 
-          <app-settings-nav-item />
+          <app-settings-nav-item /> -->
         </div>
       </div>
     </nav>

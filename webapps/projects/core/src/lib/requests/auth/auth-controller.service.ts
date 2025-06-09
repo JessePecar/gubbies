@@ -6,21 +6,25 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class AuthControllerService extends BaseController {
   readonly apiSetting = inject(ApiSettingsService);
   readonly httpClient = inject(HttpClient);
 
-  public validate(token: string): Observable<AuthClaims> {
-    return this.httpClient.get<AuthClaims>(
-      `${this.apiSetting.authApi()}/auth`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+  public validate(token: string): Observable<AuthClaims> | undefined {
+    if (this.apiSetting.authApi()) {
+      return this.httpClient.get<AuthClaims>(
+        `${this.apiSetting.authApi()}/auth`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    }
+
+    return undefined;
   }
 
   public authUser(username: string, password: string): Observable<string> {

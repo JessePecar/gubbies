@@ -6,17 +6,21 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class UserControllerService extends BaseController {
   readonly apiSetting = inject(ApiSettingsService);
   readonly httpClient = inject(HttpClient);
 
-  public getUser(userId: string): Observable<User> {
-    return this.httpClient.get<User>(
-      `${this.apiSetting.authApi()}/user/${userId}`,
-      super.defaultHeader()
-    );
+  public getUser(userId: string): Observable<User> | undefined {
+    if (this.apiSetting.authApi()) {
+      return this.httpClient.get<User>(
+        `${this.apiSetting.authApi()}/user/${userId}`,
+        super.defaultHeader()
+      );
+    }
+
+    return undefined;
   }
 
   public getUsers(): Observable<User[]> {

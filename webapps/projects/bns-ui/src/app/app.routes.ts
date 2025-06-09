@@ -21,10 +21,6 @@ export const routes: Routes = [
     canActivateChild: [authenticatedAppGuard],
     children: [
       {
-        path: 'login-callbackV2',
-        component: LoginCallbackComponent,
-      },
-      {
         path: '',
         component: HomeComponent,
         // canActivate: [authenticatedGuard],

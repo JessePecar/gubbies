@@ -2,6 +2,7 @@ import { Role } from '@/models/auth/role';
 import { LocalStorageKeys } from '@/core/constants';
 import {
   effect,
+  inject,
   Injectable,
   linkedSignal,
   signal,
@@ -14,10 +15,10 @@ import {
   UserControllerService,
 } from '@/core/requests/auth';
 import { AuthClaims } from '@/models/auth';
-import { firstValueFrom } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class UserInfoService {
   public userInfo = signal<User | undefined>(undefined);
@@ -25,6 +26,8 @@ export class UserInfoService {
 
   public role = signal<Role | undefined>(undefined);
   public permissions = linkedSignal(() => this.role()?.rolePermissions);
+
+  private readonly router = inject(Router);
 
   constructor(
     private readonly authController: AuthControllerService,
@@ -81,13 +84,13 @@ export class UserInfoService {
   }
 
   private getUser(userId: string) {
-    this.userController.getUser(userId).subscribe(user => {
+    this.userController.getUser(userId)?.subscribe(user => {
       this.userInfo.set(user);
     });
   }
 
   private getRole(roleId: string) {
-    this.roleController.getRole(roleId).subscribe(role => {
+    this.roleController.getRole(roleId)?.subscribe(role => {
       this.role.set(role);
     });
   }
@@ -102,16 +105,14 @@ export class UserInfoService {
     // If we have a token and the claims are not set, then do the normal validation
     if (token && this.userClaims() === undefined) {
       // If token exists, we will go to the api and get the user
-      this.authController.validate(token).subscribe(authClaims => {
+      this.authController.validate(token)?.subscribe(authClaims => {
         console.log(authClaims);
 
         if (authClaims) {
           // Token is valid, we can now get all the user information if we want to grab them
           this.userClaims.set(authClaims);
 
-          console.log('User Claims were set');
-          // TODO: Call the user and role controller for the user and role objects
-
+          this.router.navigate(['']);
           // Set the token info
           localStorage.setItem(LocalStorageKeys.access_token, token);
         } else {
@@ -127,25 +128,18 @@ export class UserInfoService {
 
     if (token) {
       // If token exists, we will go to the api and get the user
-      const authClaims = await firstValueFrom(
-        this.authController.validate(token)
-      ).catch(err => {
-        console.warn(err);
-        return undefined;
+      this.authController.validate(token)?.subscribe(authClaims => {
+        if (authClaims) {
+          // Token is valid, we can now get all the user information if we want to grab them
+          this.userClaims.set(authClaims);
+
+          // Set the token info
+          localStorage.setItem(LocalStorageKeys.access_token, token);
+        }
       });
-
-      if (authClaims) {
-        // Token is valid, we can now get all the user information if we want to grab them
-        this.userClaims.set(authClaims);
-
-        // TODO: Call the user and role controller for the user and role objects
-
-        // Set the token info
-        localStorage.setItem(LocalStorageKeys.access_token, token);
-      } else {
-        // Auth claims were invalid, so we will remove the access token from the store
-        localStorage.removeItem(LocalStorageKeys.access_token);
-      }
+    } else {
+      // Auth claims were invalid, so we will remove the access token from the store
+      localStorage.removeItem(LocalStorageKeys.access_token);
     }
   }
 }
