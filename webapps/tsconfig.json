@@ -29,6 +29,9 @@
       ],
       "@/settings/*": [
         "./projects/bns-ui/src/app/settings/*"
+      ],
+      "@/projects/*": [
+        "./projects/*"
       ]
     },
     "outDir": "./dist/out-tsc",

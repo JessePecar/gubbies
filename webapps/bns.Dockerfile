@@ -16,7 +16,7 @@ COPY projects/core ./projects/core
 COPY projects/models ./projects/models
 COPY projects/bns-ui ./projects/bns-ui
 
-RUN ng build bns-ui
+RUN ng build bns-ui --configuration production
 
 FROM nginx:1.28.0
 

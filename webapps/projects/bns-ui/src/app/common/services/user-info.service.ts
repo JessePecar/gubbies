@@ -2,7 +2,6 @@ import { Role } from '@/models/auth/role';
 import { LocalStorageKeys } from '@/core/constants';
 import {
   effect,
-  inject,
   Injectable,
   linkedSignal,
   signal,
@@ -17,7 +16,7 @@ import {
 import { AuthClaims } from '@/models/auth';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'any',
 })
 export class UserInfoService {
   public userInfo = signal<User | undefined>(undefined);
@@ -26,11 +25,11 @@ export class UserInfoService {
   public role = signal<Role | undefined>(undefined);
   public permissions = linkedSignal(() => this.role()?.rolePermissions);
 
-  private readonly authController = inject(AuthControllerService);
-  private readonly userController = inject(UserControllerService);
-  private readonly roleController = inject(RoleControllerService);
-
-  constructor() {
+  constructor(
+    private readonly authController: AuthControllerService,
+    private readonly userController: UserControllerService,
+    private readonly roleController: RoleControllerService
+  ) {
     effect(() => {
       const userClaims = this.userClaims();
       untracked(() => {

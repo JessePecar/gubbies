@@ -212,7 +212,13 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "projects/bns-ui/src/environments/environment.ts",
+                  "with": "projects/bns-ui/src/environments/environment.production.ts"
+                }
+              ]
             },
             "development": {
               "optimization": false,

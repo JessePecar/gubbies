@@ -1,4 +1,4 @@
-import { UserInfoService } from '@/bns-ui/common/services';
+import { UserInfoService } from '@/projects/bns-ui/src/app/common/services';
 import { Component, effect, inject, input, untracked } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -9,28 +9,28 @@ import { Router } from '@angular/router';
   styles: ``,
 })
 export class LoginCallbackComponent {
-  userInfoService = inject(UserInfoService);
   router = inject(Router);
   token = input<string>();
 
-  constructor() {
+  constructor(private userInfoService: UserInfoService) {
     effect(() => {
       const token = this.token();
+      const service = userInfoService;
       untracked(() => {
-        if (token) {
+        if (token && service) {
           // TODO: Grab the user claims from the token and then grab the
           // user information after that dynamically
-          this.userInfoService.setUser(token);
+          service.setUser(token);
         }
       });
     });
 
     effect(() => {
-      const userClaims = this.userInfoService.userClaims();
+      const userClaims = userInfoService.userClaims();
       const router = this.router;
       untracked(() => {
         if (userClaims) {
-          // router?.navigate(['home']);
+          router?.navigate(['home']);
         } else {
           console.warn('Still waiting for claims to be set');
         }

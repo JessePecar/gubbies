@@ -11,7 +11,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'any',
 })
 export class RoleControllerService extends BaseController {
   readonly apiSetting = inject(ApiSettingsService);
@@ -59,7 +59,7 @@ export class RoleControllerService extends BaseController {
       super.defaultHeader()
     );
   }
-  
+
   public updateRole(role: Role): Observable<Role> {
     return this.httpClient.put<Role>(
       `${this.apiSetting.authApi()}/role`,

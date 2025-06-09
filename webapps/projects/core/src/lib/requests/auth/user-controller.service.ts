@@ -6,7 +6,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'any',
 })
 export class UserControllerService extends BaseController {
   readonly apiSetting = inject(ApiSettingsService);
@@ -45,6 +45,6 @@ export class UserControllerService extends BaseController {
   public deleteUser(userId: string): Observable<void> {
     return this.httpClient.delete<void>(
       `${this.apiSetting.authApi()}/user?userId=${userId}`
-    )
+    );
   }
 }
