@@ -1,3 +1,4 @@
+import { UserInfoService } from '@/bns-ui/common/services';
 import { environment } from '@/bns:env/environment';
 import { ApiSettingsService } from '@/core/requests';
 import { inject } from '@angular/core';
@@ -9,7 +10,10 @@ export async function initializeApp() {
 
 async function loadFromLoader() {
   // Setting the api base url for the controller services
-   const apiSettings = inject(ApiSettingsService);
-   apiSettings.authApi.set(environment.authApi);
-   apiSettings.bnsApi.set(environment.bnsApi);
+  const apiSettings = inject(ApiSettingsService);
+  apiSettings.authApi.set(environment.authApi);
+  apiSettings.bnsApi.set(environment.bnsApi);
+
+  const userInfoService = inject(UserInfoService);
+  await userInfoService.getStoredToken();
 }

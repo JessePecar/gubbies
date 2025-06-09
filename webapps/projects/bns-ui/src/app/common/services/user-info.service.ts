@@ -14,6 +14,7 @@ import {
   UserControllerService,
 } from '@/core/requests/auth';
 import { AuthClaims } from '@/models/auth';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'any',
@@ -102,24 +103,62 @@ export class UserInfoService {
     });
   }
 
+  async validateUser() {
+    const token = localStorage.getItem(LocalStorageKeys.access_token);
+    if (token && this.userClaims() !== undefined) return true;
+
+    // If we have a token and the claims are not set, then do the normal validation
+    if (token && this.userClaims() === undefined) {
+      // If token exists, we will go to the api and get the user
+      const authClaims = await firstValueFrom(
+        this.authController.validate(token)
+      ).catch(err => {
+        console.warn(err);
+        return undefined;
+      });
+
+      if (authClaims) {
+        // Token is valid, we can now get all the user information if we want to grab them
+        this.userClaims.set(authClaims);
+
+        // TODO: Call the user and role controller for the user and role objects
+
+        // Set the token info
+        localStorage.setItem(LocalStorageKeys.access_token, token);
+        return true;
+      } else {
+        // Auth claims were invalid, so we will remove the access token from the store
+        localStorage.removeItem(LocalStorageKeys.access_token);
+      }
+    }
+
+    return false;
+  }
+
   async getStoredToken() {
     const token = localStorage.getItem(LocalStorageKeys.access_token);
+
     if (token) {
       // If token exists, we will go to the api and get the user
-      this.authController.validate(token).subscribe(authClaims => {
-        if (authClaims) {
-          // Token is valid, we can now get all the user information if we want to grab them
-          this.userClaims.set(authClaims);
-
-          // TODO: Call the user and role controller for the user and role objects
-
-          // Set the token info
-          localStorage.setItem(LocalStorageKeys.access_token, token);
-        } else {
-          // Auth claims were invalid, so we will remove the access token from the store
-          localStorage.removeItem(LocalStorageKeys.access_token);
-        }
+      const authClaims = await firstValueFrom(
+        this.authController.validate(token)
+      ).catch(err => {
+        console.warn(err);
+        return undefined;
       });
+
+      if (authClaims) {
+        // Token is valid, we can now get all the user information if we want to grab them
+        this.userClaims.set(authClaims);
+
+        // TODO: Call the user and role controller for the user and role objects
+
+        // Set the token info
+        localStorage.setItem(LocalStorageKeys.access_token, token);
+      } else {
+        // Auth claims were invalid, so we will remove the access token from the store
+        localStorage.removeItem(LocalStorageKeys.access_token);
+      }
     }
   }
 }

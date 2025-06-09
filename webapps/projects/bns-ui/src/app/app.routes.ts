@@ -1,5 +1,9 @@
 import { Routes } from '@angular/router';
-import { authenticatedGuard, loginGuard } from '@/core/guards';
+import {
+  authenticatedAppGuard,
+  authenticatedGuard,
+  loginGuard,
+} from '@/core/guards';
 import { NavigationComponent } from '@/bns-ui/components/navigation';
 import { SettingsPage } from '@/settings/settings.page';
 import { settingsGuard } from '@/settings/settings.guard';
@@ -14,7 +18,8 @@ export const routes: Routes = [
   {
     path: '',
     component: NavigationComponent,
-    canActivateChild: [authenticatedGuard],
+    canActivate: [authenticatedGuard],
+    canActivateChild: [authenticatedAppGuard],
     children: [
       {
         path: 'home',

@@ -158,7 +158,8 @@ export class LoginComponent {
                 .getRedirectLink(claims.applicationId)
                 .subscribe(application => {
                   if (application) {
-                    window.location.href = `${application.domain}/login-callback?token=${token}`;
+                    const encodedToken = encodeURIComponent(token);
+                    window.location.href = `${application.domain}/login-callback?token=${encodedToken}`;
                     return;
                   }
 

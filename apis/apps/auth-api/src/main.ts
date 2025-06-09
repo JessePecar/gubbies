@@ -7,8 +7,6 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  app.setGlobalPrefix('auth-api');
-
   app.enableCors({
     origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
