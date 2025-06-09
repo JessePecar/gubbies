@@ -4,7 +4,7 @@ import { getLocationLine } from '@/bns-ui/utilities';
 import { Component, inject, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
-import { UserInfoService } from '@/bns-ui/common/services';
+import { UserInfoService } from '@/core/services/user';
 import { User } from '@/models/auth/user';
 import { PermissionEnum } from '@/core/types/role';
 
@@ -23,9 +23,9 @@ import { PermissionEnum } from '@/core/types/role';
       </div>
       <div>
         <div class="flex space-x-2 flex-wrap">
-          <p>{{ user().address?.address1 }}</p>
-          @if (user().address?.address2) {
-            <p>{{ user().address?.address2 }}</p>
+          <p>{{ user().address.address1 }}</p>
+          @if (user().address.address2) {
+            <p>{{ user().address.address2 }}</p>
           }
         </div>
         <div class="flex space-x-2 flex-wrap">

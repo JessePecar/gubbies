@@ -5,8 +5,27 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login-callback',
   imports: [],
-  template: ` <p>LOADING!!!!!!</p> `,
-  styles: ``,
+  template: `<div class="absolute top-0 bottom-0 right-0 left-0">
+    <div class="h-full w-full flex items-center justify-center">
+      <div class="loader"></div>
+      <div class="loader"></div>
+      <div class="loader"></div>
+      <div class="loader"></div>
+      <div class="loader"></div>
+    </div>
+  </div>`,
+  styles: `
+  .loader {
+    background: var(--color-primary-green);
+    margin: 10px;
+    height: 20px;
+    width: 20px;
+
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+    transform: scale(1);
+    animation: pulse 2s infinite;
+  }
+  `,
 })
 export class LoginCallbackComponent {
   router = inject(Router);
