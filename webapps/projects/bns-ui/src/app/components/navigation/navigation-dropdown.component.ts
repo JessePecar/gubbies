@@ -1,14 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  inject,
-  input,
-  signal,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, input, signal, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { NavbarService } from '@/bns-ui/components/navigation/navbar.service';
-import { UserInfoService } from '@/bns-ui/common/services';
 import { NavigationDropdownDirective } from './navigation-dropdown.directive';
 import { PermissionEnum } from '@/core/types/role';
 import {
@@ -37,9 +28,6 @@ export class NavigationDropdownComponent {
   @ViewChild('menu')
   menu!: ElementRef<HTMLDivElement>;
 
-  navbarService = inject(NavbarService);
-  userInfoService = inject(UserInfoService);
-
   dropdownOptions = input.required<DropdownItem[]>();
 
   showArrow = input<boolean>(true);
@@ -56,9 +44,5 @@ export class NavigationDropdownComponent {
     this.showMenu()
       ? (this.menu.nativeElement.style.maxHeight = '200px')
       : (this.menu.nativeElement.style.maxHeight = '0px');
-
-    if (this.showMenu()) {
-      this.navbarService?.tiggerEvent(name);
-    }
   }
 }

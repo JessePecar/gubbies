@@ -18,13 +18,16 @@ export const routes: Routes = [
   {
     path: '',
     component: NavigationComponent,
-    canActivate: [authenticatedGuard],
     canActivateChild: [authenticatedAppGuard],
     children: [
       {
-        path: 'home',
+        path: 'login-callbackV2',
+        component: LoginCallbackComponent,
+      },
+      {
+        path: '',
         component: HomeComponent,
-        canActivate: [authenticatedGuard],
+        // canActivate: [authenticatedGuard],
       },
       ...inventoryRoutes,
       {
@@ -38,6 +41,5 @@ export const routes: Routes = [
   {
     path: 'login-callback',
     component: LoginCallbackComponent,
-    // canActivate: [loginGuard],
   },
 ];

@@ -14,14 +14,7 @@ import { UserInfoService } from '@/bns-ui/common/services';
     </main>
   `,
 })
-export class AppComponent implements OnInit {
-  userInfoService!: UserInfoService;
+export class AppComponent {
   isLoading = signal<boolean>(true);
-  title = 'Gubbies';
-
-  ngOnInit(): void {}
-
-  constructor() {
-    this.userInfoService = inject(UserInfoService);
-  }
+  title = "Box 'n' Shelf";
 }

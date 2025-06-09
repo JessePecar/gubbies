@@ -1,16 +1,19 @@
 import { UserInfoService } from '@/projects/bns-ui/src/app/common/services';
 import { Component, effect, inject, input, untracked } from '@angular/core';
 import { Router } from '@angular/router';
+import { ButtonComponent } from '@/core/components/buttons/button.component';
 
 @Component({
   selector: 'app-login-callback',
-  imports: [],
+  imports: [ButtonComponent],
   template: `<div class="absolute top-0 bottom-0 right-0 left-0">
     <div class="h-full w-full flex items-center justify-center">
-      <div class="loader pulse">
-        <!-- <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div> -->
+      <div>
+        <div class="loader pulse"></div>
+        <app-button
+          buttonType="raised"
+          (handleClick)="onContinue()"
+          text="Continue to app" />
       </div>
     </div>
   </div>`,
@@ -70,33 +73,31 @@ import { Router } from '@angular/router';
   `,
 })
 export class LoginCallbackComponent {
-  router = inject(Router);
+  private userInfoService = inject(UserInfoService);
+  private router = inject(Router);
   token = input<string>();
 
   constructor() {
-    // private userInfoService: UserInfoService
     effect(() => {
       const token = this.token();
-      // const service = userInfoService;
-      untracked(() => {
-        // if (token && service) {
-        //   // TODO: Grab the user claims from the token and then grab the
-        //   // user information after that dynamically
-        //   // service.setUser(token);
-        // }
+      const service = this.userInfoService;
+      untracked(async () => {
+        if (token && service) {
+          console.log('The service and the token were defined');
+          service.setUser(token);
+          service.validateUser();
+        }
       });
     });
+  }
 
-    effect(() => {
-      // const userClaims = userInfoService.userClaims();
-      const router = this.router;
-      untracked(() => {
-        // if (userClaims) {
-        //   // router?.navigate(['home']);
-        // } else {
-        //   console.warn('Still waiting for claims to be set');
-        // }
-      });
-    });
+  onContinue() {
+    console.log('Continue to the app has been clicked');
+    debugger;
+    if (this.userInfoService.userClaims()) {
+      this.router.navigate(['']);
+    } else {
+      console.log("The dumb thing isn't working");
+    }
   }
 }

@@ -1,12 +1,6 @@
 import { ButtonComponent } from '@/core/components/buttons';
-import { CardComponent } from '@/core/components/card/card.component';
 import { BreadcrumbsComponent } from '@/core/components/navigation/breadcrumbs';
 import { Component, inject, signal } from '@angular/core';
-import {
-  AddressFormComponent,
-  ContactFormComponent,
-  InformationFormComponent,
-} from '@/settings/users/ui';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownOption } from '@/core/components';
 import { UserCreateService } from './user-create.service';
@@ -15,15 +9,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create',
-  imports: [
-    ButtonComponent,
-    CardComponent,
-    BreadcrumbsComponent,
-    InformationFormComponent,
-    AddressFormComponent,
-    ContactFormComponent,
-    ReactiveFormsModule,
-  ],
+  imports: [ButtonComponent, BreadcrumbsComponent, ReactiveFormsModule],
   template: `
     <div class="h-full overflow-hidden">
       <div class="absolute pt-4">

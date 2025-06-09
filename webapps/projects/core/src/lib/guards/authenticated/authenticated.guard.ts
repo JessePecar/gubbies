@@ -4,7 +4,7 @@ import { CanActivateChildFn, CanActivateFn } from '@angular/router';
 
 export const authenticatedAppGuard: CanActivateChildFn = async () => {
   const userInfoService = inject(UserInfoService);
-  if (!(await userInfoService.validateUser())) {
+  if (!!userInfoService.userClaims()) {
     // Navigate to portal
     const redirectUri = encodeURIComponent('http://localhost:4200');
     window.location.href = `http://localhost:4201?redirectUrl=${redirectUri}&applicationId=2`;
@@ -15,7 +15,7 @@ export const authenticatedAppGuard: CanActivateChildFn = async () => {
 
 export const authenticatedGuard: CanActivateFn = async () => {
   const userInfoService = inject(UserInfoService);
-  if (!(await userInfoService.validateUser())) {
+  if (!!userInfoService.userClaims()) {
     // Navigate to portal
     const redirectUri = encodeURIComponent('http://localhost:4200');
     window.location.href = `http://localhost:4201?redirectUrl=${redirectUri}&applicationId=2`;

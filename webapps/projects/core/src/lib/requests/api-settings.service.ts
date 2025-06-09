@@ -4,8 +4,8 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'any',
 })
 export class ApiSettingsService {
-  authApi = signal<string>('/auth-api');
-  bnsApi = signal<string>('/bns-api');
-  arApi = signal<string>('/ar-api');
-  posApi = signal<string>('pos-api');
+  authApi = signal<string>('');
+  bnsApi = signal<string>('');
+  arApi = signal<string>('');
+  posApi = signal<string>('');
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import {
   InventoryNavItemComponent,
@@ -49,14 +49,6 @@ import { UpperCasePipe } from '@angular/common';
   `,
 })
 export class NavigationBarComponent {
-  userInfoService: UserInfoService;
-  router: Router;
-
   @ViewChild('nav_menu')
   navMenu!: ElementRef<HTMLDivElement>;
-
-  constructor(userInfoService: UserInfoService, router: Router) {
-    this.userInfoService = userInfoService;
-    this.router = router;
-  }
 }

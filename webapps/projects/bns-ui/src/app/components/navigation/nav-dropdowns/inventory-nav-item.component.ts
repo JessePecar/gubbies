@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { NavigationDropdownComponent } from '@/bns-ui/components/navigation';
 import { PermissionEnum } from '@/core/types/role';
-import { UserInfoService } from '@/bns-ui/common/services';
 
 @Component({
   selector: 'app-inventory-nav-item',
@@ -18,8 +17,6 @@ import { UserInfoService } from '@/bns-ui/common/services';
 })
 export class InventoryNavItemComponent {
   inventoryPermission = PermissionEnum.INVENTORY;
-
-  userInfoService = inject(UserInfoService);
 
   dropdownOptions = [
     {

@@ -1,5 +1,5 @@
 import { UserInfoService } from '@/bns-ui/common/services';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -17,8 +17,5 @@ import { MatIconModule } from '@angular/material/icon';
   styles: ``,
 })
 export class ProfileNavItemComponent {
-  userInfoService: UserInfoService;
-  constructor(userInfoService: UserInfoService) {
-    this.userInfoService = userInfoService;
-  }
+  userInfoService = inject(UserInfoService);
 }

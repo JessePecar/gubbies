@@ -2,11 +2,6 @@ import { CardModule } from '@/core/components/card';
 import { Component, inject } from '@angular/core';
 import { VendorStoreService } from '@/inventory/vendors/store';
 import { ReactiveFormsModule } from '@angular/forms';
-import {
-  AddressFormComponent,
-  InformationFormComponent,
-  PhoneFormComponent,
-} from '@/inventory/vendors/ui';
 import { BreadcrumbsComponent } from '@/core/components/navigation/breadcrumbs';
 import { CreateVendorService } from './create-vendor.service';
 import { ButtonComponent } from '@/core/components/buttons/button.component';
@@ -18,9 +13,6 @@ import { Router } from '@angular/router';
   imports: [
     CardModule,
     ReactiveFormsModule,
-    AddressFormComponent,
-    InformationFormComponent,
-    PhoneFormComponent,
     BreadcrumbsComponent,
     ButtonComponent,
   ],
