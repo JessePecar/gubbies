@@ -1,10 +1,15 @@
-import { ExecutionContext, Injectable } from '@nestjs/common';
+import { JwtStrategy } from '@core/strategy';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { AuthGuard } from '@nestjs/passport';
+import { Observable } from 'rxjs';
 
 @Injectable()
-export class AppAuthGuard extends AuthGuard('jwt') {
-  getRequest(context: ExecutionContext) {
+export class AppAuthGuard implements CanActivate {
+  constructor(private jwtStrategy: JwtStrategy) {}
+
+  canActivate(
+    context: ExecutionContext,
+  ): boolean | Promise<boolean> | Observable<boolean> {
     const ctx = GqlExecutionContext.create(context);
     const { req } = ctx.getContext();
 
@@ -12,6 +17,14 @@ export class AppAuthGuard extends AuthGuard('jwt') {
       req.headers = req.connectionParams.headers;
     }
 
-    return req;
+    const validationResult = this.jwtStrategy.validate(req);
+
+    if (validationResult === undefined) {
+      return false;
+    }
+
+    return true;
   }
+
+  getRequest(context: ExecutionContext) {}
 }

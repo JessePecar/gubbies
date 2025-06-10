@@ -4,6 +4,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ItemsModule, VendorsModule, CategoriesModule } from '@bns/inventory';
 import { ConfigModule } from '@nestjs/config';
 import { BnsRepositoryModule } from '@core/repository';
+import { JwtStrategy } from '@core/strategy';
 
 @Module({
   imports: [
