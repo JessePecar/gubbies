@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { UserInfoService } from '@/bns-ui/common/services';
 import { RouterOutlet } from '@angular/router';
 import { NavigationBarComponent } from '@/bns-ui/components/navigation/navigation-bar.component';
-import { ProfileNavItemComponent } from '@/bns-ui/components/navigation/profile-nav-item.component';
+import { ProfileNavItemComponent } from '@/bns-ui/components/navigation/nav-dropdowns';
 import { ButtonComponent } from '@/core/components/buttons';
 import { MatIconModule } from '@angular/material/icon';
 

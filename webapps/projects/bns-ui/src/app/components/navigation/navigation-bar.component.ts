@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import {
   InventoryNavItemComponent,
@@ -7,8 +7,6 @@ import {
   PromotionNavItemComponent,
   SettingsNavItemComponent,
 } from './nav-dropdowns';
-import { Router } from '@angular/router';
-import { UserInfoService } from '@/bns-ui/common/services';
 import { UpperCasePipe } from '@angular/common';
 
 @Component({
@@ -36,13 +34,13 @@ import { UpperCasePipe } from '@angular/common';
         <div class="space-y-4 flex flex-col overflow-y-auto overflow-x-hidden">
           <app-inventory-nav-item />
 
-          <!-- <app-reports-nav-item />
+          <app-reports-nav-item />
 
           <app-pricing-nav-item />
 
           <app-promotion-nav-item />
 
-          <app-settings-nav-item /> -->
+          <app-settings-nav-item />
         </div>
       </div>
     </nav>

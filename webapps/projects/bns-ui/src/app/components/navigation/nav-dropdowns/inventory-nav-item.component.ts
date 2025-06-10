@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
-import { NavigationDropdownComponent } from '@/bns-ui/components/navigation';
+import { Component } from '@angular/core';
 import { PermissionEnum } from '@/core/types/role';
+import { NavigationDropdownComponent } from '@/bns-ui/components/navigation/navigation-dropdown.component';
+// import { NavigationDropdownComponent } from '@/bns-ui/components/navigation';
 
 @Component({
   selector: 'app-inventory-nav-item',

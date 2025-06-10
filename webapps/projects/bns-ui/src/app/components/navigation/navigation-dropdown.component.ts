@@ -1,4 +1,4 @@
-import { Component, ElementRef, input, signal, ViewChild } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { PermissionEnum } from '@/core/types/role';
 import {
@@ -15,7 +15,6 @@ import {
         class="w-full flex justify-between pl-2 py-1 text-primary-dark text-sm">
         <ng-content />
       </small>
-      <!-- Drop down menu -->
       @for (opt of dropdownOptions(); track $index) {
         <app-dropdown-item class="w-full" [option]="opt" />
       }

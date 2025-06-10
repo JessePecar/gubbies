@@ -2,36 +2,37 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./projects",
     "paths": {
       "core": [
         "./dist/core"
       ],
       "@/core/*": [
-        "./projects/core/src/lib/*"
+        "core/src/lib/*"
       ],
       "@/models/*": [
-        "./projects/models/src/lib/*"
+        "models/src/lib/*"
       ],
       "@/portal:env/*": [
-        "./projects/portal/src/environments/*"
+        "portal/src/environments/*"
       ],
       "@/bns:env/*": [
-        "./projects/bns-ui/src/environments/*"
+        "bns-ui/src/environments/*"
       ],
       "@/portal/*": [
-        "./projects/portal/src/app/*"
+        "portal/src/app/*"
       ],
       "@/bns-ui/*": [
-        "./projects/bns-ui/src/app/*"
+        "bns-ui/src/app/*"
       ],
       "@/inventory/*": [
-        "./projects/bns-ui/src/app/inventory/*"
+        "bns-ui/src/app/inventory/*"
       ],
       "@/settings/*": [
-        "./projects/bns-ui/src/app/settings/*"
+        "bns-ui/src/app/settings/*"
       ],
-      "@/projects/*": [
-        "./projects/*"
+      "@/*": [
+        "/*"
       ]
     },
     "outDir": "./dist/out-tsc",

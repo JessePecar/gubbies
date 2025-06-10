@@ -1,7 +1,7 @@
-import { UserInfoService } from '@/projects/bns-ui/src/app/common/services';
 import { Component, effect, inject, input, untracked } from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '@/core/components/buttons/button.component';
+import { UserInfoService } from '@/bns-ui/common/services';
 
 @Component({
   selector: 'app-login-callback',

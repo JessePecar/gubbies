@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavigationDropdownComponent } from '@/bns-ui/components/navigation';
+import { NavigationDropdownComponent } from '@/bns-ui/components/navigation/navigation-dropdown.component';
 import { PermissionEnum } from '@/core/types/role';
 
 @Component({
