@@ -44,7 +44,12 @@ import { createKeyv } from '@keyv/redis';
             60 /* Minutes */ *
             24 /* Hours */ *
             14 /* Days */,
-          stores: [createKeyv(process.env.REDIS_URL)],
+          stores: [
+            createKeyv({
+              url: process.env.REDIS_URL,
+              password: process.env.REDIS_PASSWORD,
+            }),
+          ],
         };
       },
     }),

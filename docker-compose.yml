@@ -51,7 +51,7 @@ services:
     container_name: auth-api
     environment:
       - PORT=3002
-      - REDIS_HOST=cache
+      - REDIS_HOST=auth-cache
       - REDIS_PORT=6379
       - REDIS_PASSWORD=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
     build:

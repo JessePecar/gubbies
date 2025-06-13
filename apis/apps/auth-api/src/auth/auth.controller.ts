@@ -37,6 +37,7 @@ export class AuthController {
   async getCachedLogin(@Query('key') key: string) {
     const cachedObject = await this.cacheManager.get<string>(key);
 
+    console.log(cachedObject);
     // Cached object was found, will now validate
     if (cachedObject) {
       const userClaims = await this.authService.verifyUser(cachedObject);
