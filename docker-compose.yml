@@ -51,6 +51,9 @@ services:
     container_name: auth-api
     environment:
       - PORT=3002
+      - REDIS_HOST: cache
+      - REDIS_PORT: 6379
+      - REDIS_PASSWORD: eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
     build:
       context: apis
       dockerfile: auth.Dockerfile
@@ -58,6 +61,7 @@ services:
       - "3002:3002"
     depends_on: 
       - db
+      - auth-cache
     expose: 
       - "80" 
 
@@ -109,8 +113,20 @@ services:
     image: rabbitmq:3
     restart: unless-stopped
 
+  auth-cache:
+    container_name: auth-cache
+    image: redis:8.0.2
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      cache:/data
+
   # endregion  
   
 volumes: 
   bnsdata:
     external: true
+  cache:
+    driver: local
