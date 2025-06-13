@@ -51,9 +51,9 @@ services:
     container_name: auth-api
     environment:
       - PORT=3002
-      - REDIS_HOST: cache
-      - REDIS_PORT: 6379
-      - REDIS_PASSWORD: eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
     build:
       context: apis
       dockerfile: auth.Dockerfile
@@ -115,13 +115,13 @@ services:
 
   auth-cache:
     container_name: auth-cache
-    image: redis:8.0.2
+    image: redis:latest
     restart: unless-stopped
     ports:
       - "6379:6379"
     command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
     volumes:
-      cache:/data
+      - cache:/data
 
   # endregion  
   
