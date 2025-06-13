@@ -44,12 +44,7 @@ import { createKeyv } from '@keyv/redis';
             60 /* Minutes */ *
             24 /* Hours */ *
             14 /* Days */,
-          stores: [
-            // new Keyv({
-            //   store: new CacheableMemory(),
-            // }),
-            createKeyv(process.env.REDIS_URL),
-          ],
+          stores: [createKeyv(process.env.REDIS_URL)],
         };
       },
     }),

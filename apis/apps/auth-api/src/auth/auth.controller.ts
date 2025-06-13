@@ -5,6 +5,7 @@ import {
   AuthRequest,
   AuthService,
 } from '@auth/auth';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import {
   Body,
   Controller,
@@ -13,6 +14,7 @@ import {
   HttpCode,
   HttpException,
   HttpStatus,
+  Inject,
   Post,
   Query,
   Res,
@@ -27,7 +29,7 @@ export class AuthController {
   constructor(
     private authService: AuthService,
     private jwtService: JwtService,
-    private cacheManager: Cache,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   // Get the cached key for the login, which will be the token, which will be validated on grab
