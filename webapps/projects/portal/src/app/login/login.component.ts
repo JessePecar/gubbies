@@ -138,7 +138,7 @@ export class LoginComponent {
     // Grab the value of the form for compare
     const { username, password } = this.form.value;
 
-    this.loginService.login(username, password).subscribe(({ token }) => {
+    this.loginService.login(username, password).subscribe(({ token, sessionId }) => {
       // TODO: Setup the process to save the token and then attach on outgoing requests
       if (token === undefined || token === null) {
         // Show the error message if the login was not found (the login information does not exist)
@@ -159,7 +159,8 @@ export class LoginComponent {
                 .subscribe(application => {
                   if (application) {
                     const encodedToken = encodeURIComponent(token);
-                    window.location.href = `${application.domain}/login-callback?token=${encodedToken}`;
+                    const encodedSessionId = encodeURIComponent(sessionId)
+                    window.location.href = `${application.domain}/login-callback?token=${encodedToken}&sessionId=${encodedSessionId}`;
                     return;
                   }
 

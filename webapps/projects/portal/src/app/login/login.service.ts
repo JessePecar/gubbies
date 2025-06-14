@@ -14,6 +14,7 @@ export class LoginService {
   login(username: string, password: string) {
     // Http Call here
     return this.httpClient.post<{
+      sessionId: string;
       token: string;
     }>(
       `${environment.authApi}/auth`, // This will translate to 'auth-api/auth'
