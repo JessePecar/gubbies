@@ -33,6 +33,10 @@ export class LoginService {
     });
   }
 
+  getCachedUser(sessionId: string) {
+    return this.httpClient.get<{token: string}>(`${environment.authApi}/auth/cache?key=${sessionId}`);
+  }
+
   getRedirectLink(applicationId: string) {
     return this.httpClient.get<Application>(
       `${environment.authApi}/application?id=${applicationId}`

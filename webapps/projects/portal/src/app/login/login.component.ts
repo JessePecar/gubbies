@@ -5,7 +5,7 @@ import {
   CardBodyComponent,
   CardFooterComponent,
 } from '@/core/components/card';
-import { Component, inject, input } from '@angular/core';
+import { Component, effect, inject, input, untracked } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormGroup,
@@ -109,6 +109,7 @@ export class LoginComponent {
 
   redirectUrl = input('');
   applicationId = input('');
+  sessionId = input<string>();
 
   form: FormGroup = inject(FormBuilder).group({
     username: [
@@ -131,49 +132,66 @@ export class LoginComponent {
       }
     });
 
-    console.log(environment);
+    effect(() => {
+      const sessionId = this.sessionId();
+      const redirectUrl = this.redirectUrl();
+      untracked(() => {
+        if (sessionId && redirectUrl) {
+          // Grab the user based on the session id and return back to the user
+          this.loginService.getCachedUser(sessionId).subscribe(({ token }) => {
+            if (token !== undefined && token !== null) {
+              const encodedToken = encodeURIComponent(token);
+              const encodedSessionId = encodeURIComponent(sessionId);
+              window.location.href = `${redirectUrl}/login-callback?token=${encodedToken}&sessionId=${encodedSessionId}`;
+            }
+          });
+        }
+      });
+    });
   }
 
   async onSubmit() {
     // Grab the value of the form for compare
     const { username, password } = this.form.value;
 
-    this.loginService.login(username, password).subscribe(({ token, sessionId }) => {
-      // TODO: Setup the process to save the token and then attach on outgoing requests
-      if (token === undefined || token === null) {
-        // Show the error message if the login was not found (the login information does not exist)
-        this.showErrorMessage = true;
-      } else {
-        // Redirect to the correct application
-        if (this.redirectUrl() && this.applicationId()) {
-          // Check and set the user's application to the redirect url's applicaiton
-          // If everything is all good, redirect to redirectUrl()/callback?token=${token}
-          // Else, we have two options, go to their assigned id, or give an error message
+    this.loginService
+      .login(username, password)
+      .subscribe(({ token, sessionId }) => {
+        // TODO: Setup the process to save the token and then attach on outgoing requests
+        if (token === undefined || token === null) {
+          // Show the error message if the login was not found (the login information does not exist)
+          this.showErrorMessage = true;
         } else {
-          // Get the claims then the user's application
-          this.loginService.getUserClaims(token).subscribe(claims => {
-            // redirect to redirectUrl/callback/token=${token}
-            if (claims.applicationId) {
-              return this.loginService
-                .getRedirectLink(claims.applicationId)
-                .subscribe(application => {
-                  if (application) {
-                    const encodedToken = encodeURIComponent(token);
-                    const encodedSessionId = encodeURIComponent(sessionId)
-                    window.location.href = `${application.domain}/login-callback?token=${encodedToken}&sessionId=${encodedSessionId}`;
+          // Redirect to the correct application
+          if (this.redirectUrl() && this.applicationId()) {
+            // Check and set the user's application to the redirect url's applicaiton
+            // If everything is all good, redirect to redirectUrl()/callback?token=${token}
+            // Else, we have two options, go to their assigned id, or give an error message
+          } else {
+            // Get the claims then the user's application
+            this.loginService.getUserClaims(token).subscribe(claims => {
+              // redirect to redirectUrl/callback/token=${token}
+              if (claims.applicationId) {
+                return this.loginService
+                  .getRedirectLink(claims.applicationId)
+                  .subscribe(application => {
+                    if (application) {
+                      const encodedToken = encodeURIComponent(token);
+                      const encodedSessionId = encodeURIComponent(sessionId);
+                      window.location.href = `${application.domain}/login-callback?token=${encodedToken}&sessionId=${encodedSessionId}`;
+                      return;
+                    }
+
+                    this.showErrorMessage = true;
                     return;
-                  }
+                  });
+              }
 
-                  this.showErrorMessage = true;
-                  return;
-                });
-            }
-
-            this.showErrorMessage = true;
-            return;
-          });
+              this.showErrorMessage = true;
+              return;
+            });
+          }
         }
-      }
-    });
+      });
   }
 }
