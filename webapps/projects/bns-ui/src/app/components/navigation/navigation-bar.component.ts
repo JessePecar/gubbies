@@ -32,6 +32,7 @@ import { UpperCasePipe } from '@angular/common';
       </div>
       <div class="h-full p-2 pl-0 mt-4 flex flex-col justify-start">
         <div class="space-y-4 flex flex-col overflow-y-auto overflow-x-hidden">
+          <!-- TODO: Change to using the navigation bar constants to build out the nav items -->
           <app-inventory-nav-item />
 
           <app-reports-nav-item />
@@ -49,4 +50,6 @@ import { UpperCasePipe } from '@angular/common';
 export class NavigationBarComponent {
   @ViewChild('nav_menu')
   navMenu!: ElementRef<HTMLDivElement>;
+
+
 }
