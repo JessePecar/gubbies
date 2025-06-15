@@ -6,8 +6,8 @@ import { BreadcrumbsComponent } from '@/core/components/navigation/breadcrumbs';
 import { CreateVendorService } from './create-vendor.service';
 import { ButtonComponent } from '@/core/components/buttons/button.component';
 import { Router } from '@angular/router';
+import { vendorCreateRoutes } from '@/bns-ui/inventory/vendors/create/create-vendor.routes';
 
-// TODO: Move this over to the new breadcrumb implementation
 @Component({
   selector: 'app-create-vendor',
   imports: [
@@ -28,7 +28,8 @@ import { Router } from '@angular/router';
       </div>
       <app-breadcrumbs
         baseIcon="local_shipping"
-        [baseRoute]="[]"></app-breadcrumbs>
+        [baseRoute]="['inventory', 'vendors', 'create']"
+        [breadcrumbOptions]="getBreadcrumbs()" />
     </div>
   `,
   styles: ``,
@@ -47,5 +48,9 @@ export class CreateVendorComponent {
 
   onBackClicked() {
     this.router.navigate(['inventory', 'vendors', 'list']);
+  }
+
+  getBreadcrumbs() {
+    return vendorCreateRoutes.filter(icr => icr.component !== undefined);
   }
 }
