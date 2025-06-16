@@ -1,45 +1,45 @@
+import { DropdownItem } from '@/core/components/navigation';
 import { PermissionEnum } from '@/core/types/role';
 
 export const navigationOptions: {
   section: string;
-  routes: {
-    name: string;
-    route: string[];
-    permission?: PermissionEnum;
-  }[];
+  permissionId: PermissionEnum;
+  routes: DropdownItem[];
 }[] = [
   {
     section: 'Inventory',
+    permissionId: PermissionEnum.INVENTORY,
     routes: [
       {
         name: 'Adjustments',
         route: ['inventory', 'adjustments'],
-        permission: PermissionEnum.INVENTORY_ADJUSTMENTS,
+        permissionId: PermissionEnum.INVENTORY_ADJUSTMENTS,
       },
       {
         name: 'Counts',
         route: ['inventory', 'counts'],
-        permission: PermissionEnum.INVENTORY_COUNTS,
+        permissionId: PermissionEnum.INVENTORY_COUNTS,
       },
       {
         name: 'Items',
         route: ['inventory', 'items', 'list'],
-        permission: PermissionEnum.INVENTORY,
+        permissionId: PermissionEnum.INVENTORY,
       },
       {
         name: 'Vendors',
         route: ['inventory', 'vendors', 'list'],
-        permission: PermissionEnum.INVENTORY,
+        permissionId: PermissionEnum.INVENTORY,
       },
       {
         name: 'Categories',
         route: ['inventory', 'categories', 'category-list'],
-        permission: PermissionEnum.INVENTORY,
+        permissionId: PermissionEnum.INVENTORY,
       },
     ],
   },
   {
     section: 'Pricing',
+    permissionId: PermissionEnum.PRICING,
     routes: [
       {
         name: 'Item Pricing',
@@ -53,6 +53,7 @@ export const navigationOptions: {
   },
   {
     section: 'Promotions',
+    permissionId: PermissionEnum.PROMOTIONS,
     routes: [
       {
         name: 'Active Promotions',
@@ -66,6 +67,7 @@ export const navigationOptions: {
   },
   {
     section: 'Reports',
+    permissionId: PermissionEnum.REPORTS,
     routes: [
       {
         name: 'Inventory',
@@ -83,6 +85,7 @@ export const navigationOptions: {
   },
   {
     section: 'Settings',
+    permissionId: PermissionEnum.SETTINGS,
     routes: [
       {
         name: 'Users',

@@ -24,12 +24,5 @@ import {
 })
 export class NavigationDropdownComponent {
   dropdownOptions = input.required<DropdownItem[]>();
-
-  showArrow = input<boolean>(true);
-
-  dropdownName = input<string>('');
-
-  showMenu = signal<boolean>(false);
-
   dropdownPermission = input.required<PermissionEnum>();
 }

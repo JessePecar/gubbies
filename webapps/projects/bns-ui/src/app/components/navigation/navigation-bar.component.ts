@@ -1,25 +1,16 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  InventoryNavItemComponent,
-  ReportsNavItemComponent,
-  PricingNavItemComponent,
-  PromotionNavItemComponent,
-  SettingsNavItemComponent,
-} from './nav-dropdowns';
 import { UpperCasePipe } from '@angular/common';
+import { navigationOptions } from '@/bns-ui/components/navigation/navigation-bar.constants';
+import { NavigationDropdownComponent } from "./navigation-dropdown.component";
 
 @Component({
   selector: 'app-navigation-bar',
   imports: [
-    MatIconModule,
-    InventoryNavItemComponent,
-    ReportsNavItemComponent,
-    PricingNavItemComponent,
-    PromotionNavItemComponent,
-    SettingsNavItemComponent,
+    MatIconModule, 
     UpperCasePipe,
-  ],
+    NavigationDropdownComponent
+],
   template: `
     <nav class="bg-primary p-1">
       <div class="flex justify-between pr-4 pb-1">
@@ -33,15 +24,13 @@ import { UpperCasePipe } from '@angular/common';
       <div class="h-full p-2 pl-0 mt-4 flex flex-col justify-start">
         <div class="space-y-4 flex flex-col overflow-y-auto overflow-x-hidden">
           <!-- TODO: Change to using the navigation bar constants to build out the nav items -->
-          <app-inventory-nav-item />
-
-          <app-reports-nav-item />
-
-          <app-pricing-nav-item />
-
-          <app-promotion-nav-item />
-
-          <app-settings-nav-item />
+          @for (option of navBarOptions; track $index) {
+            <app-navigation-dropdown
+              [dropdownOptions]="option.routes"
+              [dropdownPermission]="option.permissionId">
+              <p>{{option.section}}</p>
+            </app-navigation-dropdown>
+          }
         </div>
       </div>
     </nav>
@@ -51,5 +40,5 @@ export class NavigationBarComponent {
   @ViewChild('nav_menu')
   navMenu!: ElementRef<HTMLDivElement>;
 
-
+  navBarOptions = navigationOptions;
 }

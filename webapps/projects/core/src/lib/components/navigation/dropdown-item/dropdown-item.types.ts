@@ -1,5 +1,5 @@
 export type DropdownItem = {
-  linkTitle: string;
-  route: string;
+  name: string;
+  route: string[];
   permissionId?: number;
 };
