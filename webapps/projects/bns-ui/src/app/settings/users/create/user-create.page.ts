@@ -22,9 +22,7 @@ import { Router } from '@angular/router';
       </div>
       @if (userStore.form; as form) {
         <form class="h-full" [formGroup]="form" (ngSubmit)="onSubmit()">
-          <app-breadcrumbs baseIcon="account_circle" [baseRoute]="[]">
-            <div class="py-2 flex justify-end"></div>
-          </app-breadcrumbs>
+          <app-breadcrumbs baseIcon="account_circle" [baseRoute]="['settings','user','create']" />
         </form>
       }
     </div>
