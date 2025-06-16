@@ -15,3 +15,9 @@ $primary: rgb(223, 226, 229);
   --color-primary-blue-opaque: rgb(67 112 161 / 10%);
   --color-secondary-blue: rgb(12, 52, 79);
 }
+
+a {
+  &:hover {
+    cursor: pointer;
+  }
+}

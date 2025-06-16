@@ -10,7 +10,7 @@ import { DropdownItem } from './dropdown-item.types';
       <div>
         <div class="w-full mt-1">
           <a
-            (onclick)="onRouteClicked()"
+            (click)="onRouteClicked()"
             routerLinkActive="bg-primary-blue-opaque hover:rounded-t-sm hover:rounded-b-none rounded-sm"
             class="hover:border-primary-green hover:bg-primary-green-opaque rounded-t-sm transition duration-300 border-b-1 border-transparent text-stone-800 block w-full p-1 pl-3 text-[0.85rem]"
             >{{ option.name }}</a

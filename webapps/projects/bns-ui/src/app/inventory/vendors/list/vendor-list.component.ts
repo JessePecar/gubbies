@@ -40,12 +40,12 @@ export class VendorListComponent {
   constructor() {
     effect(() => {
       const permissions = this.userInfoService.permissions();
-
+      console.log(this.userInfoService.permissions());
       untracked(() => {
         // TODO: Update to new Vendor specific permission
         if (
           permissions &&
-          permissions.some(p => p.permissionId === PermissionEnum.EDIT_VENDOR)
+          permissions.some(p => p.permissionId === PermissionEnum.CREATE_VENDOR)
         ) {
           this.toolbarItems.set([
             {

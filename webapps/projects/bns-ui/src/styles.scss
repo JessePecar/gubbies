@@ -107,13 +107,14 @@ a:enabled {
   cursor: pointer;
 }
 
-.hoverable {
-}
-
 .hoverable:hover:enabled {
   background-image: linear-gradient($hoverable 0 0);
 }
 
 .hoverable-forced:hover {
   background-image: linear-gradient($hoverable 0 0);
+}
+
+a:hover {
+  cursor: pointer;
 }
