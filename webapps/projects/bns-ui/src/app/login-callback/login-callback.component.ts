@@ -76,15 +76,17 @@ export class LoginCallbackComponent {
   private userInfoService = inject(UserInfoService);
   private router = inject(Router);
   token = input<string>();
+  sessionId = input<string>();
 
   constructor() {
     effect(() => {
       const token = this.token();
+      const sessionId = this.sessionId();
       const service = this.userInfoService;
       untracked(async () => {
-        if (token && service) {
-          console.log('The service and the token were defined');
+        if (token && service && sessionId) {
           service.setUser(token);
+          service.setSessionId(sessionId);
           service.validateUser();
         }
       });

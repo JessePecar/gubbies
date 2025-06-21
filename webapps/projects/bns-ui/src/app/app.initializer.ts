@@ -15,5 +15,5 @@ async function loadFromLoader() {
   apiSettings.bnsApi.set(environment.bnsApi);
 
   const userInfoService = inject(UserInfoService);
-  // await userInfoService.getStoredToken();
+  await userInfoService.getStoredToken();
 }

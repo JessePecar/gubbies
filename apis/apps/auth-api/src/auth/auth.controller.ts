@@ -37,7 +37,6 @@ export class AuthController {
   async getCachedLogin(@Query('key') key: string) {
     const cachedObject = await this.cacheManager.get<string>(key);
 
-    console.log(cachedObject);
     // Cached object was found, will now validate
     if (cachedObject) {
       const userClaims = await this.authService.verifyUser(cachedObject);
@@ -88,13 +87,29 @@ export class AuthController {
   }
 
   @Get()
-  async validateToken(@Headers('Authorization') authHeader?: string) {
-    if (!!!authHeader) {
+  async validateToken(
+    @Headers('Authorization') authHeader?: string,
+    @Query('sessionId') sessionId?: string,
+  ) {
+    if (!!!authHeader || !!!sessionId) {
       return new UnauthorizedException();
     }
     let token: string;
     try {
       token = authHeader.split(' ')[1];
+
+      // Get the cached session object and compare to the token that was given
+      const sessionObject = await this.cacheManager.get<string>(sessionId);
+
+      // If the session object is missing or does not bring back the token, then we will throw an exception
+      // Token and session will be a way of authorizing the token if it is coming from the valid user.
+      if (!!!sessionObject && sessionObject !== token) {
+        return new HttpException(
+          "Unable to validate the user's session",
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
     } catch {
       return new UnauthorizedException();
     }

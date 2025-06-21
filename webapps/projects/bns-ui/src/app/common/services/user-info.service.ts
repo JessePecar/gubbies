@@ -83,6 +83,14 @@ export class UserInfoService {
     }
   }
 
+  setSessionId(sessionId: string | undefined) {
+    if (sessionId) {
+      localStorage.setItem(LocalStorageKeys.session_id, sessionId);
+    } else {
+      localStorage.removeItem(LocalStorageKeys.session_id);
+    }
+  }
+
   private getUser(userId: string) {
     this.userController.getUser(userId)?.subscribe(user => {
       this.userInfo.set(user);
@@ -96,18 +104,12 @@ export class UserInfoService {
   }
 
   validateUser() {
-    console.log('Validating user');
     const token = localStorage.getItem(LocalStorageKeys.access_token);
-    if (token && this.userClaims() !== undefined) {
-      console.log('User claims were assigned and the token was returned...');
-    }
-
+    const sessionId = localStorage.getItem(LocalStorageKeys.session_id);
     // If we have a token and the claims are not set, then do the normal validation
-    if (token && this.userClaims() === undefined) {
+    if (token && sessionId && this.userClaims() === undefined) {
       // If token exists, we will go to the api and get the user
-      this.authController.validate(token)?.subscribe(authClaims => {
-        console.log(authClaims);
-
+      this.authController.validate(token, sessionId)?.subscribe(authClaims => {
         if (authClaims) {
           // Token is valid, we can now get all the user information if we want to grab them
           this.userClaims.set(authClaims);
@@ -125,10 +127,11 @@ export class UserInfoService {
 
   async getStoredToken() {
     const token = localStorage.getItem(LocalStorageKeys.access_token);
+    const sessionId = localStorage.getItem(LocalStorageKeys.session_id);
 
-    if (token) {
+    if (token && sessionId) {
       // If token exists, we will go to the api and get the user
-      this.authController.validate(token)?.subscribe(authClaims => {
+      this.authController.validate(token, sessionId)?.subscribe(authClaims => {
         if (authClaims) {
           // Token is valid, we can now get all the user information if we want to grab them
           this.userClaims.set(authClaims);

@@ -12,10 +12,13 @@ export class AuthControllerService extends BaseController {
   readonly apiSetting = inject(ApiSettingsService);
   readonly httpClient = inject(HttpClient);
 
-  public validate(token: string): Observable<AuthClaims> | undefined {
+  public validate(
+    token: string,
+    sessionId: string
+  ): Observable<AuthClaims> | undefined {
     if (this.apiSetting.authApi()) {
       return this.httpClient.get<AuthClaims>(
-        `${this.apiSetting.authApi()}/auth`,
+        `${this.apiSetting.authApi()}/auth?sessionId=${sessionId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
