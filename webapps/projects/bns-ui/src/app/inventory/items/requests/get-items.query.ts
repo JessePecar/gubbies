@@ -5,7 +5,7 @@ import { Query, gql } from 'apollo-angular';
 @Injectable({
   providedIn: 'root',
 })
-export class GetItemsService extends Query<{ items: Item[] }> {
+export class GetItemsQuery extends Query<{ items: Item[] }> {
   document = gql`
     query {
       items {

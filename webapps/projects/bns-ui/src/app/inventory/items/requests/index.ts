@@ -1,1 +1,2 @@
-export * from './get-items.service'
+export * from './get-items.query';
+export * from './create-item.mutation';

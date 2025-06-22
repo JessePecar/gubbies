@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { GetItemsService } from '@/inventory/items';
+import { GetItemsQuery } from '@/inventory/items';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ItemListService {
-  private readonly getItemsService = inject(GetItemsService);
+  private readonly getItemsService = inject(GetItemsQuery);
 
   private readonly httpClient = inject(HttpClient);
   private readonly baseUrl = 'http://localhost:3000';
