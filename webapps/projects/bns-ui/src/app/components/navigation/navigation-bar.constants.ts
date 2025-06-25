@@ -25,11 +25,11 @@ export const navigationOptions: {
         route: ['inventory', 'items', 'list'],
         permissionId: PermissionEnum.INVENTORY,
       },
-      {
-        name: 'Vendors',
-        route: ['inventory', 'vendors', 'list'],
-        permissionId: PermissionEnum.INVENTORY,
-      },
+      // {
+      //   name: 'Vendors',
+      //   route: ['inventory', 'vendors', 'list'],
+      //   permissionId: PermissionEnum.INVENTORY,
+      // },
       {
         name: 'Categories',
         route: ['inventory', 'categories', 'category-list'],
@@ -37,64 +37,64 @@ export const navigationOptions: {
       },
     ],
   },
-  {
-    section: 'Pricing',
-    permissionId: PermissionEnum.PRICING,
-    routes: [
-      {
-        name: 'Item Pricing',
-        route: ['pricing', 'item-list'],
-      },
-      {
-        name: 'Price Buckets',
-        route: ['pricing', 'buckets'],
-      },
-    ],
-  },
-  {
-    section: 'Promotions',
-    permissionId: PermissionEnum.PROMOTIONS,
-    routes: [
-      {
-        name: 'Active Promotions',
-        route: ['active-promotion'],
-      },
-      {
-        name: 'Manage Promotions',
-        route: ['manage-promotion'],
-      },
-    ],
-  },
-  {
-    section: 'Reports',
-    permissionId: PermissionEnum.REPORTS,
-    routes: [
-      {
-        name: 'Inventory',
-        route: ['reports', 'inventory'],
-      },
-      {
-        name: 'Pricing',
-        route: ['reports', 'pricing'],
-      },
-      {
-        name: 'Promotions',
-        route: ['reports', 'promotions'],
-      },
-    ],
-  },
+  // {
+  //   section: 'Pricing',
+  //   permissionId: PermissionEnum.PRICING,
+  //   routes: [
+  //     {
+  //       name: 'Item Pricing',
+  //       route: ['pricing', 'item-list'],
+  //     },
+  //     {
+  //       name: 'Price Buckets',
+  //       route: ['pricing', 'buckets'],
+  //     },
+  //   ],
+  // },
+  // {
+  //   section: 'Promotions',
+  //   permissionId: PermissionEnum.PROMOTIONS,
+  //   routes: [
+  //     {
+  //       name: 'Active Promotions',
+  //       route: ['active-promotion'],
+  //     },
+  //     {
+  //       name: 'Manage Promotions',
+  //       route: ['manage-promotion'],
+  //     },
+  //   ],
+  // },
+  // {
+  //   section: 'Reports',
+  //   permissionId: PermissionEnum.REPORTS,
+  //   routes: [
+  //     {
+  //       name: 'Inventory',
+  //       route: ['reports', 'inventory'],
+  //     },
+  //     {
+  //       name: 'Pricing',
+  //       route: ['reports', 'pricing'],
+  //     },
+  //     {
+  //       name: 'Promotions',
+  //       route: ['reports', 'promotions'],
+  //     },
+  //   ],
+  // },
   {
     section: 'Settings',
     permissionId: PermissionEnum.SETTINGS,
     routes: [
-      {
-        name: 'Users',
-        route: ['settings', 'users', 'list'],
-      },
-      {
-        name: 'Roles',
-        route: ['settings', 'roles', 'list'],
-      },
+      // {
+      //   name: 'Users',
+      //   route: ['settings', 'users', 'list'],
+      // },
+      // {
+      //   name: 'Roles',
+      //   route: ['settings', 'roles', 'list'],
+      // },
       {
         name: 'Settings',
         route: ['settings', 'store'],

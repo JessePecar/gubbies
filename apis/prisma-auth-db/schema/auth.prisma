@@ -9,62 +9,62 @@ model Application {
   users User[]
 }
 
-model Chain {
-  id Int @id @unique @default(autoincrement())
+// model Chain {
+//   id Int @id @unique @default(autoincrement())
 
-  // Chain level permissions
+//   // Chain level permissions
 
-  stores Store[]
-}
+//   stores Store[]
+// }
 
-// If the chain has multiple different types of stores, we will want to differentiate them here
-// Store types will be set in the chain settings and we can have reasons hidden based on type 
-model StoreType {
-  code  String  @id @unique
-  name  String
-  store Store[]
-}
+// // If the chain has multiple different types of stores, we will want to differentiate them here
+// // Store types will be set in the chain settings and we can have reasons hidden based on type 
+// model StoreType {
+//   code  String  @id @unique
+//   name  String
+//   store Store[]
+// }
 
-model Store {
+model Household {
   id        Int     @id @unique @default(autoincrement())
   name      String
-  typeCode  String
+  // typeCode  String
   isDeleted Boolean
   isActive  Boolean
 
   // Store integration information to external services
 
-  phoneId   Int @unique
-  addressId Int @unique
-  chainId   Int
+  // phoneId   Int @unique
+  // addressId Int @unique
+  // chainId   Int
 
-  address          Address           @relation(fields: [addressId], references: [id])
-  phone            Phone             @relation(fields: [phoneId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  storeType        StoreType         @relation(fields: [typeCode], references: [code])
-  chain            Chain             @relation(fields: [chainId], references: [id])
-  storeDepartments StoreDepartment[]
+  // address          Address           @relation(fields: [addressId], references: [id])
+  // phone            Phone             @relation(fields: [phoneId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  // storeType        StoreType         @relation(fields: [typeCode], references: [code])
+  // chain            Chain             @relation(fields: [chainId], references: [id])
+  // storeDepartments StoreDepartment[]
 }
 
-model Department {
-  code String @id
-  name String
+// model Department {
+//   code String @id
+//   name String
 
-  // Department related flags / information
-  phoneId Int @unique
+//   // Department related flags / information
+//   phoneId Int @unique
 
-  phone            Phone             @relation(fields: [phoneId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  storeDepartments StoreDepartment[]
-}
+//   phone            Phone             @relation(fields: [phoneId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+//   storeDepartments StoreDepartment[]
+// }
 
-model StoreDepartment {
-  departmentCode String
-  storeId        Int
+// model StoreDepartment {
+//   departmentCode String
+//   storeId        Int
 
-  department Department @relation(fields: [departmentCode], references: [code], onDelete: Cascade, onUpdate: NoAction)
-  store      Store      @relation(fields: [storeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+//   department Department @relation(fields: [departmentCode], references: [code], onDelete: Cascade, onUpdate: NoAction)
+//   store      Store      @relation(fields: [storeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@id([departmentCode, storeId])
-}
+//   @@id([departmentCode, storeId])
+// }
 
 model Phone {
   id             Int    @id @default(autoincrement())
@@ -72,22 +72,22 @@ model Phone {
   nationalDigits String
 
   user        User?
-  store       Store?
-  departments Department?
+  // store       Store?
+  // departments Department?
 }
 
-model Address {
-  id          Int     @id @unique @default(autoincrement())
-  address1    String
-  address2    String?
-  state       String
-  city        String
-  countryCode String
-  postalCode  Int
+// model Address {
+//   id          Int     @id @unique @default(autoincrement())
+//   address1    String
+//   address2    String?
+//   state       String
+//   city        String
+//   countryCode String
+//   postalCode  Int
 
-  user  User?
-  store Store?
-}
+//   user  User?
+//   store Store?
+// }
 
 model User {
   id               Int     @id @default(autoincrement())
@@ -95,17 +95,17 @@ model User {
   lastName         String?
   roleId           Int
   primaryPhoneId   Int?    @unique
-  addressId        Int?    @unique
+  // addressId        Int?    @unique
   isActive         Boolean @default(true)
   emailAddress     String?
   applicationId    Int     @default(0)
   // If the role is operating the app in an enterprise capacity
   // Enterprise mode will make changes to all stores, this will probably have to be a separate app that they are changed to 
-  isEnterpriseMode Boolean @default(false)
+  // isEnterpriseMode Boolean @default(false)
 
-  role         Role        @relation(fields: [roleId], references: [id])
+  // role         Role        @relation(fields: [roleId], references: [id])
   primaryPhone Phone?      @relation(fields: [primaryPhoneId], references: [id])
-  address      Address?    @relation(fields: [addressId], references: [id])
+  // address      Address?    @relation(fields: [addressId], references: [id])
   application  Application @relation(fields: [applicationId], references: [id])
   userLogin    UserLogin[]
   userClaims   UserClaim[]
@@ -141,33 +141,33 @@ model PasswordChange {
   expiration DateTime
 }
 
-model Permission {
-  id                Int              @id @default(autoincrement())
-  name              String?
-  permissionGroupId Int?
-  rolePermissions   RolePermission[]
-  permissionGroup   PermissionGroup? @relation(fields: [permissionGroupId], references: [id])
-}
+// model Permission {
+//   id                Int              @id @default(autoincrement())
+//   name              String?
+//   permissionGroupId Int?
+//   rolePermissions   RolePermission[]
+//   permissionGroup   PermissionGroup? @relation(fields: [permissionGroupId], references: [id])
+// }
 
-model PermissionGroup {
-  id          Int          @id @default(autoincrement())
-  name        String
-  permissions Permission[]
-}
+// model PermissionGroup {
+//   id          Int          @id @default(autoincrement())
+//   name        String
+//   permissions Permission[]
+// }
 
-model Role {
-  id              Int              @id @default(autoincrement())
-  name            String
-  hierarchyTier   Int              @default(1)
-  rolePermissions RolePermission[]
-  users           User[]
-}
+// model Role {
+//   id              Int              @id @default(autoincrement())
+//   name            String
+//   hierarchyTier   Int              @default(1)
+//   rolePermissions RolePermission[]
+//   users           User[]
+// }
 
-model RolePermission {
-  roleId       Int
-  role         Role       @relation(fields: [roleId], references: [id])
-  permissionId Int
-  permission   Permission @relation(fields: [permissionId], references: [id])
+// model RolePermission {
+//   roleId       Int
+//   role         Role       @relation(fields: [roleId], references: [id])
+//   permissionId Int
+//   permission   Permission @relation(fields: [permissionId], references: [id])
 
-  @@id([roleId, permissionId])
-}
+//   @@id([roleId, permissionId])
+// }
