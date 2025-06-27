@@ -43,6 +43,18 @@ model Household {
   // storeType        StoreType         @relation(fields: [typeCode], references: [code])
   // chain            Chain             @relation(fields: [chainId], references: [id])
   // storeDepartments StoreDepartment[]
+
+  householdUsers HouseholdUsers[]
+}
+
+model HouseholdUsers {
+  userId      Int
+  householdId Int
+
+  user User @relation(fields: [userId], references: [id])
+  household Household @relation(fields: [householdId], references: [id])
+
+  @@id([userId, householdId])
 }
 
 // model Department {
@@ -71,7 +83,7 @@ model Phone {
   rawDigits      String
   nationalDigits String
 
-  user        User?
+  user User?
   // store       Store?
   // departments Department?
 }
@@ -90,15 +102,15 @@ model Phone {
 // }
 
 model User {
-  id               Int     @id @default(autoincrement())
-  firstName        String?
-  lastName         String?
-  roleId           Int
-  primaryPhoneId   Int?    @unique
+  id             Int     @id @default(autoincrement())
+  firstName      String?
+  lastName       String?
+  roleId         Int
+  primaryPhoneId Int?    @unique
   // addressId        Int?    @unique
-  isActive         Boolean @default(true)
-  emailAddress     String?
-  applicationId    Int     @default(0)
+  isActive       Boolean @default(true)
+  emailAddress   String?
+  applicationId  Int     @default(0)
   // If the role is operating the app in an enterprise capacity
   // Enterprise mode will make changes to all stores, this will probably have to be a separate app that they are changed to 
   // isEnterpriseMode Boolean @default(false)
@@ -109,6 +121,8 @@ model User {
   application  Application @relation(fields: [applicationId], references: [id])
   userLogin    UserLogin[]
   userClaims   UserClaim[]
+
+  householdUsers HouseholdUsers[]
 }
 
 // TODO: Determine if we need to have a composite key for user login if a user could have multiple logins for different applications
