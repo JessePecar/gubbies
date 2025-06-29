@@ -50,8 +50,9 @@ model Household {
 model HouseholdUsers {
   userId      Int
   householdId Int
+  isOwner     Boolean
 
-  user User @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
   household Household @relation(fields: [householdId], references: [id])
 
   @@id([userId, householdId])
