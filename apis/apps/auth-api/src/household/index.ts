@@ -1,3 +1,3 @@
-export * from './chain.controller';
-export * from './chain.module';
-export * from './chain.service';
+export * from './household.controller';
+export * from './household.module';
+export * from './household.service';

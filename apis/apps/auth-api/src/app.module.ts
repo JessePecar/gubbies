@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ChainModule, ChainController, ChainService } from './chain';
-import { StoreModule, StoreController, StoreService } from './store';
-import { RoleModule, RoleController, RoleService } from './role';
+import { HouseholdModule, HouseholdController, HouseholdService } from './household';
 import { UserModule, UserController, UserService } from './user';
 import { AuthController, AuthModule, AuthService } from './auth';
 import {
@@ -19,9 +17,7 @@ import { createKeyv } from '@keyv/redis';
 @Module({
   imports: [
     AuthRepositoryModule,
-    ChainModule,
-    StoreModule,
-    RoleModule,
+    HouseholdModule,
     UserModule,
     AuthModule,
     ApplicationModule,
@@ -55,17 +51,13 @@ import { createKeyv } from '@keyv/redis';
     }),
   ],
   controllers: [
-    StoreController,
-    ChainController,
+    HouseholdController,
     UserController,
-    RoleController,
     AuthController,
     ApplicationController,
   ],
   providers: [
-    ChainService,
-    StoreService,
-    RoleService,
+    HouseholdService,
     UserService,
     AuthService,
     ApplicationService,

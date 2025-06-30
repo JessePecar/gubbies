@@ -2,6 +2,7 @@ import { scrypt } from 'crypto';
 import { promisify } from 'util';
 
 import * as bcrypt from 'bcrypt';
+import { AuthClaimKeys, AuthClaims, UserClaim } from '@core/interfaces';
 export class AuthUtil {
   private readonly algorithm = 'aes-256-cbc';
 
@@ -18,5 +19,15 @@ export class AuthUtil {
 
   async isPasswordMatched(password: string, hash: string) {
     return await bcrypt.compare(password, hash);
+  }
+
+  getAuthClaimsFromUserClaims(userClaims: UserClaim[]) {
+    let authClaims: AuthClaims = {};
+
+    userClaims.forEach((uc) => {
+      authClaims[AuthClaimKeys[uc.code]] = uc.value;
+    });
+
+    return authClaims;
   }
 }

@@ -2,8 +2,9 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthUtil } from '@core/utilities';
 import { AuthClientService, AuthClientTransaction } from '@core/repository';
-import { AuthClaimKeys, AuthClaims, AuthRequest, UserClaim } from '@auth/auth';
+import { AuthRequest } from '@auth/auth';
 import { UpdateUser } from '@auth/user';
+import { AuthClaimKeys, AuthClaims, UserClaim } from '@core/interfaces';
 
 @Injectable()
 export class AuthService {

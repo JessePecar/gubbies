@@ -1,5 +1,6 @@
 import { HouseholdService } from '@auth/household/household.service';
 import { BaseHousehold, Household } from '@auth/household/household.types';
+import { User } from '@core/decorators';
 import { AppAuthGuard } from '@core/guards';
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 
@@ -12,7 +13,7 @@ export class HouseholdController {
   // TODO: Should grab the requesting user's household
   @Get()
   @UseGuards(AppAuthGuard)
-  async getHousehold() {
+  async getHousehold(@User() user: any) {
     // Get the user id from the request
     return await this.householdService.getHousehold();
   }

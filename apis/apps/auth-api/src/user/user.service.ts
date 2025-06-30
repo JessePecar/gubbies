@@ -57,38 +57,11 @@ export class UserService {
   async getUserById(id: number) {
     return await this.repository.user.findFirst({
       include: {
-        role: {
+        householdUsers: {
           include: {
-            rolePermissions: {
-              include: {
-                permission: {
-                  select: {
-                    id: true,
-                    name: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        address: {
-          select: {
-            address1: true,
-            address2: true,
-            city: true,
-            countryCode: true,
-            id: true,
-            postalCode: true,
-            state: true,
-          },
-        },
-        primaryPhone: {
-          select: {
-            id: true,
-            nationalDigits: true,
-            rawDigits: true,
-          },
-        },
+            household: true
+          }
+        }
       },
       where: {
         id: {
@@ -98,13 +71,13 @@ export class UserService {
     });
   }
 
-  private async updatePrimaryPhone(
-    transaction: AuthClientTransaction,
-    user: User,
-  ) {
-    const { primaryPhone } = user;
-    return await this.updatePhone(transaction, primaryPhone);
-  }
+  // private async updatePrimaryPhone(
+  //   transaction: AuthClientTransaction,
+  //   user: User,
+  // ) {
+  //   const { primaryPhone } = user;
+  //   return await this.updatePhone(transaction, primaryPhone);
+  // }
 
   async updateUser(user: UpdateUser) {
     // If the user's id provided is null, we should throw an exception that the request was bad
@@ -116,10 +89,10 @@ export class UserService {
 
     return await this.repository.$transaction(async (transaction) => {
       // Update the address and primary phone at the same time
-      const [address, primaryPhone] = await Promise.all([
-        this.updateAddress(transaction, user.address),
-        this.updatePrimaryPhone(transaction, user),
-      ]);
+      // const [address, primaryPhone] = await Promise.all([
+      //   this.updateAddress(transaction, user.address),
+      //   this.updatePrimaryPhone(transaction, user),
+      // ]);
 
       // Update the user information
       const updatedUser = await transaction.user.update({
@@ -131,8 +104,8 @@ export class UserService {
           firstName: user.firstName,
           lastName: user.lastName,
           isActive: user.isActive ?? true,
-          addressId: address?.id,
-          primaryPhoneId: primaryPhone.id,
+          // addressId: address?.id,
+          // primaryPhoneId: primaryPhone.id,
           roleId: user.roleId, // Change if the role Id is different
         },
         include: this.defaultInclude,
@@ -149,10 +122,10 @@ export class UserService {
   async createUser(user: CreateUser) {
     // Update the address and primary phone at the same time
     this.repository.$transaction(async (transaction) => {
-      const [address, primaryPhone] = await Promise.all([
-        this.updateAddress(transaction, user.address),
-        this.updatePrimaryPhone(transaction, user),
-      ]);
+      // const [address, primaryPhone] = await Promise.all([
+      //   this.updateAddress(transaction, user.address),
+      //   this.updatePrimaryPhone(transaction, user),
+      // ]);
 
       // Create the user information
       const newUser = await transaction.user.create({
@@ -162,8 +135,8 @@ export class UserService {
           firstName: user.firstName,
           lastName: user.lastName,
           isActive: true,
-          addressId: address?.id,
-          primaryPhoneId: primaryPhone.id,
+          // addressId: address?.id,
+          // primaryPhoneId: primaryPhone.id,
           roleId: user.roleId, // Change if the role Id is different
         },
         include: this.defaultInclude,
@@ -214,13 +187,13 @@ export class UserService {
           ...dataObject,
         };
 
-        return await this.repository.address.upsert(updateObject);
+        // return await this.repository.address.upsert(updateObject);
       }
       // If we are using the create user input, then we will perform a create
       else {
-        return await transaction.address.create({
-          data: dataObject.create,
-        });
+        // return await transaction.address.create({
+        //   data: dataObject.create,
+        // });
       }
     }
     // If the address is null or undefined, then create a blank address
@@ -234,9 +207,9 @@ export class UserService {
         postalCode: 0,
       };
 
-      return await transaction.address.create({
-        data: createObject,
-      });
+      // return await transaction.address.create({
+      //   data: createObject,
+      // });
     }
   }
 

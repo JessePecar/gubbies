@@ -1,10 +1,5 @@
-import {
-  AuthClaims,
-  UserClaim,
-  AuthClaimKeys,
-  AuthRequest,
-  AuthService,
-} from '@auth/auth';
+import { AuthRequest, AuthService } from '@auth/auth';
+import { AuthUtil } from '@core/utilities';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import {
   Body,
@@ -17,7 +12,6 @@ import {
   Inject,
   Post,
   Query,
-  Res,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -26,11 +20,14 @@ import { v4 as uuid } from 'uuid';
 
 @Controller('auth')
 export class AuthController {
+  private authUtil: AuthUtil;
   constructor(
     private authService: AuthService,
     private jwtService: JwtService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
-  ) {}
+  ) {
+    this.authUtil = new AuthUtil();
+  }
 
   // Get the cached key for the login, which will be the token, which will be validated on grab
   @Get('cached')
@@ -71,7 +68,7 @@ export class AuthController {
       return new UnauthorizedException();
     }
 
-    const authClaims = this.getAuthClaimsFromUserClaims(userClaims);
+    const authClaims = this.authUtil.getAuthClaimsFromUserClaims(userClaims);
 
     // Generate token
     const generatedToken = await this.jwtService.signAsync(
@@ -109,7 +106,6 @@ export class AuthController {
           HttpStatus.BAD_REQUEST,
         );
       }
-
     } catch {
       return new UnauthorizedException();
     }
@@ -120,16 +116,7 @@ export class AuthController {
       return new UnauthorizedException();
     }
 
-    return this.getAuthClaimsFromUserClaims(userClaims);
+    return this.authUtil.getAuthClaimsFromUserClaims(userClaims);
   }
 
-  private getAuthClaimsFromUserClaims(userClaims: UserClaim[]) {
-    let authClaims: AuthClaims = {};
-
-    userClaims.forEach((uc) => {
-      authClaims[AuthClaimKeys[uc.code]] = uc.value;
-    });
-
-    return authClaims;
-  }
 }

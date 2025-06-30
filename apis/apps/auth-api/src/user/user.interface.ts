@@ -19,30 +19,30 @@ export class User {
   })
   applicationId: number;
 
-  @IsNotEmpty({
-    message: 'Enterprise mode flag must be provided',
-  })
-  isEnterpriseMode: boolean;
+  // @IsNotEmpty({
+  //   message: 'Enterprise mode flag must be provided',
+  // })
+  // isEnterpriseMode: boolean;
 
-  @IsNotEmptyObject(
-    {
-      nullable: false,
-    },
-    {
-      message: 'Primary phone must be provided',
-    },
-  )
-  primaryPhone: Phone;
+  // @IsNotEmptyObject(
+  //   {
+  //     nullable: false,
+  //   },
+  //   {
+  //     message: 'Primary phone must be provided',
+  //   },
+  // )
+  // primaryPhone: Phone;
 
-  @IsNotEmptyObject(
-    {
-      nullable: false,
-    },
-    {
-      message: 'Address must be provided',
-    },
-  )
-  address: Address;
+  // @IsNotEmptyObject(
+  //   {
+  //     nullable: false,
+  //   },
+  //   {
+  //     message: 'Address must be provided',
+  //   },
+  // )
+  // address: Address;
 }
 
 export class CreateUser extends User {
@@ -63,13 +63,13 @@ export class UpdateUser extends User {
   })
   id: number;
 
-  @IsNotEmpty({
-    message: 'Primary Phone Id must be provided when updating a user',
-  })
-  primaryPhoneId: number;
+  // @IsNotEmpty({
+  //   message: 'Primary Phone Id must be provided when updating a user',
+  // })
+  // primaryPhoneId: number;
 
-  @IsNotEmpty({
-    message: 'Address Id must be provded when updating a user',
-  })
-  addressId: number;
+  // @IsNotEmpty({
+  //   message: 'Address Id must be provded when updating a user',
+  // })
+  // addressId: number;
 }
